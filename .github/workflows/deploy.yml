@@ -23,6 +23,7 @@ jobs:
     - run: chmod -R a+x node_modules
     - run: npm install
     - run: npm run production
+    - run: composer update
 
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
@@ -34,7 +35,5 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
         script: |
             cd www/pims.euitsols.com
-            git fetch origin master
-            git reset --hard FETCH_HEAD
-            git clean -d -f --exclude secrets
-            chown $(whoami)
+            git pull
+
