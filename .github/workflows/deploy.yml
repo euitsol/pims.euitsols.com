@@ -28,4 +28,5 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
         script: |
             ls -la
-            git pull
+            cd www/pims.euitsols.com
+            ls -la
