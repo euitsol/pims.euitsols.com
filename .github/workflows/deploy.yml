@@ -34,3 +34,7 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
         script: |
             cd www/pims.euitsols.com
+            git fetch origin master
+            git reset --hard FETCH_HEAD
+            git clean -d -f --exclude secrets
+            chown $(whoami)
