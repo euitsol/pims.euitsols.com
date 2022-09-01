@@ -24,6 +24,7 @@ jobs:
     - run: npm install
     - run: npm run production
     - run: composer update
+    - run: php artisan migrate
 
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
@@ -36,5 +37,4 @@ jobs:
         script: |
             cd www/pims.euitsols.com
             git pull
-            php artisan migrate
 
