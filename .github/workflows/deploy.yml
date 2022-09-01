@@ -19,7 +19,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v1
     - run: npm install
-    - run: npm run build
+    - run: npm run production
 
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
