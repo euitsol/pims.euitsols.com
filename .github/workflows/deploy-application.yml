@@ -13,6 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Compile Css and Javascript
-        run:
+        run: |
             npm install
             npm run production
