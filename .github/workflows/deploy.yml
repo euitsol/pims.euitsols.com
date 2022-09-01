@@ -27,6 +27,6 @@ jobs:
         port: ${{ secrets.PORT }}
         passphrase: ${{ secrets.PASSPHRASE }}
         script: |
-            ls -la
             cd www/pims.euitsols.com
-            ls -la
+            git pull
+            chown www-data:www-data . -R
