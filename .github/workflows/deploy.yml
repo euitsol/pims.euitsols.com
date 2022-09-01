@@ -27,5 +27,5 @@ jobs:
         port: ${{ secrets.PORT }}
         passphrase: ${{ secrets.PASSPHRASE }}
         script: |
-            cd /www/pims.euitsols.com/
+            ls -la
             git pull
