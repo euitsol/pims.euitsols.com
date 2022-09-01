@@ -25,7 +25,6 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
-        password: ${{ secrets.PASSWORD }}
         script: |
             cd /www/pims.euitsols.com/
             git pull
