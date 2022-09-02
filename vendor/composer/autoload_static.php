@@ -111,6 +111,8 @@ class ComposerStaticInitfc5b51dbeba274f8e2f0577feb8128f4
         'M' => 
         array (
             'Monolog\\' => 8,
+            'MJS\\TopSort\\Tests\\' => 18,
+            'MJS\\TopSort\\' => 12,
         ),
         'L' => 
         array (
@@ -123,6 +125,7 @@ class ComposerStaticInitfc5b51dbeba274f8e2f0577feb8128f4
             'Laravel\\SerializableClosure\\' => 28,
             'Laravel\\Sanctum\\' => 16,
             'Laravel\\Sail\\' => 13,
+            'LaravelMigrationGenerator\\' => 26,
         ),
         'I' => 
         array (
@@ -376,6 +379,14 @@ class ComposerStaticInitfc5b51dbeba274f8e2f0577feb8128f4
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
+        'MJS\\TopSort\\Tests\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/marcj/topsort/tests/Tests',
+        ),
+        'MJS\\TopSort\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/marcj/topsort/src',
+        ),
         'League\\MimeTypeDetection\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/mime-type-detection/src',
@@ -411,6 +422,10 @@ class ComposerStaticInitfc5b51dbeba274f8e2f0577feb8128f4
         'Laravel\\Sail\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/sail/src',
+        ),
+        'LaravelMigrationGenerator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src',
         ),
         'InfyOm\\GeneratorHelpers\\' => 
         array (
@@ -550,6 +565,7 @@ class ComposerStaticInitfc5b51dbeba274f8e2f0577feb8128f4
         'App\\Http\\Controllers\\Auth\\VerificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/VerificationController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
+        'App\\Http\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
@@ -2763,6 +2779,41 @@ class ComposerStaticInitfc5b51dbeba274f8e2f0577feb8128f4
         'InfyOm\\AdminLTEPreset\\AdminLTEPreset' => __DIR__ . '/..' . '/infyomlabs/laravel-ui-adminlte/src/AdminLTEPreset.php',
         'InfyOm\\AdminLTEPreset\\AdminLTEPresetServiceProvider' => __DIR__ . '/..' . '/infyomlabs/laravel-ui-adminlte/src/AdminLTEPresetServiceProvider.php',
         'InfyOm\\GeneratorHelpers\\LaravelUtils' => __DIR__ . '/..' . '/infyomlabs/laravel-generator-helpers/src/LaravelUtils.php',
+        'LaravelMigrationGenerator\\Commands\\GenerateMigrationsCommand' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Commands/GenerateMigrationsCommand.php',
+        'LaravelMigrationGenerator\\Definitions\\ColumnDefinition' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Definitions/ColumnDefinition.php',
+        'LaravelMigrationGenerator\\Definitions\\IndexDefinition' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Definitions/IndexDefinition.php',
+        'LaravelMigrationGenerator\\Definitions\\TableDefinition' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Definitions/TableDefinition.php',
+        'LaravelMigrationGenerator\\Definitions\\ViewDefinition' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Definitions/ViewDefinition.php',
+        'LaravelMigrationGenerator\\Formatters\\TableFormatter' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Formatters/TableFormatter.php',
+        'LaravelMigrationGenerator\\Formatters\\ViewFormatter' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Formatters/ViewFormatter.php',
+        'LaravelMigrationGenerator\\GeneratorManagers\\BaseGeneratorManager' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/GeneratorManagers/BaseGeneratorManager.php',
+        'LaravelMigrationGenerator\\GeneratorManagers\\Interfaces\\GeneratorManagerInterface' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/GeneratorManagers/Interfaces/GeneratorManagerInterface.php',
+        'LaravelMigrationGenerator\\GeneratorManagers\\MySQLGeneratorManager' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/GeneratorManagers/MySQLGeneratorManager.php',
+        'LaravelMigrationGenerator\\Generators\\BaseTableGenerator' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Generators/BaseTableGenerator.php',
+        'LaravelMigrationGenerator\\Generators\\BaseViewGenerator' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Generators/BaseViewGenerator.php',
+        'LaravelMigrationGenerator\\Generators\\Concerns\\CleansUpColumnIndices' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Generators/Concerns/CleansUpColumnIndices.php',
+        'LaravelMigrationGenerator\\Generators\\Concerns\\CleansUpForeignKeyIndices' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Generators/Concerns/CleansUpForeignKeyIndices.php',
+        'LaravelMigrationGenerator\\Generators\\Concerns\\CleansUpMorphColumns' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Generators/Concerns/CleansUpMorphColumns.php',
+        'LaravelMigrationGenerator\\Generators\\Concerns\\CleansUpTimestampsColumn' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Generators/Concerns/CleansUpTimestampsColumn.php',
+        'LaravelMigrationGenerator\\Generators\\Concerns\\WritesToFile' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Generators/Concerns/WritesToFile.php',
+        'LaravelMigrationGenerator\\Generators\\Concerns\\WritesViewsToFile' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Generators/Concerns/WritesViewsToFile.php',
+        'LaravelMigrationGenerator\\Generators\\Interfaces\\TableGeneratorInterface' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Generators/Interfaces/TableGeneratorInterface.php',
+        'LaravelMigrationGenerator\\Generators\\Interfaces\\ViewGeneratorInterface' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Generators/Interfaces/ViewGeneratorInterface.php',
+        'LaravelMigrationGenerator\\Generators\\MySQL\\TableGenerator' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Generators/MySQL/TableGenerator.php',
+        'LaravelMigrationGenerator\\Generators\\MySQL\\ViewGenerator' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Generators/MySQL/ViewGenerator.php',
+        'LaravelMigrationGenerator\\Helpers\\ConfigResolver' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Helpers/ConfigResolver.php',
+        'LaravelMigrationGenerator\\Helpers\\DependencyResolver' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Helpers/DependencyResolver.php',
+        'LaravelMigrationGenerator\\Helpers\\Formatter' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Helpers/Formatter.php',
+        'LaravelMigrationGenerator\\Helpers\\ValueToString' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Helpers/ValueToString.php',
+        'LaravelMigrationGenerator\\Helpers\\WritableTrait' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Helpers/WritableTrait.php',
+        'LaravelMigrationGenerator\\LaravelMigrationGeneratorProvider' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/LaravelMigrationGeneratorProvider.php',
+        'LaravelMigrationGenerator\\Tokenizers\\BaseColumnTokenizer' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Tokenizers/BaseColumnTokenizer.php',
+        'LaravelMigrationGenerator\\Tokenizers\\BaseIndexTokenizer' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Tokenizers/BaseIndexTokenizer.php',
+        'LaravelMigrationGenerator\\Tokenizers\\BaseTokenizer' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Tokenizers/BaseTokenizer.php',
+        'LaravelMigrationGenerator\\Tokenizers\\Interfaces\\ColumnTokenizerInterface' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Tokenizers/Interfaces/ColumnTokenizerInterface.php',
+        'LaravelMigrationGenerator\\Tokenizers\\Interfaces\\IndexTokenizerInterface' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Tokenizers/Interfaces/IndexTokenizerInterface.php',
+        'LaravelMigrationGenerator\\Tokenizers\\MySQL\\ColumnTokenizer' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Tokenizers/MySQL/ColumnTokenizer.php',
+        'LaravelMigrationGenerator\\Tokenizers\\MySQL\\IndexTokenizer' => __DIR__ . '/..' . '/bennett-treptow/laravel-migration-generator/src/Tokenizers/MySQL/IndexTokenizer.php',
         'Laravel\\Sail\\Console\\InstallCommand' => __DIR__ . '/..' . '/laravel/sail/src/Console/InstallCommand.php',
         'Laravel\\Sail\\Console\\PublishCommand' => __DIR__ . '/..' . '/laravel/sail/src/Console/PublishCommand.php',
         'Laravel\\Sail\\SailServiceProvider' => __DIR__ . '/..' . '/laravel/sail/src/SailServiceProvider.php',
@@ -3155,6 +3206,19 @@ class ComposerStaticInitfc5b51dbeba274f8e2f0577feb8128f4
         'League\\MimeTypeDetection\\GeneratedExtensionToMimeTypeMap' => __DIR__ . '/..' . '/league/mime-type-detection/src/GeneratedExtensionToMimeTypeMap.php',
         'League\\MimeTypeDetection\\MimeTypeDetector' => __DIR__ . '/..' . '/league/mime-type-detection/src/MimeTypeDetector.php',
         'League\\MimeTypeDetection\\OverridingExtensionToMimeTypeMap' => __DIR__ . '/..' . '/league/mime-type-detection/src/OverridingExtensionToMimeTypeMap.php',
+        'MJS\\TopSort\\CircularDependencyException' => __DIR__ . '/..' . '/marcj/topsort/src/CircularDependencyException.php',
+        'MJS\\TopSort\\Command\\BenchmarkCommand' => __DIR__ . '/..' . '/marcj/topsort/src/Command/BenchmarkCommand.php',
+        'MJS\\TopSort\\ElementNotFoundException' => __DIR__ . '/..' . '/marcj/topsort/src/ElementNotFoundException.php',
+        'MJS\\TopSort\\GroupedTopSortInterface' => __DIR__ . '/..' . '/marcj/topsort/src/GroupedTopSortInterface.php',
+        'MJS\\TopSort\\Implementations\\ArraySort' => __DIR__ . '/..' . '/marcj/topsort/src/Implementations/ArraySort.php',
+        'MJS\\TopSort\\Implementations\\BaseImplementation' => __DIR__ . '/..' . '/marcj/topsort/src/Implementations/BaseImplementation.php',
+        'MJS\\TopSort\\Implementations\\FixedArraySort' => __DIR__ . '/..' . '/marcj/topsort/src/Implementations/FixedArraySort.php',
+        'MJS\\TopSort\\Implementations\\GroupedArraySort' => __DIR__ . '/..' . '/marcj/topsort/src/Implementations/GroupedArraySort.php',
+        'MJS\\TopSort\\Implementations\\GroupedStringSort' => __DIR__ . '/..' . '/marcj/topsort/src/Implementations/GroupedStringSort.php',
+        'MJS\\TopSort\\Implementations\\StringSort' => __DIR__ . '/..' . '/marcj/topsort/src/Implementations/StringSort.php',
+        'MJS\\TopSort\\Tests\\GroupedSortTest' => __DIR__ . '/..' . '/marcj/topsort/tests/Tests/GroupedSortTest.php',
+        'MJS\\TopSort\\Tests\\SimpleSortTest' => __DIR__ . '/..' . '/marcj/topsort/tests/Tests/SimpleSortTest.php',
+        'MJS\\TopSort\\TopSortInterface' => __DIR__ . '/..' . '/marcj/topsort/src/TopSortInterface.php',
         'Mockery' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery.php',
         'Mockery\\Adapter\\Phpunit\\MockeryPHPUnitIntegration' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryPHPUnitIntegration.php',
         'Mockery\\Adapter\\Phpunit\\MockeryPHPUnitIntegrationAssertPostConditions' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryPHPUnitIntegrationAssertPostConditions.php',

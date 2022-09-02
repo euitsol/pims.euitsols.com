@@ -20,7 +20,7 @@
                         <h4>Add Permission</h4>
                     </span>
                     <span class="float-right">
-                        <a href="" class="btn btn-info">Back</a>
+                        <a href="{{ route('users.permission.view') }}" class="btn btn-info">Back</a>
                     </span>
                 </div>
                 <div class="card-body">
@@ -76,7 +76,6 @@
 @endsection
 
 @push('third_party_scripts')
-<script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script>
 @endpush
 
 @push('page_scripts')
