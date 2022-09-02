@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\departmentModel;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class departmentController extends Controller
 {
+
+    public function __construct() {
+        return $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +21,8 @@ class departmentController extends Controller
     public function index()
     {
         $n['page_name'] = 'Department';
-        $n['department_db'] = departmentModel::all();
+        $n['department_db'] = departmentModel::where('deleted_at', null)->get();
+
         return view('pages.deparment.index',$n);
     }
 
@@ -26,7 +33,8 @@ class departmentController extends Controller
      */
     public function create()
     {
-        // echo "echo";
+        $n['page_name'] = 'Department';
+        return view('pages.deparment.create',$n);
     }
 
     /**
@@ -37,15 +45,20 @@ class departmentController extends Controller
      */
     public function store(Request $request)
     {
-        
-        // echo "store";
+        $this->validate($request, [
+            'name' => 'required|unique:departments,department_name|string|max:255',
+            'short_name' => 'required|unique:departments,short_name|string|max:255',
+        ]);
+
         $insert = new departmentModel;
         $insert->department_name =$request->name;
         $insert->short_name =$request->short_name;
+        $insert->created_at =Carbon::now()->toDateTimeString();
+        $insert->created_by =auth()->user()->id;
         $insert->save();
 
         // dd($request->name) ;
-        return Qs::jsonStoreOk();
+        return redirect()->route('departments.index')->with('success',' Department successfully created');
         // return redirect()->route('departments.index')->with('insert');
     }
 
@@ -86,7 +99,7 @@ class departmentController extends Controller
       $update->department_name= $request->name;
       $update->short_name = $request->short_name;
       $update->save();
-      return Qs::jsonUpdateOk();
+
     //   return redirect()->route("departments.index")->with("updated");
     }
 

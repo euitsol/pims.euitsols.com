@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', "$page_name")
+@section('title','Department')
 
 @push('third_party_stylesheets')
 <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
@@ -17,10 +17,10 @@
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>View $page_name</h4>
+                        <h4>View {{$page_name}}</h4>
                     </span>
                     <span class="float-right">
-                        <a href="{{ route('departments.create') }}" class="btn btn-info">Add new $page_name</a>
+                        <a href="{{ route('departments.create') }}" class="btn btn-info">Add new {{$page_name}}</a>
                     </span>
                 </div>
                 <div class="card-body">
@@ -34,6 +34,7 @@
                                     <th>Name</th>
                                     <th>Short Name</th>
                                     <th>Created At</th>
+                                    <th>Created By</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -41,10 +42,13 @@
                                 @forelse($department_db as $key => $value)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td>{{ $value->name }}</td>
-                                        <td>{{ $value->Short_name }}</td>
+                                        <td>{{ $value->department_name }}</td>
+                                        <td>{{ $value->short_name }}</td>
                                         <td>{{ $value->created_at->diffForHumans() }}</td>
-                                        <td></td>
+                                        <td>{{ $value->created_user->name ?? 'System' }}</td>
+                                        <td>
+
+                                        </td>
                                     </tr>
                                 @empty
                                 @endforelse
@@ -71,7 +75,7 @@ $(document).ready(function() {
         buttons: [
             {
                 extend: 'pdfHtml5',
-                title: 'User Management',
+                title: 'Department',
                 download: 'open',
                 orientation: 'potrait',
                 pagesize: 'LETTER',
@@ -82,7 +86,7 @@ $(document).ready(function() {
             {
                 extend: 'print',
                 exportOptions: {
-                    columns: [0,1,2,3]
+                    columns: [0,1,2,3,4]
                 }
             }, 'pageLength'
         ]
@@ -92,4 +96,4 @@ $(document).ready(function() {
 @endpush
 
 
-   
+
