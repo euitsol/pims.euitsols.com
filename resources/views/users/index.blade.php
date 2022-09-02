@@ -20,7 +20,7 @@
                         <h4>View users</h4>
                     </span>
                     <span class="float-right">
-                        <a href="{{ route('users.add') }}" class="btn btn-info">Add new user</a>
+                        @if(Auth::user()->can('user add') || Auth::user()->role->id == 1)<a href="{{ route('users.add') }}" class="btn btn-info">Add new user</a>@endif
                     </span>
                 </div>
                 <div class="card-body">
@@ -34,6 +34,7 @@
                                     <th>Name</th>
                                     <th>Role</th>
                                     <th>Created At</th>
+                                    <th>Created By</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -44,6 +45,7 @@
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->role->name }}</td>
                                         <td>{{ date('d-m-Y', strtotime($user->created_at)); }}</td>
+                                        <td>{{ $user->created_user->name ?? 'system' }}</td>
                                         <td></td>
                                     </tr>
                                 @empty
