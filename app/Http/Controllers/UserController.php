@@ -36,7 +36,7 @@ class UserController extends Controller
     }
 
     public function store(Request $request){
-        dd(auth()->user()->role->name);
+        dd(auth()->user()->role()->name);
         $this->validate($request, [
             'name' => 'required|unique:users,name|string|max:255',
             'email' => 'required|unique:users,email|email|max:255',
