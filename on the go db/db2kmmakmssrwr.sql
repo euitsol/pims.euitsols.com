@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Sep 01, 2022 at 05:57 PM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Host: localhost
+-- Generation Time: Sep 02, 2022 at 07:58 AM
+-- Server version: 5.7.39-42-log
+-- PHP Version: 7.4.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `pims2`
+-- Database: `db2kmmakmssrwr`
 --
 
 -- --------------------------------------------------------
@@ -34,7 +34,7 @@ CREATE TABLE `failed_jobs` (
   `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -89,7 +89,10 @@ CREATE TABLE `model_has_roles` (
 --
 
 INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
-(12, 'App\\Models\\User', 4);
+(12, 'App\\Models\\User', 4),
+(12, 'App\\Models\\User', 8),
+(12, 'App\\Models\\User', 9),
+(12, 'App\\Models\\User', 10);
 
 -- --------------------------------------------------------
 
@@ -139,7 +142,7 @@ CREATE TABLE `personal_access_tokens` (
   `tokenable_id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `abilities` text COLLATE utf8mb4_unicode_ci,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -209,8 +212,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `role_id`, `email`, `image`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(4, 'AL KAFI SOHAG', NULL, 'aksohag16@gmail.com', NULL, NULL, '$2y$10$0f9v1RjV3kD15qwvs0InRObjSG01bCCwYG/pTxruX/s/PV2/jPesS', NULL, '2022-09-01 03:16:11', '2022-09-01 03:16:11'),
-(5, 'Test user 1', NULL, 'test1@email.com', NULL, NULL, '$2y$10$3y3VKYcNhDvFodxXR.LC9OPW89nmrDGff2YMdUjLCbZjDvbO7HiSy', NULL, '2022-09-01 03:44:18', '2022-09-01 03:44:18');
+(4, 'AL KAFI SOHAG', 12, 'aksohag16@gmail.com', NULL, NULL, '$2y$10$0f9v1RjV3kD15qwvs0InRObjSG01bCCwYG/pTxruX/s/PV2/jPesS', NULL, '2022-09-01 03:16:11', '2022-09-01 03:16:11'),
+(8, 'Nobir', 12, 'nobir.euitsols@gmail.com', NULL, NULL, '$2y$10$D867uWXf/YGi/T8GiDyV3ODx0j9I2vcPD4YTW2S2Px2UEgdKa4/Cy', NULL, '2022-09-02 07:54:37', '2022-09-02 07:54:37'),
+(9, 'Sakib', 12, 'sakib.euitsols@gmail.com', NULL, NULL, '$2y$10$n2KdGHKVXP0EcaRyRmunIupOKTWDNtbtlspe6D9ZqCFp6bH3tmwjG', NULL, '2022-09-02 07:56:01', '2022-09-02 07:56:01'),
+(10, 'Farhan', 12, 'farhan.euitsols@gmail.com', NULL, NULL, '$2y$10$1vt/HBMVIM/gwzmtG3sHO.XKB8e9FC4bafu81Ttm5AR4GHoSPfyl.', NULL, '2022-09-02 07:56:28', '2022-09-02 07:56:28');
 
 --
 -- Indexes for dumped tables
@@ -325,7 +330,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables

@@ -36,8 +36,6 @@ class UserController extends Controller
     }
 
     public function store(Request $request){
-        $user = Auth::user();
-        dd($user->role()->name);
         $this->validate($request, [
             'name' => 'required|unique:users,name|string|max:255',
             'email' => 'required|unique:users,email|email|max:255',
@@ -49,11 +47,11 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->email),
-            'role' => $request->role,
+            'role_id' => $request->role,
         ]);
 
 
-        $user->assignRole($user->role()->name);
+        $user->assignRole($user->role->name);
 
         $this->message('success', 'User Created Successfullly');
         return redirect()->route('users.index');

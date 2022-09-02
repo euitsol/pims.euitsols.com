@@ -42,7 +42,7 @@
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $user->name }}</td>
-                                        <td>{{ $user->role }}</td>
+                                        <td>{{ $user->role->name }}</td>
                                         <td>{{ date('d-m-Y', strtotime($user->created_at)); }}</td>
                                         <td></td>
                                     </tr>
