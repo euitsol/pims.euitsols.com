@@ -44,7 +44,7 @@ Route::group(['middleware' => ['auth']], function() {
 
 
     //department Model
-    Route::resource('departments', departmentController::class);
+    
     // Route::resource('classRoom', 'ClassRoomController');
     // Route::resource('notice', 'noticeController');
     // Route::resource('teachers', 'TeacherController');
