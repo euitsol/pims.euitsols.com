@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\departmentController;
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -41,5 +43,22 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/permission/add', [UserController::class, 'permission_add'])->name('users.permission.add');
     Route::post('/permission/store', [UserController::class, 'permission_store'])->name('users.permission.store');
 
+
+    //department Model
+    
+    // Route::resource('classRoom', 'ClassRoomController');
+    // Route::resource('notice', 'noticeController');
+    // Route::resource('teachers', 'TeacherController');
+    // Route::resource('userCreation', 'userCreationController');
+    // Route::resource('semester_details', 'semesterDetailsController');
+    // Route::resource('semester', 'semesterController');
+    // Route::resource('routine', 'routineController');
+    // Route::resource('assignment', 'assignmentController');
+    // Route::resource('userRollCreation', 'userRollController');
+    // Route::resource('manus', 'menusController');
+    // Route::post('assignmentSubmit', 'assignmentController@assignmentSubmit')->name('assignmentSubmit');
+    // Route::get('Admission_std_show', 'admissionPromotController@Admission_std_show')->name('students.Admission_std_show');
+    // Route::put('Admission_std_promotion', 'admissionPromotController@Admission_std_promotion')->name('students.Admission_std_promotion');
+    // Route::post('Admission_std_assign', 'admissionPromotController@Admission_std_assign')->name('students.Admission_std_assign');
 
 });
