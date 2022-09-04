@@ -20,7 +20,7 @@
                         <h4>User Role</h4>
                     </span>
                     <span class="float-right">
-                        @can('role add') <a href="{{ route('users.role.add') }}" class="btn btn-info">Add role</a>@endcan
+                        @if(Auth::user()->can('role add') || Auth::user()->role->id == 1) <a href="{{ route('users.role.add') }}" class="btn btn-info">Add role</a>@endif
                     </span>
                 </div>
                 <div class="card-body">
@@ -42,8 +42,8 @@
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $role->name }}</td>
-                                        <td>{{ date('d-m-Y', strtotime($role->created_by)); }}</td>
-                                        <td>{{ date('d-m-Y', strtotime($role->created_at)); }}</td>
+                                        <td>{{ date('d-m-Y', strtotime($role->created_at)) }}</td>
+                                        <td>{{ $role->created_user->name ?? 'System' }}</td>
                                         <td></td>
                                     </tr>
                                 @empty

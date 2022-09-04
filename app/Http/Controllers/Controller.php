@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
@@ -19,5 +20,14 @@ class Controller extends BaseController
         } elseif ($type == 'error') {
             Session::flash('error', $message);
         }
+    }
+
+    public function check_access($access){
+        if(auth()->user()->can($access) || Auth::user()->role->id == 1){
+            return true;
+        }else{
+            return abort(401);
+        }
+
     }
 }

@@ -24,6 +24,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
+        'created_by',
+        'created_at',
     ];
 
     /**
@@ -48,5 +50,15 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function created_user(){
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+    public function updated_user(){
+        return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
+    public function deleted_user(){
+        return $this->belongsTo(User::class, 'deleted_by', 'id');
     }
 }

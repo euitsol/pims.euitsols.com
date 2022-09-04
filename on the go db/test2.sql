@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Sep 02, 2022 at 07:58 AM
--- Server version: 5.7.39-42-log
--- PHP Version: 7.4.30
+-- Host: 127.0.0.1
+-- Generation Time: Sep 03, 2022 at 01:53 AM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `db2kmmakmssrwr`
+-- Database: `test2`
 --
 
 -- --------------------------------------------------------
@@ -34,7 +34,7 @@ CREATE TABLE `failed_jobs` (
   `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -58,7 +58,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (2, '2014_10_12_100000_create_password_resets_table', 1),
 (3, '2019_08_19_000000_create_failed_jobs_table', 1),
 (4, '2019_12_14_000001_create_personal_access_tokens_table', 1),
-(5, '2022_08_31_182455_create_permission_tables', 2);
+(5, '2022_08_31_182455_create_permission_tables', 1),
+(6, '2022_09_02_092410_add_foreign_keys_users_table', 1),
+(7, '2022_09_02_092649_add_foreign_keys_roles_table', 1);
 
 -- --------------------------------------------------------
 
@@ -84,16 +86,6 @@ CREATE TABLE `model_has_roles` (
   `model_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `model_has_roles`
---
-
-INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
-(12, 'App\\Models\\User', 4),
-(12, 'App\\Models\\User', 8),
-(12, 'App\\Models\\User', 9),
-(12, 'App\\Models\\User', 10);
-
 -- --------------------------------------------------------
 
 --
@@ -118,17 +110,12 @@ CREATE TABLE `permissions` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `guard_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `created_by` int(11) UNSIGNED NOT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `updated_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `deleted_by` bigint(20) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `permissions`
---
-
-INSERT INTO `permissions` (`id`, `prefix`, `name`, `guard_name`, `created_at`, `created_by`, `updated_at`) VALUES
-(9, 'role', 'role view', 'web', '2022-09-01 03:16:52', 4, '2022-09-01 03:16:52'),
-(10, 'role', 'role add', 'web', '2022-09-01 03:17:03', 4, '2022-09-01 03:17:03');
 
 -- --------------------------------------------------------
 
@@ -142,7 +129,7 @@ CREATE TABLE `personal_access_tokens` (
   `tokenable_id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text COLLATE utf8mb4_unicode_ci,
+  `abilities` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -159,15 +146,19 @@ CREATE TABLE `roles` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `guard_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `updated_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `deleted_by` bigint(20) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `roles`
 --
 
-INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
-(12, 'entry user', 'web', '2022-09-01 03:17:28', '2022-09-01 03:17:28');
+INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`, `deleted_at`, `created_by`, `updated_by`, `deleted_by`) VALUES
+(1, 'Super Admin', 'web', '2022-09-02 17:52:10', NULL, '2022-09-02 17:52:10', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -180,14 +171,6 @@ CREATE TABLE `role_has_permissions` (
   `role_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `role_has_permissions`
---
-
-INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
-(9, 12),
-(10, 12);
-
 -- --------------------------------------------------------
 
 --
@@ -195,27 +178,27 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 --
 
 CREATE TABLE `users` (
-  `id` int(11) UNSIGNED NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `role_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `role_id` bigint(20) UNSIGNED NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `updated_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `deleted_by` bigint(20) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `role_id`, `email`, `image`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(4, 'AL KAFI SOHAG', 12, 'aksohag16@gmail.com', NULL, NULL, '$2y$10$0f9v1RjV3kD15qwvs0InRObjSG01bCCwYG/pTxruX/s/PV2/jPesS', NULL, '2022-09-01 03:16:11', '2022-09-01 03:16:11'),
-(8, 'Nobir', 12, 'nobir.euitsols@gmail.com', NULL, NULL, '$2y$10$D867uWXf/YGi/T8GiDyV3ODx0j9I2vcPD4YTW2S2Px2UEgdKa4/Cy', NULL, '2022-09-02 07:54:37', '2022-09-02 07:54:37'),
-(9, 'Sakib', 12, 'sakib.euitsols@gmail.com', NULL, NULL, '$2y$10$n2KdGHKVXP0EcaRyRmunIupOKTWDNtbtlspe6D9ZqCFp6bH3tmwjG', NULL, '2022-09-02 07:56:01', '2022-09-02 07:56:01'),
-(10, 'Farhan', 12, 'farhan.euitsols@gmail.com', NULL, NULL, '$2y$10$1vt/HBMVIM/gwzmtG3sHO.XKB8e9FC4bafu81Ttm5AR4GHoSPfyl.', NULL, '2022-09-02 07:56:28', '2022-09-02 07:56:28');
+INSERT INTO `users` (`id`, `name`, `role_id`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `deleted_at`, `created_by`, `updated_by`, `deleted_by`) VALUES
+(1, 'Super Admin', 1, 'admin@email.com', NULL, '$2y$10$d7AffLJQ3/JRZkBYfRYXleTVyK/OopvQ95N0rclbtI30oATkAKMHO', NULL, '2022-09-02 17:52:11', NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -260,7 +243,9 @@ ALTER TABLE `password_resets`
 ALTER TABLE `permissions`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `permissions_name_guard_name_unique` (`name`,`guard_name`),
-  ADD KEY `created_by` (`created_by`);
+  ADD KEY `permission_user_created` (`created_by`),
+  ADD KEY `permission_user_deleted` (`deleted_by`),
+  ADD KEY `permission_user_updated` (`updated_by`);
 
 --
 -- Indexes for table `personal_access_tokens`
@@ -275,7 +260,10 @@ ALTER TABLE `personal_access_tokens`
 --
 ALTER TABLE `roles`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `roles_name_guard_name_unique` (`name`,`guard_name`);
+  ADD UNIQUE KEY `roles_name_guard_name_unique` (`name`,`guard_name`),
+  ADD KEY `roles_user_created` (`created_by`),
+  ADD KEY `roles_user_deleted` (`deleted_by`),
+  ADD KEY `roles_user_updated` (`updated_by`);
 
 --
 -- Indexes for table `role_has_permissions`
@@ -290,7 +278,9 @@ ALTER TABLE `role_has_permissions`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `users_email_unique` (`email`),
-  ADD KEY `role_id` (`role_id`);
+  ADD KEY `user_created` (`created_by`),
+  ADD KEY `user_deleted` (`deleted_by`),
+  ADD KEY `user_updated` (`updated_by`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -306,13 +296,13 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -324,13 +314,13 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
@@ -352,7 +342,17 @@ ALTER TABLE `model_has_roles`
 -- Constraints for table `permissions`
 --
 ALTER TABLE `permissions`
-  ADD CONSTRAINT `permissions_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `permission_user_created` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `permission_user_deleted` FOREIGN KEY (`deleted_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `permission_user_updated` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `roles`
+--
+ALTER TABLE `roles`
+  ADD CONSTRAINT `roles_user_created` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `roles_user_deleted` FOREIGN KEY (`deleted_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `roles_user_updated` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `role_has_permissions`
@@ -365,7 +365,9 @@ ALTER TABLE `role_has_permissions`
 -- Constraints for table `users`
 --
 ALTER TABLE `users`
-  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_created` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_deleted` FOREIGN KEY (`deleted_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_updated` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -35,5 +35,6 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
         script: |
             cd www/pims.euitsols.com
+            git reset --hard
             git pull
 

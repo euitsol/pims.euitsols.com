@@ -39,6 +39,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/roles/store', [UserController::class, 'role_store'])->name('users.role.store');
 
     //Permission
+    Route::get('/permission/view', [UserController::class, 'permission_view'])->name('users.permission.view');
     Route::get('/permission/add', [UserController::class, 'permission_add'])->name('users.permission.add');
     Route::post('/permission/store', [UserController::class, 'permission_store'])->name('users.permission.store');
 

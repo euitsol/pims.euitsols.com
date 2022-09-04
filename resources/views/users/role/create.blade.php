@@ -20,7 +20,7 @@
                         <h4>Add Role</h4>
                     </span>
                     <span class="float-right">
-                        <a href="{{ route('users.role.index') }}" class="btn btn-info">Back</a>
+                        @if(Auth::user()->can('role view') || Auth::user()->role->id == 1)<a href="{{ route('users.role.index') }}" class="btn btn-info">Back</a>@endif
                     </span>
                 </div>
                 <div class="card-body">

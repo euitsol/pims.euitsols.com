@@ -14,26 +14,30 @@
         </p>
     </a>
     <ul class="nav nav-treeview">
+        @if(Auth::user()->can('user view') || Auth::user()->role->id == 1)
         <li class="nav-item">
             <a href="{{ route('users.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-minus"></i>
                 <p>View Users</p>
             </a>
         </li>
-        @can('role view')
+        @endif
+        @if(Auth::user()->can('role view') || Auth::user()->role->id == 1)
         <li class="nav-item">
             <a href="{{ route('users.role.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-minus"></i>
                 <p>Users Roles</p>
             </a>
         </li>
-        @endcan
+        @endif
+        @if(Auth::user()->role->id == 1)
         <li class="nav-item">
-            <a href="{{ route('users.permission.add') }}" class="nav-link">
+            <a href="{{ route('users.permission.view') }}" class="nav-link">
                 <i class="nav-icon fas fa-minus"></i>
                 <p>Permission</p>
             </a>
         </li>
+        @endif
     </ul>
 </li>
 
