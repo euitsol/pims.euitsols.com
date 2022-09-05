@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\SupportTeam;
-use App\Models\n_subjectModel;
-use App\Models\departmentModel;
+namespace App\Http\Controllers;
 use App\Helpers\Qs;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Department;
 
-class Nsubjectcontroller extends Controller
+class departmentController extends Controller
 {
 
-    // public function nobir(){
-    //     echo "insert";
-    // }
+    public function __construct() {
+        return $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -20,9 +19,10 @@ class Nsubjectcontroller extends Controller
      */
     public function index()
     {
-        $subject_db = n_subjectModel::all();
-        $department_db = departmentModel::all();
-        return view('pages.support_team.Nsubject.index',compact('subject_db',"department_db"));
+
+        $n['data'] = Department::all();
+        $n['page_name'] = 'Department';
+        return view('page.deparment.show',$n);
     }
 
     /**
@@ -32,7 +32,8 @@ class Nsubjectcontroller extends Controller
      */
     public function create()
     {
-        //
+        $n['page_name'] = 'Department';
+        return view('page.deparment.create',$n);
     }
 
     /**
@@ -43,16 +44,14 @@ class Nsubjectcontroller extends Controller
      */
     public function store(Request $request)
     {
-        
-        $insert = new n_subjectModel; 
 
-        $insert->departments_id =$request->departments_id;
-        $insert->subject_name =$request->name;
+        // echo "store";
+        $insert = new Department;
+        $insert->department_name =$request->name;
         $insert->short_name =$request->short_name;
-        
         $insert->save();
 
-        return Qs::jsonStoreOk();
+        // return redirect()->route('departments.index')->with('insert');
     }
 
     /**
@@ -63,7 +62,7 @@ class Nsubjectcontroller extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -74,12 +73,9 @@ class Nsubjectcontroller extends Controller
      */
     public function edit($id)
     {
-        //
-        $data_update = n_subjectModel::find($id);
-        $department_db = departmentModel::all();
+        $data_update = Department::find($id);
 
-        return view("pages.support_team.Nsubject.edit",compact("data_update","department_db"));
-        // return view("pages.support_team.Nsubject.edit",compact("department_db"));
+        return view("pages.support_team.deparment.edit",compact("data_update"));
     }
 
     /**
@@ -91,14 +87,11 @@ class Nsubjectcontroller extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-      $update = n_subjectModel::find($id);
-    //   $update = departmentModel::find($id);
-      $update->departments_id = $request->departments_id;
-      $update->subject_name = $request->name;
+      $update = Department::find($id);
+      $update->department_name= $request->name;
       $update->short_name = $request->short_name;
       $update->save();
-      return Qs::jsonUpdateOk();
+    //   return redirect()->route("departments.index")->with("updated");
     }
 
     /**
@@ -109,8 +102,7 @@ class Nsubjectcontroller extends Controller
      */
     public function destroy($id)
     {
-        //
-        n_subjectModel::find($id)->delete();
+        Department::find($id)->delete();
         return back()->with('flash_success', __('msg.del_ok'));
     }
 }

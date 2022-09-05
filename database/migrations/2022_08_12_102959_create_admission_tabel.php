@@ -41,7 +41,7 @@ class CreateAdmissionTabel extends Migration
             $table->string('photo');
             $table->string('status')->nullable();
             $table->timestamps();
-            $table->foreign('departments_id')->references('id')->on("departments")->onUpdate('cascade');
+            // $table->foreign('departments_id')->references('id')->on("departments")->onUpdate('cascade');
         });
     }
 
