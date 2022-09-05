@@ -43,16 +43,18 @@
 
 {{-- //Department --}}
 <li class="nav-item">
-    <a href="{{ route('department.index') }}" class="nav-link {{ Request::is('departments') ? 'active' : '' }}">
+    <a href="{{ route('department.index') }}" class="nav-link {{ Request::is('department') ? 'active' : '' }}">
         <i class="nav-icon fas fa-home"></i>
         <p>Department</p>
+    </a>
+</li>
+
 <li class="nav-item">
     <a href="{{ route('exam-name-admission.index') }}" class="nav-link {{ Request::is('eadmission') ? 'active' : '' }}">
         <i class="nav-icon fas fa-home"></i>
         <p>Exam Name For Admission</p>
     </a>
 </li>
-
 
 {{-- Student Managment  --}}
 <li class="nav-item">
