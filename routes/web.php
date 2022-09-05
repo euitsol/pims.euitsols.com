@@ -3,7 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+<<<<<<< Updated upstream
 use App\Http\Controllers\departmentController;
+=======
+use App\Http\Controllers\setup\EAdmissionController;
+use App\Http\Controllers\setup\BoardController;
+>>>>>>> Stashed changes
 use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +47,11 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/permission/view', [UserController::class, 'permission_view'])->name('users.permission.view');
     Route::get('/permission/add', [UserController::class, 'permission_add'])->name('users.permission.add');
     Route::post('/permission/store', [UserController::class, 'permission_store'])->name('users.permission.store');
+
+    // Exam name for admission by sakib
+    Route::resource('exam-name-admission', EAdmissionController::class);
+    // Board by sakib
+    Route::resource('board', BoardController::class);
 
 
     //department Model

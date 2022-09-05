@@ -566,6 +566,11 @@ class ComposerStaticInitfc5b51dbeba274f8e2f0577feb8128f4
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserController.php',
+<<<<<<< Updated upstream
+=======
+        'App\\Http\\Controllers\\setup\\BoardController' => __DIR__ . '/../..' . '/app/Http/Controllers/setup/BoardController.php',
+        'App\\Http\\Controllers\\setup\\EAdmissionController' => __DIR__ . '/../..' . '/app/Http/Controllers/setup/EAdmissionController.php',
+>>>>>>> Stashed changes
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
@@ -576,6 +581,8 @@ class ComposerStaticInitfc5b51dbeba274f8e2f0577feb8128f4
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
+        'App\\Models\\board' => __DIR__ . '/../..' . '/app/Models/board.php',
+        'App\\Models\\eadmission' => __DIR__ . '/../..' . '/app/Models/eadmission.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
