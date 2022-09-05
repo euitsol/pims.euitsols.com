@@ -566,11 +566,8 @@ class ComposerStaticInitfc5b51dbeba274f8e2f0577feb8128f4
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserController.php',
-<<<<<<< Updated upstream
-=======
-        'App\\Http\\Controllers\\setup\\BoardController' => __DIR__ . '/../..' . '/app/Http/Controllers/setup/BoardController.php',
-        'App\\Http\\Controllers\\setup\\EAdmissionController' => __DIR__ . '/../..' . '/app/Http/Controllers/setup/EAdmissionController.php',
->>>>>>> Stashed changes
+        'App\\Http\\Controllers\\BoardController' => __DIR__ . '/../..' . '/app/Http/Controllers/BoardController.php',
+        'App\\Http\\Controllers\\EAdmissionController' => __DIR__ . '/../..' . '/app/Http/Controllers/EAdmissionController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
