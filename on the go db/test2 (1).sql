@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 03, 2022 at 01:53 AM
+-- Generation Time: Sep 03, 2022 at 10:05 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -158,7 +158,7 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`, `deleted_at`, `created_by`, `updated_by`, `deleted_by`) VALUES
-(1, 'Super Admin', 'web', '2022-09-02 17:52:10', NULL, '2022-09-02 17:52:10', NULL, NULL, NULL);
+(1, 'Super Admin', 'web', '2022-09-02 17:58:48', NULL, '2022-09-02 17:58:48', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -198,7 +198,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `role_id`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `deleted_at`, `created_by`, `updated_by`, `deleted_by`) VALUES
-(1, 'Super Admin', 1, 'admin@email.com', NULL, '$2y$10$d7AffLJQ3/JRZkBYfRYXleTVyK/OopvQ95N0rclbtI30oATkAKMHO', NULL, '2022-09-02 17:52:11', NULL, NULL, NULL, NULL, NULL);
+(1, 'Super Admin', 1, 'admin@email.com', NULL, '$2y$10$w0f4PKbQxDA2xm9NrsWTVufEVgq0LDCPerhinBKEvRn7ULN3PZM5S', NULL, '2022-09-02 17:58:49', NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables

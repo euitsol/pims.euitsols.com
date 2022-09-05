@@ -32,7 +32,7 @@
         @endif
         @if(Auth::user()->role->id == 1)
         <li class="nav-item">
-            <a href="{{ route('users.permission.view') }}" class="nav-link">
+            <a href="{{ route('users.permission.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-minus"></i>
                 <p>Permission</p>
             </a>
@@ -46,8 +46,13 @@
     <a href="{{ route('department.index') }}" class="nav-link {{ Request::is('departments') ? 'active' : '' }}">
         <i class="nav-icon fas fa-home"></i>
         <p>Department</p>
+<li class="nav-item">
+    <a href="{{ route('exam-name-admission.index') }}" class="nav-link {{ Request::is('eadmission') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-home"></i>
+        <p>Exam Name For Admission</p>
     </a>
 </li>
+
 
 {{-- Student Managment  --}}
 <li class="nav-item">
