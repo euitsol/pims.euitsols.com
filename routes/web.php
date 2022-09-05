@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,6 +40,13 @@ Route::group(['middleware' => ['auth']], function() {
     //Permission
     Route::get('/permission/add', [UserController::class, 'permission_add'])->name('users.permission.add');
     Route::post('/permission/store', [UserController::class, 'permission_store'])->name('users.permission.store');
+
+    // Exam name for admission by sakib
+    Route::resource('exam-name-admission', EAdmissionController::class);
+    // Board by sakib
+    Route::resource('board', BoardController::class);
+
+
 
 
 });
