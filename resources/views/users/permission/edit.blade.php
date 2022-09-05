@@ -17,7 +17,7 @@
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>Add Permission</h4>
+                        <h4>Edit Permission</h4>
                     </span>
                     <span class="float-right">
                         <a href="{{ route('users.permission.index') }}" class="btn btn-info">Back</a>
@@ -28,12 +28,13 @@
 
                     <div class="row">
                         <div class="col-md-10 m-auto">
-                            <form action="{{ route('users.permission.store') }}" method="POST" class="form-horizontal">
+                            <form action="{{ route('users.permission.edit.store') }}" method="POST" class="form-horizontal">
                             @csrf
+                            <input type="hidden" name="id" value="{{ $permission->id }}">
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="name">Display Name<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" placeholder="Enter Permission Display Name" required>
+                                        <input type="text" class="form-control" id="name" name="name" value="{{ $permission->name }}" placeholder="Enter Permission Display Name" required>
                                         @if ($errors->has('name'))
                                             <span class="text-danger">{{ $errors->first('name') }}</span>
                                         @endif
@@ -42,25 +43,16 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="prefix">Permission Prefix<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="prefix" name="prefix" value="{{ old('prefix') }}" placeholder="Enter Premission Prefix to Group" required>
+                                        <input type="text" class="form-control" id="prefix" name="prefix" value="{{ $permission->prefix }}" placeholder="Enter Premission Prefix to Group" required>
                                         @if ($errors->has('prefix'))
                                             <span class="text-danger">{{ $errors->first('prefix') }}</span>
                                         @endif
                                     </div>
                                 </div>
-                                {{-- <div class="form-group row">
-                                    <label class="col-sm-3" for="guard_name">Guard Name<span class="text-danger">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="guard_name" name="guard_name" value="{{ old('guard_name') }}" placeholder="Enter Permission Guard Name" required>
-                                        @if ($errors->has('guard_name'))
-                                            <span class="text-danger">{{ $errors->first('guard_name') }}</span>
-                                        @endif
-                                    </div>
-                                </div> --}}
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="guard_name"></label>
                                     <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-primary w-100">Submit</button>
+                                        <button type="submit" class="btn btn-primary w-100">Update</button>
                                     </div>
                                 </div>
 

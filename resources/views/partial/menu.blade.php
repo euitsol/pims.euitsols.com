@@ -32,7 +32,7 @@
         @endif
         @if(Auth::user()->role->id == 1)
         <li class="nav-item">
-            <a href="{{ route('users.permission.view') }}" class="nav-link">
+            <a href="{{ route('users.permission.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-minus"></i>
                 <p>Permission</p>
             </a>

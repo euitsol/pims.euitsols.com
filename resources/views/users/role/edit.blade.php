@@ -17,7 +17,7 @@
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>Add Role</h4>
+                        <h4>Edit Role</h4>
                     </span>
                     <span class="float-right">
                         @if(Auth::user()->can('role view') || Auth::user()->role->id == 1)<a href="{{ route('users.role.index') }}" class="btn btn-info">Back</a>@endif
@@ -27,12 +27,13 @@
                     @include('partial.flush-message')
                     <div class="row">
                         <div class="col-md-10 m-auto">
-                            <form action="{{ route('users.role.store') }}" method="POST" class="form-horizontal">
+                            <form action="{{ route('users.role.edit.store') }}" method="POST" class="form-horizontal">
                             @csrf
+                            <input type="hidden" name="id" value="{{ $role->id }}">
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="name">Display Name<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" placeholder="Enter Role Display Name" required>
+                                        <input type="text" class="form-control" id="name" name="name" value="{{ $role->name }}" placeholder="Enter Role Display Name" required>
                                         @if ($errors->has('name'))
                                             <span class="text-danger">{{ $errors->first('name') }}</span>
                                         @endif
@@ -53,8 +54,12 @@
                                     <div class="col-sm-9 row">
                                         @foreach($permissions as $permission)
                                             @foreach($permission as $value)
+                                            @php
+                                                $checked = '';
+                                                if($role->hasPermissionTo($value->name)) $checked = 'checked';
+                                            @endphp
                                             <div class="col-sm-12">
-                                                <label>{{ Form::checkbox('permission[]', $value->id, false, array('class' => 'name')) }} {{ $value->name }}</label><br>
+                                                <label>{{ Form::checkbox('permission[]', $value->id, false, array('class' => 'name', $checked)) }} {{ $value->name }}</label><br>
                                             </div>
                                             @endforeach
                                         @endforeach
@@ -66,7 +71,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="guard_name"></label>
                                     <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-primary w-100">Submit</button>
+                                        <button type="submit" class="btn btn-primary w-100">Update</button>
                                     </div>
                                 </div>
 
