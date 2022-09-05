@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\SupportTeam;
+namespace App\Http\Controllers;
 
 use App\Helpers\Qs;
 use App\Http\Requests\MyClass\ClassCreate;
