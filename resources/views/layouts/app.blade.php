@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
 
-    <title> @yield('title', 'Polytechnic Information Managenment System') - Polytechnic Information Managenment System </title>
+    <title>
+         @yield('title', 'Polytechnic Information Managenment System')
+          - Polytechnic Information Managenment System
+        </title>
 
     <!-- Favicon-->
     <link rel="icon" href="" type="image/png">

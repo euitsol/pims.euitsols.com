@@ -40,7 +40,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="short_name">Short Name<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="short_name" name="short_name" value="{{ old('short_name') }}" placeholder="Enter Short Name" required>
+                                        <input type="text" class="form-control" id="short_name" name="short_name" value="{{ old('short_name') }}" placeholder="Enter Department's Short Name" required>
                                         @if ($errors->has('short_name'))
                                             <span class="text-danger">{{ $errors->first('short_name') }}</span>
                                         @endif

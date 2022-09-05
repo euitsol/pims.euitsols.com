@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\departmentController;
-// use App\Http\Controllers\departmentController;
+use App\Http\Controllers\student\studentAdmitcontroller;
 use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +49,7 @@ Route::group(['middleware' => ['auth']], function() {
 
     // Route::resource('classRoom', 'ClassRoomController');
     Route::resource('department', departmentController::class);
+    Route::resource('student-admit', studentAdmitcontroller::class);
 
 
 });

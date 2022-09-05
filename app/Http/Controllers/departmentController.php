@@ -5,6 +5,7 @@ use App\Helpers\Qs;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Department;
+use Carbon\Carbon;
 
 class departmentController extends Controller
 {
@@ -20,7 +21,7 @@ class departmentController extends Controller
     public function index()
     {
 
-        $n['data'] = Department::all();
+        $n['data'] = Department::where('deleted_by',null);
         $n['page_name'] = 'Department';
         return view('page.deparment.show',$n);
     }
@@ -44,14 +45,19 @@ class departmentController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request,[
+            'name' => 'required|unique:departments,department_name|string',
+            'short_name' => 'required|unique:departments,short_name|string'
+        ]);
 
         // echo "store";
         $insert = new Department;
         $insert->department_name =$request->name;
         $insert->short_name =$request->short_name;
+        // 'created_by' => auth()->user()->id, 'created_at' => Carbon::now()->toDateTimeString()
         $insert->save();
 
-        // return redirect()->route('departments.index')->with('insert');
+        return redirect()->route('department.index')->with('Department Successfully Added');
     }
 
     /**
@@ -75,7 +81,7 @@ class departmentController extends Controller
     {
         $data_update = Department::find($id);
 
-        return view("pages.support_team.deparment.edit",compact("data_update"));
+        return view("page.deparment.edit",compact("data_update"));
     }
 
     /**
