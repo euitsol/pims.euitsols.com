@@ -30,7 +30,7 @@
                             @csrf
                             <h2 class="text-center">Department Choice</h2>
                             <fieldset>
-                                <div class="row">
+                                <div class="row index1">
                                     <div class="col-md-9">
                                         <div class="form-group">
                                             <label for="bg_id">Department Name: </label>
