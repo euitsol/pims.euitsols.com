@@ -40,13 +40,15 @@
         @endif
     </ul>
 </li>
-<<<<<<< Updated upstream
+
 
 <li class="nav-item">
-    <a href="{{ route('departments.index') }}" class="nav-link {{ Request::is('departments') ? 'active' : '' }}">
+    <a href="{{ route('department.index') }}" class="nav-link {{ Request::is('department') ? 'active' : '' }}">
         <i class="nav-icon fas fa-home"></i>
-        <p>Departments</p>
-=======
+        <p>Department</p>
+    </a>
+</li>
+
 <li class="nav-item">
     <a href="{{ route('exam-name-admission.index') }}" class="nav-link {{ Request::is('eadmission') ? 'active' : '' }}">
         <i class="nav-icon fas fa-home"></i>
@@ -58,6 +60,5 @@
     <a href="{{ route('board.index') }}" class="nav-link {{ Request::is('board') ? 'active' : '' }}">
         <i class="nav-icon fas fa-home"></i>
         <p>Board</p>
->>>>>>> Stashed changes
     </a>
 </li>
