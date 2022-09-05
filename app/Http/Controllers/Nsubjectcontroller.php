@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\SupportTeam;
+namespace App\Http\Controllers;
 use App\Models\n_subjectModel;
 use App\Models\departmentModel;
 use App\Helpers\Qs;
