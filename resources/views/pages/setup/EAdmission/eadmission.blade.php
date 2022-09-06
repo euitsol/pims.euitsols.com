@@ -44,10 +44,24 @@
                                             <td>{{ $d->short_name }}</td>
                                             <td>{{ $d->created_at->diffForHumans() }}</td>
                                             <td class="text-middle py-0 align-middle">
-                                                <div class="btn-group btn-group-sm">
-                                                    <a href="{{ route('exam-name-admission.edit',$d->id) }}" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                                                    <a href="{{ route('exam-name-admission.destroy',$d->id) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                                <div class="btn-group">
+                                                    <a href="javascript:void(0)" class="btn btn-info btnView" data-id="{{ $d->id }}"><i class="fas fa-eye"></i></a>
+                                                    {{-- @if(Auth::user()->can('user edit') || Auth::user()->role->id == 1) --}}
+                                                        <a href="{{ route('exam-name-admission.edit',$d->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                                    {{-- @endif --}}
+                                                    {{-- @if(Auth::user()->can('user delete') || Auth::user()->role->id == 1) --}}
+                                                       <form action="{{route('exam-name-admission.destroy',$d->id)}}" method="POST">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button class="btn btn-danger btnDelete @if($d->id == 1) @endif"><i class="fas fa-trash"></i></button>
+                                                       </form>
+                                                    {{-- @endif --}}
                                                 </div>
+                                                {{-- <div class="btn-group btn-group-sm">
+                                                    <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                                                    <a href="{{ route('exam-name-admission.edit',$d->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                                    <a href="{{ route('exam-name-admission.destroy',$d->id) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                                </div> --}}
                                             </td>
                                         </tr>
                                     @empty

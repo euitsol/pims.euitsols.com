@@ -16,6 +16,8 @@ class BoardController extends Controller
     public function index()
     {
         //
+        $n['db_data'] = board::all();
+        return view('pages.setup.Board.board',$n);
     }
 
     /**

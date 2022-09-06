@@ -113,10 +113,20 @@ class EAdmissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
         //
+        $this->check_access('user delete');
+        // if($id != null){
+        //     $user = eadmission::findOrFail($request->id);
+        //     $user->deleted_at = Carbon::now()->toDateTimeString();
+        //     $user->deleted_by = auth()->user()->id;
+        //     $user->save();
+        //     $this->message('success', 'User '.$user->name.' deleted successfully');
+        //     return redirect()->route('users.index');
+        // }
         eadmission::find($id)->delete();
         $this->message('success', 'Exam Deleted Successfullly');
+        return redirect()->route('exam-name-admission.index');
     }
 }
