@@ -47,7 +47,7 @@
                             </fieldset>
                             <h2 class="text-center">Personal data</h2>
                             <fieldset>
-                                <div class="row">
+                                <div class="row index">
 
                                     <div class="col-md-6">
                                         <div class="form-group">
