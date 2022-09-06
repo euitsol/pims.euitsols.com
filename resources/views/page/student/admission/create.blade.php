@@ -20,7 +20,7 @@
                         <h4>Add {{$page_name}}</h4>
                     </span>
                     <span class="float-right">
-                        @if(Auth::user()->can('user view') || Auth::user()->role->id == 1)<a href="{{ route('users.index') }}" class="btn btn-info">Back</a>@endif
+                        {{-- @if(Auth::user()->can('user view') || Auth::user()->role->id == 1)<a href="{{ route('users.index') }}" class="btn btn-info">Back</a>@endif --}}
                     </span>
                 </div>
                 <div class="card-body">
@@ -28,8 +28,8 @@
                         <div class="col-md-10 m-auto">
                             <form action="{{ route('department.store') }}" method="POST" class="form-horizontal">
                             @csrf
-                            <h2 class="text-center">Department Choice</h2>
                             <fieldset>
+                                <h2 class="text-center">Department Choice</h2>
                                 <div class="row index1">
                                     <div class="col-md-9">
                                         <div class="form-group">
@@ -45,8 +45,9 @@
                                     </div>
                                 </div>
                             </fieldset>
-                            <h2 class="text-center">Personal data</h2>
+
                             <fieldset>
+                                <h2 class="text-center">Personal data</h2>
                                 <div class="row index">
 
                                     <div class="col-md-6">
@@ -179,12 +180,10 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </fieldset>
 
-
-                            <h2 class="text-center">Academic Information</h2>
                             <fieldset>
+                                <h2 class="text-center">Academic Information</h2>
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
@@ -296,13 +295,22 @@
                                                 2Mb</span>
                                         </div>
                                     </div>
-                                    <button type="button" class="btn btn-primary">Add Another Academic information</button>
                                 </div>
+                                <div class="col-md-12  text-center">
+                                    <button type="button" class="btn btn-success">Submit</button>
+                                </div>
+                                <button type="button" class="btn btn-primary">Add Another Academic information</button>
                             </fieldset>
-                            <div class="col-md-12  text-right">
-                                <button type="button" class="btn btn-success">Submit</button>
-                            </div>
+
                             </form>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 text-left">
+                                <button type="button" class="previous btn btn-success">Previous</button>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <button type="button" class="next btn btn-success">Next</button>
+                            </div>
                         </div>
                     </div>
 
@@ -318,7 +326,48 @@
 @endpush
 
 @push('page_scripts')
+
 <script>
+    // $(document).ready(function(){
+    //     $('fieldset').each(function(index){
+    //         $('fieldset').eq(index).css('display','show');
+    //         $('fieldset').eq(index+1).css('display','none');
+    //     })
+    // });
+$(document).ready(function(){
+    $('fieldset').eq(0).css('display','show');
+    $('fieldset').eq(1).css('display','none');
+    $('fieldset').eq(2).css('display','none');
+})
+    $( ".next" ).each(function( index ) {
+
+        $('fieldset').eq(0).css('display','show');
+        $('fieldset').eq(1).css('display','none');
+        $('fieldset').eq(2).css('display','none');
+
+        $(this).click(function(){
+
+            if(index==0){
+                $('fieldset').eq(1).css('display','show');
+                $('fieldset').eq(0).css('display','none');
+                $('fieldset').eq(2).css('display','none');
+            }
+            if(index==1){
+                $('fieldset').eq(0).css('display','none');
+                $('fieldset').eq(1).css('display','none');
+                $('fieldset').eq(2).css('display','show');
+            }
+
+                console.log(index);
+            });
+    });
+
+    $( ".previous" ).each(function( index ) {
+        $(this).click(function(){
+        var fieldset = $('fieldset').eq(index).css('display','none');
+        });
+    });
+
 
 </script>
 @endpush
