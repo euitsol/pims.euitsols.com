@@ -25,9 +25,9 @@ return new class extends Migration
         });
 
         Schema::table('eadmissions', function (Blueprint $table) {
-            $table->foreign('created_by', 'user_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('deleted_by', 'user_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('updated_by', 'user_updated')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('created_by', 'eadmissions_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('deleted_by', 'eadmissions_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('updated_by', 'eadmissions_updated')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
