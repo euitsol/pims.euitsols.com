@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\student\studentAdmitcontroller;
+use App\Http\Controllers\departmentController;
 
 use Illuminate\Support\Facades\Auth;
 

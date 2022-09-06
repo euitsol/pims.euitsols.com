@@ -23,7 +23,7 @@ class departmentController extends Controller
 
         $n['data'] = Department::where('deleted_by',null);
         $n['page_name'] = 'Department';
-        return view('page.deparment.show',$n);
+        return view('pages.deparment.show',$n);
     }
 
     /**
@@ -34,7 +34,7 @@ class departmentController extends Controller
     public function create()
     {
         $n['page_name'] = 'Department';
-        return view('page.deparment.create',$n);
+        return view('pages.deparment.create',$n);
     }
 
     /**
@@ -81,7 +81,7 @@ class departmentController extends Controller
     {
         $data_update = Department::find($id);
 
-        return view("page.deparment.edit",compact("data_update"));
+        return view("pages.deparment.edit",compact("data_update"));
     }
 
     /**

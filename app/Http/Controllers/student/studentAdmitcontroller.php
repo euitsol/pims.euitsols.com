@@ -21,7 +21,7 @@ class studentAdmitcontroller extends Controller
         $n['page_name'] = 'Admit Student';
         $n['department'] = Department::where('deleted_by','=',null)->get();
 
-        return view('page.student.admission.create',$n);
+        return view('pages.student.admission.create',$n);
     }
 
     /**
