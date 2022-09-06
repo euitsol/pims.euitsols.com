@@ -1,17 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\student;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\AdmitStudent;
+use App\Models\Department;
+use App\Models\studentInfo;
 
-// Model
-use App\Models\classRoom;
-
-// helper
-use App\Helpers\Qs;
-
-class ClassRoomController extends Controller
+class studentAdmitcontroller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,8 +17,11 @@ class ClassRoomController extends Controller
      */
     public function index()
     {
-        $class_room_no = classRoom::all();
-        return view("pages.support_team.class_room.index",compact("class_room_no"));
+        // $n['data'] = studentInfo::all();
+        $n['page_name'] = 'Admit Student';
+        $n['department'] = Department::where('deleted_by','=',null)->get();
+
+        return view('page.student.admission.create',$n);
     }
 
     /**
@@ -42,10 +42,7 @@ class ClassRoomController extends Controller
      */
     public function store(Request $request)
     {
-        $insert = new classRoom;
-        $insert->class_room_no = $request->class_room_no;
-        $insert->save();
-        return  Qs::jsonStoreOk();
+        //
     }
 
     /**
@@ -67,8 +64,7 @@ class ClassRoomController extends Controller
      */
     public function edit($id)
     {
-      $query_cr_no_edit = classRoom::find($id);
-      return view("pages.support_team.class_room.edit",compact("query_cr_no_edit"));
+        //
     }
 
     /**
@@ -80,10 +76,7 @@ class ClassRoomController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $update = classRoom::find($id);
-        $update->class_room_no = $request->class_room_no;
-        $update->save();
-        return Qs::jsonUpdateOk();
+        //
     }
 
     /**
@@ -94,7 +87,6 @@ class ClassRoomController extends Controller
      */
     public function destroy($id)
     {
-        classRoom::find($id)->delete();
-        return back()->with('flash_success', __('msg.del_ok'));
+        //
     }
 }

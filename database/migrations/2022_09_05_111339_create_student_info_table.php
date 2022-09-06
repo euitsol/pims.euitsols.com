@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStudentInfosTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -15,6 +15,7 @@ class CreateStudentInfosTable extends Migration
     {
         Schema::create('student_infos', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('departments_id');
             $table->string('student_id')->unique()->nullable();
             $table->string('name');
             $table->string('father_name');
@@ -22,23 +23,28 @@ class CreateStudentInfosTable extends Migration
             $table->string('present_address');
             $table->string('parmanent_address');
             $table->string('email')->nullable();
-            $table->string('gender');
             $table->string('phone');
-            $table->string('phone2')->nullable();
+            $table->string('gender');
+            $table->string('gardian_phone')->nullable();
             $table->string('dob');
-            $table->string('Quota')->nullable();
             $table->string('nationality');
-            $table->string('blood_group_name')->nullable();
-            $table->unsignedBigInteger('departments_id');
-            $table->string('registration_no')->nullable();
-            $table->string('cgpa')->nullable();
-            $table->string('reg_card')->nullable();
-            $table->string('marksheet')->nullable();
+            $table->string('bg_name')->nullable();
+            $table->string('quota')->nullable();
             $table->string('photo')->nullable();
-            $table->string('result')->nullable();
             $table->string('session')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();
+
+            $table->timestamp('deleted_at')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->unsignedBigInteger('deleted_by')->nullable();
+        });
+
+        Schema::table('student_infos', function (Blueprint $table) {
+            $table->foreign('created_by', 'student_infos_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('updated_by', 'student_infos_updated')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('deleted_by', 'student_infos_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('departments_id')->references('id')->on("departments")->onUpdate('cascade');
         });
     }
@@ -52,4 +58,4 @@ class CreateStudentInfosTable extends Migration
     {
         Schema::dropIfExists('student_infos');
     }
-}
+};
