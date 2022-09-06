@@ -33,21 +33,43 @@
                                         <th>Name</th>
                                         <th>Short Name</th>
                                         <th>Created At</th>
+                                        <th>Created By</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse($db_data as $key => $d)
+
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $d->name }}</td>
                                             <td>{{ $d->short_name }}</td>
-                                            <td>{{ $d->created_at->diffForHumans() }}</td>
+                                            <td>{{ date('d-m-Y', strtotime($d->created_at)) }}</td>
+                                            <td>{{ $d->created_user->name ?? 'system' }}</td>
                                             <td class="text-middle py-0 align-middle">
-                                                <div class="btn-group btn-group-sm">
-                                                    <a href="{{ route('exam-name-admission.edit',$d->id) }}" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                                                    <a href="{{ route('exam-name-admission.destroy',$d->id) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                                <div class="btn-group">
+                                                    <a href="javascript:void(0)" class="btn btn-info btnView"
+                                                        data-id="{{ $d->id }}"><i class="fas fa-eye"></i></a>
+                                                    {{-- @if (Auth::user()->can('user edit') || Auth::user()->role->id == 1) --}}
+                                                    <a href="{{ route('exam-name-admission.edit', $d->id) }}"
+                                                        class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                                    {{-- @endif --}}
+                                                    {{-- @if (Auth::user()->can('user delete') || Auth::user()->role->id == 1) --}}
+                                                    <form action="{{ route('exam-name-admission.destroy', $d->id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button
+                                                            class="btn btn-danger btnDelete @if ($d->id == 1)  @endif"><i
+                                                                class="fas fa-trash"></i></button>
+                                                    </form>
+                                                    {{-- @endif --}}
                                                 </div>
+                                                {{-- <div class="btn-group btn-group-sm">
+                                                    <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                                                    <a href="{{ route('exam-name-admission.edit',$d->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                                    <a href="{{ route('exam-name-admission.destroy',$d->id) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                                </div> --}}
                                             </td>
                                         </tr>
                                     @empty
@@ -61,7 +83,74 @@
             </div>
         </div>
     </div>
+
+    {{-- Modals --}}
+
+    <div class="modal fade" id="view-modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">View Details <span id="view-header"></span></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body row">
+                    <div class="col-md-10 m-auto">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-striped">
+                                <tbody id="view-tbody">
+                                    <tr>
+                                        <td>Name</td>
+                                        <td>
+                                            <span id="view-name"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Short Name</td>
+                                        <td>
+                                            <span id="view-short-name"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Created At</td>
+                                        <td>
+                                            <span id="view-createdAt"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Created By</td>
+                                        <td>
+                                            <span id="view-createdBy"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Updated At</td>
+                                        <td>
+                                            <span id="view-updatedAt"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Updated By</td>
+                                        <td>
+                                            <span id="view-updatedBy"></span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
+
+
 
 @push('third_party_scripts')
     <script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script>
@@ -90,6 +179,37 @@
                     }, 'pageLength'
                 ]
             });
+
+
+            $('.btnView').click(function() {
+                if ($(this).data('id') != null || $(this).data('id') != '') {
+                    let url = ("{{ route('exam-name-admission.show', ['id']) }}");
+                    let _url = url.replace('id', $(this).data('id'));
+                    $.ajax({
+                        url: _url,
+                        method: "GET",
+                        success: function(response) {
+                            console.log(response);
+
+                            $('#view-name').html(response.name);
+                            $('#view-short-name').html(response.short_name);
+                            $('#view-createdAt').html(response.created_at ? new Date(response
+                                .created_at) : '');
+                            $('#view-createdBy').html(response.created_user ? response
+                                .created_user.name : 'system');
+                            $('#view-updatedAt').html(response.updated_at ? new Date(response
+                                .updated_at) : '');
+                            $('#view-updatedBy').html(response.updated_user ? response
+                                .updated_user.name : '');
+
+                            $('#view-modal').modal('show');
+                        }
+                    });
+                } else {
+                    alart('Something went wrong');
+                }
+            });
+
         });
     </script>
 @endpush

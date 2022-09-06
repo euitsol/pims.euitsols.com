@@ -28,6 +28,7 @@
                         <div class="col-md-10 m-auto">
                             <form action="{{ route('exam-name-admission.update',$db_data->id) }}" method="POST" class="form-horizontal">
                             @csrf
+                            <input type="hidden" name="id" value="{{ $db_data->id }}">
                             @method('PUT')
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="name">Name<span class="text-danger">*</span></label>
