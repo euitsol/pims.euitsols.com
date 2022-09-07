@@ -62,3 +62,11 @@
     </a>
 </li>
 @endif
+@if(Auth::user()->can('session view') || Auth::user()->role->id == 1)
+<li class="nav-item">
+    <a href="{{ route('session.index') }}" class="nav-link {{ Request::is('session') ? 'active' : '' }}">
+        <i class=" nav-icon fas fa-calendar-alt"></i>
+        <p>Session</p>
+    </a>
+</li>
+@endif
