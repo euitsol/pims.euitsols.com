@@ -164,8 +164,6 @@
                     }, 'pageLength'
                 ]
             });
-
-
             $('.btnView').click(function() {
                 if ($(this).data('id') != null || $(this).data('id') != '') {
                     let url = ("{{ route('board.show', ['id']) }}");
