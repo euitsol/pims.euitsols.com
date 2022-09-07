@@ -54,3 +54,11 @@
         <p>Board</p>
     </a>
 </li>
+@if(Auth::user()->can('semester view') || Auth::user()->role->id == 1)
+<li class="nav-item">
+    <a href="{{ route('semester.index') }}" class="nav-link {{ Request::is('semester') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-book-open"></i>
+        <p>Semester</p>
+    </a>
+</li>
+@endif

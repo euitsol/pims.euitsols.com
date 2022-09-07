@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\setup\EAdmissionController;
 use App\Http\Controllers\setup\BoardController;
+use App\Http\Controllers\setup\SemesterController;
 
 
 /*
@@ -72,7 +73,16 @@ Route::group(['middleware' => ['auth']], function() {
     // Board
     Route::resource('board', BoardController::class);
 
-
+    //Semester
+    Route::group(['as' => 'semester.', 'prefix' => 'semester'], function() {
+        Route::get('/view', [SemesterController::class, 'index'])->name('index');
+        Route::get('/add', [SemesterController::class, 'add'])->name('add');
+        Route::post('/add-store', [SemesterController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [SemesterController::class, 'details'])->name('details');
+        Route::get('/edit/{id}', [SemesterController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [SemesterController::class, 'edit_store'])->name('edit.store');
+        Route::get('/delete/{id}', [SemesterController::class, 'delete'])->name('delete');
+    });
 
 
 });
