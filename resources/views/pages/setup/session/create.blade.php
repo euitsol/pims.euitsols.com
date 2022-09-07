@@ -3,7 +3,7 @@
 @section('title', 'Session Management')
 
 @push('third_party_stylesheets')
-
+<link href="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet"/>
 @endpush
 
 @push('page_css')
@@ -33,7 +33,7 @@
                                     <div class="col-sm-9">
                                         <div class="input-group input-daterange" id="year">
                                             <input type="text" class="form-control" id="start" name="start_year" value="{{ old('start_year') }}">
-                                        <div class="input-group-addon">to</div>
+                                        <div class="input-group-append"><div class="input-group-text">to</div></div>
                                             <input type="text" class="form-control" id="end" name="end_year" value="{{ old('end_year') }}">
                                         </div>
                                         @if ($errors->has('start_year'))
@@ -81,9 +81,6 @@
 @endsection
 
 @push('third_party_scripts')
-<link href="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet"/>
-<link href="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
-
 <script src="https://adminlte.io/themes/AdminLTE/bower_components/jquery/dist/jquery.min.js"></script>
 <script src="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <script src="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -91,15 +88,24 @@
 
 @push('page_scripts')
 <script>
-$('#year').each(function () {
-        $(this).datepicker({
-            autoclose: true,
-            format: " yyyy",
-            viewMode: "years",
-            minViewMode: "years"
-        });
-        $(this).datepicker('clearDates');
+
+$(document).ready(function() {
+    $('#start').datepicker({
+        autoclose: true,
+        format: " yyyy",
+        viewMode: "years",
+        minViewMode: "years"
     });
+    $('#start').datepicker('clearDates');
+
+    $('#end').datepicker({
+        autoclose: true,
+        format: " yyyy",
+        viewMode: "years",
+        minViewMode: "years"
+    });
+    $('#end').datepicker('clearDates');
+});
 </script>
 @endpush
 
