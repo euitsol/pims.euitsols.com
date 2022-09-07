@@ -75,7 +75,15 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
     Route::resource('exam-name-admission', EAdmissionController::class);
 
     // Board
-    Route::resource('board', BoardController::class);
+    Route::group(['as' => 'board.', 'prefix' => 'board'], function() {
+        Route::get('/view', [BoardController::class, 'index'])->name('index');
+        Route::get('/add', [BoardController::class, 'create'])->name('create');
+        Route::post('/add-store', [BoardController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [BoardController::class, 'show'])->name('show');
+        Route::get('/edit/{id}', [BoardController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [BoardController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [BoardController::class, 'destroy'])->name('destroy');
+    });
 
     //Semester
     Route::group(['as' => 'semester.', 'prefix' => 'semester'], function() {
