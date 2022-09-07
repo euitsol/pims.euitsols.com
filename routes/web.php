@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\setup\EAdmissionController;
 use App\Http\Controllers\setup\BoardController;
 use App\Http\Controllers\setup\SemesterController;
+use App\Http\Controllers\setup\SessionController;
 
 
 /*
@@ -85,6 +86,17 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::get('/edit/{id}', [SemesterController::class, 'edit'])->name('edit');
         Route::post('/edit-store', [SemesterController::class, 'edit_store'])->name('edit.store');
         Route::get('/delete/{id}', [SemesterController::class, 'delete'])->name('delete');
+    });
+
+    //Session
+    Route::group(['as' => 'session.', 'prefix' => 'session'], function() {
+        Route::get('/view', [SessionController::class, 'index'])->name('index');
+        Route::get('/add', [SessionController::class, 'add'])->name('add');
+        Route::post('/add-store', [SessionController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [SessionController::class, 'details'])->name('details');
+        Route::get('/edit/{id}', [SessionController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [SessionController::class, 'edit_store'])->name('edit.store');
+        Route::get('/delete/{id}', [SessionController::class, 'delete'])->name('delete');
     });
 
 
