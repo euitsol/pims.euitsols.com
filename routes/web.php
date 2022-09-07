@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\setup\EAdmissionController;
 use App\Http\Controllers\setup\BoardController;
+use App\Http\Controllers\setup\SemesterController;
 
 
 /*
@@ -24,11 +25,14 @@ Route::get('/clear-cache', function(){
     return "Cache is cleared";
 });
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
-Route::group(['middleware' => ['auth']], function() {
+Route::group(['middleware' => ['auth', 'checkstatus']], function() {
+
+    //Dashboard
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+
     Route::group(['as' => 'users.', 'prefix' => 'users'], function() {
 
         // Users management

@@ -25,6 +25,7 @@
     <!-- /.login-box-body -->
     <div class="card">
         <div class="card-body login-card-body">
+            @include('partial.flush-message')
             <p class="login-box-msg">Sign in to start your session</p>
 
             <form method="post" action="{{ url('/login') }}">

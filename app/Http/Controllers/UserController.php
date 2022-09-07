@@ -101,7 +101,7 @@ class UserController extends Controller
     public function delete($id=null){
         $this->check_access('user delete');
         if($id != null){
-            $user = User::findOrFail($request->id);
+            $user = User::findOrFail($id);
             $user->deleted_at = Carbon::now()->toDateTimeString();
             $user->deleted_by = auth()->user()->id;
             $user->save();
