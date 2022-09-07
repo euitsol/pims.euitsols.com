@@ -28,23 +28,13 @@
                         <div class="col-md-10 m-auto">
                             <form action="{{ route('board.update',$db_data->id) }}" method="POST" class="form-horizontal">
                             @csrf
-                            @method('PUT')
+                            <input type="hidden" name="id" value="{{ $db_data->id }}">
                                 <div class="form-group row">
-                                    <label class="col-sm-3" for="name">Name<span class="text-danger">*</span></label>
+                                    <label class="col-sm-3" for="name">Board Name<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" id="name" name="name" value="{{ $db_data->name }}" placeholder="Enter User Name" required>
                                         @if ($errors->has('name'))
                                             <span class="text-danger">{{ $errors->first('name') }}</span>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-sm-3" for="name">Short Name<span class="text-danger">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="short_name" name="short_name" value="{{ $db_data->short_name }}" placeholder="Enter Short Name" required>
-                                        @if ($errors->has('short_name'))
-                                            <span class="text-danger">{{ $errors->first('short_name') }}</span>
                                         @endif
                                     </div>
                                 </div>
