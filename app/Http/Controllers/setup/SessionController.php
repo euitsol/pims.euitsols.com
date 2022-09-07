@@ -28,15 +28,15 @@ class SessionController extends Controller
 
     public function store(Request $request){
         $this->validate($request, [
-            'start' => 'required|date_format:Y',
-            'end' => 'required|date_format:Y',
+            'start_year' => 'required|unique:sessions,start|date_format:Y',
+            'end_year' => 'required|unique:sessions,end|date_format:Y',
             // 'name' => 'required|unique:sessions,name|string|max:255',
             'details' => 'nullable||max:60000',
         ]);
 
         $session = new Session;
-        $session->start = $request->start;
-        $session->end = $request->end;
+        $session->start = $request->start_year;
+        $session->end = $request->end_year;
         // $session->name = $request->name;
         $session->details = $request->details;
         $session->created_by = auth()->user()->id;
@@ -64,25 +64,26 @@ class SessionController extends Controller
 
     public function edit_store(Request $request){
         $this->validate($request, [
-            'start' => 'required|date_format:Y',
-            'end' => 'required|date_format:Y',
             'id' => 'required|exists:sessions,id',
-            'details' => 'nullable||max:60000',
+            'details' => 'nullable|max:60000',
         ]);
         $session = Session::findOrFail($request->id);
-        // if($session->name != $request->name){
-        //     $this->validate($request, ['name' => 'required|unique:sessions,name|string|max:255']);
-        // }
+        if($session->start != $request->start_year){
+            $this->validate($request, ['start_year' => 'required|unique:sessions,start|date_format:Y']);
+        }
+        if($session->end != $request->end_year){
+            $this->validate($request, ['end_year' => 'required|unique:sessions,end|date_format:Y']);
+        }
 
-        $session->start = $request->start;
-        $session->end = $request->end;
+        $session->start = $request->start_year;
+        $session->end = $request->end_year;
         // $session->name = $request->name;
         $session->details = $request->details;
         $session->updated_at = Carbon::now()->toDateTimeString();
         $session->updated_by = auth()->user()->id;
         $session->save();
 
-        $this->message('success', 'Session '.$session->start.' - '.$session->start.' updated successfully');
+        $this->message('success', 'Session '.$session->start.' - '.$session->end.' updated successfully');
         return redirect()->route('session.index');
     }
 
@@ -93,7 +94,7 @@ class SessionController extends Controller
             $session->deleted_at = Carbon::now()->toDateTimeString();
             $session->deleted_by = auth()->user()->id;
             $session->save();
-            $this->message('success', 'Session '.$session->start.' - '.$session->start.' deleted successfully');
+            $this->message('success', 'Session '.$session->start.' - '.$session->end.' deleted successfully');
             return redirect()->route('session.index');
         }
     }

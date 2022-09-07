@@ -30,18 +30,18 @@
                             @csrf
                             <input type="hidden" name="id" value="{{ $session->id }}">
                                 <div class="form-group row">
-                                    <label class="col-sm-3" for="start">Year<span class="text-danger">*</span></label>
+                                    <label class="col-sm-3" for="start_year">Year<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
                                         <div class="input-group input-daterange" id="year">
-                                            <input type="text" class="form-control" id="start" name="start" value="{{ $session->start }}">
+                                            <input type="text" class="form-control" id="start" name="start_year" value="{{ $session->start }}">
                                         <div class="input-group-addon">to</div>
-                                            <input type="text" class="form-control" id="end" name="end" value="{{ $session->end }}">
+                                            <input type="text" class="form-control" id="end" name="end_year" value="{{ $session->end }}">
                                         </div>
-                                        @if ($errors->has('start'))
-                                            <span class="text-danger">{{ $errors->first('start') }}</span>
+                                        @if ($errors->has('start_year'))
+                                            <span class="text-danger">{{ $errors->first('start_year') }}</span>
                                         @endif
-                                        @if ($errors->has('end'))
-                                            <span class="text-danger">{{ $errors->first('end') }}</span>
+                                        @if ($errors->has('end_year'))
+                                            <span class="text-danger">{{ $errors->first('end_year') }}</span>
                                         @endif
                                     </div>
                                 </div>
