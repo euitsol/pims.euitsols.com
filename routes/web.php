@@ -8,6 +8,7 @@ use App\Http\Controllers\setup\EAdmissionController;
 use App\Http\Controllers\setup\BoardController;
 use App\Http\Controllers\setup\SemesterController;
 use App\Http\Controllers\setup\SessionController;
+use App\Http\Controllers\setup\GroupController;
 
 
 /*
@@ -106,6 +107,18 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::post('/edit-store', [SessionController::class, 'edit_store'])->name('edit.store');
         Route::get('/delete/{id}', [SessionController::class, 'delete'])->name('delete');
     });
+
+    // Group
+    Route::group(['as' => 'group.', 'prefix' => 'group'], function() {
+        Route::get('/view', [GroupController::class, 'index'])->name('index');
+        Route::get('/add', [GroupController::class, 'create'])->name('create');
+        Route::post('/add-store', [GroupController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [GroupController::class, 'show'])->name('show');
+        Route::get('/edit/{id}', [GroupController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [GroupController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [GroupController::class, 'destroy'])->name('destroy');
+    });
+
 
 
 });
