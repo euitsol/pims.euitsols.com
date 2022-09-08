@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'User Management - User')
+@section('title', 'Group Management')
 
 @push('third_party_stylesheets')
 
@@ -57,9 +57,6 @@
 </div>
 @endsection
 
-@push('third_party_scripts')
-<script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script>
-@endpush
 
 @push('page_scripts')
 <script>

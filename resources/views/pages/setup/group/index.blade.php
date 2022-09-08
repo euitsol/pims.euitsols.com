@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Board Management')
+@section('title', 'Group Management')
 
 @push('third_party_stylesheets')
     <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
@@ -148,7 +148,7 @@
                 dom: 'Bfrtip',
                 buttons: [{
                         extend: 'pdfHtml5',
-                        title: 'User Management',
+                        title: 'Group Management',
                         download: 'open',
                         orientation: 'potrait',
                         pagesize: 'LETTER',

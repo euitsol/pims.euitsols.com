@@ -11,6 +11,11 @@ use App\Models\Group;
 class GroupController extends Controller
 {
     //
+
+    public function __construct() {
+        return $this->middleware('auth');
+    }
+
     public function index()
     {
         $n['db_data'] = Group::where('deleted_at', null)->latest()->get();
@@ -77,11 +82,11 @@ class GroupController extends Controller
     public function destroy($id)
     {
         if($id != null){
-            $user = Group::findOrFail($id);
-            $user->deleted_at = Carbon::now()->toDateTimeString();
-            $user->deleted_by = auth()->user()->id;
-            $user->save();
-            $this->message('success', 'Group '.$user->name.' deleted successfully');
+            $group = Group::findOrFail($id);
+            $group->deleted_at = Carbon::now()->toDateTimeString();
+            $group->deleted_by = auth()->user()->id;
+            $group->save();
+            $this->message('success', 'Group '.$group->name.' deleted successfully');
             return redirect()->route('group.index');
         }
 
