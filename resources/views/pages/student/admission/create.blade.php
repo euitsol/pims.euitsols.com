@@ -3,6 +3,7 @@
 @section('title', 'Admit Student')
 
 @push('third_party_stylesheets')
+<link rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
 @endpush
 
 @push('page_css')
@@ -17,6 +18,24 @@
             line-height: 30px;
             margin: 0px 2px;
             opacity: 0.25;
+        }
+        .floating-cart {
+            position: fixed;
+            width: 55px;
+            height: 55px;
+            bottom: 24%;
+            right: 11.3%;
+            background-color: blue;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            cursor: pointer;
+            z-index: 1;
+            transition: 2s;
+        }
+        .floating-cart i {
+            line-height: 3.2rem;
+            font-size: 23px;
         }
     </style>
 @endpush
@@ -52,10 +71,13 @@
                                             <div class="row index1">
                                                 <div class="col-md-9">
                                                     <div class="form-group">
-                                                        <label for="Departments_id">Department Name: </label>
+                                                        <label for="departments_id">Department Name: </label>
                                                         <select class="select form-control"
-                                                            name="Departments_id">
+                                                            name="departments_id">
                                                             <option value="">Select Department</option>
+                                                            @foreach ($department as $n)
+                                                            <option value="{{$n->id}}">{{$n->department_name}}"</option>
+                                                            @endforeach
 
                                                         </select>
                                                     </div>
@@ -137,6 +159,14 @@
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
+                                                        <label for="gardian_phone">Guardian Phone:</label>
+                                                        <input value="{{ old('gardian_phone') }}" type="text"
+                                                            name="gardian_phone" class="form-control" placeholder="Guardian Phone Number">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
                                                         <label for="gender">Gender: <span
                                                                 class="text-danger">*</span></label>
                                                         <select class="select form-control"  name="gender"
@@ -150,18 +180,21 @@
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label for="gardian_phone">Guardian Phone:</label>
-                                                        <input value="{{ old('gardian_phone') }}" type="text"
-                                                            name="gardian_phone" class="form-control" placeholder="Guardian Phone Number">
+                                                        <label>Date of Birth:</label>
+                                                        <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                                            <input type="text" name="dob" class="form-control datetimepicker-input" data-target="#reservationdate">
+                                                            <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                                                <div class="input-group-text">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
+                                                    {{-- <div class="form-group">
                                                         <label for="dob">Date of Birth: <span class="text-danger">*</span></label>
-                                                        <input name="dob" value="{{ old('dob') }}" required
-                                                            type="date" class="form-control date-pick">
-                                                    </div>
+                                                        <input  name="dob" value="dd-mm-yy" required
+                                                            type="text" class="date form-control date-pick">
+                                                    </div> --}}
                                                 </div>
 
                                                 <div class="col-md-4">
@@ -178,7 +211,9 @@
                                                         <label for="bg_id">Blood Group: </label>
                                                         <select class="select form-control"  name="bg_id">
                                                             <option value="">Select Blood Group</option>
-
+                                                            {{-- @foreach ($bg as $n)
+                                                            <option value="{{$n->id}}">{{$n->department_name}}"</option>
+                                                            @endforeach --}}
                                                         </select>
                                                     </div>
                                                 </div>
@@ -191,7 +226,18 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <div class="form-group">
+                                                    <label for="photo">Photo: <span
+                                                        class="text-danger">*</span></label>
+                                                    <div class="input-group">
+                                                        <div class="custom-file">
+                                                            <input name="photo" type="file" class="custom-file-input" id="exampleInputFile">
+                                                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                                        </div>
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">Upload</span>
+                                                        </div>
+                                                    </div>
+                                                    {{-- <div class="form-group">
                                                         <label for="photo">Photo: <span
                                                                 class="text-danger">*</span></label>
                                                         <input value="{{ old('photo') }}" required
@@ -200,7 +246,7 @@
                                                         <span class="form-text text-muted">Accepted Images: jpeg, png. Max
                                                             file size
                                                             2Mb</span>
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -244,8 +290,11 @@
                                                         <label for="exam_name">Exam Name:
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <select  name="exams[0][exam_name]" id="exam_name" required class="form-control">
+                                                        <select  name="exams[0][exam_id]" id="exam_id" required class="form-control">
                                                             <option value="">Select Your Exam Name</option>
+                                                            @foreach ($exam_name as $n)
+                                                            <option value="{{$n->id}}">{{$n->name}}"</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
@@ -263,10 +312,9 @@
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label for="division_id">Division: <span
-                                                                class="text-danger">*</span></label>
+                                                        <label for="division">Division:</label>
                                                         <select  name="division"
-                                                            id="division_id" name="exams[0][division_id]"
+                                                            id="division" name="exams[0][division]"
                                                             class="form-control" required>
                                                             <option value="">Select Your Division</option>
                                                             <option value="Science">Science</option>
@@ -284,15 +332,9 @@
                                                             id="board_id" name="exams[0][board_id]"
                                                             class="form-control" required>
                                                             <option value="">Select Education Board</option>
-
-                                                            {{-- <option value="Dhaka">Dhaka</option>
-                                                            <option value="Jeshore">Jeshore</option>
-                                                            <option value="Comilla">Comilla</option>
-                                                            <option value="Barisal">Barisal</option>
-                                                            <option value="Sylhet">Sylhet</option>
-                                                            <option value="Rajshahi">Rajshahi</option>
-                                                            <option value="Chittagong">Chittagong</option>
-                                                            <option value="Madrasah Education Board">Madrasah Education Board</option> --}}
+                                                            @foreach ($board as $n)
+                                                            <option value="{{$n->id}}">{{$n->name}}"</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
@@ -322,34 +364,65 @@
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label for="reg_card" class="d-block">Upload Registration Card: <span
+                                                        <label for="reg_card">Upload Registration Card: <span
+                                                            class="text-danger">*</span></label>
+                                                        <div class="input-group">
+                                                            <div class="custom-file">
+                                                                <input name="exams[0][reg_card]" type="file" class="custom-file-input" >
+                                                                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                                            </div>
+                                                            <div class="input-group-append">
+                                                                <span class="input-group-text">Upload</span>
+                                                            </div>
+                                                        </div>
+                                                        {{-- <label for="reg_card" class="d-block">Upload Registration Card: <span
                                                                 class="text-danger">*</span></label>
-                                                        <input type="file" name="exams[0][reg_card]"  class="form-input-styled" accept=".pdf,.png,.jpg" value="{{ old('reg_card') }}" required>
+                                                        <input type="file"   class="form-input-styled" accept=".pdf,.png,.jpg" value="{{ old('reg_card') }}" required>
                                                         <span class="form-text text-muted">Accepted Images: jpeg, png. Max
                                                             file size
-                                                            2Mb</span>
+                                                            2Mb</span> --}}
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label for="marksheet" class="d-block">Marksheet: <span
+                                                        <label for="marksheet">Marksheet: <span
+                                                            class="text-danger">*</span></label>
+                                                        <div class="input-group">
+                                                            <div class="custom-file">
+                                                                <input name="exams[0][marksheet]" type="file" class="custom-file-input" accept=".pdf,.png,.jpg">
+                                                                <label class="custom-file-label" for="marksheet">Choose file</label>
+                                                            </div>
+                                                            <div class="input-group-append">
+                                                                <span class="input-group-text">Upload</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                        {{-- <label for="marksheet" class="d-block">Marksheet: <span
                                                                 class="text-danger">*</span></label>
                                                         <input type="file" name="exams[0][marksheet]" class="form-input-styled" accept=".pdf,.png,.jpg" value="{{ old('marksheet') }}" required>
                                                         <span class="form-text text-muted">Accepted Images: jpeg, png. Max
                                                             file size
-                                                            2Mb</span>
-                                                    </div>
+                                                            2Mb</span> --}}
+
                                                 </div>
                                             </div>
+
+                                            {{-- Append External exam  --}}
                                             <div id="append_exam">
 
                                             </div>
 
-                                            <div class="col-md-12  text-right mb-2">
+                                            {{-- Add More button  --}}
+                                            <div id="add_more" class="floating-cart">
+                                                <i class="fas fa-plus"></i>
+                                                <div class="cart-count">
+                                                </div>
+                                            </div>
+                                            {{-- <div class="col-md-12  text-right mb-2">
                                                 <button id="add_more" type="button" data-count="1"
                                                     class="btn btn-primary">Add More</button>
-                                            </div>
+                                            </div> --}}
 
                                             {{-- Previous and Next button --}}
                                             <div class="row">
@@ -363,6 +436,7 @@
                                             </div>
                                         </fieldset>
                                     </div>
+
                                 </form>
                             </div>
                         </div>
@@ -372,14 +446,23 @@
             </div>
         </div>
     </div>
+
 @endsection
 
 @push('third_party_scripts')
-    <script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script> --}}
+    <script src="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 @endpush
 
 @push('page_scripts')
     <script>
+        $('.date').datepicker({
+            // autoclose: true,
+            // format: " yyyy",
+            // viewMode: "years",
+            // minViewMode: "years"
+        });
+
         $('.tab').css('display', 'none');
         $('#tab-1').css('display', 'block');
         $('#step-1').css('opacity', '1');
@@ -445,9 +528,13 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="exam_name">Exam Name: <span class="text-danger">*</span></label>
-                                <select required name="exams[${count - 1}][exam_name]" class="form-control">
+                                <label for="exam_id">Exam Name: <span class="text-danger">*</span></label>
+                                <select required name="exams[${count - 1}][exam_id]" class="form-control">
                                     <option value="">Select Your Exam Name</option>
+                                    @foreach ($exam_name as $n)
+                                        <option
+                                        value="{{$n->id}}">{{$n->name}}"</option>
+                                        @endforeach
                                 </select>
                             </div>
                         </div>
@@ -473,17 +560,14 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="board">Board: <span class="text-danger">*</span></label>
-                                <select name="exams[${count - 1}][board]" required class="form-control">
+                                <label for="board_id">Board: <span class="text-danger">*</span></label>
+                                <select name="exams[${count - 1}][board_id]" required class="form-control">
                                     <option value="">Select Education Board</option>
-                                    {{-- <option value="Dhaka">Dhaka</option>
-                                    <option value="Jeshore">Jeshore</option>
-                                    <option value="Comilla">Comilla</option>
-                                    <option value="Barisal">Barisal</option>
-                                    <option value="Sylhet">Sylhet</option>
-                                    <option value="Rajshahi">Rajshahi</option>
-                                    <option value="Chittagong">Chittagong</option>
-                                    <option value="Madrasah Education Board">Madrasah Education Board</option> --}}
+                                    @foreach ($board as $n)
+                                        <option value="{{$n->id}}">
+                                            {{$n->name}}"
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -507,18 +591,33 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="d-block">Upload Registration Card: <span class="text-danger">*</span></label>
-                                <input name="exams[${count - 1}][reg_card]"  value="{{ old('reg_card') }}" required accept=".pdf,.png,.jpg" type="file"  class="form-input-styled">
-                                <span class="form-text text-muted">Accepted Images: jpeg, png. Max file size
-                                    2Mb</span>
+                                <label for="reg_card">Upload Registration Card: <span
+                                    class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input name="exams[0][reg_card]" type="file" class="custom-file-input" >
+                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">Upload</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="d-block">Marksheet: <span class="text-danger">*</span></label>
-                                <input name="exams[${count - 1}][marksheet]"  value="{{ old('marksheet') }}" required accept=".pdf,.png,.jpg" type="file" class="form-input-styled">
-                                <span class="form-text text-muted">Accepted Images: jpeg, png. Max file size
-                                    2Mb</span>
+                                <label for="marksheet">Marksheet: <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input name="exams[0][marksheet]" type="file" class="custom-file-input" accept=".pdf,.png,.jpg">
+                                        <label class="custom-file-label" for="marksheet">Choose file</label>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">Upload</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

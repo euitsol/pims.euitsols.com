@@ -15,13 +15,12 @@ return new class extends Migration
     {
         Schema::create('academic_infos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('departments_id');
-            $table->unsignedBigInteger('exam_name');
-            $table->unsignedBigInteger('passing_year');
-            $table->string('division');
-            $table->unsignedBigInteger('board');
+            $table->unsignedBigInteger('exam_id');
+            $table->string('passing_year');
+            $table->string('division')->nullable();
+            $table->unsignedBigInteger('board_id');
             $table->integer('roll');
-            $table->integer('registration_no');
+            $table->integer('reg_no');
             $table->string('gpa');
             $table->string('reg_card');
             $table->string('marksheet');
@@ -34,6 +33,8 @@ return new class extends Migration
         });
 
         Schema::table('academic_infos', function (Blueprint $table) {
+            $table->foreign('exam_id', 'academic_infos_exam')->references('id')->on('eadmissions')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('board_id', 'academic_infos_board')->references('id')->on('boards')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('created_by', 'academic_infos_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('updated_by', 'academic_infos_updated')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('deleted_by', 'academic_infos_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
