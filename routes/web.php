@@ -5,7 +5,13 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\student\studentAdmitcontroller;
 use App\Http\Controllers\departmentController;
+
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\setup\EAdmissionController;
+use App\Http\Controllers\setup\BoardController;
+use App\Http\Controllers\setup\SemesterController;
+use App\Http\Controllers\setup\SessionController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -23,11 +29,14 @@ Route::get('/clear-cache', function(){
     return "Cache is cleared";
 });
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
-Route::group(['middleware' => ['auth']], function() {
+Route::group(['middleware' => ['auth', 'checkstatus']], function() {
+
+    //Dashboard
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+
     Route::group(['as' => 'users.', 'prefix' => 'users'], function() {
 
         // Users management
@@ -69,9 +78,37 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('exam-name-admission', EAdmissionController::class);
 
     // Board
-    Route::resource('board', BoardController::class);
+    Route::group(['as' => 'board.', 'prefix' => 'board'], function() {
+        Route::get('/view', [BoardController::class, 'index'])->name('index');
+        Route::get('/add', [BoardController::class, 'create'])->name('create');
+        Route::post('/add-store', [BoardController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [BoardController::class, 'show'])->name('show');
+        Route::get('/edit/{id}', [BoardController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [BoardController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [BoardController::class, 'destroy'])->name('destroy');
+    });
 
+    //Semester
+    Route::group(['as' => 'semester.', 'prefix' => 'semester'], function() {
+        Route::get('/view', [SemesterController::class, 'index'])->name('index');
+        Route::get('/add', [SemesterController::class, 'add'])->name('add');
+        Route::post('/add-store', [SemesterController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [SemesterController::class, 'details'])->name('details');
+        Route::get('/edit/{id}', [SemesterController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [SemesterController::class, 'edit_store'])->name('edit.store');
+        Route::get('/delete/{id}', [SemesterController::class, 'delete'])->name('delete');
+    });
 
+    //Session
+    Route::group(['as' => 'session.', 'prefix' => 'session'], function() {
+        Route::get('/view', [SessionController::class, 'index'])->name('index');
+        Route::get('/add', [SessionController::class, 'add'])->name('add');
+        Route::post('/add-store', [SessionController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [SessionController::class, 'details'])->name('details');
+        Route::get('/edit/{id}', [SessionController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [SessionController::class, 'edit_store'])->name('edit.store');
+        Route::get('/delete/{id}', [SessionController::class, 'delete'])->name('delete');
+    });
 
 
 });

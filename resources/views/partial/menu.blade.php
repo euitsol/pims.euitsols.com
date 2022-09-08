@@ -48,6 +48,7 @@
         <p>Department</p>
     </a>
 </li>
+
 {{-- Student Mangement --}}
 <li class="nav-item">
     <a href="#" class="nav-link">
@@ -77,10 +78,11 @@
     </ul>
 </li>
 
+
 <li class="nav-item">
     <a href="{{ route('exam-name-admission.index') }}" class="nav-link {{ Request::is('eadmission') ? 'active' : '' }}">
         <i class="nav-icon fas fa-home"></i>
-        <p>Exam Name For Admission</p>
+        <p>Exam Name</p>
     </a>
 </li>
 
@@ -90,3 +92,19 @@
         <p>Board</p>
     </a>
 </li>
+@if(Auth::user()->can('semester view') || Auth::user()->role->id == 1)
+<li class="nav-item">
+    <a href="{{ route('semester.index') }}" class="nav-link {{ Request::is('semester') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-book-open"></i>
+        <p>Semester</p>
+    </a>
+</li>
+@endif
+@if(Auth::user()->can('session view') || Auth::user()->role->id == 1)
+<li class="nav-item">
+    <a href="{{ route('session.index') }}" class="nav-link {{ Request::is('session') ? 'active' : '' }}">
+        <i class=" nav-icon fas fa-calendar-alt"></i>
+        <p>Session</p>
+    </a>
+</li>
+@endif

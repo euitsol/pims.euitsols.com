@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'User Management - User')
+@section('title', 'Semester Management')
 
 @push('third_party_stylesheets')
 
@@ -17,43 +17,39 @@
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>Update Exam</h4>
+                        <h4>Add Semester</h4>
                     </span>
                     <span class="float-right">
-                        <a href="{{ route('exam-name-admission.index') }}" class="btn btn-info">Back</a>
+                        @if(Auth::user()->can('semester view') || Auth::user()->role->id == 1)<a href="{{ route('semester.index') }}" class="btn btn-info">Back</a>@endif
                     </span>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-10 m-auto">
-                            <form action="{{ route('exam-name-admission.update',$db_data->id) }}" method="POST" class="form-horizontal">
+                            <form action="{{ route('semester.store') }}" method="POST" class="form-horizontal">
                             @csrf
-                            <input type="hidden" name="id" value="{{ $db_data->id }}">
-                            @method('PUT')
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="name">Name<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="name" name="name" value="{{ $db_data->name }}" placeholder="Enter User Name" required>
+                                        <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" placeholder="Enter Semester Name" required>
                                         @if ($errors->has('name'))
                                             <span class="text-danger">{{ $errors->first('name') }}</span>
                                         @endif
                                     </div>
                                 </div>
-
                                 <div class="form-group row">
-                                    <label class="col-sm-3" for="name">Short Name<span class="text-danger">*</span></label>
+                                    <label class="col-sm-3" for="details">Details</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="short_name" name="short_name" value="{{ $db_data->short_name }}" placeholder="Enter Short Name" required>
-                                        @if ($errors->has('short_name'))
-                                            <span class="text-danger">{{ $errors->first('short_name') }}</span>
+                                        <textarea class="form-control" name="details" id="details" value="{{ old('details') }}" rows="5" placeholder="Enter Semester Details"></textarea>
+                                        @if ($errors->has('details'))
+                                            <span class="text-danger">{{ $errors->first('details') }}</span>
                                         @endif
                                     </div>
                                 </div>
-
                                 <div class="form-group row">
-                                    <label class="col-sm-3" for="guard_name"></label>
+                                    <label class="col-sm-3" for="create"></label>
                                     <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-primary w-100">Update</button>
+                                        <button type="submit" class="btn btn-primary w-100">Create</button>
                                     </div>
                                 </div>
 
@@ -77,3 +73,4 @@
 
 </script>
 @endpush
+

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\setup;
 
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use App\Models\board;
 
 class BoardController extends Controller
@@ -15,7 +17,8 @@ class BoardController extends Controller
      */
     public function index()
     {
-        //
+        $n['db_data'] = board::where('deleted_at', null)->latest()->get();
+        return view('pages.setup.board.index',$n);
     }
 
     /**
@@ -25,7 +28,7 @@ class BoardController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.setup.board.create');
     }
 
     /**
@@ -36,7 +39,18 @@ class BoardController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|unique:boards,name|string|max:255',
+        ]);
+
+        $insert = new board;
+        $insert->name = $request->name;
+        $insert->created_at = Carbon::now()->toDateTimeString();
+        $insert->created_by = auth()->user()->id;
+        $insert->save();
+
+        $this->message('success', 'Board Created Successfullly');
+        return redirect()->route('board.index');
     }
 
     /**
@@ -45,9 +59,12 @@ class BoardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id=null)
     {
-        //
+        if($id!=null){
+            $board = board::with(['created_user', 'updated_user', 'deleted_user'])->where('deleted_at', null)->where('id', $id)->first();
+            return Response::json($board, 200);
+        }
     }
 
     /**
@@ -58,7 +75,10 @@ class BoardController extends Controller
      */
     public function edit($id)
     {
-        //
+        $n['db_data'] = board::findOrFail($id);
+        return view('pages.setup.board.edit',$n);
+
+
     }
 
     /**
@@ -68,9 +88,24 @@ class BoardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $this->validate($request, [
+            'id' => 'required|exists:boards,id',
+        ]);
+
+        $update = board::findOrFail($request->id);
+        if($update->name != $request->name){
+            $this->validate($request, ['name' => 'required|unique:boards,name|string|max:255']);
+        }
+
+        $update->name = $request->name;
+        $update->updated_at = Carbon::now()->toDateTimeString();
+        $update->updated_by = auth()->user()->id;
+        $update->save();
+
+        $this->message('success', 'Board Updated Successfully');
+        return redirect()->route('board.index');
     }
 
     /**
@@ -81,6 +116,15 @@ class BoardController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if($id != null){
+            $user = board::findOrFail($id);
+            $user->deleted_at = Carbon::now()->toDateTimeString();
+            $user->deleted_by = auth()->user()->id;
+            $user->save();
+            $this->message('success', 'Board '.$user->name.' deleted successfully');
+            return redirect()->route('board.index');
+        }
+
     }
+
 }

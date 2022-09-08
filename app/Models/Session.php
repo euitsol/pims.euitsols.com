@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class eadmission extends Model
+class Session extends Model
 {
     use HasFactory;
+
     public function created_user(){
         return $this->belongsTo(User::class, 'created_by', 'id');
     }

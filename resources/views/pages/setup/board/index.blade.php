@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'User Management')
+@section('title', 'Board Management')
 
 @push('third_party_stylesheets')
     <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
@@ -16,10 +16,10 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="float-left">
-                            <h4>View Exams</h4>
+                            <h4>View Boards</h4>
                         </span>
                         <span class="float-right">
-                            <a href="{{ route('exam-name-admission.create') }}" class="btn btn-info">Add new Exam</a>
+                            <a href="{{ route('board.create') }}" class="btn btn-info">Add new Board</a>
                         </span>
                     </div>
                     <div class="card-body">
@@ -31,7 +31,6 @@
                                     <tr>
                                         <th>SL</th>
                                         <th>Name</th>
-                                        <th>Short Name</th>
                                         <th>Created At</th>
                                         <th>Created By</th>
                                         <th>Action</th>
@@ -43,7 +42,6 @@
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $d->name }}</td>
-                                            <td>{{ $d->short_name }}</td>
                                             <td>{{ date('d-m-Y', strtotime($d->created_at)) }}</td>
                                             <td>{{ $d->created_user->name ?? 'system' }}</td>
                                             <td class="text-middle py-0 align-middle">
@@ -51,18 +49,11 @@
                                                     <a href="javascript:void(0)" class="btn btn-info btnView"
                                                         data-id="{{ $d->id }}"><i class="fas fa-eye"></i></a>
                                                     {{-- @if (Auth::user()->can('user edit') || Auth::user()->role->id == 1) --}}
-                                                    <a href="{{ route('exam-name-admission.edit', $d->id) }}"
+                                                    <a href="{{ route('board.edit', $d->id) }}"
                                                         class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                                     {{-- @endif --}}
                                                     {{-- @if (Auth::user()->can('user delete') || Auth::user()->role->id == 1) --}}
-                                                    <form action="{{ route('exam-name-admission.destroy', $d->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('delete')
-                                                        <button
-                                                            class="btn btn-danger btnDelete @if ($d->id == 1)  @endif"><i
-                                                                class="fas fa-trash"></i></button>
-                                                    </form>
+                                                    <a href="{{ route('board.destroy', $d->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
                                                     {{-- @endif --}}
                                                 </div>
                                                 {{-- <div class="btn-group btn-group-sm">
@@ -101,15 +92,9 @@
                             <table class="table table-borderless table-striped">
                                 <tbody id="view-tbody">
                                     <tr>
-                                        <td>Name</td>
+                                        <td>Board Name</td>
                                         <td>
                                             <span id="view-name"></span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Short Name</td>
-                                        <td>
-                                            <span id="view-short-name"></span>
                                         </td>
                                     </tr>
                                     <tr>
@@ -179,11 +164,9 @@
                     }, 'pageLength'
                 ]
             });
-
-
             $('.btnView').click(function() {
                 if ($(this).data('id') != null || $(this).data('id') != '') {
-                    let url = ("{{ route('exam-name-admission.show', ['id']) }}");
+                    let url = ("{{ route('board.show', ['id']) }}");
                     let _url = url.replace('id', $(this).data('id'));
                     $.ajax({
                         url: _url,
@@ -192,7 +175,7 @@
                             console.log(response);
 
                             $('#view-name').html(response.name);
-                            $('#view-short-name').html(response.short_name);
+                            // $('#view-short-name').html(response.short_name);
                             $('#view-createdAt').html(response.created_at ? new Date(response
                                 .created_at) : '');
                             $('#view-createdBy').html(response.created_user ? response
