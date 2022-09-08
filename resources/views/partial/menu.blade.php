@@ -54,6 +54,7 @@
         <p>Board</p>
     </a>
 </li>
+
 @if(Auth::user()->can('semester view') || Auth::user()->role->id == 1)
 <li class="nav-item">
     <a href="{{ route('semester.index') }}" class="nav-link {{ Request::is('semester') ? 'active' : '' }}">
@@ -62,6 +63,7 @@
     </a>
 </li>
 @endif
+
 @if(Auth::user()->can('session view') || Auth::user()->role->id == 1)
 <li class="nav-item">
     <a href="{{ route('session.index') }}" class="nav-link {{ Request::is('session') ? 'active' : '' }}">
@@ -70,3 +72,10 @@
     </a>
 </li>
 @endif
+
+<li class="nav-item">
+    <a href="{{ route('group.index') }}" class="nav-link {{ Request::is('group') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-home"></i>
+        <p>Group</p>
+    </a>
+</li>
