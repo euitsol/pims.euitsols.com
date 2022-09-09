@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('semesters', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->text("details");
+            $table->text("details")->nullable();
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
@@ -38,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('semseters');
+        Schema::dropIfExists('semesters');
     }
 };
