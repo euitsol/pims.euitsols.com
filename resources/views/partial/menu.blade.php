@@ -93,3 +93,10 @@
         <p>Blood Group</p>
     </a>
 </li>
+
+<li class="nav-item">
+    <a href="{{ route('division.index') }}" class="nav-link {{ Request::is('division') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-street-view"></i>
+        <p>Division</p>
+    </a>
+</li>
