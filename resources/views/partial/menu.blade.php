@@ -72,6 +72,12 @@
                         <p>Admit Student</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('student-admit.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-plus"></i>
+                        <p>Show Admission Student</p>
+                    </a>
+                </li>
             </ul>
         </li>
         @endif
