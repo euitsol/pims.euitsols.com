@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Board Management')
+@section('title', 'Group Management')
 
 @push('third_party_stylesheets')
     <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
@@ -16,10 +16,10 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="float-left">
-                            <h4>View Boards</h4>
+                            <h4>View Groups</h4>
                         </span>
                         <span class="float-right">
-                            <a href="{{ route('board.create') }}" class="btn btn-info">Add new Board</a>
+                            <a href="{{ route('group.create') }}" class="btn btn-info">Add new Group</a>
                         </span>
                     </div>
                     <div class="card-body">
@@ -49,11 +49,11 @@
                                                     <a href="javascript:void(0)" class="btn btn-info btnView"
                                                         data-id="{{ $d->id }}"><i class="fas fa-eye"></i></a>
                                                     {{-- @if (Auth::user()->can('user edit') || Auth::user()->role->id == 1) --}}
-                                                    <a href="{{ route('board.edit', $d->id) }}"
+                                                    <a href="{{ route('group.edit', $d->id) }}"
                                                         class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                                     {{-- @endif --}}
                                                     {{-- @if (Auth::user()->can('user delete') || Auth::user()->role->id == 1) --}}
-                                                    <a href="{{ route('board.destroy', $d->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
+                                                    <a href="{{ route('group.destroy', $d->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
                                                     {{-- @endif --}}
                                                 </div>
                                                 {{-- <div class="btn-group btn-group-sm">
@@ -92,7 +92,7 @@
                             <table class="table table-borderless table-striped">
                                 <tbody id="view-tbody">
                                     <tr>
-                                        <td>Board Name</td>
+                                        <td>Group Name</td>
                                         <td>
                                             <span id="view-name"></span>
                                         </td>
@@ -148,7 +148,7 @@
                 dom: 'Bfrtip',
                 buttons: [{
                         extend: 'pdfHtml5',
-                        title: 'User Management',
+                        title: 'Group Management',
                         download: 'open',
                         orientation: 'potrait',
                         pagesize: 'LETTER',
@@ -166,7 +166,7 @@
             });
             $('.btnView').click(function() {
                 if ($(this).data('id') != null || $(this).data('id') != '') {
-                    let url = ("{{ route('board.show', ['id']) }}");
+                    let url = ("{{ route('group.show', ['id']) }}");
                     let _url = url.replace('id', $(this).data('id'));
                     $.ajax({
                         url: _url,
