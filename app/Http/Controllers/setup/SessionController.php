@@ -28,8 +28,8 @@ class SessionController extends Controller
 
     public function store(Request $request){
         $this->validate($request, [
-            'start_year' => 'required|unique:sessions,start|date_format:Y',
-            'end_year' => 'required|unique:sessions,end|date_format:Y',
+            'start_year' => 'required|date_format:Y',
+            'end_year' => 'required|date_format:Y',
             // 'name' => 'required|unique:sessions,name|string|max:255',
             'details' => 'nullable||max:60000',
         ]);
