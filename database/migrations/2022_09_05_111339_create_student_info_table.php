@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('student_infos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('departments_id');
-            $table->unsignedBigInteger('academic_infos_id');
             $table->string('student_id')->unique()->nullable();
             $table->string('name');
             $table->string('father_name');
@@ -44,8 +43,6 @@ return new class extends Migration
 
         Schema::table('student_infos', function (Blueprint $table) {
             $table->foreign('departments_id', 'student_infos_departments')->references('id')->on('departments')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('academic_infos_id', 'student_infos_academic_infos')->references('id')->on('academic_infos')->onDelete('cascade')->onUpdate('cascade');
-            // $table->foreign('bg_id', 'student_infos_bg')->references('id')->on('bg')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('created_by', 'student_infos_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('updated_by', 'student_infos_updated')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('deleted_by', 'student_infos_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');

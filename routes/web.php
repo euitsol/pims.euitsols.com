@@ -72,6 +72,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
 
     //department Module
     Route::resource('department', departmentController::class);
+    //Admission Module
     Route::resource('student-admit', studentAdmitcontroller::class);
 
     // Exam name for admission

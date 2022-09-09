@@ -23,8 +23,8 @@
             position: fixed;
             width: 55px;
             height: 55px;
-            bottom: 24%;
-            right: 11.3%;
+            bottom: 36%;
+            right: 5.3%;
             background-color: blue;
             color: #FFF;
             border-radius: 50px;
@@ -54,6 +54,7 @@
                         </span>
                     </div>
                     <div class="card-body">
+                        @include("partial.flush-message")
                         <div class="row">
                             <div class="col-md-10 m-auto">
                                 <h2 class="text-center">Admission Form</h2>
@@ -63,16 +64,26 @@
                                     <span class="step" id="step-3">3</span>
                                 </div>
 
-                                <form action="{{ route('department.store') }}" method="POST" class="form-horizontal">
+                                <form id="basic-form" action="{{ route('student-admit.store') }}" method="POST" class="form-horizontal">
                                     @csrf
                                     <div class="tab" id="tab-1">
+                                        @if ($errors->any())
+                                        <div class="alert alert-danger">
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
                                         <fieldset>
                                             <h2 class="text-center">Department Choice</h2>
                                             <div class="row index1">
-                                                <div class="col-md-9">
+                                                <div class="col-md-12 ml-auto">
                                                     <div class="form-group">
-                                                        <label for="departments_id">Department Name: </label>
-                                                        <select class="select form-control"
+                                                        <label for="departments_id">Department Name:<span
+                                                            class="text-danger">*</span> </label>
+                                                        <select id="form" class="select form-control form-validation"
                                                             name="departments_id">
                                                             <option value="">Select Department</option>
                                                             @foreach ($department as $n)
@@ -159,7 +170,7 @@
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label for="gardian_phone">Guardian Phone:</label>
+                                                        <label for="gardian_phone">Guardian Phone:<span class="text-danger">*</span>    </label>
                                                         <input value="{{ old('gardian_phone') }}" type="text"
                                                             name="gardian_phone" class="form-control" placeholder="Guardian Phone Number">
                                                     </div>
@@ -171,7 +182,6 @@
                                                                 class="text-danger">*</span></label>
                                                         <select class="select form-control"  name="gender"
                                                             required>
-                                                            <option value=""></option>
                                                             <option value="Male">Male</option>
                                                             <option  value="Female"> Female</option>
                                                         </select>
@@ -180,15 +190,22 @@
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label>Date of Birth:</label>
+                                                        <label>Date of Birth:<span class="text-danger">*</span></label>
                                                         <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                                            <input type="text" name="dob" class="form-control datetimepicker-input" data-target="#reservationdate">
+                                                            <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                                                <div class="input-group-text"><i class="fa fa-calendar"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {{-- <div class="input-group date" id="reservationdate"  data-target-input="nearest">
                                                             <input type="text" name="dob" class="form-control datetimepicker-input" data-target="#reservationdate">
                                                             <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
                                                                 <div class="input-group-text">
                                                                     <i class="fa fa-calendar"></i>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div> --}}
                                                     </div>
                                                     {{-- <div class="form-group">
                                                         <label for="dob">Date of Birth: <span class="text-danger">*</span></label>
@@ -301,19 +318,20 @@
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label for="passing_year">Passing Year: <span
+                                                        <label for="passing_year">Passing Year:<span
                                                                 class="text-danger">*</span></label>
-                                                        <select id="passing_year" name="exams[0][passing_year]" class="form-control" required>
+                                                                <input class="form-control year" type="text"name="exams[0][passing_year]" placeholder="Year">
+                                                        {{-- <select id="passing_year" name="exams[0][passing_year]" class="form-control"  required>
                                                             <option value="">Select Your Passing Year</option>
 
-                                                        </select>
+                                                        </select> --}}
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label for="division">Division:</label>
-                                                        <select  name="division"
+                                                        <label for="division">Division:<span class="text-danger">*</span></label>
+                                                        <select
                                                             id="division" name="exams[0][division]"
                                                             class="form-control" required>
                                                             <option value="">Select Your Division</option>
@@ -328,12 +346,11 @@
                                                     <div class="form-group">
                                                         <label for="board_id">Board: <span
                                                                 class="text-danger">*</span></label>
-                                                        <select
-                                                            id="board_id" name="exams[0][board_id]"
+                                                        <select name="exams[0][board_id]"
                                                             class="form-control" required>
                                                             <option value="">Select Education Board</option>
                                                             @foreach ($board as $n)
-                                                            <option value="{{$n->id}}">{{$n->name}}"</option>
+                                                            <option value="{{$n->id}}">{{$n->name}}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -414,7 +431,7 @@
                                             </div>
 
                                             {{-- Add More button  --}}
-                                            <div id="add_more" class="floating-cart">
+                                            <div id="add_more" class="floating-cart" data-count="1">
                                                 <i class="fas fa-plus"></i>
                                                 <div class="cart-count">
                                                 </div>
@@ -431,7 +448,7 @@
                                                         onclick="previous(3)">Previous</button>
                                                 </div>
                                                 <div class="col-md-6 text-right">
-                                                    <button type="button" class="button btn btn-success">Submit</button>
+                                                    <button type="submit" class="button btn btn-success">Submit</button>
                                                 </div>
                                             </div>
                                         </fieldset>
@@ -452,40 +469,27 @@
 @push('third_party_scripts')
     {{-- <script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script> --}}
     <script src="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script> --}}
 @endpush
 
 @push('page_scripts')
     <script>
-        $('.date').datepicker({
-            // autoclose: true,
-            // format: " yyyy",
-            // viewMode: "years",
-            // minViewMode: "years"
-        });
 
+       $(document).ready(function(){
         $('.tab').css('display', 'none');
         $('#tab-1').css('display', 'block');
         $('#step-1').css('opacity', '1');
+        addDatePicker("year");
+        $('.date').datepicker();
+
+       });
+    //    $('#form').validate();
 
         //Next Button
         function next(current_div) {
+            // $("fieldset").validate();
             var hide = current_div;
             var next = current_div + 1;
-
-            //Validation
-            // if(hideTabe<showTabe){
-            //     var currentTab = 0;
-
-            //    x = $("#tab-"+hideTabe);
-            //    y = $(x).find('input');
-            //     for(i = 0; i<y.length ; i++){
-            //         if(y[i].value==''){
-            //             console.log('yes tab');
-            //             $(y[i]).css('background',"#ffdddd");
-            //             return false;
-            //         }
-            //     }
-            // }
 
             //progessbar
             for (i = 1; i <= next; i++) {
@@ -513,13 +517,12 @@
         }
 
         $('#add_more').click(function() {
-            result = '';
 
+            result = '';
             count = $(this).data('count') + 1;
             $(this).data('count', count);
 
-            result = `
-                    <div class="row shadow-lg p-3 mb-5 bg-body rounded" id="aca_mod_${count}">
+            result = `<div class="row shadow-lg p-3 mb-5 bg-body rounded" id="aca_mod_${count}">
                         <div class="col-md-6 text-left">
                             <h5>Achademic Information - ${count}</h5>
                         </div>
@@ -541,10 +544,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="passing_year">Passing Year: <span class="text-danger">*</span></label>
-                                <select name="exams[${count - 1}][passing_year]"  class="form-control" required >
-                                    <option value="">Select Your Passing Year</option>
-
-                                </select>
+                                <input class="form-control year" type="text"name="exams[${count - 1}][passing_year]" placeholder="Year">
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -565,7 +565,7 @@
                                     <option value="">Select Education Board</option>
                                     @foreach ($board as $n)
                                         <option value="{{$n->id}}">
-                                            {{$n->name}}"
+                                            {{$n->name}}
                                         </option>
                                     @endforeach
                                 </select>
@@ -595,7 +595,7 @@
                                     class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <div class="custom-file">
-                                        <input name="exams[0][reg_card]" type="file" class="custom-file-input" >
+                                        <input name="exams[${count - 1}][reg_card]" type="file" class="custom-file-input" >
                                         <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                                     </div>
                                     <div class="input-group-append">
@@ -611,7 +611,7 @@
                                 </label>
                                 <div class="input-group">
                                     <div class="custom-file">
-                                        <input name="exams[0][marksheet]" type="file" class="custom-file-input" accept=".pdf,.png,.jpg">
+                                        <input name="exams[${count - 1}][marksheet]" type="file" class="custom-file-input" accept=".pdf,.png,.jpg">
                                         <label class="custom-file-label" for="marksheet">Choose file</label>
                                     </div>
                                     <div class="input-group-append">
@@ -620,14 +620,35 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-        `;
+                    </div> `;
+
             $('#append_exam').append(result);
+            addDatePicker("year");
         });
 
         function delete_section(count) {
             $('#aca_mod_' + count).remove();
         };
 
+        // $('.year').each(function()
+        // {
+        //     $(this).datepicker({
+        //     autoclose: true,
+        //     format: " yyyy",
+        //     viewMode: "years",
+        //     minViewMode: "years"
+        //  });
+        // });
+
+        function addDatePicker(className){
+            $('.'+className).datepicker({
+                autoclose: true,
+                format: " yyyy",
+                viewMode: "years",
+                minViewMode: "years"
+            });
+        }
+
     </script>
+
 @endpush

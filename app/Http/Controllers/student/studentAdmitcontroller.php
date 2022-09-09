@@ -48,41 +48,109 @@ class studentAdmitcontroller extends Controller
      */
     public function store(Request $request)
     {
-       $insert_academic_info = new AcademicInfo;
-       $insert_academic_info->exam_id = $request->exam_id;
-       $insert_academic_info->passing_year = $request->passing_year;
-       $insert_academic_info->division = $request->division;
-       $insert_academic_info->roll = $request->roll;
-       $insert_academic_info->reg_no = $request->reg_no;
-       $insert_academic_info->gpa = $request->gpa;
-       $insert_academic_info->reg_card = $request->reg_card;
-       $insert_academic_info->marksheet = $request->marksheet;
-       $insert_academic_info->created_by = Auth::user()->id;
-       $insert_academic_info->save();
+        // {{-- validation --}}
+        // {{-- 'exams.*.exam_name' => 'required|exists:exams,id', --}}
+        // {{-- controller --}}
+        // {{-- foreach ($request->exams as $data) {
+        // $data['exam_name']
+        // $data['exam_name']
+        // $data['exam_name']
+        // $data['exam_name']
+        // $data['exam_name']
+        // $data['exam_name']
+        // }
+        // --}}
 
-       $insert_student_info = new studentInfo;
-       $insert_student_info->departments_id = $insert_student_info->id;
-       $insert_student_info->academic_infos_id = $request->academic_infos_id;
-       $insert_student_info->name = $request->name;
-       $insert_student_info->father_name = $request->father_name;
-       $insert_student_info->mother_name = $request->mother_name;
-       $insert_student_info->present_address = $request->present_address;
-       $insert_student_info->parmanent_address = $request->parmanent_address;
-       $insert_student_info->email = $request->email;
-       $insert_student_info->phone = $request->phone;
-       $insert_student_info->gardian_phone = $request->gardian_phone;
-       $insert_student_info->gender = $request->gender;
-       $insert_student_info->dob = $request->dob;
-       $insert_student_info->nationality = $request->nationality;
-       $insert_student_info->bg_id = $request->bg_id;
-       $insert_student_info->quota = $request->quota;
-       $insert_student_info->photo = $request->photo;
-       $insert_student_info->session = $request->session;
-       $insert_student_info->status = $request->status;
-       $insert_student_info->created_by = Auth::user()->id;
-       $insert_student_info->save();
+        $attribute = array(
+            'departments_id' => 'Department Name',
+            'name' => 'Name',
+            'father_name'  => 'Father Name',
+            'mother_name'  => 'Mother Name',
+            'present_address'  => 'Present Address',
+            'parmanent_address'  => 'Permanent Address',
+            'email'  => 'Email',
+            'phone'  => 'Phone',
+            'gardian_phone'  => 'Guardian Phone',
+            'gender'  => 'Gender',
+            'dob'  => 'Date of Birth',
+            'nationality'  => 'Nationality',
+            'bg_id'  => 'Blood Group',
 
-        return redirect()->back()->with('msg','Successfully Inserted');
+            'exams.*.exam_id'  => 'Exam Name',
+            'exams.*.passing_year'  => 'Passing Year',
+            'exams.*.division'  => 'Divission',
+            'exams.*.board_id'  => 'Board',
+            'exams.*.roll'  => 'Roll',
+            'exams.*.reg_no'  => 'Registration Number',
+            'exams.*.gpa'  => 'G.P.A',
+            'exams.*.reg_card'  => 'Registration Card',
+            'exams.*.marksheet'  => 'Marsheet',
+        );
+        $request->validate([
+            'departments_id' => "required|integer",
+            'name' => "required|string",
+            'father_name' => "required|string",
+            'mother_name' => "required|string",
+            'present_address' => "required|string",
+            'parmanent_address' => "required|string",
+            'email' => "nullable|email|unique:student_infos",
+            'phone' => "required|unique:student_infos,phone",
+            'gardian_phone' => "required|unique:student_infos,gardian_phone",
+            'gender' => "required",
+            'dob' => "required",
+            'nationality' => "required|string",
+            'bg_id' => "nullable",
+            'quota' => "nullable",
+            // 'photo' => "required|mimes:jpg,jpg,png,svg,jpeg",
+
+            'exams.*.exam_id' => "required",
+            'exams.*.passing_year' => "required",
+            'exams.*.division' => "required|string",
+            'exams.*.board_id' => "required",
+            'exams.*.roll' => "required|unique:academic_infos,roll|integer",
+            'exams.*.reg_no' => "required|unique:academic_infos|integer",
+            'exams.*.gpa' => "required",
+            // 'exams.*.reg_card' => "required|mimes:jpg,png,pdf,svg,jpeg",
+            // 'exams.*.marksheet' => "required|mimes:jpg,png,pdf,svg,jpeg",
+        ],[],$attribute);
+        $insert_student_info = new studentInfo;
+        $insert_student_info->departments_id = $request->departments_id;
+        $insert_student_info->name = $request->name;
+        $insert_student_info->father_name = $request->father_name;
+        $insert_student_info->mother_name = $request->mother_name;
+        $insert_student_info->present_address = $request->present_address;
+        $insert_student_info->parmanent_address = $request->parmanent_address;
+        $insert_student_info->email = $request->email;
+        $insert_student_info->phone = $request->phone;
+        $insert_student_info->gardian_phone = $request->gardian_phone;
+        $insert_student_info->gender = $request->gender;
+        $insert_student_info->dob = $request->dob;
+        $insert_student_info->nationality = $request->nationality;
+        $insert_student_info->bg_id = $request->bg_id;
+        $insert_student_info->quota = $request->quota;
+        $insert_student_info->photo = $request->photo;
+        $insert_student_info->created_by = Auth::user()->id;
+        $insert_student_info->save();
+
+        // dd($request->exams);
+       foreach($request->exams as $data){
+            $insert_academic_info = new AcademicInfo;
+            $insert_academic_info->student_infos_id =  $insert_student_info->id;
+            $insert_academic_info->exam_id = $data['exam_id'];
+            $insert_academic_info->passing_year = $data['passing_year'];
+            $insert_academic_info->division = $data['division'];
+            $insert_academic_info->board_id = $data['board_id'];
+            $insert_academic_info->roll = $data['roll'];
+            $insert_academic_info->reg_no = $data['reg_no'];
+            $insert_academic_info->gpa = $data['gpa'];
+            $insert_academic_info->reg_card = $data['reg_card'];
+            $insert_academic_info->marksheet = $data['marksheet'];
+            $insert_academic_info->created_by = Auth::user()->id;
+            $insert_academic_info->save();
+       }
+
+       $this->message('success',"Student admit successfully");
+        return redirect()->back();
     }
 
     /**
