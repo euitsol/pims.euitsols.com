@@ -11,6 +11,7 @@ use App\Http\Controllers\setup\SessionController;
 use App\Http\Controllers\setup\SemesterDurationController;
 use App\Http\Controllers\setup\GroupController;
 use App\Http\Controllers\setup\BloodGroupController;
+use App\Http\Controllers\setup\DivisionController;
 
 
 
@@ -144,6 +145,17 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::post('/edit-store', [BloodGroupController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [BloodGroupController::class, 'destroy'])->name('destroy');
     });
-    
+
+    // Division
+    Route::group(['as' => 'division.', 'prefix' => 'division'], function() {
+        Route::get('/view', [DivisionController::class, 'index'])->name('index');
+        Route::get('/add', [DivisionController::class, 'create'])->name('create');
+        Route::post('/add-store', [DivisionController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [DivisionController::class, 'show'])->name('show');
+        Route::get('/edit/{id}', [DivisionController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [DivisionController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [DivisionController::class, 'destroy'])->name('destroy');
+    });
+
 });
 
