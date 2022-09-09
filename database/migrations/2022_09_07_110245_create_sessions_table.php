@@ -18,7 +18,7 @@ return new class extends Migration
             $table->year("start");
             $table->year("end");
             $table->string("name")->nullable();
-            $table->text("details");
+            $table->text("details")->nullable();;
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
