@@ -9,6 +9,7 @@ use App\Http\Controllers\setup\BoardController;
 use App\Http\Controllers\setup\SemesterController;
 use App\Http\Controllers\setup\SessionController;
 use App\Http\Controllers\setup\GroupController;
+use App\Http\Controllers\setup\BloodGroupController;
 
 
 /*
@@ -117,6 +118,17 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::get('/edit/{id}', [GroupController::class, 'edit'])->name('edit');
         Route::post('/edit-store', [GroupController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [GroupController::class, 'destroy'])->name('destroy');
+    });
+
+    // Blood Group
+    Route::group(['as' => 'bloodgroup.', 'prefix' => 'bloodgroup'], function() {
+        Route::get('/view', [BloodGroupController::class, 'index'])->name('index');
+        Route::get('/add', [BloodGroupController::class, 'create'])->name('create');
+        Route::post('/add-store', [BloodGroupController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [BloodGroupController::class, 'show'])->name('show');
+        Route::get('/edit/{id}', [BloodGroupController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [BloodGroupController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [BloodGroupController::class, 'destroy'])->name('destroy');
     });
 
 
