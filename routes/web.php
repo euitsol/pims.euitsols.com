@@ -15,6 +15,7 @@ use App\Http\Controllers\setup\SemesterDurationController;
 use App\Http\Controllers\setup\GroupController;
 use App\Http\Controllers\setup\BloodGroupController;
 use App\Http\Controllers\setup\DivisionController;
+use App\Http\Controllers\setup\DistrictController;
 
 
 
@@ -159,6 +160,17 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::get('/edit/{id}', [DivisionController::class, 'edit'])->name('edit');
         Route::post('/edit-store', [DivisionController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [DivisionController::class, 'destroy'])->name('destroy');
+    });
+
+    // District
+    Route::group(['as' => 'district.', 'prefix' => 'district'], function() {
+        Route::get('/view', [DistrictController::class, 'index'])->name('index');
+        Route::get('/add', [DistrictController::class, 'add'])->name('add');
+        Route::post('/add-store', [DistrictController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [DistrictController::class, 'details'])->name('details');
+        Route::get('/edit/{id}', [DistrictController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [DistrictController::class, 'edit_store'])->name('edit.store');
+        Route::get('/delete/{id}', [DistrictController::class, 'delete'])->name('delete');
     });
 
 });
