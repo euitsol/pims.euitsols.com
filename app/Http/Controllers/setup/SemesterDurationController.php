@@ -87,7 +87,7 @@ class SemesterDurationController extends Controller
 
     public function edit_store(Request $request){
         $this->validate($request, [
-            'id' => 'required|exists:semester_sessions,id',
+            'id' => 'required|exists:semester_durations,id',
             'semester' => 'required|exists:semesters,id',
             'session' => 'required|exists:sessions,id',
         ]);
