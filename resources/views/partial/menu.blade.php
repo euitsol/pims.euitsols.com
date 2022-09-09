@@ -41,6 +41,50 @@
     </ul>
 </li>
 
+{{-- //Department --}}
+<li class="nav-item">
+    <a href="{{ route('department.index') }}" class="nav-link {{ Request::is('department') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-home"></i>
+        <p>Department</p>
+    </a>
+</li>
+
+{{-- Student Mangement --}}
+<li class="nav-item">
+    <a href="#" class="nav-link">
+        <i class="nav-icon fas fa-users"></i>
+        <p>
+            Student
+            <i class="fas fa-angle-left right"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        @if(Auth::user()->can('user view') || Auth::user()->role->id == 1)
+        <li class="nav-item">
+            <a href="{{ route('users.index') }}" class="nav-link">
+                <i class="nav-icon far fa-circle"></i>
+                <p>Admission</p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('student-admit.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-plus"></i>
+                        <p>Admit Student</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('student-admit.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-plus"></i>
+                        <p>Show Admission Student</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        @endif
+    </ul>
+</li>
+
+
 <li class="nav-item">
     <a href="{{ route('exam-name-admission.index') }}" class="nav-link {{ Request::is('eadmission') ? 'active' : '' }}">
         <i class="nav-icon fas fa-home"></i>

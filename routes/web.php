@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\student\studentAdmitcontroller;
+use App\Http\Controllers\departmentController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\setup\EAdmissionController;
 use App\Http\Controllers\setup\BoardController;
@@ -74,6 +77,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
 
     //department Module
     Route::resource('department', departmentController::class);
+    //Admission Module
     Route::resource('student-admit', studentAdmitcontroller::class);
 
     // Exam name for admission
