@@ -11,6 +11,11 @@ use App\Http\Controllers\setup\EAdmissionController;
 use App\Http\Controllers\setup\BoardController;
 use App\Http\Controllers\setup\SemesterController;
 use App\Http\Controllers\setup\SessionController;
+use App\Http\Controllers\setup\SemesterDurationController;
+use App\Http\Controllers\setup\GroupController;
+use App\Http\Controllers\setup\BloodGroupController;
+use App\Http\Controllers\setup\DivisionController;
+
 
 
 /*
@@ -111,6 +116,50 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::get('/delete/{id}', [SessionController::class, 'delete'])->name('delete');
     });
 
+    //Semester Duration
+    Route::group(['as' => 'semesterDuration.', 'prefix' => 'semester-duration'], function() {
+        Route::get('/view', [SemesterDurationController::class, 'index'])->name('index');
+        Route::get('/add', [SemesterDurationController::class, 'add'])->name('add');
+        Route::post('/add-store', [SemesterDurationController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [SemesterDurationController::class, 'details'])->name('details');
+        Route::get('/edit/{id}', [SemesterDurationController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [SemesterDurationController::class, 'edit_store'])->name('edit.store');
+        Route::get('/delete/{id}', [SemesterDurationController::class, 'delete'])->name('delete');
+        Route::get('/get-duration/{session_id}', [SemesterDurationController::class, 'get_duration'])->name('duration');
+    });
+
+    // Group
+    Route::group(['as' => 'group.', 'prefix' => 'group'], function() {
+        Route::get('/view', [GroupController::class, 'index'])->name('index');
+        Route::get('/add', [GroupController::class, 'create'])->name('create');
+        Route::post('/add-store', [GroupController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [GroupController::class, 'show'])->name('show');
+        Route::get('/edit/{id}', [GroupController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [GroupController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [GroupController::class, 'destroy'])->name('destroy');
+    });
+
+    // Blood Group
+    Route::group(['as' => 'bloodgroup.', 'prefix' => 'bloodgroup'], function() {
+        Route::get('/view', [BloodGroupController::class, 'index'])->name('index');
+        Route::get('/add', [BloodGroupController::class, 'create'])->name('create');
+        Route::post('/add-store', [BloodGroupController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [BloodGroupController::class, 'show'])->name('show');
+        Route::get('/edit/{id}', [BloodGroupController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [BloodGroupController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [BloodGroupController::class, 'destroy'])->name('destroy');
+    });
+
+    // Division
+    Route::group(['as' => 'division.', 'prefix' => 'division'], function() {
+        Route::get('/view', [DivisionController::class, 'index'])->name('index');
+        Route::get('/add', [DivisionController::class, 'create'])->name('create');
+        Route::post('/add-store', [DivisionController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [DivisionController::class, 'show'])->name('show');
+        Route::get('/edit/{id}', [DivisionController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [DivisionController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [DivisionController::class, 'destroy'])->name('destroy');
+    });
 
 });
 

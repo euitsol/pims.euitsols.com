@@ -13,21 +13,20 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('semesters', function (Blueprint $table) {
+        Schema::create('bloodgroups', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->text("details")->nullable();
             $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();
         });
 
-        Schema::table('semesters', function (Blueprint $table) {
-            $table->foreign('created_by', 'semesters_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('deleted_by', 'semesters_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('updated_by', 'semesters_updated')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+        Schema::table('bloodgroups', function (Blueprint $table) {
+            $table->foreign('created_by', 'bloodgroups_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('deleted_by', 'bloodgroups_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('updated_by', 'bloodgroups_updated')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -38,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('semesters');
+        Schema::dropIfExists('bloodgroups');
     }
 };

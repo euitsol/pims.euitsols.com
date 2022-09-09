@@ -35,6 +35,7 @@
 </div>
 
 <script src="{{ mix('js/app.js') }}"></script>
+<script src="{{ asset('assets/js/custom-functions.js') }}"></script>
 @stack('third_party_scripts')
 
 @stack('page_scripts')
