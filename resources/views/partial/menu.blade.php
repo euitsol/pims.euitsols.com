@@ -72,7 +72,14 @@
     </a>
 </li>
 @endif
-
+@if(Auth::user()->can('semester duration view') || Auth::user()->role->id == 1)
+<li class="nav-item">
+    <a href="{{ route('semesterDuration.index') }}" class="nav-link {{ Request::is('semester-dueation') ? 'active' : '' }}">
+        <i class=" nav-icon fas fa-calendar-alt"></i>
+        <p>Semester Duration</p>
+    </a>
+</li>
+@endif
 <li class="nav-item">
     <a href="{{ route('group.index') }}" class="nav-link {{ Request::is('group') ? 'active' : '' }}">
         <i class="nav-icon fas fa-home"></i>
