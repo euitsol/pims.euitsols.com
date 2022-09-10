@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\setup;
 use App\Helpers\Qs;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Department;
+use Illuminate\Support\Facades\Response;
 use Carbon\Carbon;
 
 class departmentController extends Controller
@@ -21,9 +22,9 @@ class departmentController extends Controller
     public function index()
     {
 
-        $n['data'] = Department::where('deleted_by',null);
+        $n['data'] = Department::where('deleted_by',null)->get(   );
         $n['page_name'] = 'Department';
-        return view('pages.deparment.show',$n);
+        return view('pages.setup.deparment.show',$n);
     }
 
     /**
@@ -34,7 +35,7 @@ class departmentController extends Controller
     public function create()
     {
         $n['page_name'] = 'Department';
-        return view('pages.deparment.create',$n);
+        return view('pages.setup.deparment.create',$n);
     }
 
     /**
@@ -68,7 +69,10 @@ class departmentController extends Controller
      */
     public function show($id)
     {
-
+        if($id!=null){
+            $group = Department::with(['created_user', 'updated_user', 'deleted_user'])->where('deleted_at', null)->where('id', $id)->first();
+            return Response::json($group, 200);
+        }
     }
 
     /**
@@ -79,9 +83,9 @@ class departmentController extends Controller
      */
     public function edit($id)
     {
-        $data_update = Department::find($id);
-
-        return view("pages.deparment.edit",compact("data_update"));
+        $n['data_update'] = Department::find($id);
+        $n['page_name'] = 'Department';
+        return view("pages.setup.deparment.edit",$n);
     }
 
     /**
@@ -97,7 +101,8 @@ class departmentController extends Controller
       $update->department_name= $request->name;
       $update->short_name = $request->short_name;
       $update->save();
-    //   return redirect()->route("departments.index")->with("updated");
+      $this->message('success','Successfully updated');
+      return redirect()->route("department.index");
     }
 
     /**
@@ -108,7 +113,24 @@ class departmentController extends Controller
      */
     public function destroy($id)
     {
-        Department::find($id)->delete();
-        return back()->with('flash_success', __('msg.del_ok'));
+        if($id != null){
+            $depertment = Department::findOrFail($id);
+            $depertment->deleted_at = Carbon::now()->toDateTimeString();
+            $depertment->deleted_by = auth()->user()->id;
+            $depertment->save();
+            $this->message('success',$depertment->name.' deleted successfully');
+            return redirect()->route('department.index');
+        }
+    }
+
+    public function delete($id){
+        if($id != null){
+            $depertment = Department::findOrFail($id);
+            $depertment->deleted_at = Carbon::now()->toDateTimeString();
+            $depertment->deleted_by = auth()->user()->id;
+            $depertment->save();
+            $this->message('success',$depertment->name.' deleted successfully');
+            return redirect()->route('department.index');
+        }
     }
 }
