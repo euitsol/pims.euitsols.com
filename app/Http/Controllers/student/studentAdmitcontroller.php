@@ -11,6 +11,7 @@ use App\Models\board;
 use App\Models\eadmission;
 use App\Models\studentInfo;
 use App\Models\Bloodgroup;
+use App\Models\Division;
 use Illuminate\Support\Facades\Auth;
 
 class studentAdmitcontroller extends Controller
@@ -28,6 +29,7 @@ class studentAdmitcontroller extends Controller
         $n['board'] = board::where('deleted_by','=',null)->get();
         $n['exam_name'] = eadmission::where('deleted_by','=',null)->get();
         $n['bg'] = Bloodgroup::where('deleted_by','=',null)->get();
+        $n['division'] = Division::where('deleted_by','=',null)->get();
 
         return view('pages.student.admission.create',$n);
     }
