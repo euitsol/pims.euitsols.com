@@ -151,3 +151,10 @@
         <p>District</p>
     </a>
 </li>
+
+<li class="nav-item">
+    <a href="{{ route('shift.index') }}" class="nav-link {{ Request::is('shift') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-street-view"></i>
+        <p>Shift</p>
+    </a>
+</li>

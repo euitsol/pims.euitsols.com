@@ -16,6 +16,7 @@ use App\Http\Controllers\setup\GroupController;
 use App\Http\Controllers\setup\BloodGroupController;
 use App\Http\Controllers\setup\DivisionController;
 use App\Http\Controllers\setup\DistrictController;
+use App\Http\Controllers\setup\ShiftController;
 
 
 
@@ -171,6 +172,17 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::get('/edit/{id}', [DistrictController::class, 'edit'])->name('edit');
         Route::post('/edit-store', [DistrictController::class, 'edit_store'])->name('edit.store');
         Route::get('/delete/{id}', [DistrictController::class, 'delete'])->name('delete');
+    });
+
+    // Shift
+    Route::group(['as' => 'shift.', 'prefix' => 'shift'], function() {
+        Route::get('/view', [ShiftController::class, 'index'])->name('index');
+        Route::get('/add', [ShiftController::class, 'create'])->name('create');
+        Route::post('/add-store', [ShiftController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [ShiftController::class, 'show'])->name('show');
+        Route::get('/edit/{id}', [ShiftController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [ShiftController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [ShiftController::class, 'destroy'])->name('destroy'); 
     });
 
 });
