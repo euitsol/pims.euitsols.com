@@ -16,7 +16,7 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="float-left">
-                            <h4>View Shifts</h4>
+                            <h4>View Credits</h4>
                         </span>
                         <span class="float-right">
                             <a href="{{ route('credit.create') }}" class="btn btn-info">Add new Credit</a>
