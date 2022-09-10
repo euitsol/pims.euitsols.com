@@ -36,7 +36,7 @@ return new class extends Migration
         Schema::table('academic_infos', function (Blueprint $table) {
             $table->foreign('student_infos_id', 'academic_infos_student_infos')->references('id')->on('student_infos')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('exam_id', 'academic_infos_exam')->references('id')->on('eadmissions')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('board_id', 'academic_infos_board')->references('id')->on('boards')->onDelete('cascade')->onUpdate('cascade');
+            // $table->foreign('board_id', 'academic_infos_board')->references('id')->on('boards')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('created_by', 'academic_infos_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('updated_by', 'academic_infos_updated')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('deleted_by', 'academic_infos_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');

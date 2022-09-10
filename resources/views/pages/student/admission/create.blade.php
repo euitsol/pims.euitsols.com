@@ -105,7 +105,7 @@
                                     <div class="tab" id="tab-2">
                                         <fieldset>
                                             <h2 class="text-center">Personal data</h2>
-                                            <div class="row index">
+                                            <div class="row shadow-lg p-3 mb-5 bg-body rounded">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="name">Full Name: <span class="text-danger">*</span></label>
@@ -132,13 +132,34 @@
                                                     </div>
                                                 </div>
 
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="division">Your Division: <span class="text-danger">*</span></label>
+                                                        <select id="division" class="select form-control"  name="division">
+                                                            <option value="">Select Your Division</option>
+                                                            @foreach ($division as $n)
+                                                            <option value="{{$n->id}}">{{$n->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="district">Your District: <span class="text-danger">*</span></label>
+                                                        <select id="district" class="select form-control"  name="district">
+                                                            <option value="">Select Your District</option>
+                                                            {{-- @foreach ($district as $n)
+                                                            <option value="{{$n->id}}">{{$n->name}}</option>
+                                                            @endforeach --}}
+                                                        </select>
+                                                    </div>
+                                                </div>
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="present_address">Present Address: <span class="text-danger">*</span></label>
-                                                        <input value="{{ old('present_address') }}" required
-                                                            class="form-control" placeholder="Present Address"
-                                                            name="present_address" type="text" required>
+                                                        <textarea name="present_address" value="{{ old('present_address') }}" class="form-control"  placeholder="Enter Your Present Address" ></textarea>
                                                     </div>
                                                 </div>
 
@@ -146,9 +167,9 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="parmanent_address">Parmanent Address: <span class="text-danger">*</span></label>
-                                                        <input value="{{ old('parmanent_address') }}" required
-                                                            class="form-control" placeholder="Parmanent Address"
-                                                            name="parmanent_address" type="text" required>
+                                                        <textarea value="{{ old('parmanent_address') }}" required
+                                                            class="form-control" placeholder="Enter Your Parmanent Address"
+                                                            name="parmanent_address" required> </textarea>
                                                     </div>
                                                 </div>
 
@@ -163,7 +184,7 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="phone">Phone: <span class="text-danger">*</span></label>
-                                                        <input value="{{ old('phone') }}" required type="text"
+                                                        <input value="{{ old('phone') }}" required type="tel"
                                                             name="phone" class="form-control" placeholder="Phone Number">
                                                     </div>
                                                 </div>
@@ -171,7 +192,7 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="gardian_phone">Guardian Phone:<span class="text-danger">*</span>    </label>
-                                                        <input value="{{ old('gardian_phone') }}" type="text"
+                                                        <input value="{{ old('gardian_phone') }}" type="tel"
                                                             name="gardian_phone" class="form-control" placeholder="Guardian Phone Number">
                                                     </div>
                                                 </div>
@@ -184,6 +205,7 @@
                                                             required>
                                                             <option value="Male">Male</option>
                                                             <option  value="Female"> Female</option>
+                                                            <option  value="other"> Other</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -198,20 +220,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    {{-- <div class="input-group date" id="reservationdate"  data-target-input="nearest">
-                                                            <input type="text" name="dob" class="form-control datetimepicker-input" data-target="#reservationdate">
-                                                            <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                                                                <div class="input-group-text">
-                                                                    <i class="fa fa-calendar"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div> --}}
                                                     </div>
-                                                    {{-- <div class="form-group">
-                                                        <label for="dob">Date of Birth: <span class="text-danger">*</span></label>
-                                                        <input  name="dob" value="dd-mm-yy" required
-                                                            type="text" class="date form-control date-pick">
-                                                    </div> --}}
                                                 </div>
 
                                                 <div class="col-md-4">
@@ -228,9 +237,9 @@
                                                         <label for="bg_id">Blood Group: </label>
                                                         <select class="select form-control"  name="bg_id">
                                                             <option value="">Select Blood Group</option>
-                                                            {{-- @foreach ($bg as $n)
-                                                            <option value="{{$n->id}}">{{$n->department_name}}"</option>
-                                                            @endforeach --}}
+                                                            @foreach ($bg as $n)
+                                                            <option value="{{$n->id}}">{{$n->name}}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
@@ -247,7 +256,7 @@
                                                         class="text-danger">*</span></label>
                                                     <div class="input-group">
                                                         <div class="custom-file">
-                                                            <input name="photo" type="file" class="custom-file-input" id="exampleInputFile">
+                                                            <input name="photo" type="file" class="custom-file-input" accept="image/*" id="exampleInputFile">
                                                             <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                                                         </div>
                                                         <div class="input-group-append">
@@ -266,16 +275,16 @@
                                                     </div> --}}
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-6 text-left">
+                                            {{-- <div class="row"> --}}
+                                                <div class="float-left">
                                                     <button type="button" class="previous btn btn-success"
                                                         onclick="previous(2)">Previous</button>
                                                 </div>
-                                                <div class="col-md-6 text-right">
+                                                <div class="float-right">
                                                     <button type="button" class="next btn btn-success"
                                                         onclick="next(2)">Next</button>
                                                 </div>
-                                            </div>
+                                            {{-- </div> --}}
                                         </fieldset>
                                     </div>
 
@@ -310,7 +319,7 @@
                                                         <select  name="exams[0][exam_id]" id="exam_id" required class="form-control">
                                                             <option value="">Select Your Exam Name</option>
                                                             @foreach ($exam_name as $n)
-                                                            <option value="{{$n->id}}">{{$n->name}}"</option>
+                                                            <option value="{{$n->id}}">{{$n->name}}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -359,7 +368,7 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="roll">Roll: <span class="text-danger">*</span></label>
-                                                        <input type="text" name="exams[0][roll]" class="form-control"
+                                                        <input type="number" name="exams[0][roll]" class="form-control"
                                                               value="{{ old('roll') }}" placeholder="Inter Your Roll Number" required>
                                                     </div>
                                                 </div>
@@ -367,14 +376,14 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="reg_no">Registration No: <span class="text-danger">*</span></label>
-                                                        <input type="text" name="exams[0][reg_no]" class="form-control"  value="{{ old('reg_no') }}" placeholder="Insert Your Registration Number" required>
+                                                        <input type="number" name="exams[0][reg_no]" class="form-control"  value="{{ old('reg_no') }}" placeholder="Insert Your Registration Number" required>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="gpa">G.P.A: <span class="text-danger">*</span></label>
-                                                        <input type="text"  name="exams[0][gpa]" class="form-control"
+                                                        <input type="number" max="5" name="exams[0][gpa]" class="form-control"
                                                             value="{{ old('gpa') }}" placeholder="Enter Your G.P.A" required>
                                                     </div>
                                                 </div>
@@ -385,7 +394,7 @@
                                                             class="text-danger">*</span></label>
                                                         <div class="input-group">
                                                             <div class="custom-file">
-                                                                <input name="exams[0][reg_card]" type="file" class="custom-file-input" >
+                                                                <input name="exams[0][reg_card]" type="file" class="custom-file-input" accept="image/*,.pdf" >
                                                                 <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                                                             </div>
                                                             <div class="input-group-append">
@@ -407,7 +416,7 @@
                                                             class="text-danger">*</span></label>
                                                         <div class="input-group">
                                                             <div class="custom-file">
-                                                                <input name="exams[0][marksheet]" type="file" class="custom-file-input" accept=".pdf,.png,.jpg">
+                                                                <input name="exams[0][marksheet]" type="file" class="custom-file-input" accept="image/*,.pdf">
                                                                 <label class="custom-file-label" for="marksheet">Choose file</label>
                                                             </div>
                                                             <div class="input-group-append">
@@ -431,7 +440,7 @@
                                             </div>
 
                                             {{-- Add More button  --}}
-                                            <div id="add_more" class="floating-cart" data-count="1">
+                                            <div id="add_more" class="floating-cart" data-count="1" title="Add a new academic info">
                                                 <i class="fas fa-plus"></i>
                                                 <div class="cart-count">
                                                 </div>
@@ -442,15 +451,15 @@
                                             </div> --}}
 
                                             {{-- Previous and Next button --}}
-                                            <div class="row">
-                                                <div class="col-md-6 text-left">
+                                            {{-- <div class="row"> --}}
+                                                <div class="float-left">
                                                     <button type="button" class="previous btn btn-success"
                                                         onclick="previous(3)">Previous</button>
                                                 </div>
-                                                <div class="col-md-6 text-right">
+                                                <div class="float-right">
                                                     <button type="submit" class="button btn btn-success">Submit</button>
                                                 </div>
-                                            </div>
+                                            {{-- </div> --}}
                                         </fieldset>
                                     </div>
 
@@ -483,7 +492,32 @@
         $('.date').datepicker();
 
        });
-    //    $('#form').validate();
+    //    This event is for division change
+        $('#division').change(function(){
+            $('#district').removeAttr("disabled");
+            var division_id = $(this).val();
+                if(division!=""){
+                    $.ajaxSetup({
+                        headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                    });
+                    $.ajax({
+                        type: "GET",
+                        dataType: 'json',
+                        url: "division_ajax/"+division_id,
+                        success:function(respose){
+                            console.log(respose);
+                            var data = '<option value="">Select Client Name</option>';
+                            $.each(respose,function(key,value){
+                                data = data + '<option value="'+value.id+'">'+value.name+'</option>';
+                            });
+                            $('#district').html(data);
+                        }
+                    });
+                }
+            });
+
 
         //Next Button
         function next(current_div) {

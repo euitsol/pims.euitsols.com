@@ -10,6 +10,7 @@ use App\Models\Department;
 use App\Models\board;
 use App\Models\eadmission;
 use App\Models\studentInfo;
+use App\Models\Bloodgroup;
 use Illuminate\Support\Facades\Auth;
 
 class studentAdmitcontroller extends Controller
@@ -26,6 +27,7 @@ class studentAdmitcontroller extends Controller
         $n['department'] = Department::where('deleted_by','=',null)->get();
         $n['board'] = board::where('deleted_by','=',null)->get();
         $n['exam_name'] = eadmission::where('deleted_by','=',null)->get();
+        $n['bg'] = Bloodgroup::where('deleted_by','=',null)->get();
 
         return view('pages.student.admission.create',$n);
     }
@@ -95,7 +97,7 @@ class studentAdmitcontroller extends Controller
             'parmanent_address' => "required|string",
             'email' => "nullable|email|unique:student_infos",
             'phone' => "required|unique:student_infos,phone",
-            'gardian_phone' => "required|unique:student_infos,gardian_phone",
+            'gardian_phone' => "required",
             'gender' => "required",
             'dob' => "required",
             'nationality' => "required|string",
