@@ -26,7 +26,6 @@ class studentAdmitcontroller extends Controller
         $n['department'] = Department::where('deleted_by','=',null)->get();
         $n['board'] = board::where('deleted_by','=',null)->get();
         $n['exam_name'] = eadmission::where('deleted_by','=',null)->get();
-
         return view('pages.student.admission.create',$n);
     }
 

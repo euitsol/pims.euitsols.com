@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'User Department')
+@section('title', 'Department Management')
 
 @push('third_party_stylesheets')
 <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
@@ -151,18 +151,18 @@ $(document).ready(function() {
         buttons: [
             {
                 extend: 'pdfHtml5',
-                title: 'User Management',
+                title: 'Department Management',
                 download: 'open',
                 orientation: 'potrait',
                 pagesize: 'LETTER',
                 exportOptions: {
-                    columns: [0,1,2,3]
+                    columns: [0,1,2,3,4]
                 }
             },
             {
                 extend: 'print',
                 exportOptions: {
-                    columns: [0,1,2,3]
+                    columns: [0,1,2,3,4]
                 }
             }, 'pageLength'
         ]

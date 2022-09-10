@@ -65,13 +65,4 @@
 </div>
 @endsection
 
-@push('third_party_scripts')
-<script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script>
-@endpush
-
-@push('page_scripts')
-<script>
-
-</script>
-@endpush
 

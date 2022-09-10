@@ -124,7 +124,6 @@ class departmentController extends Controller
     }
 
     public function delete($id){
-        echo 'ok';
         if($id != null){
             $depertment = Department::findOrFail($id);
             $depertment->deleted_at = Carbon::now()->toDateTimeString();
