@@ -165,6 +165,8 @@ class studentAdmitcontroller extends Controller
      */
     public function show($id)
     {
+        $n['data'] = studentInfo::where('deleted_by',null)->get();
+        dd($n['data']);
         $n['page_name'] = 'Admitted Student';
         return view('pages.student.admission.show',$n);
     }

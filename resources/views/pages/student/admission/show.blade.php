@@ -31,8 +31,11 @@
                             <thead>
                                 <tr>
                                     <th>SL</th>
+                                    <th>Department Name</th>
                                     <th>{{$page_name }} Name</th>
-                                    <th>Short Name</th>
+                                    <th>Student's Phone</th>
+                                    <th>Registration Card</th>
+                                    <th>Marksheet</th>
                                     <th>Created At</th>
                                     <th>Created By</th>
                                     <th>Action</th>
