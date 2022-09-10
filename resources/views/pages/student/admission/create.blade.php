@@ -3,7 +3,15 @@
 @section('title', 'Admit Student')
 
 @push('third_party_stylesheets')
-<link rel="stylesheet" href="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+<link rel="stylesheet" href="{{ asset('assets/css/Datepicker/datepicker.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
+
+<link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
+<link
+    href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
+    rel="stylesheet"
+/>
+
 @endpush
 
 @push('page_css')
@@ -83,8 +91,8 @@
                                                     <div class="form-group">
                                                         <label for="departments_id">Department Name:<span
                                                             class="text-danger">*</span> </label>
-                                                        <select id="form" class="select form-control form-validation"
-                                                            name="departments_id">
+                                                        <select id="departments_id" class="select form-control form-validation"
+                                                            name="departments_id" required>
                                                             <option value="">Select Department</option>
                                                             @foreach ($department as $n)
                                                             <option value="{{$n->id}}">{{$n->department_name}}"</option>
@@ -109,7 +117,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="name">Full Name: <span class="text-danger">*</span></label>
-                                                        <input value="{{ old('name') }}" required type="text"
+                                                        <input value="{{ old('name') }}" required type="text" id="name"
                                                             name="name" placeholder="Full Name" class="form-control">
                                                     </div>
                                                 </div>
@@ -117,7 +125,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="father_name">Father's Name: <span class="text-danger">*</span></label>
-                                                        <input value="{{ old('father_name') }}" required type="text"
+                                                        <input value="{{ old('father_name') }}" required type="text" id="father_name"
                                                             name="father_name" placeholder="Father's Name"
                                                             class="form-control">
                                                     </div>
@@ -245,13 +253,9 @@
                                                 <div class="col-md-4">
                                                     <label for="photo">Photo: <span
                                                         class="text-danger">*</span></label>
-                                                    <div class="input-group">
-                                                        <div class="custom-file">
-                                                            <input name="photo" type="file" class="custom-file-input" id="exampleInputFile">
-                                                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                                                        </div>
-                                                        <div class="input-group-append">
-                                                            <span class="input-group-text">Upload</span>
+                                                    <div class="">
+                                                        <div class="">
+                                                            <input  name="uploadfile" data-actualName="image"  type="file" class="" id="student-photo" accept="image/*">
                                                         </div>
                                                     </div>
                                                     {{-- <div class="form-group">
@@ -307,7 +311,7 @@
                                                         <label for="exam_name">Exam Name:
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <select  name="exams[0][exam_id]" id="exam_id" required class="form-control">
+                                                        <select  name="exams[0][exam_id]" id="exam_id" required class="form-control exam_id" required>
                                                             <option value="">Select Your Exam Name</option>
                                                             @foreach ($exam_name as $n)
                                                             <option value="{{$n->id}}">{{$n->name}}"</option>
@@ -383,13 +387,9 @@
                                                     <div class="form-group">
                                                         <label for="reg_card">Upload Registration Card: <span
                                                             class="text-danger">*</span></label>
-                                                        <div class="input-group">
-                                                            <div class="custom-file">
-                                                                <input name="exams[0][reg_card]" type="file" class="custom-file-input" >
-                                                                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                                                            </div>
-                                                            <div class="input-group-append">
-                                                                <span class="input-group-text">Upload</span>
+                                                        <div class="">
+                                                            <div class="">
+                                                                <input name="uploadfile" data-actualName="exams[0][reg_card]" type="file" id="reg_card_0" accept="application/pdf, image/*" >
                                                             </div>
                                                         </div>
                                                         {{-- <label for="reg_card" class="d-block">Upload Registration Card: <span
@@ -405,13 +405,9 @@
                                                     <div class="form-group">
                                                         <label for="marksheet">Marksheet: <span
                                                             class="text-danger">*</span></label>
-                                                        <div class="input-group">
-                                                            <div class="custom-file">
-                                                                <input name="exams[0][marksheet]" type="file" class="custom-file-input" accept=".pdf,.png,.jpg">
-                                                                <label class="custom-file-label" for="marksheet">Choose file</label>
-                                                            </div>
-                                                            <div class="input-group-append">
-                                                                <span class="input-group-text">Upload</span>
+                                                        <div class="">
+                                                            <div class="">
+                                                                <input name="uploadfile" data-actualName="exams[0][marksheet]" type="file" id="marksheet_0" accept="application/pdf, image/*">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -433,8 +429,6 @@
                                             {{-- Add More button  --}}
                                             <div id="add_more" class="floating-cart" data-count="1">
                                                 <i class="fas fa-plus"></i>
-                                                <div class="cart-count">
-                                                </div>
                                             </div>
                                             {{-- <div class="col-md-12  text-right mb-2">
                                                 <button id="add_more" type="button" data-count="1"
@@ -467,29 +461,91 @@
 @endsection
 
 @push('third_party_scripts')
-    {{-- <script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script> --}}
-    <script src="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script> --}}
+    <script src="{{ asset('assets/js/Datepicker/datepicker.min.js') }}"></script>
+    <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+
+    <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
 @endpush
 
 @push('page_scripts')
-    <script>
-
-       $(document).ready(function(){
+<script>
+    $(document).ready(function(){
         $('.tab').css('display', 'none');
         $('#tab-1').css('display', 'block');
         $('#step-1').css('opacity', '1');
         addDatePicker("year");
         $('.date').datepicker();
+        // $('select').select2();
 
-       });
-    //    $('#form').validate();
+        file_upload(['#student-photo', '#reg_card_0', '#marksheet_0'], 'uploadfile');
+    });
 
+    // ajax file upload: selector(element id/class), name(name of the field)
+    function file_upload(selectors, name){
+        $.each(selectors.reverse(), function( index, selector ) {
+
+            FilePond.registerPlugin(FilePondPluginImagePreview);
+            FilePond.registerPlugin(FilePondPluginFileValidateSize);
+            FilePond.registerPlugin(FilePondPluginFileValidateType);
+
+            var actualName = $(selector).attr('data-actualName');
+
+            const inputElement = document.querySelector(selector);
+            const pond = FilePond.create(inputElement);
+            pond.setOptions({
+                server:{
+                    url: '/file-upload',
+                    process: {
+                        url: '/uploads',
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        onload: (response_data) => {
+                            var f_selector = $('input[name="'+name+'"]');
+                            $(f_selector).attr('name', actualName);
+                            return response_data;
+                        },
+                        onerror: (response_data) => {
+                            console.log(response_data);
+                        },
+                        ondata: (formData) => {
+                            formData.append('name', name);
+                            return formData;
+                        },
+                    },
+                    fetch: null,
+                    revert: null,
+                }
+            });
+        });
+
+
+    }
         //Next Button
         function next(current_div) {
             // $("fieldset").validate();
             var hide = current_div;
             var next = current_div + 1;
+
+            //validation check
+            if(current_div == 1){
+                if(jQuery.inArray(false,  check_validation(['#departments_id']) ) == -1) {
+                    next_process(next, hide);
+                }
+            }else if(current_div == 2){
+                if(jQuery.inArray(false,  check_validation(['#name', '#father_name']) ) == -1) {
+                    next_process(next, hide);
+                }
+            }
+
+        }
+
+        function next_process(next, hide){
 
             //progessbar
             for (i = 1; i <= next; i++) {
@@ -512,8 +568,6 @@
 
             //progessbar
             $("#step-" + hide).css('opacity', '.25');
-            // for(hide;hide>0;hide--){
-            // }
         }
 
         $('#add_more').click(function() {
@@ -532,7 +586,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="exam_id">Exam Name: <span class="text-danger">*</span></label>
-                                <select required name="exams[${count - 1}][exam_id]" class="form-control">
+                                <select required name="exams[${count - 1}][exam_id]" class="form-control exam_id" required>
                                     <option value="">Select Your Exam Name</option>
                                     @foreach ($exam_name as $n)
                                         <option
@@ -593,13 +647,9 @@
                             <div class="form-group">
                                 <label for="reg_card">Upload Registration Card: <span
                                     class="text-danger">*</span></label>
-                                <div class="input-group">
-                                    <div class="custom-file">
-                                        <input name="exams[${count - 1}][reg_card]" type="file" class="custom-file-input" >
-                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                                    </div>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">Upload</span>
+                                <div class="">
+                                    <div class="">
+                                        <input name="uploadfile" data-actualName="exams[${count - 1}][reg_card]" type="file" id="reg_card_${count-1}" accept="application/pdf, image/*" >
                                     </div>
                                 </div>
                             </div>
@@ -609,13 +659,9 @@
                             <div class="form-group">
                                 <label for="marksheet">Marksheet: <span class="text-danger">*</span>
                                 </label>
-                                <div class="input-group">
-                                    <div class="custom-file">
-                                        <input name="exams[${count - 1}][marksheet]" type="file" class="custom-file-input" accept=".pdf,.png,.jpg">
-                                        <label class="custom-file-label" for="marksheet">Choose file</label>
-                                    </div>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">Upload</span>
+                                <div class="">
+                                    <div class="">
+                                        <input name="uploadfile" data-actualName="exams[${count - 1}][marksheet]" type="file" id="marksheet_${count-1}" accept="application/pdf, image/*">
                                     </div>
                                 </div>
                             </div>
@@ -624,21 +670,15 @@
 
             $('#append_exam').append(result);
             addDatePicker("year");
+            let num = count - 1;
+            let reg = '#reg_card_'+num;
+            let mark  = '#marksheet_'+num;
+            file_upload([reg,mark], 'uploadfile');
         });
 
         function delete_section(count) {
             $('#aca_mod_' + count).remove();
         };
-
-        // $('.year').each(function()
-        // {
-        //     $(this).datepicker({
-        //     autoclose: true,
-        //     format: " yyyy",
-        //     viewMode: "years",
-        //     minViewMode: "years"
-        //  });
-        // });
 
         function addDatePicker(className){
             $('.'+className).datepicker({
@@ -649,6 +689,19 @@
             });
         }
 
-    </script>
+        function check_validation(input_id){
+            result = [];
+            $.each(input_id.reverse(), function( index, value ) {
+                if($(value)[0].checkValidity()){
+                    result.push(true);
+                }else{
+                    $(value)[0].reportValidity();
+                    result.push(false);
+                }
+            });
+            return result;
+        }
+
+</script>
 
 @endpush
