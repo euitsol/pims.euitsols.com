@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Shift Management')
+@section('title', 'Credit Management')
 
 @push('third_party_stylesheets')
     <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
