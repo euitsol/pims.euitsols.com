@@ -165,7 +165,8 @@ class studentAdmitcontroller extends Controller
      */
     public function show($id)
     {
-        //
+        $n['page_name'] = 'Admitted Student';
+        return view('pages.student.admission.show',$n);
     }
 
     /**
