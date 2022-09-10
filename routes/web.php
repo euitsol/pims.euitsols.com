@@ -16,7 +16,9 @@ use App\Http\Controllers\setup\GroupController;
 use App\Http\Controllers\setup\BloodGroupController;
 use App\Http\Controllers\setup\DivisionController;
 use App\Http\Controllers\setup\DistrictController;
+use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\setup\ShiftController;
+
 
 
 
@@ -38,6 +40,9 @@ Route::get('/clear-cache', function(){
 
 
 Auth::routes();
+
+//File pond file upload
+Route::post('/file-upload/uploads', [FileUploadController::class, 'uploads'])->name('file.upload');
 
 Route::group(['middleware' => ['auth', 'checkstatus']], function() {
 
