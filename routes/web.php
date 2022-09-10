@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\student\studentAdmitcontroller;
-use App\Http\Controllers\departmentController;
+use App\Http\Controllers\setup\departmentController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\setup\EAdmissionController;
@@ -78,6 +78,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
 
     //department Module
     Route::resource('department', departmentController::class);
+    Route::get('department/delete/{id}', [departmentController::class,'delete'])->name('department.delete');
     //Admission Module
     Route::resource('student-admit', studentAdmitcontroller::class);
 
