@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\student\studentAdmitcontroller;
-use App\Http\Controllers\departmentController;
+use App\Http\Controllers\setup\departmentController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\setup\EAdmissionController;
@@ -15,6 +15,10 @@ use App\Http\Controllers\setup\SemesterDurationController;
 use App\Http\Controllers\setup\GroupController;
 use App\Http\Controllers\setup\BloodGroupController;
 use App\Http\Controllers\setup\DivisionController;
+use App\Http\Controllers\setup\DistrictController;
+use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\setup\ShiftController;
+
 
 
 
@@ -36,6 +40,9 @@ Route::get('/clear-cache', function(){
 
 
 Auth::routes();
+
+//File pond file upload
+Route::post('/file-upload/uploads', [FileUploadController::class, 'uploads'])->name('file.upload');
 
 Route::group(['middleware' => ['auth', 'checkstatus']], function() {
 
@@ -77,6 +84,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
 
     //department Module
     Route::resource('department', departmentController::class);
+    Route::get('department/delete/{id}', [departmentController::class,'delete'])->name('department.delete');
     //Admission Module
     Route::resource('student-admit', studentAdmitcontroller::class);
 
@@ -159,6 +167,28 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::get('/edit/{id}', [DivisionController::class, 'edit'])->name('edit');
         Route::post('/edit-store', [DivisionController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [DivisionController::class, 'destroy'])->name('destroy');
+    });
+
+    // District
+    Route::group(['as' => 'district.', 'prefix' => 'district'], function() {
+        Route::get('/view', [DistrictController::class, 'index'])->name('index');
+        Route::get('/add', [DistrictController::class, 'add'])->name('add');
+        Route::post('/add-store', [DistrictController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [DistrictController::class, 'details'])->name('details');
+        Route::get('/edit/{id}', [DistrictController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [DistrictController::class, 'edit_store'])->name('edit.store');
+        Route::get('/delete/{id}', [DistrictController::class, 'delete'])->name('delete');
+    });
+
+    // Shift
+    Route::group(['as' => 'shift.', 'prefix' => 'shift'], function() {
+        Route::get('/view', [ShiftController::class, 'index'])->name('index');
+        Route::get('/add', [ShiftController::class, 'create'])->name('create');
+        Route::post('/add-store', [ShiftController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [ShiftController::class, 'show'])->name('show');
+        Route::get('/edit/{id}', [ShiftController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [ShiftController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [ShiftController::class, 'destroy'])->name('destroy'); 
     });
 
 });

@@ -30,7 +30,6 @@ class studentAdmitcontroller extends Controller
         $n['exam_name'] = eadmission::where('deleted_by','=',null)->get();
         $n['bg'] = Bloodgroup::where('deleted_by','=',null)->get();
         $n['division'] = Division::where('deleted_by','=',null)->get();
-
         return view('pages.student.admission.create',$n);
     }
 
