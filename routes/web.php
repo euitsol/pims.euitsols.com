@@ -85,8 +85,11 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
     //department Module
     Route::resource('department', departmentController::class);
     Route::get('department/delete/{id}', [departmentController::class,'delete'])->name('department.delete');
+    // Route::post('/department/abc', [studentAdmitcontroller::class,'store'])->name('abcd.store');
+
     //Admission Module
     Route::resource('student-admit', studentAdmitcontroller::class);
+    Route::get('/division_ajax/{id}', [studentAdmitcontroller::class,'ajax']);
 
     // Exam name for admission
     Route::resource('exam-name-admission', EAdmissionController::class);
@@ -188,7 +191,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::get('/details/{id}', [ShiftController::class, 'show'])->name('show');
         Route::get('/edit/{id}', [ShiftController::class, 'edit'])->name('edit');
         Route::post('/edit-store', [ShiftController::class, 'update'])->name('update');
-        Route::get('/delete/{id}', [ShiftController::class, 'destroy'])->name('destroy'); 
+        Route::get('/delete/{id}', [ShiftController::class, 'destroy'])->name('destroy');
     });
 
 });

@@ -12,7 +12,10 @@ use App\Models\eadmission;
 use App\Models\studentInfo;
 use App\Models\Bloodgroup;
 use App\Models\Division;
+use App\Models\District;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use App\Models\TmpFile;
 
 class studentAdmitcontroller extends Controller
 {
@@ -64,58 +67,61 @@ class studentAdmitcontroller extends Controller
         // }
         // --}}
 
-        $attribute = array(
-            'departments_id' => 'Department Name',
-            'name' => 'Name',
-            'father_name'  => 'Father Name',
-            'mother_name'  => 'Mother Name',
-            'present_address'  => 'Present Address',
-            'parmanent_address'  => 'Permanent Address',
-            'email'  => 'Email',
-            'phone'  => 'Phone',
-            'gardian_phone'  => 'Guardian Phone',
-            'gender'  => 'Gender',
-            'dob'  => 'Date of Birth',
-            'nationality'  => 'Nationality',
-            'bg_id'  => 'Blood Group',
+        // dd($request->all());
 
-            'exams.*.exam_id'  => 'Exam Name',
-            'exams.*.passing_year'  => 'Passing Year',
-            'exams.*.division'  => 'Divission',
-            'exams.*.board_id'  => 'Board',
-            'exams.*.roll'  => 'Roll',
-            'exams.*.reg_no'  => 'Registration Number',
-            'exams.*.gpa'  => 'G.P.A',
-            'exams.*.reg_card'  => 'Registration Card',
-            'exams.*.marksheet'  => 'Marsheet',
-        );
-        $request->validate([
-            'departments_id' => "required|integer",
-            'name' => "required|string",
-            'father_name' => "required|string",
-            'mother_name' => "required|string",
-            'present_address' => "required|string",
-            'parmanent_address' => "required|string",
-            'email' => "nullable|email|unique:student_infos",
-            'phone' => "required|unique:student_infos,phone",
-            'gardian_phone' => "required",
-            'gender' => "required",
-            'dob' => "required",
-            'nationality' => "required|string",
-            'bg_id' => "nullable",
-            'quota' => "nullable",
-            // 'photo' => "required|mimes:jpg,jpg,png,svg,jpeg",
+        // $attribute = array(
+        //     'departments_id' => 'Department Name',
+        //     'name' => 'Name',
+        //     'father_name'  => 'Father Name',
+        //     'mother_name'  => 'Mother Name',
+        //     'present_address'  => 'Present Address',
+        //     'parmanent_address'  => 'Permanent Address',
+        //     'email'  => 'Email',
+        //     'phone'  => 'Phone',
+        //     'gardian_phone'  => 'Guardian Phone',
+        //     'gender'  => 'Gender',
+        //     'dob'  => 'Date of Birth',
+        //     'nationality'  => 'Nationality',
+        //     'bg_id'  => 'Blood Group',
 
-            'exams.*.exam_id' => "required",
-            'exams.*.passing_year' => "required",
-            'exams.*.division' => "required|string",
-            'exams.*.board_id' => "required",
-            'exams.*.roll' => "required|unique:academic_infos,roll|integer",
-            'exams.*.reg_no' => "required|unique:academic_infos|integer",
-            'exams.*.gpa' => "required",
-            // 'exams.*.reg_card' => "required|mimes:jpg,png,pdf,svg,jpeg",
-            // 'exams.*.marksheet' => "required|mimes:jpg,png,pdf,svg,jpeg",
-        ],[],$attribute);
+        //     'exams.*.exam_id'  => 'Exam Name',
+        //     'exams.*.passing_year'  => 'Passing Year',
+        //     'exams.*.division'  => 'Divission',
+        //     'exams.*.board_id'  => 'Board',
+        //     'exams.*.roll'  => 'Roll',
+        //     'exams.*.reg_no'  => 'Registration Number',
+        //     'exams.*.gpa'  => 'G.P.A',
+        //     'exams.*.reg_card'  => 'Registration Card',
+        //     'exams.*.marksheet'  => 'Marsheet',
+        // );
+        // $request->validate([
+        //     'departments_id' => "required|integer",
+        //     'name' => "required|string",
+        //     'father_name' => "required|string",
+        //     'mother_name' => "required|string",
+        //     'present_address' => "required|string",
+        //     'parmanent_address' => "required|string",
+        //     'email' => "nullable|email|unique:student_infos",
+        //     'phone' => "required|unique:student_infos,phone",
+        //     'gardian_phone' => "required",
+        //     'gender' => "required",
+        //     'dob' => "required",
+        //     'nationality' => "required|string",
+        //     'bg_id' => "nullable",
+        //     'quota' => "nullable",
+        //     // 'photo' => "required|mimes:jpg,jpg,png,svg,jpeg",
+
+        //     'exams.*.exam_id' => "required",
+        //     'exams.*.passing_year' => "required",
+        //     'exams.*.division' => "required|string",
+        //     'exams.*.board_id' => "required",
+        //     'exams.*.roll' => "required|unique:academic_infos,roll|integer",
+        //     'exams.*.reg_no' => "required|unique:academic_infos|integer",
+        //     'exams.*.gpa' => "required",
+        //     // 'exams.*.reg_card' => "required|mimes:jpg,png,pdf,svg,jpeg",
+        //     // 'exams.*.marksheet' => "required|mimes:jpg,png,pdf,svg,jpeg",
+        // ],[],$attribute);
+
         $insert_student_info = new studentInfo;
         $insert_student_info->departments_id = $request->departments_id;
         $insert_student_info->name = $request->name;
@@ -131,9 +137,25 @@ class studentAdmitcontroller extends Controller
         $insert_student_info->nationality = $request->nationality;
         $insert_student_info->bg_id = $request->bg_id;
         $insert_student_info->quota = $request->quota;
-        $insert_student_info->photo = $request->photo;
+        // $insert_student_info->photo = $request->photo;
         $insert_student_info->created_by = Auth::user()->id;
         $insert_student_info->save();
+
+
+
+        //image upload
+        $temp_file = TmpFile::findOrFail($request->image);
+        if($temp_file){
+            $from_path = $temp_file->path.'/'.$temp_file->filename;
+            $to_path = 'student-info/'.$insert_student_info->id.'/photo/'.$temp_file->filename;
+
+            Storage::move($from_path, $to_path);
+            Storage::deleteDirectory($temp_file->path);
+
+            $insert_student_info->photo = $to_path;
+            $insert_student_info->save();
+        }
+        dd($insert_student_info);
 
         // dd($request->exams);
        foreach($request->exams as $data){
@@ -146,14 +168,39 @@ class studentAdmitcontroller extends Controller
             $insert_academic_info->roll = $data['roll'];
             $insert_academic_info->reg_no = $data['reg_no'];
             $insert_academic_info->gpa = $data['gpa'];
-            $insert_academic_info->reg_card = $data['reg_card'];
-            $insert_academic_info->marksheet = $data['marksheet'];
             $insert_academic_info->created_by = Auth::user()->id;
+            // $insert_academic_info->save();
+
+
+            //for reg
+            $temp_file = TmpFile::findOrFail($data['reg_card']);
+            if($temp_file){
+                $from_path = $temp_file->path.'/'.$temp_file->filename;
+                $to_path = 'student-info/'.$insert_student_info->id.'/registration/'.$temp_file->filename;
+
+                Storage::move($from_path, $to_path);
+                Storage::deleteDirectory($temp_file->path);
+
+                $insert_academic_info->reg_card = $to_path;
+            }
+
+            //for marksheet
+            $temp_file = TmpFile::findOrFail($data['marksheet']);
+            if($temp_file){
+                $from_path = $temp_file->path.'/'.$temp_file->filename;
+                $to_path = 'student-info/'.$insert_student_info->id.'/marksheet/'.$temp_file->filename;
+
+                Storage::move($from_path, $to_path);
+                Storage::deleteDirectory($temp_file->path);
+
+                $insert_academic_info->marksheet = $to_path;
+            }
+
             $insert_academic_info->save();
        }
 
        $this->message('success',"Student admit successfully");
-        return redirect()->back();
+        // return redirect()->back();
     }
 
     /**
@@ -202,5 +249,10 @@ class studentAdmitcontroller extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function ajax($id){
+        $data = District::where('division_id',$id)->get();
+        return response()->json($data);
     }
 }

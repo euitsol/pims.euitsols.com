@@ -45,6 +45,21 @@
             line-height: 3.2rem;
             font-size: 23px;
         }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 26px;
+            position: absolute;
+            top: 7px;
+            right: 1px;
+            width: 20px;
+        }
+        .select2{
+            width: auto;
+            display: block;
+            /* height: 38px !important; */
+        }
+        .select2-selection--single {
+            height: 38px !important;
+        }
     </style>
 @endpush
 
@@ -67,14 +82,14 @@
                             <div class="col-md-10 m-auto">
                                 <h2 class="text-center">Admission Form</h2>
                                 <div align='center'>
-                                    <span class="step" id="step-1">1</span>
+                                    <span class="step" id="step-1" style="opacity: 1">1</span>
                                     <span class="step" id="step-2">2</span>
                                     <span class="step" id="step-3">3</span>
                                 </div>
 
-                                <form id="basic-form" action="{{ route('student-admit.store') }}" method="POST" class="form-horizontal">
+                                <form action="{{ route('student-admit.store') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
                                     @csrf
-                                    <div class="tab" id="tab-1">
+                                    <div class="tab" id="tab-1" style="display: block">
                                         @if ($errors->any())
                                         <div class="alert alert-danger">
                                             <ul>
@@ -86,13 +101,15 @@
                                     @endif
                                         <fieldset>
                                             <h2 class="text-center">Department Choice</h2>
-                                            <div class="row index1">
-                                                <div class="col-md-12 ml-auto">
+                                            <div class="row ml-auto">
+                                                <div class="col-md-4 text-right">
+                                                    <label for="departments_id">Department Name:<span
+                                                        class="text-danger">*</span> </label>
+                                                </div>
+                                                <div class="col-md-8 text-left">
                                                     <div class="form-group">
-                                                        <label for="departments_id">Department Name:<span
-                                                            class="text-danger">*</span> </label>
                                                         <select id="departments_id" class="select form-control form-validation"
-                                                            name="departments_id" required>
+                                                            name="departments_id" >
                                                             <option value="">Select Department</option>
                                                             @foreach ($department as $n)
                                                             <option value="{{$n->id}}">{{$n->department_name}}"</option>
@@ -110,14 +127,14 @@
                                     </div>
 
                                     {{-- Personal data  --}}
-                                    <div class="tab" id="tab-2">
-                                        <fieldset>
+                                    <div class="tab" id="tab-2" style="display: none">
+                                        <fieldset class="shadow-lg p-3 mb-5 bg-body rounded">
                                             <h2 class="text-center">Personal data</h2>
-                                            <div class="row shadow-lg p-3 mb-5 bg-body rounded">
+                                            <div class="row ">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="name">Full Name: <span class="text-danger">*</span></label>
-                                                        <input value="{{ old('name') }}" required type="text" id="name"
+                                                        <input value="{{ old('name') }}"  type="text" id="name"
                                                             name="name" placeholder="Full Name" class="form-control">
                                                     </div>
                                                 </div>
@@ -125,7 +142,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="father_name">Father's Name: <span class="text-danger">*</span></label>
-                                                        <input value="{{ old('father_name') }}" required type="text" id="father_name"
+                                                        <input value="{{ old('father_name') }}"  type="text" id="father_name"
                                                             name="father_name" placeholder="Father's Name"
                                                             class="form-control">
                                                     </div>
@@ -134,50 +151,9 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="mother_name">Mother's Name: <span class="text-danger">*</span></label>
-                                                        <input value="{{ old('mother_name') }}" required type="text"
+                                                        <input value="{{ old('mother_name') }}"  type="text"
                                                             name="mother_name" placeholder="Mother's Name"
                                                             class="form-control">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="division">Your Division: <span class="text-danger">*</span></label>
-                                                        <select id="division" class="select form-control"  name="division">
-                                                            <option value="">Select Your Division</option>
-                                                            @foreach ($division as $n)
-                                                            <option value="{{$n->id}}">{{$n->name}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="district">Your District: <span class="text-danger">*</span></label>
-                                                        <select id="district" class="select form-control"  name="district">
-                                                            <option value="">Select Your District</option>
-                                                            {{-- @foreach ($district as $n)
-                                                            <option value="{{$n->id}}">{{$n->name}}</option>
-                                                            @endforeach --}}
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="present_address">Present Address: <span class="text-danger">*</span></label>
-                                                        <textarea name="present_address" value="{{ old('present_address') }}" class="form-control"  placeholder="Enter Your Present Address" ></textarea>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="parmanent_address">Parmanent Address: <span class="text-danger">*</span></label>
-                                                        <textarea value="{{ old('parmanent_address') }}" required
-                                                            class="form-control" placeholder="Enter Your Parmanent Address"
-                                                            name="parmanent_address" required> </textarea>
                                                     </div>
                                                 </div>
 
@@ -192,7 +168,7 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="phone">Phone: <span class="text-danger">*</span></label>
-                                                        <input value="{{ old('phone') }}" required type="tel"
+                                                        <input value="{{ old('phone') }}"  type="tel"
                                                             name="phone" class="form-control" placeholder="Phone Number">
                                                     </div>
                                                 </div>
@@ -210,7 +186,7 @@
                                                         <label for="gender">Gender: <span
                                                                 class="text-danger">*</span></label>
                                                         <select class="select form-control"  name="gender"
-                                                            required>
+                                                            >
                                                             <option value="Male">Male</option>
                                                             <option  value="Female"> Female</option>
                                                             <option  value="other"> Other</option>
@@ -236,7 +212,7 @@
                                                         <label for="nationality">Nationality: <span
                                                                 class="text-danger">*</span></label>
                                                         <input type="text" name="nationality" value="{{ old('nationality') }}"
-                                                             class="form-control date-pick" placeholder="Write Here your Nationality" required >
+                                                             class="form-control date-pick" placeholder="Write Here your Nationality"  >
                                                     </div>
                                                 </div>
 
@@ -259,27 +235,65 @@
                                                             class="form-control date-pick" placeholder="">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <label for="photo">Photo: <span
-                                                        class="text-danger">*</span></label>
-
-                                                    <div class="">
-                                                        <div class="">
-                                                            <input  name="uploadfile" data-actualName="image"  type="file" class="" id="student-photo" accept="image/*">
-                                                        </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="division" class="label">Your Division: <span class="text-danger">*</span></label>
+                                                        <select id="division" class="select form-control form-validation"  name="division">
+                                                            <option value="">Select Your Division</option>
+                                                            @foreach ($division as $n)
+                                                            <option value="{{$n->id}}">{{$n->name}}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
-                                                    {{-- <div class="form-group">
-                                                        <label for="photo">Photo: <span
-                                                                class="text-danger">*</span></label>
-                                                        <input value="{{ old('photo') }}" required
-                                                            accept=".pdf,.png,.jpg" type="file" name="photo"
-                                                            class="form-input-styled">
-                                                        <span class="form-text text-muted">Accepted Images: jpeg, png. Max
-                                                            file size
-                                                            2Mb</span>
-                                                    </div> --}}
                                                 </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="district">Your District: <span class="text-danger">*</span></label>
+                                                        <select id="district" class="select form-control"  name="district" disabled>
+                                                            <option value="">Select Your District</option>
+                                                            {{-- @foreach ($district as $n)
+                                                            <option value="{{$n->id}}">{{$n->name}}</option>
+                                                            @endforeach --}}
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="present_address">Present Address: <span class="text-danger">*</span></label>
+                                                        <textarea name="present_address" value="{{ old('present_address') }}" class="form-control"  placeholder="Enter Your Present Address" cols="4"></textarea>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="parmanent_address">Parmanent Address: <span class="text-danger">*</span></label>
+                                                        <textarea value="{{ old('parmanent_address') }}"
+                                                            class="form-control" placeholder="Enter Your Parmanent Address"
+                                                            name="parmanent_address" > </textarea>
+                                                    </div>
+                                                </div>
+
                                             </div>
+                                            <div class="row mt-2">
+                                                <div class="col-2">
+
+                                                </div>
+                                                <div class="col-2 text-right">
+                                                     <label for="photo">Photo: <span
+                                                         class="text-danger">*</span>
+                                                     </label>
+                                                </div>
+
+                                                 <div class="col-6 text-left">
+                                                     {{-- <div class=""> --}}
+                                                         <input  name="uploadfile" data-actualName="image"  type="file" class="" id="student-photo" accept="image/*">
+                                                     {{-- </div> --}}
+                                                 </div>
+                                                 <div class="col-2"></div>
+                                             </div>
                                             {{-- <div class="row"> --}}
                                                 <div class="float-left">
                                                     <button type="button" class="previous btn btn-success"
@@ -293,35 +307,19 @@
                                         </fieldset>
                                     </div>
 
-                                    <div class="tab" id="tab-3">
+                                    <div class="tab" id="tab-3" style="display: none">
                                         <fieldset>
                                             <h2 class="text-center">Academic Information</h2>
                                             <div class="row shadow-lg p-3 mb-5 bg-body rounded">
                                                 <div class="col-md-12 text-left">
                                                     <h5>Achademic Information - 1</h5>
                                                 </div>
-                                                {{-- validation --}}
-                                                {{-- 'exams.*.exam_name' => 'required|exists:exams,id', --}}
-                                                {{-- controller --}}
-                                                {{-- foreach ($request->exams as $data) {
-                                                $data['exam_name']
-                                                $data['exam_name']
-                                                $data['exam_name']
-                                                $data['exam_name']
-                                                $data['exam_name']
-                                                $data['exam_name']
-                                                }
-                                                --}}
-
-                                                {{-- save format --}}
-                                                {{-- exam-info/$user_id --}}
-
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="exam_name">Exam Name:
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <select  name="exams[0][exam_id]" id="exam_id" required class="form-control exam_id" required>
+                                                        <select  name="exams[0][exam_id]" id="exam_id"  class="form-control exam_id" >
                                                             <option value="">Select Your Exam Name</option>
                                                             @foreach ($exam_name as $n)
                                                             <option value="{{$n->id}}">{{$n->name}}</option>
@@ -330,15 +328,11 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="passing_year">Passing Year:<span
                                                                 class="text-danger">*</span></label>
                                                                 <input class="form-control year" type="text"name="exams[0][passing_year]" placeholder="Year">
-                                                        {{-- <select id="passing_year" name="exams[0][passing_year]" class="form-control"  required>
-                                                            <option value="">Select Your Passing Year</option>
-
-                                                        </select> --}}
                                                     </div>
                                                 </div>
 
@@ -347,7 +341,7 @@
                                                         <label for="division">Division:<span class="text-danger">*</span></label>
                                                         <select
                                                             id="division" name="exams[0][division]"
-                                                            class="form-control" required>
+                                                            class="form-control" >
                                                             <option value="">Select Your Division</option>
                                                             <option value="Science">Science</option>
                                                             <option value="Bussiness Studies">Bussiness Studies</option>
@@ -361,7 +355,7 @@
                                                         <label for="board_id">Board: <span
                                                                 class="text-danger">*</span></label>
                                                         <select name="exams[0][board_id]"
-                                                            class="form-control" required>
+                                                            class="form-control" >
                                                             <option value="">Select Education Board</option>
                                                             @foreach ($board as $n)
                                                             <option value="{{$n->id}}">{{$n->name}}</option>
@@ -374,26 +368,26 @@
                                                     <div class="form-group">
                                                         <label for="roll">Roll: <span class="text-danger">*</span></label>
                                                         <input type="number" name="exams[0][roll]" class="form-control"
-                                                              value="{{ old('roll') }}" placeholder="Inter Your Roll Number" required>
+                                                              value="{{ old('roll') }}" placeholder="Inter Your Roll Number" >
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="reg_no">Registration No: <span class="text-danger">*</span></label>
-                                                        <input type="number" name="exams[0][reg_no]" class="form-control"  value="{{ old('reg_no') }}" placeholder="Insert Your Registration Number" required>
+                                                        <input type="number" name="exams[0][reg_no]" class="form-control"  value="{{ old('reg_no') }}" placeholder="Insert Your Registration Number" >
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="gpa">G.P.A: <span class="text-danger">*</span></label>
                                                         <input type="number" max="5" name="exams[0][gpa]" class="form-control"
-                                                            value="{{ old('gpa') }}" placeholder="Enter Your G.P.A" required>
+                                                            value="{{ old('gpa') }}" placeholder="Enter Your G.P.A" >
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="reg_card">Upload Registration Card: <span
                                                             class="text-danger">*</span></label>
@@ -402,16 +396,10 @@
                                                                 <input name="uploadfile" data-actualName="exams[0][reg_card]" type="file" id="reg_card_0" accept="application/pdf, image/*" >
                                                             </div>
                                                         </div>
-                                                        {{-- <label for="reg_card" class="d-block">Upload Registration Card: <span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="file"   class="form-input-styled" accept=".pdf,.png,.jpg" value="{{ old('reg_card') }}" required>
-                                                        <span class="form-text text-muted">Accepted Images: jpeg, png. Max
-                                                            file size
-                                                            2Mb</span> --}}
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="marksheet">Marksheet: <span
                                                             class="text-danger">*</span></label>
@@ -422,13 +410,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                        {{-- <label for="marksheet" class="d-block">Marksheet: <span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="file" name="exams[0][marksheet]" class="form-input-styled" accept=".pdf,.png,.jpg" value="{{ old('marksheet') }}" required>
-                                                        <span class="form-text text-muted">Accepted Images: jpeg, png. Max
-                                                            file size
-                                                            2Mb</span> --}}
-
                                                 </div>
                                             </div>
 
@@ -472,28 +453,34 @@
 @endsection
 
 @push('third_party_scripts')
+    {{-- //datpicker --}}
     <script src="{{ asset('assets/js/Datepicker/datepicker.min.js') }}"></script>
+
+    {{-- Select2 --}}
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 
-    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+    {{-- file pond  --}}
+    <script src="{{ asset('assets/js/pond/filepond-plugin-preview.js') }}"></script>
+    <script src="{{ asset('assets/js/pond/filepond-plugin-file-validate-type.js') }}"></script>
+    <script src="{{ asset('assets/js/pond/filepond-plugin-file-validate-size.js') }}"></script>
+    <script src="{{ asset('assets/js/pond/filepond.min.js') }}"></script>
+
+    {{-- <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
     <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
     <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
-
-    <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+    <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script> --}}
 @endpush
 
 @push('page_scripts')
 <script>
     $(document).ready(function(){
-        $('.tab').css('display', 'none');
-        $('#tab-1').css('display', 'block');
-        $('#step-1').css('opacity', '1');
+
         addDatePicker("year");
         $('.date').datepicker();
-        // $('select').select2();
+        $('.select').select2();
 
         file_upload(['#student-photo', '#reg_card_0', '#marksheet_0'], 'uploadfile');
-        
+
          // This event is for division change
         $('#division').change(function(){
             $('#district').removeAttr("disabled");
@@ -501,7 +488,7 @@
                 if(division!=""){
                     $.ajaxSetup({
                         headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
                             }
                     });
                     $.ajax({
@@ -510,7 +497,7 @@
                         url: "division_ajax/"+division_id,
                         success:function(respose){
                             console.log(respose);
-                            var data = '<option value="">Select Client Name</option>';
+                            var data = '<option value="">Select Your District</option>';
                             $.each(respose,function(key,value){
                                 data = data + '<option value="'+value.id+'">'+value.name+'</option>';
                             });
@@ -518,7 +505,7 @@
                         }
                     });
                 }
-            });
+        });
     });
 
     // ajax file upload: selector(element id/class), name(name of the field)
@@ -621,7 +608,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="exam_id">Exam Name: <span class="text-danger">*</span></label>
-                                <select required name="exams[${count - 1}][exam_id]" class="form-control exam_id" required>
+                                <select  name="exams[${count - 1}][exam_id]" class="form-control exam_id" >
                                     <option value="">Select Your Exam Name</option>
                                     @foreach ($exam_name as $n)
                                         <option
@@ -639,7 +626,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="division">Division: <span class="text-danger">*</span></label>
-                                <select name="exams[${count - 1}][division]" required class="form-control">
+                                <select name="exams[${count - 1}][division]"  class="form-control">
                                     <option value="">Select Your Division</option>
                                     <option value="Science">Science</option>
                                     <option value="Bussiness Studies">Bussiness Studies</option>
@@ -650,7 +637,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="board_id">Board: <span class="text-danger">*</span></label>
-                                <select name="exams[${count - 1}][board_id]" required class="form-control">
+                                <select name="exams[${count - 1}][board_id]"  class="form-control">
                                     <option value="">Select Education Board</option>
                                     @foreach ($board as $n)
                                         <option value="{{$n->id}}">
@@ -663,19 +650,19 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Roll: <span class="text-danger">*</span></label>
-                                <input name="exams[${count - 1}][roll]"  type="text" required placeholder="Inter Your Roll Number" class="form-control" value="{{ old('roll') }}">
+                                <input name="exams[${count - 1}][roll]"  type="text"  placeholder="Inter Your Roll Number" class="form-control" value="{{ old('roll') }}">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Registration No: <span class="text-danger">*</span></label>
-                                <input name="exams[${count - 1}][reg_no]"  type="text" required placeholder="Insert Your Registration Number" class="form-control" value="{{ old('reg_no') }}">
+                                <input name="exams[${count - 1}][reg_no]"  type="text"  placeholder="Insert Your Registration Number" class="form-control" value="{{ old('reg_no') }}">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>G.P.A: <span class="text-danger">*</span></label>
-                                <input name="exams[${count - 1}][gpa]"  type="text" required placeholder="Enter Your G.P.A" class="form-control" value="{{ old('gpa') }}">
+                                <input name="exams[${count - 1}][gpa]"  type="text"  placeholder="Enter Your G.P.A" class="form-control" value="{{ old('gpa') }}">
                             </div>
                         </div>
                         <div class="col-md-4">
