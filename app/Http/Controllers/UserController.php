@@ -204,7 +204,7 @@ class UserController extends Controller
         ]);
         $permission = Permission::create(['name' => $request->name, 'prefix' => $request->prefix, 'created_by' => auth()->user()->id, 'created_at' => Carbon::now()->toDateTimeString()]);
         $this->message('success', 'Permission Created Successfullly');
-        return redirect()->route('users.permission.view');
+        return redirect()->route('users.permission.index');
     }
 
     public function permission_details($id=null){
