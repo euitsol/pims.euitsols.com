@@ -30,9 +30,9 @@
                             @csrf
 
                                 <div class="form-group row">
-                                    <label class="col-sm-3" for="name">Credit Number<span class="text-danger">*</span></label>
+                                    <label class="col-sm-3" for="credit_number">Credit Number<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="credit_number" name="credit_number" value="{{ old('credit_number') }}" placeholder="Enter Credit Number" required>
+                                        <input type="number" class="form-control" id="credit_number" name="credit_number" value="{{ old('credit_number') }}" step=".01" placeholder="Enter Credit Number" required>
                                         @if ($errors->has('credit_number'))
                                             <span class="text-danger">{{ $errors->first('credit_number') }}</span>
                                         @endif
@@ -40,7 +40,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="col-sm-3" for="name">Marks<span class="text-danger">*</span></label>
+                                    <label class="col-sm-3" for="marks">Marks<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" id="marks" name="marks" value="{{ old('marks') }}" placeholder="Enter Marks" required>
                                         @if ($errors->has('marks'))
@@ -50,7 +50,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="col-sm-3" for="name">Class Hour<span class="text-danger">*</span></label>
+                                    <label class="col-sm-3" for="class_hour">Class Hour<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" id="class_hour" name="class_hour" value="{{ old('class_hour') }}" placeholder="Enter Class Hour" required>
                                         @if ($errors->has('class_hour'))
@@ -60,7 +60,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="col-sm-3" for="name">Total Class<span class="text-danger">*</span></label>
+                                    <label class="col-sm-3" for="total_class">Total Class<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" id="total_class" name="total_class" value="{{ old('total_class') }}" placeholder="Enter Total Class" required>
                                         @if ($errors->has('total_class'))

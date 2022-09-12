@@ -29,7 +29,7 @@ class CreditController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'credit_number' => 'required|unique:credits,credit_number|integer',
+            'credit_number' => 'required|unique:credits,credit_number|numeric|between:0,99.99',
         ]);
 
         $insert = new credit;
@@ -69,7 +69,7 @@ class CreditController extends Controller
 
         $update = Credit::findOrFail($request->id);
         if($update->credit_number != $request->credit_number){
-            $this->validate($request, ['credit_number' => 'required|unique:credits,credit_number|integer']);
+            $this->validate($request, ['credit_number' => 'required|unique:credits,credit_number|numeric|between:0,99.99']);
         }
 
         $update->credit_number = $request->credit_number;

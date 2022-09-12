@@ -44,7 +44,7 @@
 
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
-                                            <td>{{ $d->credit_number }}</td>
+                                            <td>{{ number_format((float)$d->credit_number, 2, '.', '')}}</td>
                                             <td>{{ $d->marks }}</td>
                                             <td>{{ $d->class_hour }}</td>
                                             <td>{{ $d->total_class }}</td>
@@ -175,13 +175,13 @@
                         orientation: 'potrait',
                         pagesize: 'LETTER',
                         exportOptions: {
-                            columns: [0, 1, 2, 3]
+                            columns: [0, 1, 2, 3, 4, 5, 6]
                         }
                     },
                     {
                         extend: 'print',
                         exportOptions: {
-                            columns: [0, 1, 2, 3]
+                            columns: [0, 1, 2, 3, 4, 5, 6]
                         }
                     }, 'pageLength'
                 ]
