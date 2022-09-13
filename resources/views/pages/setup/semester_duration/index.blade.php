@@ -44,7 +44,7 @@
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $semester_session->session->start }} - {{ $semester_session->session->end }}</td>
                                     <td>{{ $semester_session->semester->name }}</td>
-                                    <td>{{ date("F", mktime(0, 0, 0, $semester_session->start, 1)) }} - {{ date("F", mktime(0, 0, 0, $semester_session->end, 1)) }}</td>
+                                    <td>{{ date('M-Y', strtotime($semester_session->start)) }} - {{ date('M-Y', strtotime($semester_session->end)) }}</td>
                                     <td>{{ date('d-m-Y', strtotime($semester_session->created_at)) }}</td>
                                     <td>{{ $semester_session->created_user->name ?? 'system' }}</td>
                                     <td>
@@ -185,7 +185,7 @@
 
                         $('#view-name').html(response.semester.name);
                         $('#view-session').html(response.session.start+' - '+response.session.end);
-                        $('#view-duration').html(get_month_name(response.start)+' - '+get_month_name(response.end));
+                        $('#view-duration').html(get_month_name(new Date(response.start).getMonth() + 1)+'-'+ new Date(response.start).getFullYear() +' - '+ get_month_name(new Date(response.end).getMonth() + 1)+'-'+ new Date(response.end).getFullYear());
                         $('#view-createdAt').html(response.created_at ? new Date(response.created_at) : '');
                         $('#view-createdBy').html(response.created_user ? response.created_user.name : 'system');
                         $('#view-updatedAt').html(response.updated_at ? new Date(response.updated_at) : '');

@@ -124,14 +124,20 @@ $(document).ready(function() {
 
     $('#start_month').datepicker({
         autoclose: true,
-        format: "MM",
+        format: "MM yyyy",
+        startView: "months",
+        minViewMode: "months",
         changeMonth: true,
+        changeYear: true,
     });
 
     $('#end_month').datepicker({
         autoclose: true,
-        format: "MM",
+        format: "MM yyyy",
+        startView: "months",
+        minViewMode: "months",
         changeMonth: true,
+        changeYear: true,
     });
 
     $('#session').change( function(){
@@ -156,7 +162,7 @@ function get_previous_durations(session_id){
                         <tr>
                             <td>Semester: ${data.semester.name}</td>
                             <td>Session: ${data.session.start} - ${data.session.end}</td>
-                            <td>Duration: ${get_month_name(data.start)} - ${get_month_name(data.end)}</td>
+                            <td>Duration: ${get_month_name(new Date(data.start).getMonth() + 1)}-${new Date(data.start).getFullYear()} - ${get_month_name(new Date(data.end).getMonth() + 1)}-${new Date(data.end).getFullYear()}</td>
                         </tr>
                     `;
                 }
