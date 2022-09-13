@@ -17,4 +17,11 @@ class Credit extends Model
     public function deleted_user(){
         return $this->belongsTo(User::class, 'deleted_by', 'id');
     }
+    public function class_hour_type(){
+        if($this->hour_minute == 1 ){
+            return 'Hours';
+        }elseif($this->hour_minute == 2){
+            return 'Minutes';
+        }
+    }
 }

@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('credits', function (Blueprint $table) {
             $table->id();
-            $table->integer("credit_number")->unique();
-            $table->integer("marks");
-            $table->integer("class_hour");
+            $table->float("credit_number")->unique();
+            $table->float("marks");
+            $table->float("class_hour");
+            $table->integer("hour_minute");
             $table->integer("total_class");
             $table->timestamps();
             $table->unsignedBigInteger('created_by')->nullable();

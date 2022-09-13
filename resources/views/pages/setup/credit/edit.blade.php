@@ -52,13 +52,20 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="col-sm-3" for="class_hour">Class Hour<span class="text-danger">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="class_hour" name="class_hour" value="{{ $db_data->class_hour }}" placeholder="Enter Class Hour" required>
-                                        @if ($errors->has('class_hour'))
-                                            <span class="text-danger">{{ $errors->first('class_hour') }}</span>
-                                        @endif
+                                    <label class="col-sm-3" for="class_hour">Class Hour<span
+                                            class="text-danger">*</span></label>
+                                    <div class="col-sm-9 d-flex">
+                                        <input type="number" step="0.01" class="form-control" id="class_hour" value="{{ $db_data->class_hour }}" placeholder="Enter Total Class Hour Per Class" name = "class_hour">
+                                        <div class="input-group-append">
+                                            <select class="form-control" name="hour_minute" id="hour_minute">
+                                                <option value="1" @if( $db_data->hour_minute==1 ) selected @endif >Hours</option>
+                                                <option value="2" @if( $db_data->hour_minute==2 ) selected @endif >Minutes</option>
+                                            </select>
+                                        </div>
                                     </div>
+                                    @if ($errors->has('class_hour'))
+                                            <span class="text-danger ml-2">{{ $errors->first('class_hour') }}</span>
+                                    @endif
                                 </div>
 
                                 <div class="form-group row">

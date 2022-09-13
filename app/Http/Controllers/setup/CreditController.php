@@ -29,13 +29,18 @@ class CreditController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'credit_number' => 'required|unique:credits,credit_number|numeric|between:0,99.99',
+            'credit_number' => 'required|unique:credits,credit_number|numeric',
+            'marks' => 'required|numeric',
+            'class_hour' => 'required|numeric',
+            'hour_minute' => 'required|numeric',
+            'total_class' => 'required|numeric',
         ]);
 
         $insert = new credit;
         $insert->credit_number = $request->credit_number;
         $insert->marks = $request->marks;
         $insert->class_hour = $request->class_hour;
+        $insert->hour_minute = $request->hour_minute;
         $insert->total_class = $request->total_class;
         $insert->created_at = Carbon::now()->toDateTimeString();
         $insert->created_by = auth()->user()->id;
@@ -75,6 +80,7 @@ class CreditController extends Controller
         $update->credit_number = $request->credit_number;
         $update->marks = $request->marks;
         $update->class_hour = $request->class_hour;
+        $update->hour_minute = $request->hour_minute;
         $update->total_class = $request->total_class;
         $update->updated_at = Carbon::now()->toDateTimeString();
         $update->updated_by = auth()->user()->id;

@@ -46,7 +46,7 @@
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ number_format((float)$d->credit_number, 2, '.', '')}}</td>
                                             <td>{{ $d->marks }}</td>
-                                            <td>{{ $d->class_hour }}</td>
+                                            <td>{{ $d->class_hour }} {{ $d->class_hour_type() }}</td>
                                             <td>{{ $d->total_class }}</td>
                                             <td>{{ date('d-m-Y', strtotime($d->created_at)) }}</td>
                                             <td>{{ $d->created_user->name ?? 'system' }}</td>
@@ -200,7 +200,15 @@
 
                             $('#view-number').html(response.credit_number);
                             $('#view-marks').html(response.marks);
-                            $('#view-hour').html(response.class_hour);
+                            // var hour_minutes =
+                            if(response.hour_minute==1){
+                                var hour_minutes = 'Hours';
+                            }
+                            if(response.hour_minute==2){
+                                var hour_minutes = 'Minutes';
+                            }
+
+                            $('#view-hour').html(response.class_hour+' '+hour_minutes);
                             $('#view-class').html(response.total_class);
                             $('#view-createdAt').html(response.created_at ? new Date(response
                                 .created_at) : '');
