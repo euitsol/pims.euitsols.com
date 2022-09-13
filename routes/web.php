@@ -202,7 +202,8 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::get('/edit/{id}', [LetterGradeController::class, 'edit'])->name('edit');
         Route::post('/edit-store', [LetterGradeController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [LetterGradeController::class, 'destroy'])->name('destroy');
-
+   });
+    
     // Credit
     Route::group(['as' => 'credit.', 'prefix' => 'credit'], function() {
         Route::get('/view', [CreditController::class, 'index'])->name('index');
