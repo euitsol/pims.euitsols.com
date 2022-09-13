@@ -42,8 +42,8 @@ class SemesterDurationController extends Controller
             return redirect()->back()->withInput()->withErrors(['semester' => 'This semester has already been taken for selected session']);
         }
 
-        $start_month = Carbon::parse($request->start_month)->month;
-        $end_month = Carbon::parse($request->end_month)->month;
+        $start_month = Carbon::parse($request->start_month);
+        $end_month = Carbon::parse($request->end_month);
 
         $check = SemesterDuration::where('session_id', $request->session)->where('deleted_at', null)->latest()->get();
         foreach( $check as $ck){
@@ -96,8 +96,8 @@ class SemesterDurationController extends Controller
             return redirect()->back()->withInput()->withErrors(['semester' => 'This semester has already been taken for selected session']);
         }
 
-        $start_month = Carbon::parse($request->start_month)->month;
-        $end_month = Carbon::parse($request->end_month)->month;
+        $start_month = Carbon::parse($request->start_month);
+        $end_month = Carbon::parse($request->end_month);
 
         $semester_session = SemesterDuration::findOrFail($request->id);
         $check = SemesterDuration::where('session_id', $request->session)->where('deleted_at', null)->latest()->get()->except($semester_session->id);

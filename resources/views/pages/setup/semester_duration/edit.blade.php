@@ -81,9 +81,9 @@
                                     <label class="col-sm-3" for="start_month">Duration<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
                                         <div class="input-group input-daterange" id="year">
-                                            <input type="text" class="form-control" id="start_month" name="start_month" value="{{ date("F", mktime(0, 0, 0, $semester_session->start, 1)) }}">
+                                            <input type="text" class="form-control" id="start_month" name="start_month" value="{{ date('M Y', strtotime($semester_session->start)) }}">
                                         <div class="input-group-append"><div class="input-group-text">to</div></div>
-                                            <input type="text" class="form-control" id="end_month" name="end_month" value="{{ date("F", mktime(0, 0, 0, $semester_session->end, 1)) }}">
+                                            <input type="text" class="form-control" id="end_month" name="end_month" value="{{ date('M Y', strtotime($semester_session->end)) }}">
                                         </div>
                                         @if ($errors->has('start_month'))
                                             <span class="text-danger">{{ $errors->first('start_month') }}</span>
@@ -125,14 +125,20 @@ $(document).ready(function() {
 
     $('#start_month').datepicker({
         autoclose: true,
-        format: "MM",
+        format: "MM yyyy",
+        startView: "months",
+        minViewMode: "months",
         changeMonth: true,
+        changeYear: true,
     });
 
     $('#end_month').datepicker({
         autoclose: true,
-        format: "MM",
+        format: "MM yyyy",
+        startView: "months",
+        minViewMode: "months",
         changeMonth: true,
+        changeYear: true,
     });
 
     $('#session').change( function(){
@@ -157,7 +163,7 @@ function get_previous_durations(session_id){
                         <tr>
                             <td>Semester: ${data.semester.name}</td>
                             <td>Session: ${data.session.start} - ${data.session.end}</td>
-                            <td>Duration: ${get_month_name(data.start)} - ${get_month_name(data.end)}</td>
+                            <td>Duration: ${get_month_name(new Date(data.start).getMonth() + 1)}-${new Date(data.start).getFullYear()} - ${get_month_name(new Date(data.end).getMonth() + 1)}-${new Date(data.end).getFullYear()}</td>
                         </tr>
                     `;
                 }
