@@ -89,7 +89,8 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
 
     //Admission Module
     Route::resource('student-admit', studentAdmitcontroller::class);
-    Route::get('/division_ajax/{id}', [studentAdmitcontroller::class,'ajax']);
+    // Route::get('/division_ajax/{id}', [studentAdmitcontroller::class,'ajax']);
+    Route::get('student-admit/division_ajax/{id}', [studentAdmitcontroller::class,'ajax']);
 
     // Exam name for admission
     Route::resource('exam-name-admission', EAdmissionController::class);

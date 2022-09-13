@@ -5,7 +5,6 @@ namespace App\Http\Controllers\student;
 use App\Http\Controllers\Controller;
 use App\Models\AcademicInfo;
 use Illuminate\Http\Request;
-use App\Models\AdmitStudent;
 use App\Models\Department;
 use App\Models\board;
 use App\Models\eadmission;
@@ -16,6 +15,9 @@ use App\Models\District;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\TmpFile;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class studentAdmitcontroller extends Controller
 {
@@ -26,14 +28,11 @@ class studentAdmitcontroller extends Controller
      */
     public function index()
     {
-        // $n['data'] = studentInfo::all();
-        $n['page_name'] = 'Admit Student';
-        $n['department'] = Department::where('deleted_by','=',null)->get();
-        $n['board'] = board::where('deleted_by','=',null)->get();
-        $n['exam_name'] = eadmission::where('deleted_by','=',null)->get();
-        $n['bg'] = Bloodgroup::where('deleted_by','=',null)->get();
-        $n['division'] = Division::where('deleted_by','=',null)->get();
-        return view('pages.student.admission.create',$n);
+        $n['data'] = studentInfo::with(['created_user', 'updated_user', 'deleted_user','academicInfo'])->where('deleted_at', null)->get();
+        // dd($n['data']);
+        $n['page_name'] = 'Admitted Student';
+
+       return view('pages.student.admission.show',$n);
     }
 
     /**
@@ -43,7 +42,14 @@ class studentAdmitcontroller extends Controller
      */
     public function create()
     {
-        //
+         // $n['data'] = studentInfo::all();
+         $n['page_name'] = 'Admit Student';
+         $n['department'] = Department::where('deleted_by','=',null)->get();
+         $n['board'] = board::where('deleted_by','=',null)->get();
+         $n['exam_name'] = eadmission::where('deleted_by','=',null)->get();
+         $n['bg'] = Bloodgroup::where('deleted_by','=',null)->get();
+         $n['division'] = Division::where('deleted_by','=',null)->get();
+         return view('pages.student.admission.create',$n);
     }
 
     /**
@@ -54,73 +60,65 @@ class studentAdmitcontroller extends Controller
      */
     public function store(Request $request)
     {
-        // {{-- validation --}}
-        // {{-- 'exams.*.exam_name' => 'required|exists:exams,id', --}}
-        // {{-- controller --}}
-        // {{-- foreach ($request->exams as $data) {
-        // $data['exam_name']
-        // $data['exam_name']
-        // $data['exam_name']
-        // $data['exam_name']
-        // $data['exam_name']
-        // $data['exam_name']
-        // }
-        // --}}
+        $rule = [
+            'departments_id' => "required|integer",
+            'name' => "required|string",
+            'father_name' => "required|string",
+            'mother_name' => "required|string",
+            'present_address' => "required|string",
+            'parmanent_address' => "required|string",
+            'email' => "nullable|email|unique:student_infos",
+            'phone' => "required|unique:student_infos,phone",
+            'gardian_phone' => "required",
+            'gender' => "required",
+            'dob' => "required",
+            'nationality' => "required|string",
+            'bg_id' => "nullable|exist:",
+            'quota' => "nullable",
+            'division' => "nullable",
+            'district' => "nullable",
+            'photo' => "required|mimes:jpg,jpg,png,svg,jpeg",
 
-        // dd($request->all());
+            'exams.*.exam_id' => "required",
+            'exams.*.passing_year' => "required",
+            'exams.*.group' => "required|string",
+            'exams.*.board_id' => "required",
+            'exams.*.roll' => "required|unique:academic_infos,roll|integer",
+            'exams.*.reg_no' => "required|unique:academic_infos|integer",
+            'exams.*.gpa' => "required",
+            'exams.*.reg_card' => "required|mimes:jpg,png,pdf,svg,jpeg",
+            'exams.*.marksheet' => "required|mimes:jpg,png,pdf,svg,jpeg",
+        ];
+        $msg = [];
+        $attribute = array(
+            'departments_id' => 'Department Name',
+            'name' => 'Name',
+            'father_name'  => 'Father Name',
+            'mother_name'  => 'Mother Name',
+            'present_address'  => 'Present Address',
+            'parmanent_address'  => 'Permanent Address',
+            'email'  => 'Email',
+            'phone'  => 'Phone',
+            'gardian_phone'  => 'Guardian Phone',
+            'gender'  => 'Gender',
+            'dob'  => 'Date of Birth',
+            'nationality'  => 'Nationality',
+            'bg_id'  => 'Blood Group',
+            'division'  => 'Blood Group',
+            'district'  => 'Blood Group',
 
-        // $attribute = array(
-        //     'departments_id' => 'Department Name',
-        //     'name' => 'Name',
-        //     'father_name'  => 'Father Name',
-        //     'mother_name'  => 'Mother Name',
-        //     'present_address'  => 'Present Address',
-        //     'parmanent_address'  => 'Permanent Address',
-        //     'email'  => 'Email',
-        //     'phone'  => 'Phone',
-        //     'gardian_phone'  => 'Guardian Phone',
-        //     'gender'  => 'Gender',
-        //     'dob'  => 'Date of Birth',
-        //     'nationality'  => 'Nationality',
-        //     'bg_id'  => 'Blood Group',
+            'exams.*.exam_id'  => 'Exam Name',
+            'exams.*.passing_year'  => 'Passing Year',
+            'exams.*.division'  => 'Divission',
+            'exams.*.board_id'  => 'Board',
+            'exams.*.roll'  => 'Roll',
+            'exams.*.reg_no'  => 'Registration Number',
+            'exams.*.gpa'  => 'G.P.A',
+            'exams.*.reg_card'  => 'Registration Card',
+            'exams.*.marksheet'  => 'Marsheet',
+        );
 
-        //     'exams.*.exam_id'  => 'Exam Name',
-        //     'exams.*.passing_year'  => 'Passing Year',
-        //     'exams.*.division'  => 'Divission',
-        //     'exams.*.board_id'  => 'Board',
-        //     'exams.*.roll'  => 'Roll',
-        //     'exams.*.reg_no'  => 'Registration Number',
-        //     'exams.*.gpa'  => 'G.P.A',
-        //     'exams.*.reg_card'  => 'Registration Card',
-        //     'exams.*.marksheet'  => 'Marsheet',
-        // );
-        // $request->validate([
-        //     'departments_id' => "required|integer",
-        //     'name' => "required|string",
-        //     'father_name' => "required|string",
-        //     'mother_name' => "required|string",
-        //     'present_address' => "required|string",
-        //     'parmanent_address' => "required|string",
-        //     'email' => "nullable|email|unique:student_infos",
-        //     'phone' => "required|unique:student_infos,phone",
-        //     'gardian_phone' => "required",
-        //     'gender' => "required",
-        //     'dob' => "required",
-        //     'nationality' => "required|string",
-        //     'bg_id' => "nullable",
-        //     'quota' => "nullable",
-        //     // 'photo' => "required|mimes:jpg,jpg,png,svg,jpeg",
-
-        //     'exams.*.exam_id' => "required",
-        //     'exams.*.passing_year' => "required",
-        //     'exams.*.division' => "required|string",
-        //     'exams.*.board_id' => "required",
-        //     'exams.*.roll' => "required|unique:academic_infos,roll|integer",
-        //     'exams.*.reg_no' => "required|unique:academic_infos|integer",
-        //     'exams.*.gpa' => "required",
-        //     // 'exams.*.reg_card' => "required|mimes:jpg,png,pdf,svg,jpeg",
-        //     // 'exams.*.marksheet' => "required|mimes:jpg,png,pdf,svg,jpeg",
-        // ],[],$attribute);
+        Validator::make($request->all(),$rule,$msg,$attribute);
 
         $insert_student_info = new studentInfo;
         $insert_student_info->departments_id = $request->departments_id;
@@ -137,11 +135,11 @@ class studentAdmitcontroller extends Controller
         $insert_student_info->nationality = $request->nationality;
         $insert_student_info->bg_id = $request->bg_id;
         $insert_student_info->quota = $request->quota;
+        $insert_student_info->division_id = $request->division_id;
+        $insert_student_info->district_id = $request->district_id;
         // $insert_student_info->photo = $request->photo;
         $insert_student_info->created_by = Auth::user()->id;
         $insert_student_info->save();
-
-
 
         //image upload
         $temp_file = TmpFile::findOrFail($request->image);
@@ -155,15 +153,13 @@ class studentAdmitcontroller extends Controller
             $insert_student_info->photo = $to_path;
             $insert_student_info->save();
         }
-        dd($insert_student_info);
 
-        // dd($request->exams);
        foreach($request->exams as $data){
             $insert_academic_info = new AcademicInfo;
             $insert_academic_info->student_infos_id =  $insert_student_info->id;
             $insert_academic_info->exam_id = $data['exam_id'];
             $insert_academic_info->passing_year = $data['passing_year'];
-            $insert_academic_info->division = $data['division'];
+            $insert_academic_info->group = $data['group'];
             $insert_academic_info->board_id = $data['board_id'];
             $insert_academic_info->roll = $data['roll'];
             $insert_academic_info->reg_no = $data['reg_no'];
@@ -200,7 +196,7 @@ class studentAdmitcontroller extends Controller
        }
 
        $this->message('success',"Student admit successfully");
-        // return redirect()->back();
+        return redirect()->back();
     }
 
     /**
@@ -211,10 +207,9 @@ class studentAdmitcontroller extends Controller
      */
     public function show($id)
     {
-        $n['data'] = studentInfo::where('deleted_by',null)->get();
-        dd($n['data']);
-        $n['page_name'] = 'Admitted Student';
-        return view('pages.student.admission.show',$n);
+        $n['admitted_std_info'] = studentInfo::with(['created_user', 'updated_user', 'deleted_user','StudentInfo'])->where('deleted_at', null)->where('id', $id)->first();
+
+        return view('pages.student.admission.show_details',$n);
     }
 
     /**
@@ -225,7 +220,7 @@ class studentAdmitcontroller extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**

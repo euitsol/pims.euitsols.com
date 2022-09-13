@@ -11,7 +11,17 @@ class AcademicInfo extends Model
     use HasFactory;
 
 
-    public function departments(){
-        return $this->BelongsTo(departmentModel::class,'departments_id');
+    public function created_user(){
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+    public function updated_user(){
+        return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
+    public function deleted_user(){
+        return $this->belongsTo(User::class, 'deleted_by', 'id');
+    }
+
+    public function StudentInfo(){
+        return $this->BelongsTo(StudentInfo::class,'student_infos_id');
     }
 }
