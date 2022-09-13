@@ -160,6 +160,11 @@
 </li>
 
 <li class="nav-item">
+    <a href="{{ route('lettergrade.index') }}" class="nav-link {{ Request::is('lettergrade') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-street-view"></i>
+        <p>Lettter Grade</p>
+</li>
+<li class="nav-item">
     <a href="{{ route('credit.index') }}" class="nav-link {{ Request::is('shift') ? 'active' : '' }}">
         <i class="nav-icon fas fa-street-view"></i>
         <p>Credit</p>
