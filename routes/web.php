@@ -19,6 +19,7 @@ use App\Http\Controllers\setup\DistrictController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\setup\ShiftController;
 use App\Http\Controllers\setup\LetterGradeController;
+use App\Http\Controllers\setup\CreditController;
 
 
 
@@ -191,7 +192,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::post('/edit-store', [ShiftController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [ShiftController::class, 'destroy'])->name('destroy');
     });
-
+  
     // Letter Gradde
     Route::group(['as' => 'lettergrade.', 'prefix' => 'lettergrade'], function() {
         Route::get('/view', [LetterGradeController::class, 'index'])->name('index');
@@ -201,6 +202,16 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::get('/edit/{id}', [LetterGradeController::class, 'edit'])->name('edit');
         Route::post('/edit-store', [LetterGradeController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [LetterGradeController::class, 'destroy'])->name('destroy');
+
+    // Credit
+    Route::group(['as' => 'credit.', 'prefix' => 'credit'], function() {
+        Route::get('/view', [CreditController::class, 'index'])->name('index');
+        Route::get('/add', [CreditController::class, 'create'])->name('create');
+        Route::post('/add-store', [CreditController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [CreditController::class, 'show'])->name('show');
+        Route::get('/edit/{id}', [CreditController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [CreditController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [CreditController::class, 'destroy'])->name('destroy');
     });
 
 });
