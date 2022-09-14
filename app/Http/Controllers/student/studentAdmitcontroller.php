@@ -146,7 +146,7 @@ class studentAdmitcontroller extends Controller
         $temp_file = TmpFile::findOrFail($request->image);
         if($temp_file){
             $from_path = $temp_file->path.'/'.$temp_file->filename;
-            $to_path = 'student-info/'.$insert_student_info->id.'/photo/'.$temp_file->filename;
+            $to_path = 'public/student-info/'.$insert_student_info->id.'/photo/'.$temp_file->filename;
 
             Storage::move($from_path, $to_path);
             Storage::deleteDirectory($temp_file->path);
@@ -173,7 +173,7 @@ class studentAdmitcontroller extends Controller
             $temp_file = TmpFile::findOrFail($data['reg_card']);
             if($temp_file){
                 $from_path = $temp_file->path.'/'.$temp_file->filename;
-                $to_path = 'student-info/'.$insert_student_info->id.'/registration/'.$temp_file->filename;
+                $to_path = 'public/student-info/'.$insert_student_info->id.'/registration/'.$temp_file->filename;
 
                 Storage::move($from_path, $to_path);
                 Storage::deleteDirectory($temp_file->path);
@@ -184,7 +184,7 @@ class studentAdmitcontroller extends Controller
             $temp_file = TmpFile::findOrFail($data['marksheet']);
             if($temp_file){
                 $from_path = $temp_file->path.'/'.$temp_file->filename;
-                $to_path = 'student-info/'.$insert_student_info->id.'/marksheet/'.$temp_file->filename;
+                $to_path = 'public/student-info/'.$insert_student_info->id.'/marksheet/'.$temp_file->filename;
 
                 Storage::move($from_path, $to_path);
                 Storage::deleteDirectory($temp_file->path);
@@ -207,9 +207,9 @@ class studentAdmitcontroller extends Controller
      */
     public function show($id)
     {
-        $n['admitted_std_info'] = studentInfo::with(['created_user', 'updated_user', 'deleted_user','StudentInfo'])->where('deleted_at', null)->where('id', $id)->first();
-
-        return view('pages.student.admission.show_details',$n);
+        $student = studentInfo::with(['created_user', 'updated_user', 'deleted_user', 'department', 'bloodGroup', 'division', 'district', 'academicInfo'])->where('deleted_at', null)->where('id', $id)->first();
+        // dd($student);
+        return view('pages.student.admission.registration',[ 'student' => $student ]);
     }
 
     /**
@@ -268,7 +268,7 @@ class studentAdmitcontroller extends Controller
         $temp_file = TmpFile::findOrFail($request->image);
         if($temp_file){
             $from_path = $temp_file->path.'/'.$temp_file->filename;
-            $to_path = 'student-info/'.$update_student_info->id.'/photo/'.$temp_file->filename;
+            $to_path = 'public/student-info/'.$update_student_info->id.'/photo/'.$temp_file->filename;
 
             Storage::move($from_path, $to_path);
             Storage::deleteDirectory($temp_file->path);
@@ -296,7 +296,7 @@ class studentAdmitcontroller extends Controller
 
                 if($temp_file){
                     $from_path = $temp_file->path.'/'.$temp_file->filename;
-                    $to_path = 'student-info/'.$update_student_info->id.'/registration/'.$temp_file->filename;
+                    $to_path = 'public/student-info/'.$update_student_info->id.'/registration/'.$temp_file->filename;
 
                     Storage::move($from_path, $to_path);
                     Storage::deleteDirectory($temp_file->path);
@@ -313,7 +313,7 @@ class studentAdmitcontroller extends Controller
             // $temp_file = TmpFile::findOrFail($data['marksheet']);
             // if($temp_file){
             //     $from_path = $temp_file->path.'/'.$temp_file->filename;
-            //     $to_path = 'student-info/'.$update_student_info->id.'/marksheet/'.$temp_file->filename;
+            //     $to_path = 'public/student-info/'.$update_student_info->id.'/marksheet/'.$temp_file->filename;
 
             //     Storage::move($from_path, $to_path);
             //     Storage::deleteDirectory($temp_file->path);
@@ -325,7 +325,7 @@ class studentAdmitcontroller extends Controller
 
                 if($temp_file){
                     $from_path = $temp_file->path.'/'.$temp_file->filename;
-                    $to_path = 'student-info/'.$update_student_info->id.'/marksheet/'.$temp_file->filename;
+                    $to_path = 'public/student-info/'.$update_student_info->id.'/marksheet/'.$temp_file->filename;
 
                     Storage::move($from_path, $to_path);
                     Storage::deleteDirectory($temp_file->path);
