@@ -21,6 +21,15 @@ class studentInfo extends Model
     public function deleted_user(){
         return $this->belongsTo(User::class, 'deleted_by', 'id');
     }
+    public function bloodGroup(){
+        return $this->belongsTo(Bloodgroup::class, 'bg_id', 'id');
+    }
+    public function division(){
+        return $this->belongsTo(Division::class, 'division_id', 'id');
+    }
+    public function district(){
+        return $this->belongsTo(District::class, 'district_id', 'id');
+    }
 
     public function academicInfo(){
         return $this->hasMany(AcademicInfo::class, 'student_infos_id');

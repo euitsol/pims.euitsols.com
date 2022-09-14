@@ -85,12 +85,13 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
     //department Module
     Route::resource('department', departmentController::class);
     Route::get('department/delete/{id}', [departmentController::class,'delete'])->name('department.delete');
-    // Route::post('/department/abc', [studentAdmitcontroller::class,'store'])->name('abcd.store');
 
     //Admission Module
     Route::resource('student-admit', studentAdmitcontroller::class);
     // Route::get('/division_ajax/{id}', [studentAdmitcontroller::class,'ajax']);
-    Route::get('student-admit/division_ajax/{id}', [studentAdmitcontroller::class,'ajax']);
+    Route::get('student-admit/division_ajax/{id}', [studentAdmitcontroller::class,'ajax'])->name('ajax');
+    Route::get('/student/admitted/{id}', [studentAdmitcontroller::class,'delete'])->name('student.admitted.destroy');
+    Route::post('/student/admitted//update/{id}', [studentAdmitcontroller::class,'update'])->name('student.admitted.update');
 
     // Exam name for admission
     Route::resource('exam-name-admission', EAdmissionController::class);

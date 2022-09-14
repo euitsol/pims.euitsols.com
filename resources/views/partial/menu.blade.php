@@ -63,18 +63,21 @@
         <li class="nav-item">
             <a href="{{ route('users.index') }}" class="nav-link">
                 <i class="nav-icon far fa-circle"></i>
-                <p>Admission</p>
+                <p>Admission
+                    <i class="fas fa-angle-left right"></i>
+                </p>
+
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
                     <a href="{{ route('student-admit.create') }}" class="nav-link">
-                        <i class="nav-icon fas fa-plus"></i>
+                        <i class="nav-icon fas fa-minus"></i>
                         <p>Admit Student</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('student-admit.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-plus"></i>
+                        <i class="nav-icon fas fa-minus"></i>
                         <p>Show Admission Student</p>
                     </a>
                 </li>

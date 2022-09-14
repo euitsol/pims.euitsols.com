@@ -18,6 +18,7 @@ use App\Models\TmpFile;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Carbon;
 
 class studentAdmitcontroller extends Controller
 {
@@ -28,7 +29,7 @@ class studentAdmitcontroller extends Controller
      */
     public function index()
     {
-        $n['data'] = studentInfo::with(['created_user', 'updated_user', 'deleted_user','academicInfo'])->where('deleted_at', null)->get();
+        $n['data'] = studentInfo::with(['created_user', 'updated_user', 'deleted_user','academicInfo'])->where('deleted_at', null)->where('status', 0)->latest()->get();
         // dd($n['data']);
         $n['page_name'] = 'Admitted Student';
 
@@ -137,7 +138,7 @@ class studentAdmitcontroller extends Controller
         $insert_student_info->quota = $request->quota;
         $insert_student_info->division_id = $request->division_id;
         $insert_student_info->district_id = $request->district_id;
-        // $insert_student_info->photo = $request->photo;
+        $insert_student_info->status = 0;
         $insert_student_info->created_by = Auth::user()->id;
         $insert_student_info->save();
 
@@ -176,7 +177,6 @@ class studentAdmitcontroller extends Controller
 
                 Storage::move($from_path, $to_path);
                 Storage::deleteDirectory($temp_file->path);
-
                 $insert_academic_info->reg_card = $to_path;
             }
 
@@ -218,9 +218,16 @@ class studentAdmitcontroller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-
+    public function edit($id){
+        $n['page_name'] = 'Edit Pending Student';
+        $n['department'] = Department::where('deleted_by','=',null)->get();
+        $n['board'] = board::where('deleted_by','=',null)->get();
+        $n['exam_name'] = eadmission::where('deleted_by','=',null)->get();
+        $n['bg'] = Bloodgroup::where('deleted_by','=',null)->get();
+        $n['division'] = Division::where('deleted_by','=',null)->get();
+        $n['district'] = District::where('deleted_by','=',null)->get();
+        $n['data'] = studentInfo::with(['created_user', 'updated_user', 'deleted_user','academicInfo','department','bloodGroup','division','district'])->where('id',$id)->first();
+        return view('pages.student.admission.edit',$n);
     }
 
     /**
@@ -232,7 +239,109 @@ class studentAdmitcontroller extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // dd($request->all());
+        AcademicInfo::where('student_infos_id',$id)->delete();
+         studentInfo::find($id)->delete();
+
+        $update_student_info =new studentInfo;
+        $update_student_info->departments_id = $request->departments_id;
+        $update_student_info->name = $request->name;
+        $update_student_info->father_name = $request->father_name;
+        $update_student_info->mother_name = $request->mother_name;
+        $update_student_info->present_address = $request->present_address;
+        $update_student_info->parmanent_address = $request->parmanent_address;
+        $update_student_info->email = $request->email;
+        $update_student_info->phone = $request->phone;
+        $update_student_info->gardian_phone = $request->gardian_phone;
+        $update_student_info->gender = $request->gender;
+        $update_student_info->dob = $request->dob;
+        $update_student_info->nationality = $request->nationality;
+        $update_student_info->bg_id = $request->bg_id;
+        $update_student_info->quota = $request->quota;
+        $update_student_info->division_id = $request->division_id;
+        $update_student_info->district_id = $request->district_id;
+        $update_student_info->created_by = Auth::user()->id;
+        $update_student_info->save();
+
+        // image upload
+        // dd($request->all());
+        $temp_file = TmpFile::findOrFail($request->image);
+        if($temp_file){
+            $from_path = $temp_file->path.'/'.$temp_file->filename;
+            $to_path = 'student-info/'.$update_student_info->id.'/photo/'.$temp_file->filename;
+
+            Storage::move($from_path, $to_path);
+            Storage::deleteDirectory($temp_file->path);
+
+            $update_student_info->photo = $to_path;
+            $update_student_info->save();
+        }
+
+       foreach($request->exams as $data){
+            $update_academic_info = new AcademicInfo;
+            $update_academic_info->student_infos_id =  $update_student_info->id;
+            $update_academic_info->exam_id = $data['exam_id'];
+            $update_academic_info->passing_year = $data['passing_year'];
+            $update_academic_info->group = $data['group'];
+            $update_academic_info->board_id = $data['board_id'];
+            $update_academic_info->roll = $data['roll'];
+            $update_academic_info->reg_no = $data['reg_no'];
+            $update_academic_info->gpa = $data['gpa'];
+            $update_academic_info->created_by = Auth::user()->id;
+            $update_academic_info->save();
+
+            //for reg
+            if(isset($data['pre_reg_card'])){
+                $temp_file = TmpFile::findOrFail($data['reg_card']);
+
+                if($temp_file){
+                    $from_path = $temp_file->path.'/'.$temp_file->filename;
+                    $to_path = 'student-info/'.$update_student_info->id.'/registration/'.$temp_file->filename;
+
+                    Storage::move($from_path, $to_path);
+                    Storage::deleteDirectory($temp_file->path);
+                    $update_academic_info->reg_card = $to_path;
+                }else{
+                    // $academic_info = AcademicInfo::find();
+                    $update_academic_info->reg_card = $data['pre_reg_card'];
+                }
+            }
+
+
+
+            //for marksheet
+            // $temp_file = TmpFile::findOrFail($data['marksheet']);
+            // if($temp_file){
+            //     $from_path = $temp_file->path.'/'.$temp_file->filename;
+            //     $to_path = 'student-info/'.$update_student_info->id.'/marksheet/'.$temp_file->filename;
+
+            //     Storage::move($from_path, $to_path);
+            //     Storage::deleteDirectory($temp_file->path);
+
+            //     $update_academic_info->marksheet = $to_path;
+            // }
+            if(isset($data['pre_marksheet'])){
+                $temp_file = TmpFile::findOrFail($data['pre_marksheet']);
+
+                if($temp_file){
+                    $from_path = $temp_file->path.'/'.$temp_file->filename;
+                    $to_path = 'student-info/'.$update_student_info->id.'/marksheet/'.$temp_file->filename;
+
+                    Storage::move($from_path, $to_path);
+                    Storage::deleteDirectory($temp_file->path);
+                    $update_academic_info->marksheet = $to_path;
+                }else{
+                    $update_academic_info->marksheet = $data['pre_marksheet'];
+                }
+            }
+
+            $update_academic_info->save();
+       }
+
+        //   Delete Information
+
+       $this->message('success',"Student admit successfully");
+        return redirect()->back();
     }
 
     /**
@@ -243,11 +352,33 @@ class studentAdmitcontroller extends Controller
      */
     public function destroy($id)
     {
-        //
+        // echo 'ok';
+        // $this->check_access('admission delete');
+        // if($id != null){
+        //     $student_info = studentInfo::findOrFail($id);
+        //     $student_info->deleted_at = Carbon::now()->toDateTimeString();
+        //     $student_info->deleted_by = auth()->user()->id;
+        //     $student_info->save();
+        //     $this->message('success', 'Admitted Student "'.$student_info->name.'" deleted successfully');
+        //     return redirect()->route('student-admit.index');
+        // }
     }
+
 
     public function ajax($id){
         $data = District::where('division_id',$id)->get();
         return response()->json($data);
+    }
+
+    public function delete($id){
+        $this->check_access('admission delete');
+        if($id != null){
+            $student_info = studentInfo::findOrFail($id);
+            $student_info->deleted_at = Carbon::now()->toDateTimeString();
+            $student_info->deleted_by = auth()->user()->id;
+            $student_info->save();
+            $this->message('success', 'Admitted Student "'.$student_info->name.'" deleted successfully');
+            return redirect()->route('student-admit.index');
+        }
     }
 }

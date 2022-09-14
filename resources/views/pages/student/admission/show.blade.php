@@ -54,13 +54,13 @@
                                                 <a href="{{route('student-admit.show',$value->id)}}" class="btn btn-info btnView" data-id="{{ $value->id }}"><i class="fas fa-eye"></i></a>
 
                                                 {{-- //edit  --}}
-                                                @if(Auth::user()->can('Admission edit') || Auth::user()->role->id == 1)
+                                                @if(Auth::user()->can('admission edit') || Auth::user()->role->id == 1)
                                                     <a href="{{ route('student-admit.edit', $value->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                                 @endif
 
                                                 {{-- //delete  --}}
-                                                @if(Auth::user()->can('Admission delete') || Auth::user()->role->id == 1)
-                                                    <a href="{{ route('student-admit.destroy', $value->id) }}" class="btn btn-danger btnDelete "><i class="fas fa-trash"></i></a>
+                                                @if(Auth::user()->can('admission delete') || Auth::user()->role->id == 1)
+                                                    <a href="{{ route('student.admitted.destroy', $value->id) }}" class="btn btn-danger btnDelete "><i class="fas fa-trash"></i></a>
                                                 @endif
                                             </div>
                                         </td>
