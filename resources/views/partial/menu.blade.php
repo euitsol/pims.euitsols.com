@@ -165,9 +165,17 @@
         <p>Lettter Grade</p>
     </a>
 </li>
+
 <li class="nav-item">
-    <a href="{{ route('credit.index') }}" class="nav-link {{ Request::is('shift') ? 'active' : '' }}">
+    <a href="{{ route('credit.index') }}" class="nav-link {{ Request::is('credit') ? 'active' : '' }}">
         <i class="nav-icon fas fa-street-view"></i>
         <p>Credit</p>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a href="{{ route('grade.index') }}" class="nav-link {{ Request::is('grade') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-street-view"></i>
+        <p>Grading Calculation</p>
     </a>
 </li>
