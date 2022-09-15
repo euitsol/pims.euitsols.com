@@ -22,6 +22,7 @@ use App\Http\Controllers\setup\LetterGradeController;
 use App\Http\Controllers\setup\CreditController;
 use App\Http\Controllers\setup\SubjectController;
 use App\Http\Controllers\setup\GradeCalculationController;
+use App\Http\Controllers\setup\NationaltyController;
 
 
 
@@ -227,7 +228,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::post('/edit-store', [SubjectController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [SubjectController::class, 'destroy'])->name('destroy');
     });
-    
+
     // Grade Calculation System
     Route::group(['as' => 'grade.', 'prefix' => 'grade'], function() {
         Route::get('/view', [GradeCalculationController::class, 'index'])->name('index');
@@ -238,6 +239,17 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::post('/edit-store', [GradeCalculationController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [GradeCalculationController::class, 'destroy'])->name('destroy');
 
+    });
+
+    // Nationality
+    Route::group(['as' => 'nationality.', 'prefix' => 'nationality'], function() {
+        Route::get('/view', [NationaltyController::class, 'index'])->name('index');
+        Route::get('/add', [NationaltyController::class, 'create'])->name('create');
+        Route::post('/add-store', [NationaltyController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [NationaltyController::class, 'show'])->name('show');
+        Route::get('/edit/{id}', [NationaltyController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [NationaltyController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [NationaltyController::class, 'destroy'])->name('destroy');
     });
 
 });

@@ -179,9 +179,17 @@
         <p>Subject</p>
     </a>
 </li>
+
 <li class="nav-item">
     <a href="{{ route('grade.index') }}" class="nav-link {{ Request::is('grade') ? 'active' : '' }}">
         <i class="nav-icon fas fa-street-view"></i>
         <p>Grading Calculation</p>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a href="{{ route('nationality.index') }}" class="nav-link {{ Request::is('nationality') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-flag"></i>
+        <p>Nationality</p>
     </a>
 </li>
