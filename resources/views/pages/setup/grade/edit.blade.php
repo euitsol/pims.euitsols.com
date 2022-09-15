@@ -28,6 +28,7 @@
                         <div class="col-md-10 m-auto">
                             <form action="{{ route('grade.update') }}" method="POST" class="form-horizontal">
                             @csrf
+                            
                            <input type="hidden" name="id" value="{{ $db_data->id }}">
 
                                 <div class="form-group row">
@@ -52,14 +53,21 @@
                                             class="text-danger">*</span></label>
                                     <div class="col-sm-9">
                                         <div class="input-group input-daterange" id="mark">
-                                            <input type="text" class="form-control" id="mark_start"
-                                                name="mark_start" value="{{$db_data->mark_start}}">
+                                            <input type="number" class="form-control" id="mark_start"
+                                                    name="mark_start" value="{{$db_data->mark_start}}" step="0.01" required>
                                             <div class="input-group-append">
                                                 <div class="input-group-text">to</div>
                                             </div>
-                                            <input type="text" class="form-control" id="mark_end" name="mark_end"
-                                                value="{{$db_data->mark_end}}">
+                                            <input type="number" class="form-control" id="mark_end" name="mark_end" step="0.01" value="{{$db_data->mark_end}}">
                                         </div>
+
+                                        @if ($errors->has('mark_end'))
+                                                    <span class="text-danger">{{ $errors->first('mark_end') }}</span>
+
+                                                @elseif ($errors->has('mark_start'))
+                                                    <span class="text-danger">{{ $errors->first('mark_start') }}</span>
+                                        @endif
+
                                     </div>
                                 </div>
 

@@ -53,7 +53,7 @@ class GradeCalculationController extends Controller
     public function show($id=null)
     {
         if($id!=null){
-            $grade = grade::with(['created_user', 'updated_user', 'deleted_user'])->where('deleted_at', null)->where('id', $id)->first();
+            $grade = grade::with(['created_user', 'updated_user', 'deleted_user', 'letterGrade',])->where('deleted_at', null)->where('id', $id)->first();
             return Response::json($grade, 200);
         }
     }
