@@ -49,14 +49,14 @@
                                         <div class="col-sm-9">
                                             <div class="input-group input-daterange" id="mark">
                                                 <input type="number" class="form-control" id="mark_start"
-                                                    name="mark_start" value="" step="0.01" required>
+                                                    name="mark_start" step="0.01" required>
 
 
 
                                                 <div class="input-group-append">
                                                     <div class="input-group-text">to</div>
                                                 </div>
-                                                <input type="number" class="form-control" id="mark_end" name="mark_end" step="0.01" value="">
+                                                <input type="number" class="form-control" id="mark_end" name="mark_end" step="0.01">
                                             </div>
 
                                             @if ($errors->has('mark_end'))
@@ -65,7 +65,7 @@
                                                 @elseif ($errors->has('mark_start'))
                                                     <span class="text-danger">{{ $errors->first('mark_start') }}</span>
                                             @endif
-                                            
+
                                         </div>
                                     </div>
 
