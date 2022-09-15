@@ -47,7 +47,7 @@
                                         <td>{{ $value->name }}</td>
                                         <td>{{ $value->phone }}</td>
                                         <td>{{ date('d-m-Y', strtotime($value->created_at)); }}</td>
-                                        <td>{{ date('d-m-Y', strtotime($value->created_by)); }}</td>
+                                        <td>{{ date('d-m-Y', strtotime($value->created_user->name)); }}</td>
                                         <td>
                                             <div class="btn-group">
                                                 {{-- //view  --}}

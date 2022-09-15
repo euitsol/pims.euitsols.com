@@ -18,10 +18,10 @@ return new class extends Migration
             $table->unsignedBigInteger('student_infos_id');
             $table->unsignedBigInteger('exam_id');
             $table->string('passing_year');
-            $table->string('group')->nullable();
+            $table->string('group');
             $table->unsignedBigInteger('board_id');
-            $table->integer('roll');
-            $table->integer('reg_no');
+            $table->integer('roll')->unique();
+            $table->integer('reg_no')->unique();
             $table->string('gpa');
             $table->string('reg_card');
             $table->string('marksheet');

@@ -87,8 +87,9 @@
                                     <span class="step" id="step-3">3</span>
                                 </div>
 
-                                <form action="{{ route('student.admitted.update',$data->id) }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                                <form action="{{ route('student.admitted.update') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
                                     @csrf
+                                    <input type="hidden" name="id" value="{{$data->id}}">
                                     <div class="tab" id="tab-1" style="display: block">
                                         @if ($errors->any())
                                         <div class="alert alert-danger">
@@ -280,7 +281,8 @@
                                                     <label for="photo">Photo: <span
                                                         class="text-danger">*</span>
                                                     </label>
-                                                    <input  name="uploadfile" data-actualName="image"  type="file" class="" id="student-photo" accept="image/*">
+                                                    <input  name="uploadfile" data-actualName="photo"  type="file" class="" id="student-photo" accept="image/*">
+                                                    <input type="hidden" name="pre_photo" value="{{$data->photo}}">
                                                  </div>
                                             </div>
                                                 <div class="float-left">
@@ -379,6 +381,7 @@
                                                             <div class="form-group">
                                                                 <label for="reg_no_{{$loop->index}}">Registration No: <span class="text-danger">*</span></label>
                                                                 <input type="number" name="exams[{{$loop->index}}][reg_no]" value="{{$data->reg_no}}" class="form-control"  value="{{ old('reg_no') }}" placeholder="Insert Your Registration Number" id="reg_no_{{$loop->index}}" required>
+                                                                <input type="hidden" name="exams[{{$loop->index}}][pre_reg_no]" value="{{$data->reg_no}}">
                                                             </div>
                                                         </div>
 
@@ -396,7 +399,7 @@
                                                                     class="text-danger">*</span></label>
                                                                 <div class="">
                                                                     <div class="">
-                                                                        <input name="uploadfile" data-actualName="exams[{{$loop->index}}][reg_card]" type="file" id="reg_card_0" accept="application/pdf, image/*">
+                                                                        <input name="uploadfile" data-actualName="exams[{{$loop->index}}][reg_card]" type="file" id="reg_card_0" accept="application/pdf, image/*" value="{{$data->reg_card}}">
                                                                         <input type="hidden" name="exams[{{$loop->index}}][pre_reg_card]" value="{{$data->reg_card}}">
                                                                     </div>
                                                                 </div>
@@ -410,7 +413,7 @@
 
                                                                 <div class="">
                                                                     <div class="">
-                                                                        <input name="uploadfile" data-actualName="exams[{{$loop->index}}][marksheet]" type="file" id="marksheet_0" accept="application/pdf, image/*">
+                                                                        <input name="uploadfile" data-actualName="exams[{{$loop->index}}][marksheet]" type="file" id="marksheet_0" accept="application/pdf, image/*" value="{{$data->marksheet}}">
                                                                         <input type="hidden" name="exams[{{$loop->index}}][pre_marksheet]" value="{{$data->marksheet}}">
                                                                     </div>
                                                                 </div>
@@ -681,7 +684,7 @@
                                     class="text-danger">*</span></label>
                                 <div class="">
                                     <div class="">
-                                        <input name="uploadfile" data-actualName="exams[${count - 1}][reg_card]" type="file" id="reg_card_${count-1}" accept="application/pdf, image/*" required>
+                                        <input name="uploadfile" data-actualName="exams[${count - 1}][reg_card]" type="file" id="reg_card_${count-1}" accept="application/pdf, image/*" >
                                     </div>
                                 </div>
                             </div>
@@ -693,7 +696,7 @@
                                 </label>
                                 <div class="">
                                     <div class="">
-                                        <input name="uploadfile" data-actualName="exams[${count - 1}][marksheet]" type="file" id="marksheet_${count-1}" accept="application/pdf, image/*" required>
+                                        <input name="uploadfile" data-actualName="exams[${count - 1}][marksheet]" type="file" id="marksheet_${count-1}" accept="application/pdf, image/*" >
                                     </div>
                                 </div>
                             </div>

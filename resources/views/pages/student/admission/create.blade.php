@@ -161,7 +161,7 @@
                                                     <div class="form-group">
                                                         <label for="email">Email address: </label>
                                                         <input type="email" value="{{ old('email') }}" name="email"
-                                                            class="form-control" placeholder="Email Address">
+                                                            class="form-control" placeholder="Email Address" >
                                                     </div>
                                                 </div>
 
@@ -275,10 +275,9 @@
                                             </div>
                                             <div class="row">
                                                  <div class="col-md-6 offset-md-3">
-                                                    <label for="photo">Photo: <span
-                                                        class="text-danger">*</span>
+                                                    <label for="photo">Photo:
                                                     </label>
-                                                    <input  name="uploadfile" data-actualName="image"  type="file" class="" id="student-photo" accept="image/*" required>
+                                                    <input  name="uploadfile" data-actualName="image"  type="file" class="" id="student-photo" accept="image/*" >
                                                  </div>
                                             </div>
                                                 <div class="float-left">
@@ -367,7 +366,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="gpa">G.P.A: <span class="text-danger">*</span></label>
-                                                        <input type="number" max="5" name="exams[0][gpa]" class="form-control"
+                                                        <input type="number" max="5" name="exams[0][gpa]" step=".01" class="form-control"
                                                             value="{{ old('gpa') }}" placeholder="Enter Your G.P.A" required>
                                                     </div>
                                                 </div>
