@@ -181,7 +181,7 @@
                         success: function(response) {
                             console.log(response);
 
-                            $('#view-grade').html(response.lettergrades_id);
+                            $('#view-grade').html(response.letter_grade.name);
                             $('#view-mark-range').html(response.mark_start+'-'+response.mark_end);
                             $('#view-grade-point').html(response.grade_point);
                             $('#view-createdAt').html(response.created_at ? new Date(response
