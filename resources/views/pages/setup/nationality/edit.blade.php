@@ -32,7 +32,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="name">Nationality<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="name" name="name" value="{{ $db_data->name }}" placeholder="Enter User Name" required>
+                                        <input type="text" class="form-control" id="name" name="name" value="{{ $db_data->name }}" placeholder="Enter Nationality" required>
                                         @if ($errors->has('name'))
                                             <span class="text-danger">{{ $errors->first('name') }}</span>
                                         @endif
