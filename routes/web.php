@@ -23,6 +23,7 @@ use App\Http\Controllers\setup\CreditController;
 use App\Http\Controllers\setup\SubjectController;
 use App\Http\Controllers\setup\GradeCalculationController;
 use App\Http\Controllers\setup\NationaltyController;
+use App\Http\Controllers\setup\SemesterAssignAdmitStd;
 
 
 
@@ -250,6 +251,11 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::get('/edit/{id}', [NationaltyController::class, 'edit'])->name('edit');
         Route::post('/edit-store', [NationaltyController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [NationaltyController::class, 'destroy'])->name('destroy');
+    });
+
+    //Semester Assign for admitted student
+    Route::group(['as'=> 'semester-assign.', 'prefix'=>'semester-assign'],function(){
+        route::get('/view',[SemesterAssignAdmitStd::class,'index'])->name('index');
     });
 
 });
