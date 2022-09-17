@@ -20,7 +20,7 @@
                         <h4>Add {{$page_name}}</h4>
                     </span>
                     <span class="float-right">
-                        @if(Auth::user()->can('user view') || Auth::user()->role->id == 1)<a href="{{ route('users.index') }}" class="btn btn-info">Back</a>@endif
+                        @if(Auth::user()->can('user view') || Auth::user()->role->id == 1)<a href="{{ route('department.index') }}" class="btn btn-info">Back</a>@endif
                     </span>
                 </div>
                 <div class="card-body">
