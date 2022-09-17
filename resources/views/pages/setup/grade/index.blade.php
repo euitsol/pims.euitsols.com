@@ -19,7 +19,7 @@
                             <h4>View Grade Calculation</h4>
                         </span>
                         <span class="float-right">
-                            <a href="{{ route('grade.create') }}" class="btn btn-info">Add new Grade Calculation</a>
+                            @if(Auth::user()->can('add grade-calculation') || Auth::user()->role->id == 1)<a href="{{ route('grade.create') }}" class="btn btn-info">Add new Grade Calculation</a>@endif
                         </span>
                     </div>
                     <div class="card-body">
@@ -52,9 +52,13 @@
                                                 <div class="btn-group">
                                                     <a href="javascript:void(0)" class="btn btn-info btnView"
                                                         data-id="{{ $d->id }}"><i class="fas fa-eye"></i></a>
+                                                    @if (Auth::user()->can('edit grade-calculation') || Auth::user()->role->id == 1)
                                                     <a href="{{ route('grade.edit', $d->id) }}"
                                                         class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                                    @endif
+                                                    @if (Auth::user()->can('delete grade-calculation') || Auth::user()->role->id == 1)
                                                     <a href="{{ route('grade.destroy', $d->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>

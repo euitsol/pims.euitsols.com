@@ -25,13 +25,13 @@ class UserController extends Controller
     }
 
     public function index(){
-        $this->check_access('user view');
+        // $this->check_access('user view');
         $users = User::where('deleted_at', null)->latest()->get();
         return view('users.index', [ 'users' => $users ]);
     }
 
     public function add(){
-        $this->check_access('user add');
+        // $this->check_access('user add');
         $roles = Role::where('deleted_at', null)->latest()->get();
         return view('users.create', [ 'roles' => $roles ]);
     }
@@ -64,7 +64,7 @@ class UserController extends Controller
     }
 
     public function edit($id=null){
-        $this->check_access('user edit');
+        // $this->check_access('user edit');
         if($id!=null){
             $roles = Role::where('deleted_at', null)->latest()->get();
             $user = User::with(['created_user', 'updated_user', 'deleted_user'])->where('deleted_at', null)->where('id', $id)->first();
@@ -99,7 +99,7 @@ class UserController extends Controller
     }
 
     public function delete($id=null){
-        $this->check_access('user delete');
+        // $this->check_access('user delete');
         if($id != null){
             $user = User::findOrFail($id);
             $user->deleted_at = Carbon::now()->toDateTimeString();

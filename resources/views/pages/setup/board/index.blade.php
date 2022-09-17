@@ -19,7 +19,7 @@
                             <h4>View Boards</h4>
                         </span>
                         <span class="float-right">
-                            <a href="{{ route('board.create') }}" class="btn btn-info">Add new Board</a>
+                            @if(Auth::user()->can('add board') || Auth::user()->role->id == 1)<a href="{{ route('board.create') }}" class="btn btn-info">Add new Board</a>@endif
                         </span>
                     </div>
                     <div class="card-body">
@@ -48,19 +48,14 @@
                                                 <div class="btn-group">
                                                     <a href="javascript:void(0)" class="btn btn-info btnView"
                                                         data-id="{{ $d->id }}"><i class="fas fa-eye"></i></a>
-                                                    {{-- @if (Auth::user()->can('user edit') || Auth::user()->role->id == 1) --}}
+                                                    @if (Auth::user()->can('edit board') || Auth::user()->role->id == 1)
                                                     <a href="{{ route('board.edit', $d->id) }}"
                                                         class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
-                                                    {{-- @endif --}}
-                                                    {{-- @if (Auth::user()->can('user delete') || Auth::user()->role->id == 1) --}}
+                                                    @endif
+                                                    @if (Auth::user()->can('delete board') || Auth::user()->role->id == 1)
                                                     <a href="{{ route('board.destroy', $d->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
-                                                    {{-- @endif --}}
+                                                    @endif
                                                 </div>
-                                                {{-- <div class="btn-group btn-group-sm">
-                                                    <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                                                    <a href="{{ route('exam-name-admission.edit',$d->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
-                                                    <a href="{{ route('exam-name-admission.destroy',$d->id) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                                                </div> --}}
                                             </td>
                                         </tr>
                                     @empty

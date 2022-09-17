@@ -19,7 +19,7 @@
                         <h4>View subjects</h4>
                     </span>
                     <span class="float-right">
-                        @if(Auth::user()->can('subject add') || Auth::user()->role->id == 1)<a href="{{ route('subject.create') }}" class="btn btn-info">Add new subject</a>@endif
+                        @if(Auth::user()->can('add subject') || Auth::user()->role->id == 1)<a href="{{ route('subject.create') }}" class="btn btn-info">Add new subject</a>@endif
                     </span>
                 </div>
                 <div class="card-body">
@@ -50,10 +50,10 @@
                                     <td>
                                         <div class="btn-group">
                                             <a href="javascript:void(0)" class="btn btn-info btnView" data-id="{{ $subject->id }}"><i class="fas fa-eye"></i></a>
-                                            @if(Auth::user()->can('subject edit') || Auth::user()->role->id == 1)
+                                            @if(Auth::user()->can('edit subject') || Auth::user()->role->id == 1)
                                                 <a href="{{ route('subject.edit', $subject->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                             @endif
-                                            @if(Auth::user()->can('subject delete') || Auth::user()->role->id == 1)
+                                            @if(Auth::user()->can('delete subject') || Auth::user()->role->id == 1)
                                                 <a href="{{ route('subject.destroy', $subject->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
                                             @endif
                                         </div>
