@@ -193,3 +193,9 @@
         <p>Nationality</p>
     </a>
 </li>
+<li class="nav-item">
+    <a href="{{ route('subject-assign.index') }}" class="nav-link {{ Request::is('subject-assign') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-flag"></i>
+        <p>Subject Assign</p>
+    </a>
+</li>

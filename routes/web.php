@@ -23,6 +23,7 @@ use App\Http\Controllers\setup\CreditController;
 use App\Http\Controllers\setup\SubjectController;
 use App\Http\Controllers\setup\GradeCalculationController;
 use App\Http\Controllers\setup\NationaltyController;
+use App\Http\Controllers\setup\SubjectAssignController;
 
 
 
@@ -251,6 +252,18 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::post('/edit-store', [NationaltyController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [NationaltyController::class, 'destroy'])->name('destroy');
     });
+    // Nationality
+    Route::group(['as' => 'subject-assign.', 'prefix' => 'subject-assign'], function() {
+        Route::get('/view', [SubjectAssignController::class, 'index'])->name('index');
+        Route::get('/add-view', [SubjectAssignController::class, 'create'])->name('create');
+        Route::post('/add-store', [SubjectAssignController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [SubjectAssignController::class, 'show'])->name('show');
+        Route::get('/edit/{id}', [SubjectAssignController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [SubjectAssignController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [SubjectAssignController::class, 'destroy'])->name('destroy');
+    });
+    //Subject Fetch accordingly Department
+    Route::get('/subject-fetch/{id}', [SubjectAssignController::class, 'ajax'])->name('subject-fetch.ajax');
 
 });
 
