@@ -50,7 +50,7 @@
 </li>
 
 {{-- Student Mangement --}}
-{{-- <li class="nav-item">
+<li class="nav-item">
     <a href="#" class="nav-link">
         <i class="nav-icon fas fa-users"></i>
         <p>
@@ -85,7 +85,7 @@
 </li>
 
 
-<li class="nav-item">
+{{-- <li class="nav-item">
     <a href="{{ route('exam-name-admission.index') }}"
         class="nav-link {{ Request::is('eadmission') ? 'active' : '' }}">
         <i class="nav-icon fas fa-home"></i>
@@ -210,7 +210,7 @@
     </a>
     <ul class="nav nav-treeview">
         <li class="nav-item">
-            <a href="{{ route('department.index') }}" class="nav-link {{ Request::is('department') ? 'active' : '' }}">
+        <a href="{{ route('department.index') }}" class="nav-link {{ Request::is('setup/department/*') ? 'active' : '' }}">
                 <i class="nav-icon fas fa-minus"></i>
                 <p>Department</p>
             </a>
@@ -218,7 +218,7 @@
         @if (Auth::user()->can('user view') || Auth::user()->role->id == 1)
         <li class="nav-item">
             <a href="{{ route('exam-name-admission.index') }}"
-                class="nav-link {{ Request::is('eadmission') ? 'active' : '' }}">
+                class="nav-link {{ Request::is('setup/exam-name-admission/*') ? 'active' : '' }}">
                 <i class="nav-icon fas fa-minus"></i>
                 <p>Exam Name</p>
             </a>

@@ -89,17 +89,24 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
 
 
 
-
-    //department Module
-    Route::resource('department', departmentController::class);
-    Route::get('department/delete/{id}', [departmentController::class,'delete'])->name('department.delete');
     //Admission Module
     Route::resource('student-admit', studentAdmitcontroller::class);
 
-    // Exam name for admission
-    Route::resource('exam-name-admission', EAdmissionController::class);
 
     Route::group(['prefix'=> 'setup'],function(){
+
+            //department Module
+            Route::group(['prefix'=>'department'],function(){
+
+                Route::resource('department', departmentController::class);
+                Route::get('department/delete/{id}', [departmentController::class,'delete'])->name('department.delete');
+            });
+
+
+            // Exam name for admission
+            Route::group(['prefix'=>'exam-name-admission'],function(){
+                Route::resource('exam-name-admission', EAdmissionController::class);
+            });
         // Board
         Route::group(['as' => 'board.', 'prefix' => 'board'], function() {
             Route::get('/view', [BoardController::class, 'index'])->name('index');
@@ -261,7 +268,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
             Route::post('/edit-store', [NationaltyController::class, 'update'])->name('update');
             Route::get('/delete/{id}', [NationaltyController::class, 'destroy'])->name('destroy');
         });
-        
+
     });
 
 });
