@@ -83,7 +83,7 @@
 
 
 
-@if (Auth::user()->can('view department', 'view exam-name', 'view board', 'view semester', 'view session', 'view semester-duration', 'view group', 'view blood-group', 'view division', 'view district', 'view shift', 'view letter-grade', 'view credit', 'view subject', 'view grade-calculation', 'view nationality') || Auth::user()->role->id == 1)
+{{-- @if (Auth::user()->can('view department', 'view exam-name', 'view board', 'view semester', 'view session', 'view semester-duration', 'view group', 'view blood-group', 'view division', 'view district', 'view shift', 'view letter-grade', 'view credit', 'view subject', 'view grade-calculation', 'view nationality') || Auth::user()->role->id == 1) --}}
 <li class="nav-item {{Request::is('setup/*') ? 'menu-open' : ''}}">
     <a href="#" class="nav-link ">
         <i class="nav-icon fas fa-cogs"></i>
@@ -231,4 +231,4 @@
         @endif
     </ul>
 </li>
-@endif
+{{-- @endif --}}

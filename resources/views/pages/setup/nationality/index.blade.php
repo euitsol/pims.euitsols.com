@@ -19,7 +19,7 @@
                             <h4>View Nationalities</h4>
                         </span>
                         <span class="float-right">
-                            @if(Auth::user()->can('add nationality') || Auth::user()->role->id == 1<a href="{{ route('nationality.create') }}" class="btn btn-info">Add new Nationality</a>@endif
+                            @if(Auth::user()->can('add nationality') || Auth::user()->role->id == 1)<a href="{{ route('nationality.create') }}" class="btn btn-info">Add new Nationality</a>@endif
                         </span>
                     </div>
                     <div class="card-body">
@@ -52,7 +52,7 @@
                                                     <a href="{{ route('nationality.edit', $d->id) }}"
                                                         class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                                     @endif
-/                                                    @if (Auth::user()->can('delete nationality') || Auth::user()->role->id == 1)
+                                                    @if (Auth::user()->can('delete nationality') || Auth::user()->role->id == 1)
                                                     <a href="{{ route('nationality.destroy', $d->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
                                                     @endif
                                                 </div>
