@@ -263,7 +263,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::get('/delete/{id}', [SubjectAssignController::class, 'destroy'])->name('destroy');
     });
     //Subject Fetch accordingly Department
-    Route::get('/subject-fetch/{id}', [SubjectAssignController::class, 'ajax'])->name('subject-fetch.ajax');
+    Route::get('/subject-fetch', [SubjectAssignController::class, 'ajax'])->name('subject-fetch.ajax');
 
 });
 

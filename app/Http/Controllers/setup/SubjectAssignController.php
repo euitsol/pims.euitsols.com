@@ -11,10 +11,12 @@ use App\Models\Semester;
 use App\Models\SubjectAssign;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use ILluminate\Support\Facades\DB;
 
 class SubjectAssignController extends Controller
 {
    public function index(){
+
     $this->check_access('view subject-ssign');
     $n['data']= SubjectAssign::with(['session','department','subject','semester','created_user'])->where('deleted_at',null)->get();
     return view('pages.setup.subject_assign.index',$n);
@@ -36,28 +38,39 @@ class SubjectAssignController extends Controller
         $rules = [
             'session_id' => 'required|exists:sessions,id',
             'department_id' => 'required|exists:departments,id',
-            'subject_id' => 'required|exists:subjects,id',
+            'subject_id.*' => 'required|exists:subjects,id',
             'semester_id' => 'required|exists:semesters,id',
         ];
         $msg = [];
         $attributes = [
                 'session_id' => 'Session',
                 'department_id' => 'Session',
-                'subject_id' => 'Subject',
+                'subject_id.*' => 'Subject',
                 'semester_id' => 'Semester',
         ];
         $this->validate($request,$rules,$msg,$attributes);
         $data = $request->all();
         $data['created_by'] = Auth::user()->id;
-        SubjectAssign::create($data);
+        // dd($request->all());
+        foreach($request->subject_id as $subject_id){
+                $data['subject_id'] = $subject_id;
+                SubjectAssign::create($data);
+        }
 
         $this->message('success','Successfully Subject assigned');
         return redirect()->route('subject-assign.index');
    }
 
    //ajax
-   public function ajax(Request $request,$id){
-    $subject = Subject::where('department_id',$id)->where('deleted_at',null)->latest()->get();
+   public function ajax(Request $request){
+   $department_id =  $request->department_id;
+//    $subject_id =  $request->subject_id;
+//    $session_id =  $request->session_id;
+    $subject = Subject::where('department_id',$department_id)->where('deleted_at',null)->latest()->get();
+    // foreach($subject as $key => $value){
+    //     $result = $value->subjectIsAssign();
+    //     $subject[$key]["result"]=$result;
+    // }
      return $subject;
    }
 
