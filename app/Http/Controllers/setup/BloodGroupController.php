@@ -18,12 +18,14 @@ class BloodGroupController extends Controller
 
     public function index()
     {
+        $this->check_access('view blood-group');
         $n['db_data'] = Bloodgroup::where('deleted_at', null)->latest()->get();
         return view('pages.setup.bloodgroup.index',$n);
     }
 
     public function create()
     {
+        $this->check_access('add blood-group');
         return view('pages.setup.bloodgroup.create');
     }
 
@@ -53,6 +55,7 @@ class BloodGroupController extends Controller
 
     public function edit($id)
     {
+        $this->check_access('edit blood-group');
         $n['db_data'] = Bloodgroup::findOrFail($id);
         return view('pages.setup.bloodgroup.edit',$n);
 
@@ -81,6 +84,7 @@ class BloodGroupController extends Controller
 
     public function destroy($id)
     {
+        $this->check_access('delete blood-group');
         if($id != null){
             $bloodgroup = Bloodgroup::findOrFail($id);
             $bloodgroup->deleted_at = Carbon::now()->toDateTimeString();

@@ -17,6 +17,7 @@ class BoardController extends Controller
      */
     public function index()
     {
+        $this->check_access('view board');
         $n['db_data'] = board::where('deleted_at', null)->latest()->get();
         return view('pages.setup.board.index',$n);
     }
@@ -28,6 +29,7 @@ class BoardController extends Controller
      */
     public function create()
     {
+        $this->check_access('add board');
         return view('pages.setup.board.create');
     }
 
@@ -75,6 +77,7 @@ class BoardController extends Controller
      */
     public function edit($id)
     {
+        $this->check_access('edit board');
         $n['db_data'] = board::findOrFail($id);
         return view('pages.setup.board.edit',$n);
 
@@ -116,6 +119,7 @@ class BoardController extends Controller
      */
     public function destroy($id)
     {
+        $this->check_access('delete board');
         if($id != null){
             $user = board::findOrFail($id);
             $user->deleted_at = Carbon::now()->toDateTimeString();

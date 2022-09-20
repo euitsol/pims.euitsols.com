@@ -17,12 +17,14 @@ class ShiftController extends Controller
 
     public function index()
     {
+        $this->check_access('view shift');
         $n['db_data'] = Shift::where('deleted_at', null)->latest()->get();
         return view('pages.setup.shift.index',$n);
     }
 
     public function create()
     {
+        $this->check_access('add shift');
         return view('pages.setup.shift.create');
     }
 
@@ -52,6 +54,7 @@ class ShiftController extends Controller
 
     public function edit($id)
     {
+        $this->check_access('edit shift');
         $n['db_data'] = Shift::findOrFail($id);
         return view('pages.setup.shift.edit',$n);
 
@@ -80,6 +83,7 @@ class ShiftController extends Controller
 
     public function destroy($id)
     {
+        $this->check_access('delete shift');
         if($id != null){
             $shift = Shift::findOrFail($id);
             $shift->deleted_at = Carbon::now()->toDateTimeString();

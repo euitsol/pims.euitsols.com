@@ -19,12 +19,14 @@ class GradeCalculationController extends Controller
 
     public function index()
     {
+        $this->check_access('view grade-calculation');
         $n['db_data'] = Grade::where('deleted_at', null)->latest()->get();
         return view('pages.setup.grade.index',$n);
     }
 
     public function create()
     {
+        $this->check_access('add grade-calculation');
         $letter_grades = Lettergrade::where('deleted_at',null)->latest()->get();
         return view('pages.setup.grade.create',compact('letter_grades'));
     }
@@ -60,6 +62,7 @@ class GradeCalculationController extends Controller
 
     public function edit($id)
     {
+        $this->check_access('edit grade-calculation');
         $n['grade'] = Lettergrade::where('deleted_at', null)->latest()->get();
         $n['db_data'] = grade::findOrFail($id);
         return view('pages.setup.grade.edit',$n);
@@ -69,7 +72,6 @@ class GradeCalculationController extends Controller
 
     public function update(Request $request)
     {
-
         $update = grade::findOrFail($request->id);
         $update->lettergrades_id = $request->grade;
         $update->mark_start = $request->mark_start;
@@ -85,6 +87,7 @@ class GradeCalculationController extends Controller
 
     public function destroy($id)
     {
+        $this->check_access('delete grade-calculation');
         if($id != null){
             $grade = Grade::findOrFail($id);
             $grade->deleted_at = Carbon::now()->toDateTimeString();

@@ -18,13 +18,13 @@ class SubjectController extends Controller
     }
 
     public function index(){
-        $this->check_access('subject view');
+        $this->check_access('view subject');
         $subjects = Subject::with(['created_user', 'updated_user', 'deleted_user', 'credit', 'department'])->where('deleted_at', null)->latest()->get();
         return view('pages.setup.subject.index', [ 'subjects' => $subjects ]);
     }
 
     public function create(){
-        $this->check_access('subject add');
+        $this->check_access('add subject');
         $departments = Department::where('deleted_at', null)->latest()->get();
         $credits = Credit::where('deleted_at', null)->latest()->get();
         return view('pages.setup.subject.create', ['departments' => $departments, 'credits' => $credits ]);
@@ -59,7 +59,7 @@ class SubjectController extends Controller
     }
 
     public function edit($id=null){
-        $this->check_access('subject edit');
+        $this->check_access('edit subject');
         if($id!=null){
             $departments = Department::where('deleted_at', null)->latest()->get();
             $credits = Credit::where('deleted_at', null)->latest()->get();
@@ -96,7 +96,7 @@ class SubjectController extends Controller
     }
 
     public function destroy($id=null){
-        $this->check_access('subject delete');
+        $this->check_access('delete subject');
         if($id != null){
             $subject = Subject::findOrFail($id);
             $subject->deleted_at = Carbon::now()->toDateTimeString();

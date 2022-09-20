@@ -17,6 +17,7 @@ class EAdmissionController extends Controller
      */
     public function index()
     {
+        $this->check_access('view exam-name');
         $n['db_data'] = eadmission::where('deleted_at', null)->latest()->get();
         return view('pages.setup.EAdmission.eadmission',$n);
     }
@@ -28,6 +29,7 @@ class EAdmissionController extends Controller
      */
     public function create()
     {
+        $this->check_access('add exam-name');
         return view('pages.setup.EAdmission.create');
     }
 
@@ -44,10 +46,6 @@ class EAdmissionController extends Controller
             'short_name' => 'required|unique:eadmissions,short_name|string|max:255',
         ]);
 
-        // $exam = eadmission::create([
-        //     'name' => $request->name,
-        //     'short_name' => $request->short_name,
-        // ]);
         $insert = new eadmission;
         $insert->name = $request->name;
         $insert->short_name = $request->short_name;
@@ -81,6 +79,7 @@ class EAdmissionController extends Controller
      */
     public function edit($id)
     {
+        $this->check_access('edit exam-name');
         $n['db_data'] = eadmission::findOrFail($id);
         return view('pages.setup.EAdmission.edit',$n);
 
@@ -126,6 +125,7 @@ class EAdmissionController extends Controller
      */
     public function destroy($id)
     {
+        $this->check_access('delete exam-name');
         if($id != null){
             $user = eadmission::findOrFail($id);
             $user->deleted_at = Carbon::now()->toDateTimeString();

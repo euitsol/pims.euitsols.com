@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\setup;
+
 use App\Helpers\Qs;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -11,7 +12,8 @@ use Carbon\Carbon;
 class departmentController extends Controller
 {
 
-    public function __construct() {
+    public function __construct()
+    {
         return $this->middleware('auth');
     }
     /**
@@ -22,9 +24,10 @@ class departmentController extends Controller
     public function index()
     {
 
-        $n['data'] = Department::where('deleted_by',null)->get(   );
+        $this->check_access('view department');
+        $n['data'] = Department::where('deleted_by', null)->get();
         $n['page_name'] = 'Department';
-        return view('pages.setup.deparment.show',$n);
+        return view('pages.setup.deparment.show', $n);
     }
 
     /**
@@ -34,8 +37,9 @@ class departmentController extends Controller
      */
     public function create()
     {
+        $this->check_access('add department');
         $n['page_name'] = 'Department';
-        return view('pages.setup.deparment.create',$n);
+        return view('pages.setup.deparment.create', $n);
     }
 
     /**
@@ -46,15 +50,15 @@ class departmentController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'name' => 'required|unique:departments,department_name|string',
             'short_name' => 'required|unique:departments,short_name|string'
         ]);
 
         // echo "store";
         $insert = new Department;
-        $insert->department_name =$request->name;
-        $insert->short_name =$request->short_name;
+        $insert->department_name = $request->name;
+        $insert->short_name = $request->short_name;
         // 'created_by' => auth()->user()->id, 'created_at' => Carbon::now()->toDateTimeString()
         $insert->save();
 
@@ -69,7 +73,7 @@ class departmentController extends Controller
      */
     public function show($id)
     {
-        if($id!=null){
+        if ($id != null) {
             $group = Department::with(['created_user', 'updated_user', 'deleted_user'])->where('deleted_at', null)->where('id', $id)->first();
             return Response::json($group, 200);
         }
@@ -83,9 +87,10 @@ class departmentController extends Controller
      */
     public function edit($id)
     {
+        $this->check_access('edit department');
         $n['data_update'] = Department::find($id);
         $n['page_name'] = 'Department';
-        return view("pages.setup.deparment.edit",$n);
+        return view("pages.setup.deparment.edit", $n);
     }
 
     /**
@@ -97,12 +102,12 @@ class departmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $update = Department::find($id);
-      $update->department_name= $request->name;
-      $update->short_name = $request->short_name;
-      $update->save();
-      $this->message('success','Successfully updated');
-      return redirect()->route("department.index");
+        $update = Department::find($id);
+        $update->department_name = $request->name;
+        $update->short_name = $request->short_name;
+        $update->save();
+        $this->message('success', 'Successfully updated');
+        return redirect()->route("department.index");
     }
 
     /**
@@ -113,23 +118,26 @@ class departmentController extends Controller
      */
     public function destroy($id)
     {
-        if($id != null){
+        $this->check_access('delete department');
+        if ($id != null) {
             $depertment = Department::findOrFail($id);
             $depertment->deleted_at = Carbon::now()->toDateTimeString();
             $depertment->deleted_by = auth()->user()->id;
             $depertment->save();
-            $this->message('success',$depertment->name.' deleted successfully');
+            $this->message('success', $depertment->name . ' deleted successfully');
             return redirect()->route('department.index');
         }
     }
 
-    public function delete($id){
-        if($id != null){
+    public function delete($id)
+    {
+        $this->check_access('delete department');
+        if ($id != null) {
             $depertment = Department::findOrFail($id);
             $depertment->deleted_at = Carbon::now()->toDateTimeString();
             $depertment->deleted_by = auth()->user()->id;
             $depertment->save();
-            $this->message('success',$depertment->name.' deleted successfully');
+            $this->message('success', $depertment->name . ' deleted successfully');
             return redirect()->route('department.index');
         }
     }

@@ -17,12 +17,14 @@ class DivisionController extends Controller
 
     public function index()
     {
+        $this->check_access('view division');
         $n['db_data'] = Division::where('deleted_at', null)->latest()->get();
         return view('pages.setup.division.index',$n);
     }
 
     public function create()
     {
+        $this->check_access('add division');
         return view('pages.setup.division.create');
     }
 
@@ -52,6 +54,7 @@ class DivisionController extends Controller
 
     public function edit($id)
     {
+        $this->check_access('edit division');
         $n['db_data'] = Division::findOrFail($id);
         return view('pages.setup.division.edit',$n);
 
@@ -80,6 +83,7 @@ class DivisionController extends Controller
 
     public function destroy($id)
     {
+        $this->check_access('delete division');
         if($id != null){
             $division = Division::findOrFail($id);
             $division->deleted_at = Carbon::now()->toDateTimeString();

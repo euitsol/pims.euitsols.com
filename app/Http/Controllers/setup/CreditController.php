@@ -17,12 +17,14 @@ class CreditController extends Controller
 
     public function index()
     {
+        $this->check_access('view credit');
         $n['db_data'] = Credit::where('deleted_at', null)->latest()->get();
         return view('pages.setup.credit.index',$n);
     }
 
     public function create()
     {
+        $this->check_access('add credit');
         return view('pages.setup.credit.create');
     }
 
@@ -60,6 +62,7 @@ class CreditController extends Controller
 
     public function edit($id)
     {
+        $this->check_access('edit credit');
         $n['db_data'] = Credit::findOrFail($id);
         return view('pages.setup.credit.edit',$n);
 
@@ -92,6 +95,7 @@ class CreditController extends Controller
 
     public function destroy($id)
     {
+        $this->check_access('delete credit');
         if($id != null){
             $credit = Credit::findOrFail($id);
             $credit->deleted_at = Carbon::now()->toDateTimeString();

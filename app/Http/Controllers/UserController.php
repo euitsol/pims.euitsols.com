@@ -25,18 +25,19 @@ class UserController extends Controller
     }
 
     public function index(){
-        // $this->check_access('user view');
+        $this->check_access('view user');
         $users = User::where('deleted_at', null)->latest()->get();
         return view('users.index', [ 'users' => $users ]);
     }
 
     public function add(){
-        // $this->check_access('user add');
+        $this->check_access('add user');
         $roles = Role::where('deleted_at', null)->latest()->get();
         return view('users.create', [ 'roles' => $roles ]);
     }
 
     public function store(Request $request){
+        $this->check_access('add user');
         $this->validate($request, [
             'name' => 'required|unique:users,name|string|max:255',
             'email' => 'required|unique:users,email|email|max:255',
@@ -64,7 +65,7 @@ class UserController extends Controller
     }
 
     public function edit($id=null){
-        // $this->check_access('user edit');
+        $this->check_access('edit user');
         if($id!=null){
             $roles = Role::where('deleted_at', null)->latest()->get();
             $user = User::with(['created_user', 'updated_user', 'deleted_user'])->where('deleted_at', null)->where('id', $id)->first();
@@ -73,6 +74,7 @@ class UserController extends Controller
     }
 
     public function edit_store(Request $request){
+        $this->check_access('edit user');
         $this->validate($request, [
             'id' => 'required|exists:users,id',
             'password' => 'nullable',
@@ -99,7 +101,7 @@ class UserController extends Controller
     }
 
     public function delete($id=null){
-        // $this->check_access('user delete');
+        $this->check_access('delete user');
         if($id != null){
             $user = User::findOrFail($id);
             $user->deleted_at = Carbon::now()->toDateTimeString();
@@ -111,18 +113,19 @@ class UserController extends Controller
     }
 
     public function role_index(){
-        $this->check_access('role view');
+        $this->check_access('view role');
         $roles = CustomRole::where('deleted_at', null)->latest()->get();
         return view('users.role.index', [ 'roles' => $roles ]);
     }
 
     public function role_add(){
-        $this->check_access('role add');
+        $this->check_access('add role');
         $permissions = Permission::where('deleted_at', null)->latest()->get()->groupBy('prefix');
         return view('users.role.create', [ 'permissions' => $permissions ]);
     }
 
     public function role_store(Request $request){
+        $this->check_access('add role');
         $this->validate($request, [
             'name' => 'required|unique:roles,name|string|max:255',
             'permission' => 'required',
@@ -144,7 +147,7 @@ class UserController extends Controller
     }
 
     public function role_edit($id=null){
-        $this->check_access('role edit');
+        $this->check_access('edit role');
         if($id!=null){
             $role = Role::findOrFail($id);
             $permissions = Permission::where('deleted_at', null)->latest()->get()->groupBy('prefix');
@@ -153,6 +156,7 @@ class UserController extends Controller
     }
 
     public function role_edit_store(Request $request){
+        $this->check_access('edit role');
         $this->validate($request, [
             'id' => 'required|exists:roles,id',
             'permission' => 'required',
@@ -176,6 +180,7 @@ class UserController extends Controller
     }
 
     public function role_delete($id=null){
+        $this->check_access('delete role');
         if($id!=null){
             $role = Role::findOrFail($id);
             $role->deleted_at = Carbon::now()->toDateTimeString();
@@ -187,17 +192,18 @@ class UserController extends Controller
     }
 
     public function permission_view(){
-        $this->check_access('permission view');
+        $this->check_access('view permission');
         $permissions = CustomPermission::where('deleted_at', null)->orderBy('prefix')->get();
         return view('users.permission.index', [ 'permissions' => $permissions ]);
     }
 
     public function permission_add(){
-        $this->check_access('permission add');
+        $this->check_access('add permission');
         return view('users.permission.create');
     }
 
     public function permission_store(Request $request){
+        $this->check_access('add permission');
         $request->validate([
             'name' => 'required|string|unique:permissions,name|max:255',
             'prefix' => 'required|string|max:255',
@@ -215,7 +221,7 @@ class UserController extends Controller
     }
 
     public function permission_edit($id=null){
-        $this->check_access('permission edit');
+        $this->check_access('edit permission');
         if($id!=null){
             $permission = Permission::findOrFail($id);
             return view('users.permission.edit', ['permission' => $permission]);
@@ -223,6 +229,7 @@ class UserController extends Controller
     }
 
     public function permission_edit_store(Request $request){
+        $this->check_access('edit permission');
         $this->validate($request, [
             'id' => 'required|exists:permissions,id',
             'prefix' => 'required|string|max:255'
@@ -243,6 +250,7 @@ class UserController extends Controller
     }
 
     public function permission_delete($id=null){
+        $this->check_access('delete permission');
         if($id!=null){
             $permission = CustomPermission::findOrFail($id);
             $permission->deleted_at = Carbon::now()->toDateTimeString();
