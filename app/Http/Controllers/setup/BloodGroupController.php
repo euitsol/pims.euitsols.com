@@ -31,6 +31,7 @@ class BloodGroupController extends Controller
 
     public function store(Request $request)
     {
+        $this->check_access('add blood-group');
         $this->validate($request, [
             'name' => 'required|unique:bloodgroups,name|string|max:255',
         ]);
@@ -64,6 +65,7 @@ class BloodGroupController extends Controller
 
     public function update(Request $request)
     {
+        $this->check_access('edit blood-group');
         $this->validate($request, [
             'id' => 'required|exists:bloodgroups,id',
         ]);

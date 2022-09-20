@@ -33,6 +33,7 @@ class GradeCalculationController extends Controller
 
     public function store(Request $request)
     {
+        $this->check_access('add grade-calculation');
         $this->validate($request, [
             'mark_start' => 'required|numeric',
             'mark_end' => 'required|numeric',
@@ -72,6 +73,15 @@ class GradeCalculationController extends Controller
 
     public function update(Request $request)
     {
+        $this->check_access('edit grade-calculation');
+        $this->validate($request, [
+            'id' => 'required|exists:grades,id',
+        ]);
+
+        $update = Grade::findOrFail($request->id);
+        if($update->name != $request->name){
+            $this->validate($request, ['name' => 'required|unique:grades,name|string|max:255']);
+        }
         $update = grade::findOrFail($request->id);
         $update->lettergrades_id = $request->grade;
         $update->mark_start = $request->mark_start;

@@ -27,6 +27,7 @@ class SemesterController extends Controller
     }
 
     public function store(Request $request){
+        $this->check_access('add semseter');
         $this->validate($request, [
             'name' => 'required|unique:semesters,name|string|max:255',
             'details' => 'nullable||max:60000',
@@ -59,6 +60,7 @@ class SemesterController extends Controller
     }
 
     public function edit_store(Request $request){
+        $this->check_access('edit semseter');
         $this->validate($request, [
             'id' => 'required|exists:semesters,id',
             'details' => 'nullable||max:60000',

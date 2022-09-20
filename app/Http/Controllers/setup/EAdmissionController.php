@@ -41,6 +41,7 @@ class EAdmissionController extends Controller
      */
     public function store(Request $request)
     {
+        $this->check_access('add exam-name');
         $this->validate($request, [
             'name' => 'required|unique:eadmissions,name|string|max:255',
             'short_name' => 'required|unique:eadmissions,short_name|string|max:255',
@@ -95,6 +96,7 @@ class EAdmissionController extends Controller
      */
     public function update(Request $request)
     {
+        $this->check_access('edit exam-name');
         $this->validate($request, [
             'id' => 'required|exists:eadmissions,id',
         ]);

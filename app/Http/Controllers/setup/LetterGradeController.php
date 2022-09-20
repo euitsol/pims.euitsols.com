@@ -31,6 +31,7 @@ class LetterGradeController extends Controller
 
     public function store(Request $request)
     {
+        $this->check_access('add letter-grade');
         $this->validate($request, [
             'name' => 'required|unique:lettergrades,name|string|max:255',
         ]);
@@ -64,6 +65,7 @@ class LetterGradeController extends Controller
 
     public function update(Request $request)
     {
+        $this->check_access('edit letter-grade');
         $this->validate($request, [
             'id' => 'required|exists:lettergrades,id',
         ]);

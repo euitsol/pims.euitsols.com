@@ -30,6 +30,7 @@ class DivisionController extends Controller
 
     public function store(Request $request)
     {
+        $this->check_access('add division');
         $this->validate($request, [
             'name' => 'required|unique:divisions,name|string|max:255',
         ]);
@@ -63,6 +64,7 @@ class DivisionController extends Controller
 
     public function update(Request $request)
     {
+        $this->check_access('edit division');
         $this->validate($request, [
             'id' => 'required|exists:divisions,id',
         ]);

@@ -27,6 +27,7 @@ class SessionController extends Controller
     }
 
     public function store(Request $request){
+        $this->check_access('add session');
         $this->validate($request, [
             'start_year' => 'required|date_format:Y',
             'end_year' => 'required|date_format:Y',
@@ -63,6 +64,7 @@ class SessionController extends Controller
     }
 
     public function edit_store(Request $request){
+        $this->check_access('edit session');
         $this->validate($request, [
             'id' => 'required|exists:sessions,id',
             'details' => 'nullable|max:60000',

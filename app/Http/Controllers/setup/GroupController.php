@@ -31,6 +31,7 @@ class GroupController extends Controller
 
     public function store(Request $request)
     {
+        $this->check_access('add group');
         $this->validate($request, [
             'name' => 'required|unique:groups,name|string|max:255',
         ]);
@@ -64,6 +65,7 @@ class GroupController extends Controller
 
     public function update(Request $request)
     {
+        $this->check_access('edit group');
         $this->validate($request, [
             'id' => 'required|exists:groups,id',
         ]);

@@ -30,6 +30,7 @@ class ShiftController extends Controller
 
     public function store(Request $request)
     {
+        $this->check_access('add shift');
         $this->validate($request, [
             'name' => 'required|unique:shifts,name|string|max:255',
         ]);
@@ -63,6 +64,7 @@ class ShiftController extends Controller
 
     public function update(Request $request)
     {
+        $this->check_access('edit shift');
         $this->validate($request, [
             'id' => 'required|exists:shifts,id',
         ]);

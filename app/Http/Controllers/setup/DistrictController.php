@@ -29,6 +29,7 @@ class DistrictController extends Controller
     }
 
     public function store(Request $request){
+        $this->check_access('add district');
         $this->validate($request, [
             'name' => 'required|unique:districts,name|string|max:255',
             'division_name' => 'required||exists:divisions,id',
@@ -62,6 +63,7 @@ class DistrictController extends Controller
     }
 
     public function edit_store(Request $request){
+        $this->check_access('edit district');
         $this->validate($request, [
             'id' => 'required|exists:districts,id',
             'division_name' => 'required||exists:divisions,id',

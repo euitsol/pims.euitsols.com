@@ -50,6 +50,7 @@ class departmentController extends Controller
      */
     public function store(Request $request)
     {
+        $this->check_access('add department');
         $this->validate($request, [
             'name' => 'required|unique:departments,department_name|string',
             'short_name' => 'required|unique:departments,short_name|string'
@@ -102,6 +103,7 @@ class departmentController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->check_access('edit department');
         $update = Department::find($id);
         $update->department_name = $request->name;
         $update->short_name = $request->short_name;

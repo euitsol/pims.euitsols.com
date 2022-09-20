@@ -30,6 +30,7 @@ class CreditController extends Controller
 
     public function store(Request $request)
     {
+        $this->check_access('add credit');
         $this->validate($request, [
             'credit_number' => 'required|unique:credits,credit_number|numeric',
             'marks' => 'required|numeric',
@@ -71,6 +72,7 @@ class CreditController extends Controller
 
     public function update(Request $request)
     {
+        $this->check_access('edit credit');
         $this->validate($request, [
             'id' => 'required|exists:credits,id',
         ]);

@@ -31,6 +31,7 @@ class SemesterDurationController extends Controller
     }
 
     public function store(Request $request){
+        $this->check_access('add semester-duration');
         $this->validate($request, [
             'semester' => 'required|exists:semesters,id',
             'session' => 'required|exists:sessions,id',
@@ -86,6 +87,7 @@ class SemesterDurationController extends Controller
     }
 
     public function edit_store(Request $request){
+        $this->check_access('edit semester-duration');
         $this->validate($request, [
             'id' => 'required|exists:semester_durations,id',
             'semester' => 'required|exists:semesters,id',

@@ -41,6 +41,7 @@ class BoardController extends Controller
      */
     public function store(Request $request)
     {
+        $this->check_access('add board');
         $this->validate($request, [
             'name' => 'required|unique:boards,name|string|max:255',
         ]);
@@ -93,6 +94,7 @@ class BoardController extends Controller
      */
     public function update(Request $request)
     {
+        $this->check_access('edit board');
         $this->validate($request, [
             'id' => 'required|exists:boards,id',
         ]);

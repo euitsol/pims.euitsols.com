@@ -29,6 +29,7 @@ class NationaltyController extends Controller
 
     public function store(Request $request)
     {
+        $this->check_access('add nationality');
         $this->validate($request, [
             'name' => 'required|unique:nationalities,name|string|max:255',
         ]);
@@ -62,6 +63,7 @@ class NationaltyController extends Controller
 
     public function update(Request $request)
     {
+        $this->check_access('edit nationality');
         $this->validate($request, [
             'id' => 'required|exists:nationalities,id',
         ]);

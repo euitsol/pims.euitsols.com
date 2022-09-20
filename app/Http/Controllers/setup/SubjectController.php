@@ -31,6 +31,7 @@ class SubjectController extends Controller
     }
 
     public function store(Request $request){
+        $this->check_access('add subject');
         $this->validate($request, [
             'name' => 'required|unique:subjects,name|string|max:255',
             'code' => 'required|unique:subjects,code|string|max:255',
@@ -69,6 +70,7 @@ class SubjectController extends Controller
     }
 
     public function update(Request $request){
+        $this->check_access('edit subject');
         $this->validate($request, [
             'id' => 'required|exists:subjects,id',
             'credit_number' => 'required|exists:credits,id',
