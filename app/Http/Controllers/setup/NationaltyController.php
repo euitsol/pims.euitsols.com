@@ -16,17 +16,20 @@ class NationaltyController extends Controller
 
     public function index()
     {
+        $this->check_access('view nationality');
         $n['db_data'] = Nationality::where('deleted_at', null)->latest()->get();
         return view('pages.setup.nationality.index',$n);
     }
 
     public function create()
     {
+        $this->check_access('add nationality');
         return view('pages.setup.nationality.create');
     }
 
     public function store(Request $request)
     {
+        $this->check_access('add nationality');
         $this->validate($request, [
             'name' => 'required|unique:nationalities,name|string|max:255',
         ]);
@@ -51,6 +54,7 @@ class NationaltyController extends Controller
 
     public function edit($id)
     {
+        $this->check_access('edit nationality');
         $n['db_data'] = Nationality::findOrFail($id);
         return view('pages.setup.nationality.edit',$n);
 
@@ -59,6 +63,7 @@ class NationaltyController extends Controller
 
     public function update(Request $request)
     {
+        $this->check_access('edit nationality');
         $this->validate($request, [
             'id' => 'required|exists:nationalities,id',
         ]);
@@ -79,6 +84,7 @@ class NationaltyController extends Controller
 
     public function destroy($id)
     {
+        $this->check_access('delete nationality');
         if($id != null){
             $nationality = Nationality::findOrFail($id);
             $nationality->deleted_at = Carbon::now()->toDateTimeString();

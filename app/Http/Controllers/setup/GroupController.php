@@ -18,17 +18,20 @@ class GroupController extends Controller
 
     public function index()
     {
+        $this->check_access('view group');
         $n['db_data'] = Group::where('deleted_at', null)->latest()->get();
         return view('pages.setup.group.index',$n);
     }
 
     public function create()
     {
+        $this->check_access('add group');
         return view('pages.setup.group.create');
     }
 
     public function store(Request $request)
     {
+        $this->check_access('add group');
         $this->validate($request, [
             'name' => 'required|unique:groups,name|string|max:255',
         ]);
@@ -53,6 +56,7 @@ class GroupController extends Controller
 
     public function edit($id)
     {
+        $this->check_access('edit group');
         $n['db_data'] = Group::findOrFail($id);
         return view('pages.setup.group.edit',$n);
 
@@ -61,6 +65,7 @@ class GroupController extends Controller
 
     public function update(Request $request)
     {
+        $this->check_access('edit group');
         $this->validate($request, [
             'id' => 'required|exists:groups,id',
         ]);
@@ -81,6 +86,7 @@ class GroupController extends Controller
 
     public function destroy($id)
     {
+        $this->check_access('delete group');
         if($id != null){
             $group = Group::findOrFail($id);
             $group->deleted_at = Carbon::now()->toDateTimeString();

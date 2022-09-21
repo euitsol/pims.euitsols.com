@@ -16,17 +16,18 @@ class SemesterController extends Controller
     }
 
     public function index(){
-        $this->check_access('semester view');
+        $this->check_access('view semester');
         $semesters = Semester::where('deleted_at', null)->latest()->get();
         return view('pages.setup.semester.index', [ 'semesters' => $semesters ]);
     }
 
     public function add(){
-        $this->check_access('semseter add');
+        $this->check_access('add semseter');
         return view('pages.setup.semester.create');
     }
 
     public function store(Request $request){
+        $this->check_access('add semseter');
         $this->validate($request, [
             'name' => 'required|unique:semesters,name|string|max:255',
             'details' => 'nullable||max:60000',
@@ -51,7 +52,7 @@ class SemesterController extends Controller
     }
 
     public function edit($id=null){
-        $this->check_access('semester edit');
+        $this->check_access('edit semseter');
         if($id!=null){
             $semester = Semester::findOrFail($id);
             return view('pages.setup.semester.edit',['semester' => $semester]);
@@ -59,6 +60,7 @@ class SemesterController extends Controller
     }
 
     public function edit_store(Request $request){
+        $this->check_access('edit semseter');
         $this->validate($request, [
             'id' => 'required|exists:semesters,id',
             'details' => 'nullable||max:60000',
@@ -79,7 +81,7 @@ class SemesterController extends Controller
     }
 
     public function delete($id=null){
-        $this->check_access('semester delete');
+        $this->check_access('delete semseter');
         if($id != null){
             $semester = Semester::findOrFail($id);
             $semester->deleted_at = Carbon::now()->toDateTimeString();

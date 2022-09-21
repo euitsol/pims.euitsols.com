@@ -18,17 +18,20 @@ class LetterGradeController extends Controller
 
     public function index()
     {
+        $this->check_access('view letter-grade');
         $n['db_data'] = Lettergrade::where('deleted_at', null)->latest()->get();
         return view('pages.setup.lettergrade.index',$n);
     }
 
     public function create()
     {
+        $this->check_access('add letter-grade');
         return view('pages.setup.lettergrade.create');
     }
 
     public function store(Request $request)
     {
+        $this->check_access('add letter-grade');
         $this->validate($request, [
             'name' => 'required|unique:lettergrades,name|string|max:255',
         ]);
@@ -53,6 +56,7 @@ class LetterGradeController extends Controller
 
     public function edit($id)
     {
+        $this->check_access('edit letter-grade');
         $n['db_data'] = Lettergrade::findOrFail($id);
         return view('pages.setup.lettergrade.edit',$n);
 
@@ -61,6 +65,7 @@ class LetterGradeController extends Controller
 
     public function update(Request $request)
     {
+        $this->check_access('edit letter-grade');
         $this->validate($request, [
             'id' => 'required|exists:lettergrades,id',
         ]);
@@ -81,6 +86,7 @@ class LetterGradeController extends Controller
 
     public function destroy($id)
     {
+        $this->check_access('delete letter-grade');
         if($id != null){
             $lettergrade = Lettergrade::findOrFail($id);
             $lettergrade->deleted_at = Carbon::now()->toDateTimeString();
