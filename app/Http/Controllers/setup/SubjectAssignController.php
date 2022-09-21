@@ -63,15 +63,18 @@ class SubjectAssignController extends Controller
 
    //ajax
    public function ajax(Request $request){
-   $department_id =  $request->department_id;
-//    $subject_id =  $request->subject_id;
-//    $session_id =  $request->session_id;
+    $department_id =  $request->department_id;
+    $session_id = $request->session_id;
+    $semester_id =  $request->semester_id;
+    $id = [$session_id,$department_id,$semester_id];
     $subject = Subject::where('department_id',$department_id)->where('deleted_at',null)->latest()->get();
-    // foreach($subject as $key => $value){
-    //     $result = $value->subjectIsAssign();
-    //     $subject[$key]["result"]=$result;
-    // }
-     return $subject;
+
+    foreach($subject as $key => $value){
+        $result = $value->subjectIsAssign($session_id,$semester_id,$department_id);
+        $subject[$key]["result"]=$result;
+    }
+
+     return response()->json($subject);
    }
 
    //Edit page show

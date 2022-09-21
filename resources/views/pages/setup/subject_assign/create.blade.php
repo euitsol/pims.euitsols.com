@@ -8,7 +8,11 @@
 @endpush
 
 @push('page_css')
-
+<style>
+    .select2-container--default .select2-search--inline .select2-search__field {
+        display: none;
+    }
+</style>
 @endpush
 
 @section('content')
@@ -77,12 +81,9 @@
 
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="subject_id">Subjects<span class="text-danger">*</span></label>
-                                    <div class="col-sm-9">
-                                        <select class="form-control select2" id="subject_id" name="subject_id[]" multiple='multiple' disabled required>
+                                    <div class="select2-purple col-md-9">
+                                        <select class="select2 select2-hidden-accessible" multiple="multiple" data-placeholder="Select  Subjects" data-dropdown-css-class="select2-purple" style="width: 100%;" id="subject_id" name="subject_id[]" disabled required>
                                             <option value="" hidden>Select Subject</option>
-                                            @foreach ($subject as $n)
-                                                <option value="{{ $n->id }}" @if( old('subject_id') == $n->id ) selected @endif>{{ $n->name }}</option>
-                                            @endforeach
                                         </select>
                                         @if ($errors->has('subject_id.*'))
                                             <span class="text-danger">{{ $errors->first('subject_id.*') }}</span>
@@ -119,30 +120,43 @@
     });
     $("#department_id").on('change',function(){
         $("#subject_id").prop('disabled',false);
+
         var id = $(this).val();
         var subject_id = $('#subject_id').val();
         var session_id = $('#session_id').val();
         var semester_id = $('#semester_id').val();
-        var url = "<?php echo url('/subject-fetch')?>/";
 
-        console.log(id,session_id);
+        if(id==''){
+            return false;
+        }
+        if(session_id==''){
+            return false;
+        }
+        if(semester_id==''){
+            return false;
+        }
+
+        var url = "<?php echo url('/subject-fetch')?>/";
 
         $.ajax({
              url:url,
-             method: 'GET',
+             method: 'POST',
              data:{
-                department_id:id,
-                subject_id:subject_id,
-                session_id:session_id,
+                'department_id':id,
+                'semester_id':semester_id,
+                'session_id':session_id,
+                "_token": "{{ csrf_token() }}"
              },
              success:function(response){
-                // console.log(response);
+                console.log(response);
                 var data = '<option value="" hidden>Select Subject</option>'
                 $.each(response,function(index,value){
-                    data += '<option value="'+value.id+'">'+value.name+'</option>'
+                    data += '<option value="'+value.id+'" class= "'+value.result+'">'+value.name+'</option>';
                 });
-                // console.log(data);
+
                 $('#subject_id').html(data);
+                $('#subject_id .true').prop('disabled', true);
+
              }
         });
     });

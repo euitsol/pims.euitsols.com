@@ -27,6 +27,7 @@ class Subject extends Model
     public function deleted_user(){
         return $this->belongsTo(User::class, 'deleted_by', 'id');
     }
+
     public function subjectIsAssign($session_id,$semester_id,$department_id){
         $subject_id = $this->id;
         $check = SubjectAssign::where('department_id',$department_id)->where('session_id',$session_id)
