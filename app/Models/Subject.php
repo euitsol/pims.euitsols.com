@@ -31,7 +31,7 @@ class Subject extends Model
     public function subjectIsAssign($session_id,$semester_id,$department_id){
         $subject_id = $this->id;
         $check = SubjectAssign::where('department_id',$department_id)->where('session_id',$session_id)
-        ->where('semester_id',$semester_id)->where('subject_id',$subject_id)->get()->count();
+        ->where('semester_id',$semester_id)->where('subject_id',$subject_id)->where('deleted_at', null)->get()->count();
         if($check>0){
             return true;
         }else{

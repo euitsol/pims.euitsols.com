@@ -52,9 +52,25 @@ class SubjectAssignController extends Controller
         $data = $request->all();
         $data['created_by'] = Auth::user()->id;
         // dd($request->all());
+        dd($request->subject_id);
         foreach($request->subject_id as $subject_id){
+            $exists = SubjectAssign::where('session_id',$request->session_id)->where('department_id',$request->department_id)
+            ->where('semester_id',$request->semester_id)->where('subject_id',$request->subject_id)->where('deleted_at','!=',null)->first();
+
+            $query = SubjectAssign::where('session_id',$request->session_id)->where('department_id',$request->department_id)
+                    ->where('semester_id',$request->semester_id)->where('subject_id',$request->subject_id)->where('deleted_at',null)->first();
+
+            if($exists != null){
+                $exists->deleted_at = null;
+                $exists->save();
+            }
+            elseif($query != null){
+                $this->message('error','Subject '.$query->subject->name.' already assigned');
+                return redirect()->back()->withInput();
+            }else{
                 $data['subject_id'] = $subject_id;
                 SubjectAssign::create($data);
+            }
         }
 
         $this->message('success','Successfully Subject assigned');
@@ -67,7 +83,7 @@ class SubjectAssignController extends Controller
     $session_id = $request->session_id;
     $semester_id =  $request->semester_id;
     $id = [$session_id,$department_id,$semester_id];
-    $subject = Subject::where('department_id',$department_id)->where('deleted_at',null)->latest()->get();
+    $subject = Subject::where('department_id',$department_id)->where('deleted_at', null)->latest()->get();
 
     foreach($subject as $key => $value){
         $result = $value->subjectIsAssign($session_id,$semester_id,$department_id);
