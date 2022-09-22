@@ -32,22 +32,63 @@
                                         <th>SL</th>
                                         <th>Sessions</th>
                                         <th>Departments</th>
-                                        <th>Subjects</th>
                                         <th>Semesters</th>
+                                        <th>Subjects</th>
+                                        <th>Total Credits</th>
                                         <th>Created At</th>
                                         <th>Created By</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($data as $key => $value)
+                                    @forelse($query as $value)
 
-                                        <tr>
+                                        @foreach ($value as $value2)
+                                            @foreach ($value2 as $key => $value3)
+                                                @php $data = $value3->first() @endphp
+                                                <tr>
+                                                    <td>{{ $key + 1 }}</td>
+                                                    <td>{{ $data->session->start . '-' . $data->session->end }}</td>
+                                                    <td>{{ $data->department->department_name }}</td>
+                                                    <td>{{ $data->semester->name }}</td>
+                                                    @php $count = 0; $total_credit = 0;  @endphp
+                                                    <td>
+                                                        @foreach ($value3 as $value4)
+                                                            @if($count!=0) | @endif
+                                                            {{ $value4->subject->name }}
+                                                            @php
+                                                                $count++;
+                                                                $total_credit += $value4->subject->credit->credit_number;
+                                                             @endphp
+                                                        @endforeach
+                                                    </td>
+                                                    <td>
+
+                                                            {{ number_format((float)$total_credit, 2, '.', ''); }}
+
+                                                    </td>
+                                                    <td>{{ date('d-m-Y', strtotime($data->created_at)) }}</td>
+                                                    <td>{{ $data->created_user->name ?? 'system' }}</td>
+                                                    <td class="text-middle py-0 align-middle">
+                                                        <div class="btn-group">
+                                                            <a href="javascript:void(0)" class="btn btn-info btnView"
+                                                                data-id="{{ $data->id }}"><i class="fas fa-eye"></i></a>
+                                                            <a href="{{ route('subject-assign.edit', $data->id) }}"
+                                                                class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                                            <a href="{{ route('subject-assign.destroy', $data->id) }}"
+                                                                class="btn btn-danger btnDelete"><i
+                                                                    class="fas fa-trash"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endforeach
+                                        {{-- <tr>
                                             <td>{{ $key + 1 }}</td>
-                                            <td>{{ $value->session->start.'-'.$value->session->start }}</td>
+                                            <td>{{ $value->session->start.'-'.$value->session->end }}</td>
                                             <td>{{ $value->department->department_name }}</td>
-                                            <td>{{ $value->subject->name }}</td>
                                             <td>{{ $value->semester->name }}</td>
+                                            <td>{{ $value->subject->name }}</td>
                                             <td>{{ date('d-m-Y', strtotime($value->created_at)) }}</td>
                                             <td>{{ $value->created_user->name ?? 'system' }}</td>
                                             <td class="text-middle py-0 align-middle">
@@ -59,7 +100,7 @@
                                                     <a href="{{ route('subject-assign.destroy', $value->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
                                                 </div>
                                             </td>
-                                        </tr>
+                                        </tr> --}}
                                     @empty
                                     @endforelse
                                 </tbody>

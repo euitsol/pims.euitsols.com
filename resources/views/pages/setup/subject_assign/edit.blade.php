@@ -3,11 +3,15 @@
 @section('title', 'Subjects Assign Management')
 
 @push('third_party_stylesheets')
-
+    <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 @endpush
 
 @push('page_css')
-
+<style>
+    .select2-container--default .select2-search--inline .select2-search__field {
+        border: none !important;
+    }
+</style>
 @endpush
 
 @section('content')
@@ -24,6 +28,7 @@
                     </span>
                 </div>
                 <div class="card-body">
+                    @include('partial.flush-message')
                     <div class="row">
                         <div class="col-md-10 m-auto">
                             <form action="{{ route('subject-assign.update') }}" method="POST" class="form-horizontal">
@@ -45,6 +50,21 @@
                                 </div>
 
                                 <div class="form-group row">
+                                    <label class="col-sm-3" for="semester_id">Semester<span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="semester_id" name="semester_id" required>
+                                            <option value="" hidden>Select Semester</option>
+                                            @foreach ($semester as $n)
+                                                <option value="{{ $n->id }}" @if( $data->semester->id == $n->id ) selected @endif>{{ $n->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('semester_id'))
+                                            <span class="text-danger">{{ $errors->first('semester_id') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
                                     <label class="col-sm-3" for="department_id">Department<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
                                         <select class="form-control" id="department_id" name="department_id" required>
@@ -59,35 +79,25 @@
                                     </div>
                                 </div>
 
+
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="subject_id">Subjects<span class="text-danger">*</span></label>
-                                    <div class="col-sm-9">
-                                        <select class="form-control" id="subject_id" name="subject_id" required>
+                                    <div class="col-sm-9 select2-purple">
+                                        <select class="select2 select2-hidden-accessible" multiple=""
+                                        data-placeholder="Select Subjects" data-dropdown-css-class="select2-purple"
+                                        style="width: 100%;" id="subject_id" name="subject_id[]" tabindex="-1"
+                                        aria-hidden="true" required>
                                             <option value="" hidden>Select Subject</option>
                                             @foreach ($subject as $n)
-                                                <option value="{{ $n->id }}" @if( $data->subject->id == $n->id ) selected @endif>{{ $n->name }}</option>
+                                                <option value="{{ $n->id }}" @if( $data->department->id == $n->department->id ) selected @endif>{{ $n->name }}</option>
                                             @endforeach
                                         </select>
-                                        @if ($errors->has('subject_id'))
-                                            <span class="text-danger">{{ $errors->first('subject_id') }}</span>
+                                        @if ($errors->has('subject_id.*'))
+                                            <span class="text-danger">{{ $errors->first('subject_id.*') }}</span>
                                         @endif
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-                                    <label class="col-sm-3" for="semester_id">Semester<span class="text-danger">*</span></label>
-                                    <div class="col-sm-9">
-                                        <select class="form-control" id="semester_id" name="semester_id" required>
-                                            <option value="" hidden>Select Semester</option>
-                                            @foreach ($semester as $n)
-                                                <option value="{{ $n->id }}" @if( $data->semester->id == $n->id ) selected @endif>{{ $n->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('semester_id'))
-                                            <span class="text-danger">{{ $errors->first('semester_id') }}</span>
-                                        @endif
-                                    </div>
-                                </div>
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="guard_name"></label>
                                     <div class="col-sm-9">
@@ -105,30 +115,64 @@
     </div>
 </div>
 @endsection
-
+@push('third_party_scripts')
+    <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+@endpush
 
 @push('page_scripts')
 <script>
-    $("#department_id").on('change',function(){
-        $("#subject_id").prop('disabled',false);
-        var id = $(this).val();
-        var url = "<?php echo url('/subject-fetch')?>/"+id;
+    //select2 tools
+    $(document).ready(function() {
+        $('.select2').select2();
+    });
+
+
+
+    //fetch Subject on department change
+    $("#department_id").on('change', function() {
+        $("#subject_id").prop('disabled', false);
+        $('#subject_id').val('').trigger('change');
+
+
+        var department_id = $(this).val();
+        var subject_id = $('#subject_id').val();
+        var session_id = $('#session_id').val();
+        var semester_id = $('#semester_id').val();
+
+        //Session validation
+        if (session_id == '') {
+            alert('You have to select Session');
+            return false;
+        }
+        //Semester validation
+        if (semester_id == '') {
+            alert('You have to select Semester');
+            return false;
+        }
+
+        var url = "<?php echo url('/subject-fetch'); ?>/";
 
         $.ajax({
-             url:url,
-             method: 'GET',
-             data:{
-                id:id
-             },
-             success:function(response){
+            url: url,
+            method: 'POST',
+            data: {
+                'department_id': department_id,
+                'semester_id': semester_id,
+                'session_id': session_id,
+                "_token": "{{ csrf_token() }}"
+            },
+            success: function(response) {
                 // console.log(response);
                 var data = '<option value="" hidden>Select Subject</option>'
-                $.each(response,function(index,value){
-                    data += '<option value="'+value.id+'")>'+value.name+'</option>'
+                $.each(response, function(index, value) {
+                    data += '<option value="' + value.id + '" class= "' + value.result +
+                        '">' + value.name + '</option>';
                 });
-                // console.log(data);
+
                 $('#subject_id').html(data);
-             }
+                $('#subject_id .true').prop('disabled', true);
+
+            }
         });
     });
 </script>

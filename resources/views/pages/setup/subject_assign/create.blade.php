@@ -157,6 +157,7 @@
 
 @push('page_scripts')
     <script>
+        
         //select2 tools
         $(document).ready(function() {
             $('.select2').select2();
@@ -176,9 +177,11 @@
 
         });
 
-
+        //Fetch subject on department change
         $("#department_id").on('change', function() {
             $("#subject_id").prop('disabled', false);
+            $('#subject_id').val('').trigger('change');
+            // $('#semester_id').val('').trigger('change');
 
             var department_id = $(this).val();
             var subject_id = $('#subject_id').val();
