@@ -112,7 +112,7 @@ class SubjectAssignController extends Controller
         $n['department'] = Department::where('deleted_at',null)->get();
         $n['subject'] = Subject::where('deleted_at',null)->where('department_id',$n['data']->department_id)->get();
         $n['semester'] = Semester::where('deleted_at',null)->get();
-        
+
 
         return view('pages.setup.subject_assign.edit',$n);
    }
@@ -122,6 +122,21 @@ class SubjectAssignController extends Controller
    public function update(Request $request){
         $this->check_access('update subject-ssign');
 
+
+        $query = SubjectAssign::find($request->id);
+        $session_id = $query->session_id;
+        $department_id = $query->department_id;
+        $semester_id = $query->semester_id;
+        $subject_id = $query->subject_id;
+       $n = SubjectAssign::where('session_id',$session_id)
+                        ->where('department_id',$department_id)
+                        ->where('semester_id',$semester_id)
+                        ->where('deleted_at',null)
+                        ->get();
+         foreach($n as $delete){
+            $delete->delete();
+         }
+    //    validation
         $rules = [
             'session_id' => 'required|exists:sessions,id',
             'department_id' => 'required|exists:departments,id',
@@ -137,47 +152,39 @@ class SubjectAssignController extends Controller
         ];
         $this->validate($request,$rules,$msg,$attributes);
 
+        $data = $request->all();
+        $data['created_by'] = Auth::user()->id;
+
         foreach($request->subject_id as $subject_id){
+
             $exists = SubjectAssign::where('session_id',$request->session_id)
                                     ->where('department_id',$request->department_id)
                                     ->where('semester_id',$request->semester_id)
                                     ->where('subject_id',$subject_id)
-                                    ->where('id','!=',$request->id)
-                                    ->where('deleted_at',null)
-                                    ->first();
-
-            $deleted_exists = SubjectAssign::where('session_id',$request->session_id)
-                                    ->where('department_id',$request->department_id)
-                                    ->where('semester_id',$request->semester_id)
-                                    ->where('subject_id',$subject_id)
-                                    ->where('id','!=',$request->id)
                                     ->where('deleted_at','!=',null)
                                     ->first();
 
+            $query = SubjectAssign::where('session_id',$request->session_id)
+                                    ->where('department_id',$request->department_id)
+                                    ->where('semester_id',$request->semester_id)
+                                    ->where('subject_id',$subject_id)
+                                    ->where('deleted_at',null)
+                                    ->first();
 
             if($exists != null){
-                $this->message('error','Subject '.$exists->subject->name.' already assigned');
-                return redirect()->back()->withInput();
+                $exists->deleted_at = null;
+                $exists->save();
             }
-            elseif($deleted_exists != null){
-                $deleted_exists->deleted_at = null;
-                $deleted_exists->save();
+            elseif($query != null){
+                $this->message('error','Subject '.$query->subject->name.' already assigned');
+                return redirect()->back()->withInput();
             }else{
-                $update = SubjectAssign::where('session_id',$request->session_id)
-                                        ->where('department_id',$request->department_id)
-                                        ->where('semester_id',$request->semester_id)
-                                        ->where('subject_id',$request->subject_id)
-                                        ->first();
-                $update->session_id = $request->session_id;
-                $update->department_id = $request->department_id;
-                $update->subject_id = $subject_id;
-                $update->semester_id = $request->semester_id;
-                $update->updated_by = Auth::user()->id;
-                $update->save();
+                $data['subject_id'] = $subject_id;
+                SubjectAssign::create($data);
             }
         }
 
-            $this->message('success','Successfully Update');
+        $this->message('success','Successfully Update');
         return redirect()->route('subject-assign.index');
    }
 

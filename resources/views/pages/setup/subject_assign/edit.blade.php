@@ -89,7 +89,7 @@
                                         aria-hidden="true" required>
                                             <option value="" hidden>Select Subject</option>
                                             @foreach ($subject as $n)
-                                                <option value="{{ $n->id }}" @if( $data->department->id == $n->department->id ) selected @endif>{{ $n->name }}</option>
+                                                <option value="{{ $n->id }}" @if($n->subjectIsAssign($data->session_id,$data->semester_id,$data->department_id) ) selected @endif>{{ $n->name }}</option>
                                             @endforeach
                                         </select>
                                         @if ($errors->has('subject_id.*'))
