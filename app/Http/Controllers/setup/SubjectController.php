@@ -18,19 +18,20 @@ class SubjectController extends Controller
     }
 
     public function index(){
-        $this->check_access('subject view');
+        $this->check_access('view subject');
         $subjects = Subject::with(['created_user', 'updated_user', 'deleted_user', 'credit', 'department'])->where('deleted_at', null)->latest()->get();
         return view('pages.setup.subject.index', [ 'subjects' => $subjects ]);
     }
 
     public function create(){
-        $this->check_access('subject add');
+        $this->check_access('add subject');
         $departments = Department::where('deleted_at', null)->latest()->get();
         $credits = Credit::where('deleted_at', null)->latest()->get();
         return view('pages.setup.subject.create', ['departments' => $departments, 'credits' => $credits ]);
     }
 
     public function store(Request $request){
+        $this->check_access('add subject');
         $this->validate($request, [
             'name' => 'required|unique:subjects,name|string|max:255',
             'code' => 'required|unique:subjects,code|string|max:255',
@@ -59,7 +60,7 @@ class SubjectController extends Controller
     }
 
     public function edit($id=null){
-        $this->check_access('subject edit');
+        $this->check_access('edit subject');
         if($id!=null){
             $departments = Department::where('deleted_at', null)->latest()->get();
             $credits = Credit::where('deleted_at', null)->latest()->get();
@@ -69,6 +70,7 @@ class SubjectController extends Controller
     }
 
     public function update(Request $request){
+        $this->check_access('edit subject');
         $this->validate($request, [
             'id' => 'required|exists:subjects,id',
             'credit_number' => 'required|exists:credits,id',
@@ -96,7 +98,7 @@ class SubjectController extends Controller
     }
 
     public function destroy($id=null){
-        $this->check_access('subject delete');
+        $this->check_access('delete subject');
         if($id != null){
             $subject = Subject::findOrFail($id);
             $subject->deleted_at = Carbon::now()->toDateTimeString();

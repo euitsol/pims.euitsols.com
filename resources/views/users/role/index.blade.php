@@ -20,7 +20,7 @@
                         <h4>User Role</h4>
                     </span>
                     <span class="float-right">
-                        @if(Auth::user()->can('role add') || Auth::user()->role->id == 1) <a href="{{ route('users.role.add') }}" class="btn btn-info">Add role</a>@endif
+                        @if(Auth::user()->can('add role') || Auth::user()->role->id == 1) <a href="{{ route('users.role.add') }}" class="btn btn-info">Add role</a>@endif
                     </span>
                 </div>
                 <div class="card-body">
@@ -47,10 +47,10 @@
                                         <td>
                                             <div class="btn-group">
                                                 <a href="javascript:void(0)" class="btn btn-info btnView" data-id="{{ $role->id }}"><i class="fas fa-eye"></i></a>
-                                                @if(Auth::user()->can('role edit') || Auth::user()->role->id == 1)
+                                                @if(Auth::user()->can('edit role') || Auth::user()->role->id == 1)
                                                     <a href="{{ route('users.role.edit', $role->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                                 @endif
-                                                @if(Auth::user()->can('role delete') || Auth::user()->role->id == 1)
+                                                @if(Auth::user()->can('delete role') || Auth::user()->role->id == 1)
                                                     <a href="{{ route('users.role.delete', $role->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
                                                 @endif
                                             </div>

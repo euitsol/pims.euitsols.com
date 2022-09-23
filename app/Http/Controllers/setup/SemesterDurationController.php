@@ -18,19 +18,20 @@ class SemesterDurationController extends Controller
     }
 
     public function index(){
-        $this->check_access('semester duration view');
+        $this->check_access('view semester-duration');
         $semester_sessions = SemesterDuration::where('deleted_at', null)->orderBy('session_id')->latest()->get();
         return view('pages.setup.semester_duration.index', ['semester_sessions' => $semester_sessions]);
     }
 
     public function add(){
-        $this->check_access('semester duration add');
+        $this->check_access('add semester-duration');
         $semesters = Semester::where('deleted_at', null)->latest()->get();
         $sessions = Session::where('deleted_at', null)->latest()->get();
         return view('pages.setup.semester_duration.create', ['semesters' => $semesters, 'sessions' => $sessions]);
     }
 
     public function store(Request $request){
+        $this->check_access('add semester-duration');
         $this->validate($request, [
             'semester' => 'required|exists:semesters,id',
             'session' => 'required|exists:sessions,id',
@@ -76,7 +77,7 @@ class SemesterDurationController extends Controller
     }
 
     public function edit($id=null){
-        $this->check_access('semester duration edit');
+        $this->check_access('edit semester-duration');
         if($id!=null){
             $semesters = Semester::where('deleted_at', null)->latest()->get();
             $sessions = Session::where('deleted_at', null)->latest()->get();
@@ -86,6 +87,7 @@ class SemesterDurationController extends Controller
     }
 
     public function edit_store(Request $request){
+        $this->check_access('edit semester-duration');
         $this->validate($request, [
             'id' => 'required|exists:semester_durations,id',
             'semester' => 'required|exists:semesters,id',
@@ -130,7 +132,7 @@ class SemesterDurationController extends Controller
     }
 
     public function delete($id=null){
-        $this->check_access('semester duration delete');
+        $this->check_access('delete semester-duration');
         if($id != null){
             $semester_session = SemesterDuration::findOrFail($id);
             $semester_session->deleted_at = Carbon::now()->toDateTimeString();

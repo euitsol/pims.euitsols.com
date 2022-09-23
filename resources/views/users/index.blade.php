@@ -25,7 +25,7 @@ a.disabled {
                         <h4>View users</h4>
                     </span>
                     <span class="float-right">
-                        @if(Auth::user()->can('user add') || Auth::user()->role->id == 1)<a href="{{ route('users.add') }}" class="btn btn-info">Add new user</a>@endif
+                        @if(Auth::user()->can('add user') || Auth::user()->role->id == 1)<a href="{{ route('users.add') }}" class="btn btn-info">Add new user</a>@endif
                     </span>
                 </div>
                 <div class="card-body">
@@ -54,10 +54,10 @@ a.disabled {
                                     <td>
                                         <div class="btn-group">
                                             <a href="javascript:void(0)" class="btn btn-info btnView" data-id="{{ $user->id }}"><i class="fas fa-eye"></i></a>
-                                            @if(Auth::user()->can('user edit') || Auth::user()->role->id == 1)
+                                            @if(Auth::user()->can('edit user') || Auth::user()->role->id == 1)
                                                 <a href="{{ route('users.edit', $user->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                             @endif
-                                            @if(Auth::user()->can('user delete') || Auth::user()->role->id == 1)
+                                            @if(Auth::user()->can('delete user') || Auth::user()->role->id == 1)
                                                 <a href="{{ route('users.delete', $user->id) }}" class="btn btn-danger btnDelete @if($user->id == 1) disabled @endif"><i class="fas fa-trash"></i></a>
                                             @endif
                                         </div>
