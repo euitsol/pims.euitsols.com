@@ -17,7 +17,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-20 col-lg-12">
+        <div class="col-md-10 col-lg-12">
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">

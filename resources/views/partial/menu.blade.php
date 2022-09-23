@@ -231,7 +231,7 @@
         @endif
         <li class="nav-item">
           <a href="{{ route('subject-assign.index') }}" class="nav-link {{ Request::is('setup/subject-assign/*') ? 'active' : '' }}">
-          <i class="nav-icon fas fa-flag"></i>
+          <i class="nav-icon fas fa-minus"></i>
           <p>Subject Assign</p>
           </a>
         </li>

@@ -24,6 +24,7 @@ use App\Http\Controllers\setup\SubjectController;
 use App\Http\Controllers\setup\GradeCalculationController;
 use App\Http\Controllers\setup\NationaltyController;
 use App\Http\Controllers\setup\SubjectAssignController;
+use App\Http\Controllers\setup\TeacherAssignController;
 
 
 
@@ -270,19 +271,32 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
             Route::get('/delete/{id}', [NationaltyController::class, 'destroy'])->name('destroy');
         });
 
+         // Subject Assign
+        Route::group(['as' => 'subject-assign.', 'prefix' => 'subject-assign'], function() {
+            Route::get('/view', [SubjectAssignController::class, 'index'])->name('index');
+            Route::get('/add-view', [SubjectAssignController::class, 'create'])->name('create');
+            Route::post('/add-store', [SubjectAssignController::class, 'store'])->name('store');
+            Route::get('/details/{id}', [SubjectAssignController::class, 'show'])->name('show');
+            Route::get('/edit/{id}', [SubjectAssignController::class, 'edit'])->name('edit');
+            Route::post('/edit-store', [SubjectAssignController::class, 'update'])->name('update');
+            Route::get('/delete/{id}', [SubjectAssignController::class, 'destroy'])->name('destroy');
+        });
+
+          // Teacher Assign
+          Route::group(['as' => 'teacher-assign.', 'prefix' => 'teacher-assign'], function() {
+            Route::get('/view', [TeacherAssignController::class, 'index'])->name('index');
+            Route::get('/create/{id}', [TeacherAssignController::class, 'create'])->name('create');
+            Route::post('/add-store', [TeacherAssignController::class, 'store'])->name('store');
+            Route::get('/details/{id}', [TeacherAssignController::class, 'show'])->name('show');
+            Route::get('/edit/{id}', [TeacherAssignController::class, 'edit'])->name('edit');
+            Route::post('/edit-store', [TeacherAssignController::class, 'update'])->name('update');
+            Route::get('/delete/{id}', [TeacherAssignController::class, 'destroy'])->name('destroy');
+        });
+
     });
-    // Nationality
-    Route::group(['as' => 'subject-assign.', 'prefix' => 'subject-assign'], function() {
-        Route::get('/view', [SubjectAssignController::class, 'index'])->name('index');
-        Route::get('/add-view', [SubjectAssignController::class, 'create'])->name('create');
-        Route::post('/add-store', [SubjectAssignController::class, 'store'])->name('store');
-        Route::get('/details/{id}', [SubjectAssignController::class, 'show'])->name('show');
-        Route::get('/edit/{id}', [SubjectAssignController::class, 'edit'])->name('edit');
-        Route::post('/edit-store', [SubjectAssignController::class, 'update'])->name('update');
-        Route::get('/delete/{id}', [SubjectAssignController::class, 'destroy'])->name('destroy');
-    });
-    //Subject Fetch accordingly Department
-    Route::post('/subject-fetch', [SubjectAssignController::class, 'ajax'])->name('subject-fetch.ajax');
+     //Subject Fetch accordingly Department
+     Route::post('/subject-fetch', [SubjectAssignController::class, 'ajax'])->name('subject-fetch.ajax');
+
 
 });
 

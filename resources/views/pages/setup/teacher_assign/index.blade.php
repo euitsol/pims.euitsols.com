@@ -77,16 +77,30 @@
                                                                 class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                                             <a href="{{ route('subject-assign.destroy', $data->id) }}"
                                                                 class="btn btn-danger btnDelete"><i
-                                                                    class="fas fa-trash"></i>
-                                                            </a>
-                                                            <a href="{{ route('teacher-assign.create', $data->id) }}"
-                                                                class="btn btn-info" title="Assign Teacher"><i class="fas fa-arrow-right"></i>
-                                                            </a>
+                                                                    class="fas fa-trash"></i></a>
                                                         </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
                                         @endforeach
+                                        {{-- <tr>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $value->session->start.'-'.$value->session->end }}</td>
+                                            <td>{{ $value->department->department_name }}</td>
+                                            <td>{{ $value->semester->name }}</td>
+                                            <td>{{ $value->subject->name }}</td>
+                                            <td>{{ date('d-m-Y', strtotime($value->created_at)) }}</td>
+                                            <td>{{ $value->created_user->name ?? 'system' }}</td>
+                                            <td class="text-middle py-0 align-middle">
+                                                <div class="btn-group">
+                                                    <a href="javascript:void(0)" class="btn btn-info btnView"
+                                                        data-id="{{ $value->id }}"><i class="fas fa-eye"></i></a>
+                                                    <a href="{{ route('subject-assign.edit', $value->id) }}"
+                                                        class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                                    <a href="{{ route('subject-assign.destroy', $value->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr> --}}
                                     @empty
                                     @endforelse
                                 </tbody>
