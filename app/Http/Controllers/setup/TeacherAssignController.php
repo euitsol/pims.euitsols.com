@@ -5,6 +5,9 @@ namespace App\Http\Controllers\setup;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SubjectAssign;
+use App\Models\Group;
+use App\Models\Shift;
+use App\Models\TeacherAssign;
 
 class TeacherAssignController extends Controller
 {
@@ -23,7 +26,13 @@ class TeacherAssignController extends Controller
      $n['sds'] =SubjectAssign::where('session_id',$session_id)
                                 ->where('department_id',$department_id)
                                 ->where('semester_id',$semester_id)
+                                ->where('deleted_at',null)
                                 ->first();
+
+     $n['group'] =Group::where('deleted_at',null)
+                        ->get();
+     $n['shift'] =Shift::where('deleted_at',null)
+                        ->get();
     $n['teacher'] = ['Teacher-1','Teacher-2'];
      return view('pages.setup.teacher_assign.create',$n);
    }
@@ -31,6 +40,12 @@ class TeacherAssignController extends Controller
    //store function for store information
    public function store(Request $req){
     dd($req->all());
+        foreach($req->subjec_assign_id as $sa){
+            foreach($sa as $data){
+                    $insert = new TeacherAssign;
+            }
+
+        }
 
    }
 }
