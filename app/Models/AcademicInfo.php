@@ -24,4 +24,12 @@ class AcademicInfo extends Model
     public function StudentInfo(){
         return $this->BelongsTo(StudentInfo::class,'student_infos_id');
     }
+
+    public function exam(){
+        return $this->BelongsTo(eadmission::class,'exam_id', 'id');
+    }
+
+    public function board(){
+        return $this->BelongsTo(board::class,'board_id', 'id');
+    }
 }

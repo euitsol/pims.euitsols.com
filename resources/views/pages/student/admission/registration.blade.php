@@ -17,6 +17,9 @@
         width: 100%;
         object-fit: contain;
     }
+    .clr table tr th {
+        background: #ECECEC !important;
+    }
 </style>
 @endpush
 
@@ -27,15 +30,18 @@
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>Registration</h4>
+                        <h4>Registration Form</h4>
                     </span>
                     <span class="float-right">
                         <button type="button" onclick="printT('registration-form')" class="btn btn-dark btn-sm"><i class="fa fa-print"></i> Registration Form </button>
+                        <a href="{{ route('student.decline', $student->id) }}" class="btn btn-danger btn-sm" title="Decline Regestration" onclick="alert('Are you sure you want to decline?')"><i class="fas fa-user-times"></i></a>
+                        <a href="{{ route('student.accept', $student->id) }}" class="btn btn-info btn-sm" title="Accept Regestration"><i class="fas fa-user-check"></i></a>
+                        <a href="{{ route('student-admit.index') }}" class="btn btn-secondary btn-sm">Back</a>
                     </span>
                 </div>
                 <div class="card-body">
                     @include('partial.flush-message')
-                    <div id="registration-form">
+                    <div id="registration-form" style="padding: 0%;">
                         <div class="row mt-3 d-flex align-items-center">
                             <div class="col-md-3">
                                 <img src="{{asset('assets/image/default/site-logo.jpg')}}" height="35"
@@ -122,7 +128,17 @@
                                 <table class="table _table table-borderless">
                                     <tr>
                                         <td colspan="3">
+                                            @if($student->photo != null)
                                             <img class="student-photo" src="{{ \Illuminate\Support\Facades\Storage::url($student->photo) }}" alt="{{$student->name}}" title="{{$student->name}}">
+                                            @elseif($student->gender == 'Male')
+                                            <img class="student-photo" src="{{ asset('assets/image/default/male-student.png') }}" alt="{{$student->name}}" title="{{$student->name}}">
+                                            @elseif($student->gender == 'Female')
+                                            <img class="student-photo" src="{{ asset('assets/image/default/female-student.png') }}" alt="{{$student->name}}" title="{{$student->name}}">
+                                            @else
+                                            <img class="student-photo" src="{{ asset('assets/image/default/other-student.png') }}" alt="{{$student->name}}" title="{{$student->name}}">
+                                            @endif
+
+
                                         </td>
                                     </tr>
                                     <tr>
@@ -164,6 +180,60 @@
                             </div>
                         </div>
 
+                        <div class="mt-3 clr">
+                            <table class="table table-bordered text-center ">
+                                <thead>
+                                    <tr class="">
+                                        <th>Exam name</th>
+                                        <th>Board</th>
+                                        <th>Group</th>
+                                        <th>Roll</th>
+                                        <th>Registration</th>
+                                        <th>Passing Year</th>
+                                        <th>GPA</th>
+                                        <th class="download">Download</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($student->academicInfo as $ac)
+                                    <tr class="">
+                                        <td>{{ optional($ac->exam)->name }}</td>
+                                        <td>{{ optional($ac->board)->name }}</td>
+                                        <td>{{ $ac->group }}</td>
+                                        <td>{{ $ac->roll }}</td>
+                                        <td>{{ $ac->reg_no }}</td>
+                                        <td>{{ $ac->passing_year }}</td>
+                                        <td>{{ number_format((float)$ac->gpa, 2, '.', ''); }}</td>
+                                        <td class="download">
+                                            <a target="_blank" href="{{ route('student.reg.download', $ac->id) }}" class="btn btn-sm btn-success" title="Download registration info"><i class="fas fa-download"></i></a>
+                                            <a target="_blank" href="{{ route('student.marksheet.download', $ac->id) }}" class="btn btn-sm btn-success" title="Download marksheet info"><i class="fas fa-file-download"></i></a>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="row offset-md-1 mt-5 mb-3">
+                            <div class="col-md-10">
+                                <p class="text-center w-84 font-italic">
+                                <i class="fas fa-quote-left quote"></i> The above information is true to the
+                                    best of my knowledge.  I authorized {{ env('INSTITUTE_NAME') }}
+                                    of Bangladesh to release any information required to process my
+                                    claims. <i class="fas fa-quote-right quote"></i>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-between mt-5">
+                            <p class="border-top" style="margin-left: 5%;">Authorized Signature</p>
+                            <p class="border-top" style="margin-right: 5%;">Student Signature</p>
+                        </div>
+
+                        <div class="row justify-content-center mt-5">
+                            <p class="">{{ env('APP_URL') }}</p>
+                        </div>
+
                     </div>
 
                 </div>
@@ -181,6 +251,7 @@
 <script>
     function printT(el) {
         var rp = document.body.innerHTML;
+        $('.download').hide();
         var pc = document.getElementById(el).innerHTML;
         document.body.innerHTML = pc;
         window.print();

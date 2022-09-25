@@ -78,7 +78,7 @@
                 <li class="nav-item">
                     <a href="{{ route('student-admit.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-minus"></i>
-                        <p>Show Admission Student</p>
+                        <p>Pending Student</p>
                     </a>
                 </li>
             </ul>

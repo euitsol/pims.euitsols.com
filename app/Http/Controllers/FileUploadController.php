@@ -32,11 +32,4 @@ class FileUploadController extends Controller
         return $request->name;
     }
 
-    public function index(){
-        return view('test');
-    }
-    public function test_upload(Request $request){
-        dd($request->all());
-    }
-
 }

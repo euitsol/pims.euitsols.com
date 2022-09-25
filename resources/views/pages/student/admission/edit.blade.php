@@ -170,6 +170,7 @@
                                                         <label for="phone">Phone: <span class="text-danger">*</span></label>
                                                         <input value="{{ $data->phone }}"  type="tel"
                                                             name="phone" class="form-control" placeholder="Phone Number" required>
+                                                        <small>Phone number must be 11 digits</small>
                                                     </div>
                                                 </div>
 
@@ -178,6 +179,7 @@
                                                         <label for="gardian_phone">Guardian Phone:<span class="text-danger">*</span>    </label>
                                                         <input value="{{ $data->gardian_phone }}" type="tel"
                                                             name="gardian_phone" class="form-control" placeholder="Guardian Phone Number" required>
+                                                        <small>Guardian's phone number must be 11 digits</small>
                                                     </div>
                                                 </div>
 
@@ -312,7 +314,7 @@
                                                         $i = $i+1;
                                                     @endphp
                                                     <div class="row shadow-lg p-3 mb-5 bg-body rounded academic-info-count" id="aca_mod_{{$loop->index+1}}">
-                                                        <input type="hidden" name="academic_info_id" value="{{$data->id}}">
+                                                        <input type="hidden" name="exams[{{$loop->index}}][id]" value="{{$data->id}}">
                                                         <div class="col-md-6 text-left">
                                                             <h5>Achademic Information -{{$loop->index+1}}</h5>
                                                         </div>
@@ -381,7 +383,6 @@
                                                             <div class="form-group">
                                                                 <label for="reg_no_{{$loop->index}}">Registration No: <span class="text-danger">*</span></label>
                                                                 <input type="number" name="exams[{{$loop->index}}][reg_no]" value="{{$data->reg_no}}" class="form-control"  value="{{ old('reg_no') }}" placeholder="Insert Your Registration Number" id="reg_no_{{$loop->index}}" required>
-                                                                <input type="hidden" name="exams[{{$loop->index}}][pre_reg_no]" value="{{$data->reg_no}}">
                                                             </div>
                                                         </div>
 

@@ -20,7 +20,7 @@
                         <h4>View {{$page_name}}</h4>
                     </span>
                     <span class="float-right">
-                        @if(Auth::user()->can('user add') || Auth::user()->role->id == 1)<a href="{{ route('student-admit.create') }}" class="btn btn-info">Admit a new Student</a>@endif
+                        <a href="{{ route('student-admit.create') }}" class="btn btn-info">Admit new Student</a>
                     </span>
                 </div>
                 <div class="card-body">
@@ -32,10 +32,9 @@
                                 <tr>
                                     <th>SL</th>
                                     <th>Department Name</th>
-                                    <th>Student's Name</th>
-                                    <th>Student's Phone</th>
+                                    <th>Student Name</th>
+                                    <th>Student Phone</th>
                                     <th>Created At</th>
-                                    <th>Created By</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -47,21 +46,18 @@
                                         <td>{{ $value->name }}</td>
                                         <td>{{ $value->phone }}</td>
                                         <td>{{ date('d-m-Y', strtotime($value->created_at)); }}</td>
-                                        <td>{{ date('d-m-Y', strtotime($value->created_user->name)); }}</td>
                                         <td>
                                             <div class="btn-group">
+
                                                 {{-- //view  --}}
                                                 <a href="{{route('student-admit.show',$value->id)}}" class="btn btn-info btnView" data-id="{{ $value->id }}"><i class="fas fa-eye"></i></a>
 
                                                 {{-- //edit  --}}
-                                                @if(Auth::user()->can('admission edit') || Auth::user()->role->id == 1)
-                                                    <a href="{{ route('student-admit.edit', $value->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
-                                                @endif
+                                                <a href="{{ route('student-admit.edit', $value->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
 
                                                 {{-- //delete  --}}
-                                                @if(Auth::user()->can('admission delete') || Auth::user()->role->id == 1)
-                                                    <a href="{{ route('student.admitted.destroy', $value->id) }}" class="btn btn-danger btnDelete "><i class="fas fa-trash"></i></a>
-                                                @endif
+                                                <a href="{{ route('student.admitted.destroy', $value->id) }}" class="btn btn-danger btnDelete "><i class="fas fa-trash"></i></a>
+
                                             </div>
                                         </td>
                                     </tr>
