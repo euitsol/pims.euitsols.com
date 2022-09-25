@@ -19,7 +19,7 @@
                             <h4>View Districts</h4>
                         </span>
                         <span class="float-right">
-                            <a href="{{ route('district.add') }}" class="btn btn-info">Add new District</a>
+                            @if(Auth::user()->can('add district') || Auth::user()->role->id == 1)<a href="{{ route('district.add') }}" class="btn btn-info">Add new District</a>@endif
                         </span>
                     </div>
                     <div class="card-body">
@@ -50,9 +50,13 @@
                                                 <div class="btn-group">
                                                     <a href="javascript:void(0)" class="btn btn-info btnView"
                                                         data-id="{{ $district->id }}"><i class="fas fa-eye"></i></a>
-                                                    <a href="{{ route('district.edit', $district->id) }}"
+                                                    @if (Auth::user()->can('edit district') || Auth::user()->role->id == 1)
+                                                        <a href="{{ route('district.edit', $district->id) }}"
                                                         class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
-                                                    <a href="{{ route('district.delete', $district->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
+                                                    @endif
+                                                    @if (Auth::user()->can('delete district') || Auth::user()->role->id == 1)
+                                                        <a href="{{ route('district.delete', $district->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>

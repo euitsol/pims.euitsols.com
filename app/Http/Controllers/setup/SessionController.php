@@ -16,17 +16,18 @@ class SessionController extends Controller
     }
 
     public function index(){
-        $this->check_access('session view');
+        $this->check_access('view session');
         $sessions = Session::where('deleted_at', null)->latest()->get();
         return view('pages.setup.session.index', [ 'sessions' => $sessions ]);
     }
 
     public function add(){
-        $this->check_access('session add');
+        $this->check_access('add session');
         return view('pages.setup.session.create');
     }
 
     public function store(Request $request){
+        $this->check_access('add session');
         $this->validate($request, [
             'start_year' => 'required|date_format:Y',
             'end_year' => 'required|date_format:Y',
@@ -55,7 +56,7 @@ class SessionController extends Controller
     }
 
     public function edit($id=null){
-        $this->check_access('session edit');
+        $this->check_access('edit session');
         if($id!=null){
             $session = Session::findOrFail($id);
             return view('pages.setup.session.edit',['session' => $session]);
@@ -63,6 +64,7 @@ class SessionController extends Controller
     }
 
     public function edit_store(Request $request){
+        $this->check_access('edit session');
         $this->validate($request, [
             'id' => 'required|exists:sessions,id',
             'details' => 'nullable|max:60000',
@@ -88,7 +90,7 @@ class SessionController extends Controller
     }
 
     public function delete($id=null){
-        $this->check_access('session delete');
+        $this->check_access('delete session');
         if($id != null){
             $session = Session::findOrFail($id);
             $session->deleted_at = Carbon::now()->toDateTimeString();

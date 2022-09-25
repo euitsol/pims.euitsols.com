@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('semester_id');
             $table->unsignedBigInteger('session_id');
-            $table->string("start");
-            $table->string("end");
+            $table->dateTime("start");
+            $table->dateTime("end");
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();

@@ -19,7 +19,7 @@
                         <h4>View semester durations</h4>
                     </span>
                     <span class="float-right">
-                        @if(Auth::user()->can('semester duration add') || Auth::user()->role->id == 1)<a href="{{ route('semesterDuration.add') }}" class="btn btn-info">Assign semester duration</a>@endif
+                        @if(Auth::user()->can('add semester-duration') || Auth::user()->role->id == 1)<a href="{{ route('semesterDuration.add') }}" class="btn btn-info">Assign semester duration</a>@endif
                     </span>
                 </div>
                 <div class="card-body">
@@ -44,16 +44,16 @@
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $semester_session->session->start }} - {{ $semester_session->session->end }}</td>
                                     <td>{{ $semester_session->semester->name }}</td>
-                                    <td>{{ date("F", mktime(0, 0, 0, $semester_session->start, 1)) }} - {{ date("F", mktime(0, 0, 0, $semester_session->end, 1)) }}</td>
+                                    <td>{{ date('M-Y', strtotime($semester_session->start)) }} - {{ date('M-Y', strtotime($semester_session->end)) }}</td>
                                     <td>{{ date('d-m-Y', strtotime($semester_session->created_at)) }}</td>
                                     <td>{{ $semester_session->created_user->name ?? 'system' }}</td>
                                     <td>
                                         <div class="btn-group">
                                             <a href="javascript:void(0)" class="btn btn-info btnView" data-id="{{ $semester_session->id }}"><i class="fas fa-eye"></i></a>
-                                            @if(Auth::user()->can('semester duration edit') || Auth::user()->role->id == 1)
+                                            @if(Auth::user()->can('edit semester-duration') || Auth::user()->role->id == 1)
                                                 <a href="{{ route('semesterDuration.edit', $semester_session->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                             @endif
-                                            @if(Auth::user()->can('semester duration delete') || Auth::user()->role->id == 1)
+                                            @if(Auth::user()->can('delete semester-duration') || Auth::user()->role->id == 1)
                                                 <a href="{{ route('semesterDuration.delete', $semester_session->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
                                             @endif
                                         </div>
@@ -185,7 +185,7 @@
 
                         $('#view-name').html(response.semester.name);
                         $('#view-session').html(response.session.start+' - '+response.session.end);
-                        $('#view-duration').html(get_month_name(response.start)+' - '+get_month_name(response.end));
+                        $('#view-duration').html(get_month_name(new Date(response.start).getMonth() + 1)+'-'+ new Date(response.start).getFullYear() +' - '+ get_month_name(new Date(response.end).getMonth() + 1)+'-'+ new Date(response.end).getFullYear());
                         $('#view-createdAt').html(response.created_at ? new Date(response.created_at) : '');
                         $('#view-createdBy').html(response.created_user ? response.created_user.name : 'system');
                         $('#view-updatedAt').html(response.updated_at ? new Date(response.updated_at) : '');
