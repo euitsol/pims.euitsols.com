@@ -87,10 +87,18 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::get('/permission/delete/{id}', [UserController::class, 'permission_delete'])->name('permission.delete');
     });
 
-
-
     //Admission Module
     Route::resource('student-admit', studentAdmitcontroller::class);
+    // Route::get('/division_ajax/{id}', [studentAdmitcontroller::class,'ajax']);
+    Route::get('student-admit/division_ajax/{id}', [studentAdmitcontroller::class,'ajax'])->name('ajax');
+    Route::get('/student/admitted/{id}', [studentAdmitcontroller::class,'delete'])->name('student.admitted.destroy');
+    Route::post('/student/admitted/update', [studentAdmitcontroller::class,'update'])->name('student.admitted.update');
+
+    Route::get('/student/decline/{id}', [studentAdmitcontroller::class,'decline_student'])->name('student.decline');
+    Route::get('/student/accept/{id}', [studentAdmitcontroller::class,'accept_student'])->name('student.accept');
+
+    Route::get('/student/registration-download/{id}', [studentAdmitcontroller::class,'student_reg_download'])->name('student.reg.download');
+    Route::get('/student/marksheet-download/{id}', [studentAdmitcontroller::class,'student_marksheet_download'])->name('student.marksheet.download');
 
 
     Route::group(['prefix'=> 'setup'],function(){

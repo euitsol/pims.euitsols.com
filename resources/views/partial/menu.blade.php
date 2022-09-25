@@ -52,31 +52,30 @@
         </p>
     </a>
     <ul class="nav nav-treeview">
-        @if (Auth::user()->can('view admission') || Auth::user()->role->id == 1)
-            <li class="nav-item">
-                <a href="{{ route('users.index') }}" class="nav-link">
-                    <i class="nav-icon far fa-circle"></i>
-                    <p>Admission</p>
-                </a>
-                <ul class="nav nav-treeview">
-                    @if (Auth::user()->can('view admit-student') || Auth::user()->role->id == 1)
-                    <li class="nav-item">
-                        <a href="{{ route('student-admit.index') }}" class="nav-link">
-                            <i class="nav-icon fas fa-plus"></i>
-                            <p>Admit Student</p>
-                        </a>
-                    </li>
-                    @endif
-                    @if (Auth::user()->can('view show-admit-student') || Auth::user()->role->id == 1)
-                    <li class="nav-item">
-                        <a href="{{ route('student-admit.index') }}" class="nav-link">
-                            <i class="nav-icon fas fa-plus"></i>
-                            <p>Show Admission Student</p>
-                        </a>
-                    </li>
-                    @endif
-                </ul>
-            </li>
+        @if(Auth::user()->can('view admission') || Auth::user()->role->id == 1)
+        <li class="nav-item">
+            <a href="{{ route('users.index') }}" class="nav-link">
+                <i class="nav-icon far fa-circle"></i>
+                <p>Admission
+                    <i class="fas fa-angle-left right"></i>
+                </p>
+
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('student-admit.create') }}" class="nav-link">
+                        <i class="nav-icon fas fa-minus"></i>
+                        <p>Admit Student</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('student-admit.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-minus"></i>
+                        <p>Pending Student</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
         @endif
     </ul>
 </li>
