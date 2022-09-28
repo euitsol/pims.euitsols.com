@@ -77,11 +77,13 @@
                                             <hr>
 
                                             {{-- Teacher  --}}
-                                            <input type="hidden" name="subject_assign[{{$loop->index}}]" value="{{$sds->id}}">
+                                            <input type="hidden" name="subject_assign[{{$loop->index}}]" value="{{$value->id}}">
                                             <h5 class="text-center text-primary">Assign Teacher</h5>
                                             <div class="form-group row">
-                                                <div class="col-sm-4">
+                                                <div class="col-sm-1 text-right">
                                                     <label for="teacher_id">Teacher<span class="text-danger">*</span></label>
+                                                   </div>
+                                                <div class="col-sm-4">
                                                     <select class="form-control" id="teacher_id" name="subjec_assign_id[{{$loop->index}}][0][teacher_id]" required>
                                                         <option value="" hidden>Select Teacher</option>
                                                         <option value="1">Teacher1</option>
@@ -99,8 +101,10 @@
 
                                                 {{-- Group  --}}
 
-                                                <div class="col-sm-3">
+                                                <div class="col-sm-1 text-right">
                                                     <label for="group_id">Group<span class="text-danger">*</span></label>
+                                                </div>
+                                                <div class="col-sm-2">
                                                     <select class="form-control" id="group" name="subjec_assign_id[{{$loop->index}}][0][group]" required>
                                                         <option value="" hidden>Select Group</option>
                                                         @foreach ($group as $value)
@@ -115,8 +119,10 @@
                                                 </div>
 
                                                 {{-- shift  --}}
-                                                <div class="col-sm-3">
+                                                <div class="col-sm-1 text-right">
                                                     <label for="shift_id">Shift<span class="text-danger">*</span></label>
+                                                </div>
+                                                <div class="col-sm-2">
                                                     <select class="form-control" id="shift_id" name="subjec_assign_id[{{$loop->index}}][0][shift_id]" required>
                                                         <option value="" hidden>Select Shift</option>
                                                         @foreach ($shift as $value)
@@ -130,8 +136,8 @@
                                                     @endif
                                                 </div>
 
-                                                <div class="col-sm-2">
-                                                    <button type="button" class="btn btn-success add-more" value="0">Add More</button>
+                                                <div class="col-sm-1">
+                                                    <button type="button" class="btn btn-success add-more float-right" value="0"><i class="nav-icon fas fa-plus"></i></button>
                                                 </div>
 
                                             </div>
@@ -175,32 +181,28 @@
             $(this).click(function(){
                 var count = Number($(this).val())+1;
                 $(this).val(count);
-                var option = `  <h5>Teacher</h5>
-                                <div class="form-group row">
-                                    <div class="col-md-4 text-right">
+                var div_identifier = Date.now();
+                // alert(div_identifier);
+                var option = `
+                                <div class="form-group row " id='div_${div_identifier}'>
+                                    <div class="col-md-1 text-right">
                                         <label for="teacher_id">Teacher<span class="text-danger">*</span></label>
                                     </div>
                                     <div class="col-sm-4">
                                         <select class="form-control" id="teacher_id" name="subjec_assign_id[${index}][${count}][teacher_id]" required>
                                             <option value="" hidden>Select Teacher</option>
-                                            @foreach ($teacher as $value)
-                                                <option value="1"
-                                                    @if (old('teacher_id') == $value) selected @endif>
-                                                    {{ $value }}</option>
-                                            @endforeach
+                                            <option value="1">Teacher1</option>
+                                            <option value="2">Teacher2</option>
                                         </select>
                                         @if ($errors->has('teacher_id'))
                                             <span class="text-danger">{{ $errors->first('teacher_id') }}</span>
                                         @endif
                                     </div>
-                                </div>
-
-                                {{-- Group  --}}
-                                <div class="form-group row">
-                                    <div class="col-md-4 text-right">
+                                    {{-- Group  --}}
+                                    <div class="col-md-1 text-right">
                                         <label for="group_id">Group<span class="text-danger">*</span></label>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-2">
                                         <select class="form-control" id="group" name="subjec_assign_id[${index}][${count}][group]" required>
                                             <option value="" hidden>Select Group</option>
                                             @foreach ($group as $value)
@@ -213,14 +215,11 @@
                                             <span class="text-danger">{{ $errors->first('group') }}</span>
                                         @endif
                                     </div>
-                                </div>
-
-                                {{-- shift  --}}
-                                <div class="form-group row">
-                                    <div class="col-md-4 text-right">
+                                    {{-- shift  --}}
+                                    <div class="col-md-1 text-right">
                                         <label for="shift_id">Shift<span class="text-danger">*</span></label>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-2">
                                         <select class="form-control" id="shift_id" name="subjec_assign_id[${index}][${count}][shift_id]" required>
                                             <option value="" hidden>Select Shift</option>
                                             @foreach ($shift as $value)
@@ -233,12 +232,23 @@
                                             <span class="text-danger">{{ $errors->first('shift_id') }}</span>
                                         @endif
                                     </div>
+                                    <div class="col-sm-1">
+                                        <button type="button" class="btn btn-danger reduce float-right" value="0" onclick="delete_section(${div_identifier})"><i class="nav-icon fas fa-minus"></i></button>
+                                    </div>
                                 </div>`;
                 $('#append'+index).append(option);
                 // console.log(index);
             })
 
         });
+
+
+         function delete_section(count){
+            $('#div_'+count).remove();
+
+        }
+
+
 
         //reset department on session change
         $("#session_id").change(function() {

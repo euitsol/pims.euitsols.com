@@ -18,13 +18,13 @@ class TeacherAssign extends Model
     public function deleted_user(){
         return $this->belongsTo(User::class, 'deleted_by', 'id');
     }
-    public function subject_assigns(){
+    public function subjectAssign(){
         return $this->belongsTo(SubjectAssign::class,'subject_assign_id');
      }
-    public function groups(){
-        return $this->belongsTo(Group::class,'group_Id');
+    public function group(){
+        return $this->belongsTo(Group::class,'group_id');
      }
-    public function shifts(){
+    public function shift(){
         return $this->belongsTo(Shift::class,'shift_id');
      }
 }
