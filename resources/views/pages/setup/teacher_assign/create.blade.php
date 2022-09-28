@@ -35,7 +35,7 @@
 
                         </div>
 
-                               @include('partial.flush-message')
+                         @include('partial.flush-message')
                         <div class="row">
                             <div class="col-md-12 m-auto">
                                 <form action="{{route('teacher-assign.store')}}" method="POST" class="form-horizontal">
@@ -77,37 +77,34 @@
                                             <hr>
 
                                             {{-- Teacher  --}}
-                                            <input type="hidden" name="subjec_assign_id[{{$loop->index}}]">
-                                            <h5 class="">Teacher-1</h5>
+                                            <input type="hidden" name="subject_assign[{{$loop->index}}]" value="{{$sds->id}}">
+                                            <h5 class="text-center text-primary">Assign Teacher</h5>
                                             <div class="form-group row">
-                                                <div class="col-md-4 text-right">
-                                                    <label for="teacher_id">Teacher<span class="text-danger">*</span></label>
-                                                </div>
                                                 <div class="col-sm-4">
+                                                    <label for="teacher_id">Teacher<span class="text-danger">*</span></label>
                                                     <select class="form-control" id="teacher_id" name="subjec_assign_id[{{$loop->index}}][0][teacher_id]" required>
                                                         <option value="" hidden>Select Teacher</option>
-                                                        @foreach ($teacher as $value)
-                                                            <option value="{{ $value }}"
+                                                        <option value="1">Teacher1</option>
+                                                        <option value="2">Teacher2</option>
+                                                        {{-- @foreach ($teacher as $value)
+                                                            <option value="1"
                                                                 @if (old('teacher_id') == $value) selected @endif>
                                                                 {{ $value }}</option>
-                                                        @endforeach
+                                                        @endforeach --}}
                                                     </select>
                                                     @if ($errors->has('teacher_id'))
                                                         <span class="text-danger">{{ $errors->first('teacher_id') }}</span>
                                                     @endif
                                                 </div>
-                                            </div>
 
-                                            {{-- Group  --}}
-                                            <div class="form-group row">
-                                                <div class="col-md-4 text-right">
+                                                {{-- Group  --}}
+
+                                                <div class="col-sm-3">
                                                     <label for="group_id">Group<span class="text-danger">*</span></label>
-                                                </div>
-                                                <div class="col-sm-4">
                                                     <select class="form-control" id="group" name="subjec_assign_id[{{$loop->index}}][0][group]" required>
                                                         <option value="" hidden>Select Group</option>
                                                         @foreach ($group as $value)
-                                                            <option value="{{ $value->name}}"
+                                                            <option value="{{ $value->id}}"
                                                                 @if (old('group') == $value->name) selected @endif>
                                                                 {{ $value->name}}</option>
                                                         @endforeach
@@ -116,18 +113,14 @@
                                                         <span class="text-danger">{{ $errors->first('group') }}</span>
                                                     @endif
                                                 </div>
-                                            </div>
 
-                                            {{-- shift  --}}
-                                            <div class="form-group row">
-                                                <div class="col-md-4 text-right">
+                                                {{-- shift  --}}
+                                                <div class="col-sm-3">
                                                     <label for="shift_id">Shift<span class="text-danger">*</span></label>
-                                                </div>
-                                                <div class="col-sm-4">
                                                     <select class="form-control" id="shift_id" name="subjec_assign_id[{{$loop->index}}][0][shift_id]" required>
                                                         <option value="" hidden>Select Shift</option>
                                                         @foreach ($shift as $value)
-                                                            <option value="{{ $value->name }}"
+                                                            <option value="{{ $value->id }}"
                                                                 @if (old('shift_id') == $value->name) selected @endif>
                                                                 {{ $value->name }}</option>
                                                         @endforeach
@@ -136,16 +129,17 @@
                                                         <span class="text-danger">{{ $errors->first('shift_id') }}</span>
                                                     @endif
                                                 </div>
+
+                                                <div class="col-sm-2">
+                                                    <button type="button" class="btn btn-success add-more" value="0">Add More</button>
+                                                </div>
+
                                             </div>
                                             {{-- Append Option  --}}
                                             <div class="append" id="append{{$loop->index}}">
 
                                             </div>
-                                            <div class="row ">
-                                               <div class="col-md-12">
-                                                <button type="button" class="btn btn-success float-right add-more" value="0">Add More</button>
-                                               </div>
-                                            </div>
+
                                         </div>
                                     @endforeach
                                     <div class="form-group row">
@@ -181,7 +175,7 @@
             $(this).click(function(){
                 var count = Number($(this).val())+1;
                 $(this).val(count);
-                var option = `  <h5>Teacher-${count+1} </h5>
+                var option = `  <h5>Teacher</h5>
                                 <div class="form-group row">
                                     <div class="col-md-4 text-right">
                                         <label for="teacher_id">Teacher<span class="text-danger">*</span></label>
@@ -190,7 +184,7 @@
                                         <select class="form-control" id="teacher_id" name="subjec_assign_id[${index}][${count}][teacher_id]" required>
                                             <option value="" hidden>Select Teacher</option>
                                             @foreach ($teacher as $value)
-                                                <option value="{{ $value }}"
+                                                <option value="1"
                                                     @if (old('teacher_id') == $value) selected @endif>
                                                     {{ $value }}</option>
                                             @endforeach
@@ -210,7 +204,7 @@
                                         <select class="form-control" id="group" name="subjec_assign_id[${index}][${count}][group]" required>
                                             <option value="" hidden>Select Group</option>
                                             @foreach ($group as $value)
-                                                <option value="{{ $value->name}}"
+                                                <option value="{{ $value->id}}"
                                                     @if (old('group') == $value->name) selected @endif>
                                                     {{ $value->name}}</option>
                                             @endforeach
@@ -230,7 +224,7 @@
                                         <select class="form-control" id="shift_id" name="subjec_assign_id[${index}][${count}][shift_id]" required>
                                             <option value="" hidden>Select Shift</option>
                                             @foreach ($shift as $value)
-                                                <option value="{{ $value->name }}"
+                                                <option value="{{ $value->id }}"
                                                     @if (old('shift_id') == $value->name) selected @endif>
                                                     {{ $value->name }}</option>
                                             @endforeach
