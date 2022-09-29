@@ -26,6 +26,8 @@ use App\Http\Controllers\setup\NationaltyController;
 use App\Http\Controllers\setup\SubjectAssignController;
 use App\Http\Controllers\setup\TeacherAssignController;
 use App\Http\Controllers\teacher\TeacherController;
+use App\Http\Controllers\setup\SemesterAssignAdmitStd;
+
 
 
 
@@ -321,6 +323,11 @@ Route::group(['as' => 'teacher.', 'prefix' => 'teacher'], function() {
     Route::post('/edit-store', [TeacherController::class, 'update'])->name('update');
     Route::get('/delete/{id}', [TeacherController::class, 'destroy'])->name('destroy');
     Route::get('division_ajax/{id}', [TeacherController::class, 'ajax'])->name('ajax');
+
+    //Semester Assign for admitted student
+    Route::group(['as'=> 'semester-assign.', 'prefix'=>'semester-assign'],function(){
+        route::get('/view',[SemesterAssignAdmitStd::class,'index'])->name('index');
+    });
 
 });
 
