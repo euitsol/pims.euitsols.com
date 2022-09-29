@@ -25,6 +25,7 @@ use App\Http\Controllers\setup\GradeCalculationController;
 use App\Http\Controllers\setup\NationaltyController;
 use App\Http\Controllers\setup\SubjectAssignController;
 use App\Http\Controllers\setup\TeacherAssignController;
+use App\Http\Controllers\teacher\TeacherController;
 
 
 
