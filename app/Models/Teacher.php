@@ -20,4 +20,13 @@ class Teacher extends Model
     public function department(){
         return $this->belongsTo(Department::class, 'departments_id', 'id');
     }
+    public function division(){
+        return $this->belongsTo(Division::class, 'divisions_id', 'id');
+    }
+    public function district(){
+        return $this->belongsTo(District::class, 'districts_id', 'id');
+    }
+    public function bloodgroup(){
+        return $this->belongsTo(Bloodgroup::class, 'bloodgroups_id', 'id');
+    }
 }

@@ -35,7 +35,7 @@ class ShiftController extends Controller
             'name' => 'required|unique:shifts,name|string|max:255',
         ]);
 
-        $insert = new shift;
+        $insert = new Shift;
         $insert->name = $request->name;
         $insert->created_at = Carbon::now()->toDateTimeString();
         $insert->created_by = auth()->user()->id;

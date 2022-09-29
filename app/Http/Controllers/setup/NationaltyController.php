@@ -34,7 +34,7 @@ class NationaltyController extends Controller
             'name' => 'required|unique:nationalities,name|string|max:255',
         ]);
 
-        $insert = new nationality;
+        $insert = new Nationality;
         $insert->name = $request->name;
         $insert->created_at = Carbon::now()->toDateTimeString();
         $insert->created_by = auth()->user()->id;

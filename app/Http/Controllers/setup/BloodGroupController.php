@@ -36,7 +36,7 @@ class BloodGroupController extends Controller
             'name' => 'required|unique:bloodgroups,name|string|max:255',
         ]);
 
-        $insert = new bloodgroup;
+        $insert = new Bloodgroup;
         $insert->name = $request->name;
         $insert->created_at = Carbon::now()->toDateTimeString();
         $insert->created_by = auth()->user()->id;

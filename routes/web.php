@@ -281,6 +281,7 @@ Route::group(['as' => 'teacher.', 'prefix' => 'teacher'], function() {
     Route::get('/add', [TeacherController::class, 'create'])->name('create');
     Route::post('/add-store', [TeacherController::class, 'store'])->name('store');
     Route::get('/details/{id}', [TeacherController::class, 'show'])->name('show');
+    Route::get('/info/{id}', [TeacherController::class, 'info'])->name('info');
     Route::get('/edit/{id}', [TeacherController::class, 'edit'])->name('edit');
     Route::post('/edit-store', [TeacherController::class, 'update'])->name('update');
     Route::get('/delete/{id}', [TeacherController::class, 'destroy'])->name('destroy');
