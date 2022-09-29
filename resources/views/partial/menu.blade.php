@@ -235,6 +235,19 @@
                 </a>
             </li>
         @endif
+                <li class="nav-item">
+          <a href="{{ route('subject-assign.index') }}" class="nav-link {{ Request::is('setup/subject-assign/*') ? 'active' : '' }}">
+          <i class="nav-icon fas fa-minus"></i>
+          <p>Subject Assign</p>
+          </a>
+        </li>
+        {{-- Teacher Assign --}}
+        <li class="nav-item">
+            <a href="{{ route('teacher-assign.index') }}" class="nav-link {{ Request::is('setup/teacher-assign/*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-minus"></i>
+            <p>Teacher Assign</p>
+            </a>
+          </li>
     </ul>
 </li>
 {{-- @endif --}}
@@ -257,6 +270,8 @@
                 <p>View Teacher</p>
             </a>
         </li>
+
         {{-- @endif --}}
     </ul>
 </li>
+
