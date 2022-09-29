@@ -22,6 +22,7 @@ class TeacherAssignController extends Controller
         $session_id = $data_fetch->session_id;
         $department_id = $data_fetch->department_id;
         $semester_id = $data_fetch->semester_id;
+
         $n['data'] = SubjectAssign::where('session_id', $session_id)
             ->where('department_id', $department_id)
             ->where('semester_id', $semester_id)
@@ -39,6 +40,12 @@ class TeacherAssignController extends Controller
         $n['shift'] = Shift::where('deleted_at', null)
             ->get();
         $n['teacher'] = ['Teacher-1', 'Teacher-2'];
+        
+        $check = TeacherAssign::with(['subjectAssign','group','shift'])->where('subject_assign_id',$id)->where('deleted_at',null)->get();
+        if((count($check)>0)){
+            $n['exist_mifo'] = $check;
+            return view('pages.setup.teacher_assign.exist_create', $n);
+           }
 
         return view('pages.setup.teacher_assign.create', $n);
     }
@@ -68,7 +75,7 @@ class TeacherAssignController extends Controller
     //Show all information
     public function index()
     {
-        $n['minfo'] = TeacherAssign::where('deleted_at', null)->get();
+        $n['minfo'] = TeacherAssign::where('deleted_at', null)->groupBy(['subject_assign_id'])->get();
         return view('pages.setup.teacher_assign.index', $n);
     }
 

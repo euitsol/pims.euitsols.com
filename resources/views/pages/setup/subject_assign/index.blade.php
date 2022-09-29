@@ -46,7 +46,7 @@
                                         @foreach ($value as $value2)
                                             @foreach ($value2 as $key => $value3)
                                                 @php $data = $value3->first() @endphp
-                                    @dd($data)
+                                  
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
                                                     <td>{{ $data->session->start . '-' . $data->session->end }}</td>
