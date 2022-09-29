@@ -52,39 +52,36 @@
         </p>
     </a>
     <ul class="nav nav-treeview">
-        @if (Auth::user()->can('view admission') || Auth::user()->role->id == 1)
-            <li class="nav-item">
-                <a href="{{ route('users.index') }}" class="nav-link">
-                    <i class="nav-icon far fa-circle"></i>
-                    <p>Admission</p>
-                </a>
-                <ul class="nav nav-treeview">
-                    @if (Auth::user()->can('view admit-student') || Auth::user()->role->id == 1)
-                    <li class="nav-item">
-                        <a href="{{ route('student-admit.index') }}" class="nav-link">
-                            <i class="nav-icon fas fa-plus"></i>
-                            <p>Admit Student</p>
-                        </a>
-                    </li>
-                    @endif
-                    @if (Auth::user()->can('view show-admit-student') || Auth::user()->role->id == 1)
-                    <li class="nav-item">
-                        <a href="{{ route('student-admit.index') }}" class="nav-link">
-                            <i class="nav-icon fas fa-plus"></i>
-                            <p>Show Admission Student</p>
-                        </a>
-                    </li>
-                    @endif
-                </ul>
-            </li>
+        @if(Auth::user()->can('view admission') || Auth::user()->role->id == 1)
+        <li class="nav-item">
+            <a href="{{ route('users.index') }}" class="nav-link">
+                <i class="nav-icon far fa-circle"></i>
+                <p>Admission
+                    <i class="fas fa-angle-left right"></i>
+                </p>
+
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('student-admit.create') }}" class="nav-link">
+                        <i class="nav-icon fas fa-minus"></i>
+                        <p>Admit Student</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('student-admit.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-minus"></i>
+                        <p>Pending Student</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
         @endif
     </ul>
 </li>
 
-
-
 {{-- @if (Auth::user()->can('view department', 'view exam-name', 'view board', 'view semester', 'view session', 'view semester-duration', 'view group', 'view blood-group', 'view division', 'view district', 'view shift', 'view letter-grade', 'view credit', 'view subject', 'view grade-calculation', 'view nationality') || Auth::user()->role->id == 1) --}}
-<li class="nav-item {{Request::is('setup/*') ? 'menu-open' : ''}}">
+<li class="nav-item {{ Request::is('setup/*') ? 'menu-open' : '' }}">
     <a href="#" class="nav-link ">
         <i class="nav-icon fas fa-cogs"></i>
         <p>
@@ -94,12 +91,13 @@
     </a>
     <ul class="nav nav-treeview">
         @if (Auth::user()->can('view department') || Auth::user()->role->id == 1)
-        <li class="nav-item">
-        <a href="{{ route('department.index') }}" class="nav-link {{ Request::is('setup/department/*') ? 'active' : '' }}">
-                <i class="nav-icon fas fa-minus"></i>
-                <p>Department</p>
-            </a>
-        </li>
+            <li class="nav-item">
+                <a href="{{ route('department.index') }}"
+                    class="nav-link {{ Request::is('setup/department/*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-minus"></i>
+                    <p>Department</p>
+                </a>
+            </li>
         @endif
         @if (Auth::user()->can('view exam-name') || Auth::user()->role->id == 1)
             <li class="nav-item">
@@ -112,7 +110,8 @@
         @endif
         @if (Auth::user()->can('view board') || Auth::user()->role->id == 1)
             <li class="nav-item ">
-                <a href="{{ route('board.index') }}" class="nav-link {{ Request::is('setup/board/*') ? 'active' : '' }}">
+                <a href="{{ route('board.index') }}"
+                    class="nav-link {{ Request::is('setup/board/*') ? 'active' : '' }}">
                     <i class="nav-icon fas fa-minus"></i>
                     <p>Board</p>
                 </a>
@@ -147,89 +146,96 @@
             </li>
         @endif
         @if (Auth::user()->can('view group') || Auth::user()->role->id == 1)
-        <li class="nav-item">
-            <a href="{{ route('group.index') }}" class="nav-link {{ Request::is('setup/group/*') ? 'active' : '' }}">
-                <i class="nav-icon fas fa-minus"></i>
-                <p>Group</p>
-            </a>
-        </li>
+            <li class="nav-item">
+                <a href="{{ route('group.index') }}"
+                    class="nav-link {{ Request::is('setup/group/*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-minus"></i>
+                    <p>Group</p>
+                </a>
+            </li>
         @endif
         @if (Auth::user()->can('view blood-group') || Auth::user()->role->id == 1)
-        <li class="nav-item">
-            <a href="{{ route('bloodgroup.index') }}"
-                class="nav-link {{ Request::is('setup/bloodgroup/*') ? 'active' : '' }}">
-                <i class="nav-icon fas fa-minus"></i>
-                <p>Blood Group</p>
-            </a>
-        </li>
+            <li class="nav-item">
+                <a href="{{ route('bloodgroup.index') }}"
+                    class="nav-link {{ Request::is('setup/bloodgroup/*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-minus"></i>
+                    <p>Blood Group</p>
+                </a>
+            </li>
         @endif
         @if (Auth::user()->can('view division') || Auth::user()->role->id == 1)
-        <li class="nav-item">
-            <a href="{{ route('division.index') }}" class="nav-link {{ Request::is('setup/division/*') ? 'active' : '' }}">
-                <i class="nav-icon fas fa-minus"></i>
-                <p>Division</p>
-            </a>
-        </li>
+            <li class="nav-item">
+                <a href="{{ route('division.index') }}"
+                    class="nav-link {{ Request::is('setup/division/*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-minus"></i>
+                    <p>Division</p>
+                </a>
+            </li>
         @endif
         @if (Auth::user()->can('view district') || Auth::user()->role->id == 1)
-        <li class="nav-item">
-            <a href="{{ route('district.index') }}" class="nav-link {{ Request::is('setup/district/*') ? 'active' : '' }}">
-                <i class="nav-icon fas fa-minus"></i>
-                <p>District</p>
-            </a>
-        </li>
+            <li class="nav-item">
+                <a href="{{ route('district.index') }}"
+                    class="nav-link {{ Request::is('setup/district/*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-minus"></i>
+                    <p>District</p>
+                </a>
+            </li>
         @endif
         @if (Auth::user()->can('view shift') || Auth::user()->role->id == 1)
-        <li class="nav-item">
-            <a href="{{ route('shift.index') }}" class="nav-link {{ Request::is('setup/shift/*') ? 'active' : '' }}">
-                <i class="nav-icon fas fa-minus"></i>
-                <p>Shift</p>
-            </a>
-        </li>
+            <li class="nav-item">
+                <a href="{{ route('shift.index') }}"
+                    class="nav-link {{ Request::is('setup/shift/*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-minus"></i>
+                    <p>Shift</p>
+                </a>
+            </li>
         @endif
         @if (Auth::user()->can('view letter-grade') || Auth::user()->role->id == 1)
-        <li class="nav-item">
-            <a href="{{ route('lettergrade.index') }}"
-                class="nav-link {{ Request::is('setup/lettergrade/*') ? 'active' : '' }}">
-                <i class="nav-icon fas fa-minus"></i>
-                <p>Lettter Grade</p>
-            </a>
-        </li>
+            <li class="nav-item">
+                <a href="{{ route('lettergrade.index') }}"
+                    class="nav-link {{ Request::is('setup/lettergrade/*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-minus"></i>
+                    <p>Lettter Grade</p>
+                </a>
+            </li>
         @endif
         @if (Auth::user()->can('view credit') || Auth::user()->role->id == 1)
-        <li class="nav-item">
-            <a href="{{ route('credit.index') }}" class="nav-link {{ Request::is('setup/credit/*') ? 'active' : '' }}">
-                <i class="nav-icon fas fa-minus"></i>
-                <p>Credit</p>
-            </a>
-        </li>
+            <li class="nav-item">
+                <a href="{{ route('credit.index') }}"
+                    class="nav-link {{ Request::is('setup/credit/*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-minus"></i>
+                    <p>Credit</p>
+                </a>
+            </li>
         @endif
         @if (Auth::user()->can('view subject') || Auth::user()->role->id == 1)
-        <li class="nav-item">
-            <a href="{{ route('subject.index') }}" class="nav-link {{ Request::is('setup/subject/*') ? 'active' : '' }}">
-                <i class="nav-icon fas fa-minus"></i>
-                <p>Subject</p>
-            </a>
-        </li>
+            <li class="nav-item">
+                <a href="{{ route('subject.index') }}"
+                    class="nav-link {{ Request::is('setup/subject/*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-minus"></i>
+                    <p>Subject</p>
+                </a>
+            </li>
         @endif
         @if (Auth::user()->can('view grade-calculation') || Auth::user()->role->id == 1)
-        <li class="nav-item">
-            <a href="{{ route('grade.index') }}" class="nav-link {{ Request::is('setup/grade/*') ? 'active' : '' }}">
-                <i class="nav-icon fas fa-minus"></i>
-                <p>Grading Calculation</p>
-            </a>
-        </li>
+            <li class="nav-item">
+                <a href="{{ route('grade.index') }}"
+                    class="nav-link {{ Request::is('setup/grade/*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-minus"></i>
+                    <p>Grading Calculation</p>
+                </a>
+            </li>
         @endif
         @if (Auth::user()->can('view nationality') || Auth::user()->role->id == 1)
-        <li class="nav-item">
-            <a href="{{ route('nationality.index') }}"
-                class="nav-link {{ Request::is('setup/nationality/*') ? 'active' : '' }}">
-                <i class="nav-icon fas fa-minus"></i>
-                <p>Nationality</p>
-            </a>
-        </li>
+            <li class="nav-item">
+                <a href="{{ route('nationality.index') }}"
+                    class="nav-link {{ Request::is('setup/nationality/*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-minus"></i>
+                    <p>Nationality</p>
+                </a>
+            </li>
         @endif
-        <li class="nav-item">
+                <li class="nav-item">
           <a href="{{ route('subject-assign.index') }}" class="nav-link {{ Request::is('setup/subject-assign/*') ? 'active' : '' }}">
           <i class="nav-icon fas fa-minus"></i>
           <p>Subject Assign</p>
@@ -242,6 +248,30 @@
             <p>Teacher Assign</p>
             </a>
           </li>
+    </ul>
+</li>
+{{-- @endif --}}
+
+
+{{-- Teacher Mangement --}}
+<li class="nav-item {{ Request::is('teacher/*') ? 'menu-open' : '' }}">
+    <a href="#" class="nav-link ">
+        <i class="nav-icon fas fa-chalkboard-teacher"></i>
+        <p>
+            Teacher
+            <i class="fas fa-angle-left right"></i>
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        {{-- @if (Auth::user()->can('view department') || Auth::user()->role->id == 1) --}}
+        <li class="nav-item">
+            <a href="{{ route('teacher.index') }}" class="nav-link {{ Request::is('teacher/*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa-minus"></i>
+                <p>View Teacher</p>
+            </a>
+        </li>
+
+        {{-- @endif --}}
     </ul>
 </li>
 

@@ -89,10 +89,18 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::get('/permission/delete/{id}', [UserController::class, 'permission_delete'])->name('permission.delete');
     });
 
-
-
     //Admission Module
     Route::resource('student-admit', studentAdmitcontroller::class);
+    // Route::get('/division_ajax/{id}', [studentAdmitcontroller::class,'ajax']);
+    Route::get('student-admit/division_ajax/{id}', [studentAdmitcontroller::class,'ajax'])->name('ajax');
+    Route::get('/student/admitted/{id}', [studentAdmitcontroller::class,'delete'])->name('student.admitted.destroy');
+    Route::post('/student/admitted/update', [studentAdmitcontroller::class,'update'])->name('student.admitted.update');
+
+    Route::get('/student/decline/{id}', [studentAdmitcontroller::class,'decline_student'])->name('student.decline');
+    Route::get('/student/accept/{id}', [studentAdmitcontroller::class,'accept_student'])->name('student.accept');
+
+    Route::get('/student/registration-download/{id}', [studentAdmitcontroller::class,'student_reg_download'])->name('student.reg.download');
+    Route::get('/student/marksheet-download/{id}', [studentAdmitcontroller::class,'student_marksheet_download'])->name('student.marksheet.download');
 
 
     Route::group(['prefix'=> 'setup'],function(){
@@ -300,4 +308,18 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
 
 });
 
+
+// Teacher Module
+Route::group(['as' => 'teacher.', 'prefix' => 'teacher'], function() {
+    Route::get('/view', [TeacherController::class, 'index'])->name('index');
+    Route::get('/add', [TeacherController::class, 'create'])->name('create');
+    Route::post('/add-store', [TeacherController::class, 'store'])->name('store');
+    Route::get('/details/{id}', [TeacherController::class, 'show'])->name('show');
+    Route::get('/info/{id}', [TeacherController::class, 'info'])->name('info');
+    Route::get('/edit/{id}', [TeacherController::class, 'edit'])->name('edit');
+    Route::post('/edit-store', [TeacherController::class, 'update'])->name('update');
+    Route::get('/delete/{id}', [TeacherController::class, 'destroy'])->name('destroy');
+    Route::get('division_ajax/{id}', [TeacherController::class, 'ajax'])->name('ajax');
+
+});
 

@@ -2,7 +2,7 @@
     <a href="{{ route('home') }}" class="brand-link">
         <img src="{{ asset('assets/image/default/site-logo.jpg') }}"
              alt="{{ config('app.name') }}"
-             class="brand-image img-circle elevation-3">
+             class="brand-image img-square elevation-3">
         <span class="brand-text font-weight-light">{{ config('app.name') }}</span>
     </a>
 

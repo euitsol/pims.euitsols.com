@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('tmp_files', function (Blueprint $table) {
             $table->id();
             $table->text("path");
+            $table->text("filename");
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();

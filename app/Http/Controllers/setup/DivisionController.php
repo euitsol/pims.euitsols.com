@@ -35,7 +35,7 @@ class DivisionController extends Controller
             'name' => 'required|unique:divisions,name|string|max:255',
         ]);
 
-        $insert = new division;
+        $insert = new Division;
         $insert->name = $request->name;
         $insert->created_at = Carbon::now()->toDateTimeString();
         $insert->created_by = auth()->user()->id;

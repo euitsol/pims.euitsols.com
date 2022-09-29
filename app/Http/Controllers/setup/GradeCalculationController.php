@@ -40,7 +40,7 @@ class GradeCalculationController extends Controller
             'grade_point' => 'required|numeric',
         ]);
 
-        $insert = new grade;
+        $insert = new Grade;
         $insert->lettergrades_id = $request->grade;
         $insert->mark_start = $request->mark_start;
         $insert->mark_end = $request->mark_end;
