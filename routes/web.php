@@ -62,15 +62,18 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
     Route::group(['as' => 'users.', 'prefix' => 'users'], function() {
 
         // Users management
-        Route::get('/view', [UserController::class, 'index'])->name('index');
-        Route::get('/add', [UserController::class, 'add'])->name('add');
-        Route::post('/add-store', [UserController::class, 'store'])->name('store');
-        Route::get('/details/{id}', [UserController::class, 'details'])->name('details');
-        Route::get('/edit/{id}', [UserController::class, 'edit'])->name('edit');
-        Route::post('/edit-store', [UserController::class, 'edit_store'])->name('edit.store');
-        Route::get('/delete/{id}', [UserController::class, 'delete'])->name('delete');
+        Route::group(['prefix' => 'user-management'], function() {
+            Route::get('/view', [UserController::class, 'index'])->name('index');
+            Route::get('/add', [UserController::class, 'add'])->name('add');
+            Route::post('/add-store', [UserController::class, 'store'])->name('store');
+            Route::get('/details/{id}', [UserController::class, 'details'])->name('details');
+            Route::get('/edit/{id}', [UserController::class, 'edit'])->name('edit');
+            Route::post('/edit-store', [UserController::class, 'edit_store'])->name('edit.store');
+            Route::get('/delete/{id}', [UserController::class, 'delete'])->name('delete');
+        });
 
         //Role
+
         Route::get('/roles/view', [UserController::class, 'role_index'])->name('role.index');
         Route::get('/roles/add', [UserController::class, 'role_add'])->name('role.add');
         Route::post('/roles/store', [UserController::class, 'role_store'])->name('role.store');
