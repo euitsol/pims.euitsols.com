@@ -257,6 +257,7 @@
 
 
 {{-- Teacher Mangement --}}
+@if (Auth::user()->hasAnyPermission(['view teacher']) || Auth::user()->role->id == 1)
 <li class="nav-item {{ Request::is('teacher/*') ? 'menu-open' : '' }}">
     <a href="#" class="nav-link ">
         <i class="nav-icon fas fa-chalkboard-teacher"></i>
@@ -266,14 +267,15 @@
         </p>
     </a>
     <ul class="nav nav-treeview">
-        {{-- @if (Auth::user()->can('view department') || Auth::user()->role->id == 1) --}}
-        <li class="nav-item">
-            <a href="{{ route('teacher.index') }}" class="nav-link {{ Request::is('teacher/*') ? 'active' : '' }}">
-                <i class="nav-icon fas fa-minus"></i>
-                <p>View Teacher</p>
-            </a>
-        </li>
-
-        {{-- @endif --}}
+        @if (Auth::user()->can('view teacher') || Auth::user()->role->id == 1)
+            <li class="nav-item">
+                <a href="{{ route('teacher.index') }}"
+                    class="nav-link {{ Request::is('teacher/*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-minus"></i>
+                    <p>View Teacher</p>
+                </a>
+            </li>
+        @endif
     </ul>
 </li>
+@endif

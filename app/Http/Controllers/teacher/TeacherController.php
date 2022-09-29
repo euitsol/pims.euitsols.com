@@ -24,7 +24,7 @@ class TeacherController extends Controller
 
     public function index()
     {
-        // $this->check_access('view nationality');
+        $this->check_access('view teacher');
         $n['db_data'] = Teacher::where('deleted_at', null)->orderBy('departments_id')->latest()->get();
         return view('pages.teacher.index',$n);
     }
@@ -38,7 +38,7 @@ class TeacherController extends Controller
 
     public function create()
     {
-        // $this->check_access('add nationality');
+        $this->check_access('add teacher');
         $depts = Department::where('deleted_at',null)->latest()->get();;
         $blood_group = Bloodgroup::where('deleted_at',null)->latest()->get();
         $district = District::where('deleted_at',null)->latest()->get();
@@ -48,7 +48,7 @@ class TeacherController extends Controller
 
     public function store(Request $request)
     {
-        // $this->check_access('add nationality');
+        $this->check_access('add teacher');
         $this->validate($request, [
             'name' => 'required|string|max:255',
             'phone' => 'required|unique:teachers,phone|numeric|digits:11',
@@ -109,7 +109,7 @@ class TeacherController extends Controller
 
     public function edit($id)
     {
-        // $this->check_access('edit nationality');
+        $this->check_access('edit teacher');
         $n['depts']= Department::where('deleted_at',null)->latest()->get();;
         $n['blood_group']= Bloodgroup::where('deleted_at',null)->latest()->get();;
         $n['district']= District::where('deleted_at',null)->latest()->get();;
@@ -122,7 +122,7 @@ class TeacherController extends Controller
 
     public function update(Request $request)
     {
-        // $this->check_access('edit nationality');
+        $this->check_access('edit teacher');
 
         $this->validate($request, [
             'name' => 'required|string|max:255',
@@ -175,7 +175,7 @@ class TeacherController extends Controller
 
     public function destroy($id)
     {
-        // $this->check_access('delete nationality');
+        $this->check_access('delete teacher');
         if($id != null){
             $teacher = Teacher::findOrFail($id);
             $teacher->deleted_at = Carbon::now()->toDateTimeString();
@@ -188,6 +188,7 @@ class TeacherController extends Controller
     }
 
     public function info($id){
+        $this->check_access('show teacher');
         $n['db_data'] = Teacher::where('deleted_at', null)
                                 ->where('id',$id)->first();
         return view('pages.teacher.show',$n);
