@@ -25,7 +25,7 @@ class TeacherController extends Controller
     public function index()
     {
         // $this->check_access('view nationality');
-        $n['db_data'] = Teacher::where('deleted_at', null)->latest()->get();
+        $n['db_data'] = Teacher::where('deleted_at', null)->orderBy('departments_id')->latest()->get();
         return view('pages.teacher.index',$n);
     }
 
@@ -84,9 +84,9 @@ class TeacherController extends Controller
         //image upload
         $temp_file = TmpFile::findOrFail($request->image);
         if($temp_file){
-            // $from_path = $temp_file->path.'/'.$temp_file->filename;
-            $from_path = $temp_file->path;
-            $to_path = 'public/teacher-info/'.$insert->id.'/photo/';
+            $from_path = $temp_file->path.'/'.$temp_file->filename;
+            // $from_path = $temp_file->path;
+            $to_path = 'public/teacher-info/'.$insert->id.'/photo/'.$temp_file->filename;
 
             Storage::move($from_path, $to_path);
             Storage::deleteDirectory($temp_file->path);
@@ -155,6 +155,18 @@ class TeacherController extends Controller
         $update->photo = $request->photo;
         $update->updated_at = Carbon::now()->toDateTimeString();
         $update->updated_by = auth()->user()->id;
+        $update->save();
+
+        if(isset($request->image)){
+            $temp_file = TmpFile::findOrFail($request->image);
+            $from_path = $temp_file->path.'/'.$temp_file->filename;
+            $to_path = 'public/teacher-info/'.$update->id.'/photo/'.$temp_file->filename;
+            Storage::move($from_path, $to_path);
+            Storage::deleteDirectory($temp_file->path);
+            $update->photo = $to_path;
+        }else{
+            $update->photo = $request->pre_photo;
+        }
         $update->save();
 
         $this->message('success', 'Teacher Updated Successfully');

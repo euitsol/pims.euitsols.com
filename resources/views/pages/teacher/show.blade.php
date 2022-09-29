@@ -12,8 +12,7 @@
         background-image: linear-gradient(to right, rgba(159, 158, 158, 0.09) 2%, rgb(12, 159, 206), rgb(12, 159, 206), rgb(12, 159, 206), rgba(159, 158, 158, 0.09) 90%);
     }
     .teacher-photo{
-        border: 1px solid;
-        height: 125px;
+        height: 500px;
         width: 100%;
         object-fit: contain;
     }
@@ -69,7 +68,7 @@
                                 </div>
                             </div>
                             <div class="row mt-5">
-                                <div class="col-md-6">
+                                <div class="col-md-8">
                                     <table class="table _table table-borderless">
                                         <tbody>
                                             <tr>
@@ -135,13 +134,13 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="col-md-6">
-                                    <table class="table _table table-borderless">
+                                <div class="col-md-4">
+                                    <table class="table table-borderless">
                                         <tbody>
                                             <tr>
                                                 <td colspan="3">
                                                     <img class="teacher-photo"
-                                                        src="{{asset($db_data->photo)}}"
+                                                        src="{{ \Illuminate\Support\Facades\Storage::url($db_data->photo) }}"
                                                         alt="a" title="a">
 
                                                 </td>
@@ -152,25 +151,16 @@
                                 </div>
                             </div>
 
-                            <div class="row offset-md-1 mt-5 mb-3">
+                            {{-- <div class="row offset-md-1 mt-5 mb-3">
                                 <div class="col-md-10">
                                     <p class="text-center w-84 font-italic">
                                         <i class="fas fa-quote-left quote"></i> The above information is true to the
-                                        best of my knowledge. I authorized European IT Solution Institute
+                                        best of my knowledge. I authorized {{ env('INSTITUTE_NAME') }}
                                         of Bangladesh to release any information required to process my
                                         claims. <i class="fas fa-quote-right quote"></i>
                                     </p>
                                 </div>
-                            </div>
-
-                            <div class="row justify-content-between mt-5">
-                                <p class="border-top" style="margin-left: 5%;">Authorized Signature</p>
-                                <p class="border-top" style="margin-right: 5%;">Student Signature</p>
-                            </div>
-
-                            <div class="row justify-content-center mt-5">
-                                <p class="">pims.euitsols.com</p>
-                            </div>
+                            </div> --}}
 
                         </div>
 
