@@ -23,6 +23,7 @@ use App\Http\Controllers\setup\CreditController;
 use App\Http\Controllers\setup\SubjectController;
 use App\Http\Controllers\setup\GradeCalculationController;
 use App\Http\Controllers\setup\NationaltyController;
+use App\Http\Controllers\teacher\TeacherController;
 
 
 
@@ -281,4 +282,17 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
 
 });
 
+
+// Teacher Module
+Route::group(['as' => 'teacher.', 'prefix' => 'teacher'], function() {
+    Route::get('/view', [TeacherController::class, 'index'])->name('index');
+    Route::get('/add', [TeacherController::class, 'create'])->name('create');
+    Route::post('/add-store', [TeacherController::class, 'store'])->name('store');
+    Route::get('/details/{id}', [TeacherController::class, 'show'])->name('show');
+    Route::get('/edit/{id}', [TeacherController::class, 'edit'])->name('edit');
+    Route::post('/edit-store', [TeacherController::class, 'update'])->name('update');
+    Route::get('/delete/{id}', [TeacherController::class, 'destroy'])->name('destroy');
+    Route::get('division_ajax/{id}', [TeacherController::class, 'ajax'])->name('ajax');
+
+});
 
