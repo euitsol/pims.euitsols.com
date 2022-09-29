@@ -82,7 +82,7 @@ class SubjectAssignController extends Controller
             }
 
             $this->message('success','Successfully Subject assigned');
-            return redirect()->route('subject-assign.index');
+            return redirect()->route('teacher-assign.create');
     }
 
 

@@ -28,7 +28,7 @@ return new class extends Migration
 
         Schema::table('teacher_assigns', function (Blueprint $table) {
             $table->foreign('subject_assign_id', 'teacher_assigns_subject_assign')->references('id')->on('subject_assigns')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('teacher_id', 'teacher_assigns_teacher')->references('id')->on('teachers')->onDelete('cascade')->onUpdate('cascade');
+             $table->foreign('teacher_id', 'teacher_assigns_teacher')->references('id')->on('teachers')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('shift_id', 'teacher_assigns_shift')->references('id')->on('shifts')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('group_id', 'teacher_assigns_group')->references('id')->on('groups')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('created_by', 'teacher_assigns_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
