@@ -38,6 +38,8 @@
 <script src="{{ asset('assets/js/custom-functions.js') }}"></script>
 @stack('third_party_scripts')
 
+<script src="{{ asset('assets/js/custom.js') }}"></script>
+
 @stack('page_scripts')
 </body>
 </html>
