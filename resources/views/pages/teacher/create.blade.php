@@ -22,6 +22,9 @@
                         <span class="float-left">
                             <h4>Add Teacher</h4>
                         </span>
+                        <span class="float-right">
+                            <a href="{{ route('teacher.index') }}" class="btn btn-info">Back</a>
+                        </span>
                     </div>
                     <div class="card-body">
                         @if ($errors->any())
@@ -200,7 +203,7 @@
 
                                         <div class="col-sm-6">
                                             <input type="number" class="form-control" id="nid" name="nid"
-                                                value="{{ old('nid') }}" placeholder="Enter Teacher's Phone" required>
+                                                value="{{ old('nid') }}" placeholder="Enter Teacher's NID">
                                             @if ($errors->has('nid'))
                                                 <span class="text-danger">{{ $errors->first('nid') }}</span>
                                             @endif

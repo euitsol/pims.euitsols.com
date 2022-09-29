@@ -52,30 +52,30 @@
         </p>
     </a>
     <ul class="nav nav-treeview">
-        @if(Auth::user()->can('view admission') || Auth::user()->role->id == 1)
-        <li class="nav-item">
-            <a href="{{ route('users.index') }}" class="nav-link">
-                <i class="nav-icon far fa-circle"></i>
-                <p>Admission
-                    <i class="fas fa-angle-left right"></i>
-                </p>
+        @if (Auth::user()->can('view admission') || Auth::user()->role->id == 1)
+            <li class="nav-item">
+                <a href="{{ route('users.index') }}" class="nav-link">
+                    <i class="nav-icon far fa-circle"></i>
+                    <p>Admission
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
 
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="{{ route('student-admit.create') }}" class="nav-link">
-                        <i class="nav-icon fas fa-minus"></i>
-                        <p>Admit Student</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('student-admit.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-minus"></i>
-                        <p>Pending Student</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ route('student-admit.create') }}" class="nav-link">
+                            <i class="nav-icon fas fa-minus"></i>
+                            <p>Admit Student</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('student-admit.index') }}" class="nav-link">
+                            <i class="nav-icon fas fa-minus"></i>
+                            <p>Pending Student</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
         @endif
     </ul>
 </li>
@@ -235,25 +235,28 @@
                 </a>
             </li>
         @endif
-                <li class="nav-item">
-          <a href="{{ route('subject-assign.index') }}" class="nav-link {{ Request::is('setup/subject-assign/*') ? 'active' : '' }}">
-          <i class="nav-icon fas fa-minus"></i>
-          <p>Subject Assign</p>
-          </a>
+        <li class="nav-item">
+            <a href="{{ route('subject-assign.index') }}"
+                class="nav-link {{ Request::is('setup/subject-assign/*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa-minus"></i>
+                <p>Subject Assign</p>
+            </a>
         </li>
         {{-- Teacher Assign --}}
         <li class="nav-item">
-            <a href="{{ route('teacher-assign.index') }}" class="nav-link {{ Request::is('setup/teacher-assign/*') ? 'active' : '' }}">
-            <i class="nav-icon fas fa-minus"></i>
-            <p>Teacher Assign</p>
+            <a href="{{ route('teacher-assign.index') }}"
+                class="nav-link {{ Request::is('setup/teacher-assign/*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa-minus"></i>
+                <p>Teacher Assign</p>
             </a>
-          </li>
+        </li>
     </ul>
 </li>
 {{-- @endif --}}
 
 
 {{-- Teacher Mangement --}}
+@if (Auth::user()->hasAnyPermission(['view teacher']) || Auth::user()->role->id == 1)
 <li class="nav-item {{ Request::is('teacher/*') ? 'menu-open' : '' }}">
     <a href="#" class="nav-link ">
         <i class="nav-icon fas fa-chalkboard-teacher"></i>
@@ -263,15 +266,15 @@
         </p>
     </a>
     <ul class="nav nav-treeview">
-        {{-- @if (Auth::user()->can('view department') || Auth::user()->role->id == 1) --}}
-        <li class="nav-item">
-            <a href="{{ route('teacher.index') }}" class="nav-link {{ Request::is('teacher/*') ? 'active' : '' }}">
-                <i class="nav-icon fas fa-minus"></i>
-                <p>View Teacher</p>
-            </a>
-        </li>
-
-        {{-- @endif --}}
+        @if (Auth::user()->can('view teacher') || Auth::user()->role->id == 1)
+            <li class="nav-item">
+                <a href="{{ route('teacher.index') }}"
+                    class="nav-link {{ Request::is('teacher/*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-minus"></i>
+                    <p>View Teacher</p>
+                </a>
+            </li>
+        @endif
     </ul>
 </li>
-
+@endif

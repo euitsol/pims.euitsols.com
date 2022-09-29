@@ -213,7 +213,7 @@
 
                                         <div class="col-sm-6">
                                             <input type="number" class="form-control" id="nid" name="nid"
-                                                value="{{ $db_data->nid }}" placeholder="Enter Teacher's Phone" required>
+                                                value="{{ $db_data->nid }}" placeholder="Enter Teacher's NID">
                                             @if ($errors->has('nid'))
                                                 <span class="text-danger">{{ $errors->first('nid') }}</span>
                                             @endif
