@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\SubjectAssign;
 
 class Subject extends Model
 {
@@ -25,5 +26,15 @@ class Subject extends Model
     }
     public function deleted_user(){
         return $this->belongsTo(User::class, 'deleted_by', 'id');
+    }
+
+    public function subjectIsAssign($session_id,$semester_id,$department_id){
+        $subject_id = $this->id;
+        $check = SubjectAssign::where('session_id',$session_id)->where('department_id',$department_id)->where('subject_id',$subject_id)->where('deleted_at', null)->get()->count();
+        if($check>0){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
