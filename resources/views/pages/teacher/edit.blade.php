@@ -198,7 +198,7 @@
 
                                         <div class="col-sm-6">
                                             <select class="form-control" name="gender" id="gender">
-                                                <option value="">Select Gender</option>
+                                                <option value="" hidden>Select Gender</option>
                                                 <option value="Male" @if ($db_data->gender == 'Male') selected @endif>
                                                     Male</option>
                                                 <option value="Female"@if ($db_data->gender == 'Female') selected @endif>

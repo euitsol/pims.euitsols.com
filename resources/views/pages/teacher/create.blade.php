@@ -191,7 +191,7 @@
 
                                         <div class="col-sm-6">
                                             <select class="form-control" name="gender" id="gender">
-                                                <option value="" @if( old('gender') == "" ) selected @endif>Select Gender</option>
+                                                <option value="" hidden>Select Gender</option>
                                                 <option value="Male" @if( old('gender') == "Male" ) selected @endif>Male</option>
                                                 <option value="Female" @if( old('gender') == "Female" ) selected @endif>Female</option>
                                                 <option value="Other" @if( old('gender') == "Other" ) selected @endif>Other</option>
