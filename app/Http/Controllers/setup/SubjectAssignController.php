@@ -58,7 +58,7 @@ class SubjectAssignController extends Controller
             $this->validate($request,$rules,$msg,$attributes);
             $data = $request->all();
             $data['created_by'] = Auth::user()->id;
-        
+
             foreach($request->subject_id as $subject_id){
                 // dd($subject_id);
                 $exists = SubjectAssign::where('session_id',$request->session_id)->where('department_id',$request->department_id)
@@ -70,18 +70,21 @@ class SubjectAssignController extends Controller
                 if($exists != null){
                     $exists->deleted_at = null;
                     $exists->save();
+                    $id= $exists->id;
+
                 }
                 elseif($query != null){
                     $this->message('error','Subject '.$query->subject->name.' already assigned');
                     return redirect()->back()->withInput();
                 }else{
                     $data['subject_id'] = $subject_id;
-                    SubjectAssign::create($data);
+                    $save = SubjectAssign::create($data);
+                    $id = $save->id;
                 }
             }
 
             $this->message('success','Successfully Subject assigned');
-            return redirect()->route('teacher-assign.create');
+            return redirect()->route('teacher-assign.create',$id);
     }
 
 

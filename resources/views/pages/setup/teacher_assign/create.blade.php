@@ -46,9 +46,7 @@
                                     $count = 0;
                                     @endphp
                                     @foreach ($data as $value)
-                                            @php
-                                                $count++;
-                                            @endphp
+
                                         <div class="shadow-lg p-3 mb-5 bg-body rounded">
                                             <div class="row">
                                                 <div class="col-md-4 text-center">
@@ -77,70 +75,147 @@
                                             <hr>
 
                                             {{-- Teacher  --}}
-                                            <input type="hidden" name="subject_assign[{{$loop->index}}]" value="{{$value->id}}">
                                             <h5 class="text-center text-primary">Assign Teacher</h5>
-                                            <div class="form-group row">
-                                                <div class="col-sm-1 text-right">
-                                                    <label for="teacher_id">Teacher<span class="text-danger">*</span></label>
-                                                   </div>
-                                                <div class="col-sm-4">
-                                                    <select class="form-control" id="teacher_id" name="subjec_assign_id[{{$loop->index}}][0][teacher_id]" required>
-                                                        <option value="" hidden>Select Teacher</option>
-                                                        <option value="1">Teacher1</option>
-                                                        <option value="2">Teacher2</option>
-                                                        {{-- @foreach ($teacher as $value)
-                                                            <option value="1"
-                                                                @if (old('teacher_id') == $value) selected @endif>
-                                                                {{ $value }}</option>
-                                                        @endforeach --}}
-                                                    </select>
-                                                    @if ($errors->has('teacher_id'))
-                                                        <span class="text-danger">{{ $errors->first('teacher_id') }}</span>
+                                            @forelse ( $value->teacherAssign as $key => $teachers)
+                                                    @php
+                                                        $div_identifier = rand(0,100);
+
+                                                    @endphp
+                                                <div class="form-group row" id="div_{{$div_identifier}}">
+                                                    <input type="hidden" name="subject_assign[{{$count}}]['subject_assign_id']" value="{{$value->id}}">
+                                                    <div class="col-sm-1 text-right">
+                                                        <label for="teacher_id">Teacher<span class="text-danger">*</span></label>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <select class="form-control" id="teacher_id" name="subject_assign[{{$count}}][teacher_id]" required>
+                                                            <option value="" hidden>Select Teacher</option>
+
+                                                            @foreach ($teacher as $value)
+                                                                <option value="{{$value->id}}"
+                                                                    @if ($teachers->teacher_id == $value->id) selected @endif>
+                                                                    {{ $value->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        @if ($errors->has('teacher_id'))
+                                                            <span class="text-danger">{{ $errors->first('teacher_id') }}</span>
+                                                        @endif
+                                                    </div>
+
+                                                    {{-- Group  --}}
+                                                    <div class="col-sm-1 text-right">
+                                                        <label for="group_id">Group<span class="text-danger">*</span></label>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <select class="form-control" id="group" name="subject_assign[{{$count}}][group_id]" required>
+                                                            <option value="" hidden>Select Group</option>
+                                                            @foreach ($group as $value)
+                                                                <option value="{{ $value->id}}"
+                                                                    @if ($teachers->teacher_id == $value->id) selected @endif>
+                                                                    {{ $value->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        @if ($errors->has('group'))
+                                                            <span class="text-danger">{{ $errors->first('group') }}</span>
+                                                        @endif
+                                                    </div>
+
+                                                    {{-- shift  --}}
+                                                    <div class="col-sm-1 text-right">
+                                                        <label for="shift_id">Shift<span class="text-danger">*</span></label>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <select class="form-control" id="shift_id" name="subject_assign[{{$count}}][shift_id]" required>
+                                                            <option value="" hidden>Select Shift</option>
+                                                            @foreach ($shift as $value)
+                                                                <option value="{{ $value->id }}"
+                                                                    @if ($teachers->teacher_id == $value->id) selected @endif>
+                                                                    {{ $value->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        @if ($errors->has('shift_id'))
+                                                            <span class="text-danger">{{ $errors->first('shift_id') }}</span>
+                                                        @endif
+                                                    </div>
+                                                    @if ($key == 0)
+                                                        <div class="col-sm-1">
+                                                            <button type="button" class="btn btn-success add-more float-right" value="0"><i class="nav-icon fas fa-plus"></i></button>
+                                                        </div>
+                                                    @else
+                                                        <div class="col-sm-1">
+                                                            <button type="button" class="btn btn-danger reduce float-right" value="0" onclick="delete_section({{$div_identifier}})"><i class="nav-icon fas fa-minus"></i></button>
+                                                        </div>
                                                     @endif
                                                 </div>
+                                                @php
+                                                    $count++;
+                                                @endphp
+                                            @empty
+                                                <div class="form-group row">
+                                                    {{-- Teacher  --}}
+                                                    <div class="col-sm-1 text-right">
+                                                        <label for="teacher_id">Teacher<span class="text-danger">*</span></label>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <select class="form-control" id="teacher_id" name="subjec_assign_id[{{$loop->index}}][0][teacher_id]" required>
+                                                            <option value="" hidden>Select Teacher</option>
+                                                            @foreach ($teacher as $value)
+                                                                <option value="{{$value->id}}"
+                                                                    @if ( old('group') == $value->id) selected @endif>
+                                                                    {{ $value->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        @if ($errors->has('teacher_id'))
+                                                            <span class="text-danger">{{ $errors->first('teacher_id') }}</span>
+                                                        @endif
+                                                    </div>
 
-                                                {{-- Group  --}}
+                                                    {{-- Group  --}}
 
-                                                <div class="col-sm-1 text-right">
-                                                    <label for="group_id">Group<span class="text-danger">*</span></label>
-                                                </div>
-                                                <div class="col-sm-2">
-                                                    <select class="form-control" id="group" name="subjec_assign_id[{{$loop->index}}][0][group]" required>
-                                                        <option value="" hidden>Select Group</option>
-                                                        @foreach ($group as $value)
-                                                            <option value="{{ $value->id}}"
-                                                                @if (old('group') == $value->name) selected @endif>
-                                                                {{ $value->name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    @if ($errors->has('group'))
-                                                        <span class="text-danger">{{ $errors->first('group') }}</span>
-                                                    @endif
-                                                </div>
+                                                    <div class="col-sm-1 text-right">
+                                                        <label for="group_id">Group<span class="text-danger">*</span></label>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <select class="form-control" id="group" name="subjec_assign_id[{{$loop->index}}][0][group]" required>
+                                                            <option value="" hidden>Select Group</option>
+                                                            @foreach ($group as $value)
+                                                                <option value="{{ $value->id}}"
+                                                                    @if (old('group') == $value->name) selected @endif>
+                                                                    {{ $value->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        @if ($errors->has('group'))
+                                                            <span class="text-danger">{{ $errors->first('group') }}</span>
+                                                        @endif
+                                                    </div>
 
-                                                {{-- shift  --}}
-                                                <div class="col-sm-1 text-right">
-                                                    <label for="shift_id">Shift<span class="text-danger">*</span></label>
-                                                </div>
-                                                <div class="col-sm-2">
-                                                    <select class="form-control" id="shift_id" name="subjec_assign_id[{{$loop->index}}][0][shift_id]" required>
-                                                        <option value="" hidden>Select Shift</option>
-                                                        @foreach ($shift as $value)
-                                                            <option value="{{ $value->id }}"
-                                                                @if (old('shift_id') == $value->name) selected @endif>
-                                                                {{ $value->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    @if ($errors->has('shift_id'))
-                                                        <span class="text-danger">{{ $errors->first('shift_id') }}</span>
-                                                    @endif
-                                                </div>
+                                                    {{-- shift  --}}
+                                                    <div class="col-sm-1 text-right">
+                                                        <label for="shift_id">Shift<span class="text-danger">*</span></label>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <select class="form-control" id="shift_id" name="subjec_assign_id[{{$loop->index}}][0][shift_id]" required>
+                                                            <option value="" hidden>Select Shift</option>
+                                                            @foreach ($shift as $value)
+                                                                <option value="{{ $value->id }}"
+                                                                    @if (old('shift_id') == $value->name) selected @endif>
+                                                                    {{ $value->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        @if ($errors->has('shift_id'))
+                                                            <span class="text-danger">{{ $errors->first('shift_id') }}</span>
+                                                        @endif
+                                                    </div>
 
-                                                <div class="col-sm-1">
-                                                    <button type="button" class="btn btn-success add-more float-right" value="0"><i class="nav-icon fas fa-plus"></i></button>
-                                                </div>
+                                                    <div class="col-sm-1">
+                                                        <button type="button" class="btn btn-success add-more float-right" value="0"><i class="nav-icon fas fa-plus"></i></button>
+                                                    </div>
 
-                                            </div>
+                                                </div>
+                                                @php
+                                                    $count++;
+                                                @endphp
+                                            @endforelse
+
                                             {{-- Append Option  --}}
                                             <div class="append" id="append{{$loop->index}}">
 
@@ -175,6 +250,10 @@
         //select2 tools
         $(document).ready(function() {
             $('.select2').select2();
+            function delete_section(count){
+            $('#div_'+count).remove();
+
+        }
         });
 
         $('.add-more').each(function(index){
@@ -191,8 +270,9 @@
                                     <div class="col-sm-4">
                                         <select class="form-control" id="teacher_id" name="subjec_assign_id[${index}][${count}][teacher_id]" required>
                                             <option value="" hidden>Select Teacher</option>
-                                            <option value="1">Teacher1</option>
-                                            <option value="2">Teacher2</option>
+                                                @foreach ($teacher as $value)
+                                                    <option value="{{$value->id}}"  @if ( old('group') == $value->id) selected @endif> {{ $value->name }}</option>
+                                                @endforeach
                                         </select>
                                         @if ($errors->has('teacher_id'))
                                             <span class="text-danger">{{ $errors->first('teacher_id') }}</span>
