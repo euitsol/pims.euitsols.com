@@ -36,7 +36,7 @@ class LetterGradeController extends Controller
             'name' => 'required|unique:lettergrades,name|string|max:255',
         ]);
 
-        $insert = new lettergrade;
+        $insert = new Lettergrade;
         $insert->name = $request->name;
         $insert->created_at = Carbon::now()->toDateTimeString();
         $insert->created_by = auth()->user()->id;

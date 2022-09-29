@@ -39,37 +39,40 @@
                                 <form action="{{ route('teacher.store') }}" method="POST" class="form-horizontal">
                                     @csrf
                                     <div class="form-group row">
-                                        <label class="col-sm-8" for="name">Teacher Name<span
-                                                class="text-danger">*</span></label>
 
-                                        <label class="col-sm-4" for="image">Photo<span
-                                                class="text-danger"></span></label>
 
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="name" name="name"
-                                                value="{{ old('name') }}" placeholder="Enter Teacher's Name" required>
-                                            @if ($errors->has('name'))
-                                                <span class="text-danger">{{ $errors->first('name') }}</span>
-                                            @endif
+                                            <div>
+                                                <label class="" for="name">Teacher Name<span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="name" name="name"
+                                                    value="{{ old('name') }}" placeholder="Enter Teacher's Name" required>
+                                                @if ($errors->has('name'))
+                                                    <span class="text-danger">{{ $errors->first('name') }}</span>
+                                                @endif
+                                            </div>
+                                            <div>
+                                                <label class="mt-3" for="department">Department<span
+                                                        class="text-danger">*</span></label>
 
-                                            <label class="mt-3" for="department">Department<span
-                                                    class="text-danger">*</span></label>
+                                                <select class="form-control" name="departments" id="department">
+                                                    <option value="">Select Department</option>
+                                                    @foreach ($depts as $department)
+                                                        <option value="{{ $department->id }}" @if( old('departments') == $department->id ) selected @endif>{{ $department->department_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
 
-                                            <select class="form-control" name="departments" id="department">
-                                                <option value="">Select Department</option>
-                                                @foreach ($depts as $department)
-                                                    <option value="{{ $department->id }}">{{ $department->department_name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-
-                                            @if ($errors->has('department'))
-                                                <span class="text-danger">{{ $errors->first('department') }}</span>
-                                            @endif
+                                                @if ($errors->has('department'))
+                                                    <span class="text-danger">{{ $errors->first('department') }}</span>
+                                                @endif
+                                            </div>
 
                                         </div>
 
                                         <div class="col-sm-4">
+                                            <label class="" for="image">Photo<span
+                                                    class="text-danger"></span></label>
                                             <input name="uploadfile" data-actualName="image" type="file" id="image"
                                                 accept="image/*" required>
                                             @if ($errors->has('image'))
@@ -209,8 +212,8 @@
                                         <label class="col-sm-12" for="name">Present Address<span
                                                 class="text-danger"></span></label>
                                         <div class="col-sm-12">
-                                            <textarea name="present_address" value="{{ old('present_address') }}" class="form-control"
-                                                placeholder="Enter Your Present Address" cols="4"></textarea>
+                                            <textarea name="present_address" class="form-control"
+                                                placeholder="Enter Your Present Address" cols="4">{{ old('present_address') }}</textarea>
                                             @if ($errors->has('present_address'))
                                                 <span class="text-danger">{{ $errors->first('present_address') }}</span>
                                             @endif

@@ -39,7 +39,7 @@ class CreditController extends Controller
             'total_class' => 'required|numeric',
         ]);
 
-        $insert = new credit;
+        $insert = new Credit;
         $insert->credit_number = $request->credit_number;
         $insert->marks = $request->marks;
         $insert->class_hour = $request->class_hour;

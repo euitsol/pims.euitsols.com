@@ -123,7 +123,7 @@ class TeacherController extends Controller
     public function update(Request $request)
     {
         // $this->check_access('edit nationality');
-    
+
         $this->validate($request, [
             'name' => 'required|string|max:255',
             'phone' => 'required|numeric|digits:11|unique:teachers,phone,'.$request->id,
@@ -173,5 +173,11 @@ class TeacherController extends Controller
             return redirect()->route('teacher.index');
         }
 
+    }
+
+    public function info($id){
+        $n['db_data'] = Teacher::where('deleted_at', null)
+                                ->where('id',$id)->first();
+        return view('pages.teacher.show',$n);
     }
 }

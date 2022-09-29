@@ -52,15 +52,19 @@
                                             <td>{{ $d->created_user->name ?? 'system' }}</td>
                                             <td class="text-middle py-0 align-middle">
                                                 <div class="btn-group">
-                                                    <a href="javascript:void(0)" class="btn btn-info btnView"
-                                                        data-id="{{ $d->id }}"><i class="fas fa-eye"></i></a>
+                                                    {{-- <a href="{{ route('teacher.edit', $d->id) }}" class="btn btn-info btnView"
+                                                        data-id="{{ $d->id }}"><i class="fas fa-eye"></i></a> --}}
+
+                                                    <a href="{{ route('teacher.info', $d->id) }}" class="btn btn-info btnView"><i class="fas fa-eye"></i></a>
+
                                                     @if (Auth::user()->can('edit teacher') || Auth::user()->role->id == 1)
-                                                    <a href="{{ route('teacher.edit', $d->id) }}"
-                                                        class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                                    <a href="{{ route('teacher.edit', $d->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                                     @endif
+
                                                     @if (Auth::user()->can('delete teacher') || Auth::user()->role->id == 1)
                                                     <a href="{{ route('teacher.destroy', $d->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
                                                     @endif
+
                                                 </div>
                                             </td>
                                         </tr>
