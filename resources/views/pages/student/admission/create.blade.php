@@ -45,21 +45,6 @@
             line-height: 3.2rem;
             font-size: 23px;
         }
-        .select2-container--default .select2-selection--single .select2-selection__arrow {
-            height: 26px;
-            position: absolute;
-            top: 7px;
-            right: 1px;
-            width: 20px;
-        }
-        .select2{
-            width: auto;
-            display: block;
-            /* height: 38px !important; */
-        }
-        .select2-selection--single {
-            height: 38px !important;
-        }
 
     </style>
 @endpush

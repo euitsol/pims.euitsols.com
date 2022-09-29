@@ -74,6 +74,8 @@
                                         <div class="col-sm-4">
                                             <input name="uploadfile" data-actualName="image" type="file" id="image"
                                                 accept="image/*">
+                                            <input type="hidden" name="pre_photo" value="{{$db_data->photo}}">
+
                                             @if ($errors->has('image'))
                                                 <span class="text-danger">{{ $errors->first('image') }}</span>
                                             @endif

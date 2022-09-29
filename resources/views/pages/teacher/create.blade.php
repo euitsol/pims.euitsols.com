@@ -74,7 +74,7 @@
                                             <label class="" for="image">Photo<span
                                                     class="text-danger"></span></label>
                                             <input name="uploadfile" data-actualName="image" type="file" id="image"
-                                                accept="image/*" required>
+                                                accept="image/*">
                                             @if ($errors->has('image'))
                                                 <span class="text-danger">{{ $errors->first('image') }}</span>
                                             @endif
@@ -94,7 +94,7 @@
                                             <select class="form-control" name="divisions" id="divisions">
                                                 <option value="">Select Division</option>
                                                 @foreach ($division as $divisions)
-                                                    <option value="{{ $divisions->id }}">{{ $divisions->name }}
+                                                    <option value="{{ $divisions->id }}" @if( old('divisions') == $divisions->id ) selected @endif>{{ $divisions->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -107,7 +107,7 @@
                                             <select class="form-control" name="districts" id="districts">
                                                 <option value="">Select Districts</option>
                                                 @foreach ($district as $districts)
-                                                    <option value="{{ $districts->id }}">{{ $districts->name }}
+                                                    <option value="{{ $districts->id }}" @if( old('districts') == $districts->id ) selected @endif>{{ $districts->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -128,7 +128,7 @@
                                             <select class="form-control" name="bloodgroups" id="bloodgroup">
                                                 <option value="">Select Blood Group</option>
                                                 @foreach ($blood_group as $bloodgroups)
-                                                    <option value="{{ $bloodgroups->id }}">{{ $bloodgroups->name }}
+                                                    <option value="{{ $bloodgroups->id }}" @if( old('bloodgroups') == $bloodgroups->id ) selected @endif>{{ $bloodgroups->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -141,7 +141,7 @@
                                             data-target-input="nearest">
                                             <input type="text" name="date_of_birth"
                                                 class="form-control datetimepicker-input" data-target="#reservationdate"
-                                                placeholder="Enter Your Date Of Birth">
+                                                placeholder="Enter Your Date Of Birth" value="{{ old('date_of_birth') }}">
 
                                             <div class="input-group-append" data-target="#reservationdate"
                                                 data-toggle="datetimepicker">
@@ -188,10 +188,10 @@
 
                                         <div class="col-sm-6">
                                             <select class="form-control" name="gender" id="gender">
-                                                <option value="">Select Gender</option>
-                                                <option value="Male">Male</option>
-                                                <option value="Female">Female</option>
-                                                <option value="Other">Other</option>
+                                                <option value="" @if( old('gender') == "" ) selected @endif>Select Gender</option>
+                                                <option value="Male" @if( old('gender') == "Male" ) selected @endif>Male</option>
+                                                <option value="Female" @if( old('gender') == "Female" ) selected @endif>Female</option>
+                                                <option value="Other" @if( old('gender') == "Other" ) selected @endif>Other</option>
                                             </select>
                                             @if ($errors->has('gender'))
                                                 <span class="text-danger">{{ $errors->first('gender') }}</span>
@@ -224,8 +224,8 @@
                                         <label class="col-sm-12" for="name">Permanant Address<span
                                                 class="text-danger"></span></label>
                                         <div class="col-sm-12">
-                                            <textarea name="permanant_address" value="{{ old('permanant_address') }}" class="form-control"
-                                                placeholder="Enter Your Permanant Address" cols="4"></textarea>
+                                            <textarea name="permanant_address" class="form-control"
+                                                placeholder="Enter Your Permanant Address" cols="4">{{ old('permanant_address') }}</textarea>
                                             @if ($errors->has('permanant_address'))
                                                 <span class="text-danger">{{ $errors->first('permanant_address') }}</span>
                                             @endif
@@ -271,6 +271,7 @@
 @push('page_scripts')
     <script>
         $(document).ready(function() {
+            $("#divisions, #gender, #department, #districts, #bloodgroup").select2();
 
             file_upload(['#image'], 'uploadfile');
 
