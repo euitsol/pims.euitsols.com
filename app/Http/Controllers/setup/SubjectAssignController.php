@@ -58,8 +58,7 @@ class SubjectAssignController extends Controller
             $this->validate($request,$rules,$msg,$attributes);
             $data = $request->all();
             $data['created_by'] = Auth::user()->id;
-            // dd($request->all());
-            // dd($request->subject_id);
+        
             foreach($request->subject_id as $subject_id){
                 // dd($subject_id);
                 $exists = SubjectAssign::where('session_id',$request->session_id)->where('department_id',$request->department_id)
