@@ -27,6 +27,10 @@ use App\Http\Controllers\setup\SubjectAssignController;
 use App\Http\Controllers\setup\TeacherAssignController;
 use App\Http\Controllers\teacher\TeacherController;
 use App\Http\Controllers\setup\SemesterAssignAdmitStd;
+use App\Http\Controllers\setup\RoutineController;
+
+
+use App\Http\Controllers\CalenderController;
 
 
 
@@ -48,6 +52,9 @@ Route::get('/clear-cache', function(){
     return "Cache is cleared";
 });
 
+
+Route::get('/calendar-event', [CalenderController::class, 'index']);
+Route::post('/calendar-crud-ajax', [CalenderController::class, 'calendarEvents']);
 
 Auth::routes();
 
@@ -302,6 +309,17 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
             Route::get('/edit/{id}', [TeacherAssignController::class, 'edit'])->name('edit');
             Route::post('/edit-store', [TeacherAssignController::class, 'update'])->name('update');
             Route::get('/delete/{id}', [TeacherAssignController::class, 'destroy'])->name('destroy');
+        });
+
+        // Routine
+        Route::group(['as' => 'routine.', 'prefix' => 'routine'], function() {
+            Route::get('/view', [RoutineController::class, 'index'])->name('index');
+            Route::get('/add-view', [RoutineController::class, 'create'])->name('create');
+            Route::post('/add-store', [RoutineController::class, 'store'])->name('store');
+            Route::get('/details/{id}', [RoutineController::class, 'show'])->name('show');
+            Route::get('/edit/{id}', [RoutineController::class, 'edit'])->name('edit');
+            Route::post('/edit-store', [RoutineController::class, 'update'])->name('update');
+            Route::get('/delete/{id}', [RoutineController::class, 'destroy'])->name('destroy');
         });
 
     });

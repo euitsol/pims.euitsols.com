@@ -189,6 +189,15 @@
                 </a>
             </li>
         @endif
+        @if (Auth::user()->can('view routine') || Auth::user()->role->id == 1)
+        <li class="nav-item">
+            <a href="{{ route('routine.index') }}"
+                class="nav-link {{ Request::is('setup/routine/*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa-minus"></i>
+                <p>Routine</p>
+            </a>
+        </li>
+        @endif
         @if (Auth::user()->can('view semester') || Auth::user()->role->id == 1)
             <li class="nav-item">
                 <a href="{{ route('semester.index') }}"
