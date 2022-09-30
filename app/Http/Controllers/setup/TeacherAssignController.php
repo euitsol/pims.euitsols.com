@@ -25,11 +25,11 @@ class TeacherAssignController extends Controller
         $semester_id = $data_fetch->semester_id;
 
         $n['data'] = SubjectAssign::with(['teacherAssign'])
-                    ->where('session_id', $session_id)
-                    ->where('department_id', $department_id)
-                    ->where('semester_id', $semester_id)
-                    ->where('deleted_at', null)
-                    ->get();
+            ->where('session_id', $session_id)
+            ->where('department_id', $department_id)
+            ->where('semester_id', $semester_id)
+            ->where('deleted_at', null)->orderby('subject_id')
+            ->get();
 
         $n['sds'] = $n['data']->first();
 
@@ -39,21 +39,6 @@ class TeacherAssignController extends Controller
             ->get();
         $n['teacher'] = Teacher::where('deleted_at', null)->get();
 
-        // $check = TeacherAssign::with(['subjectAssign','group','shift'])->where('subject_assign_id',$id)->where('deleted_at',null)->first();
-        // if(($check!=null)){
-        //     $group_id = $check->group_id;
-        //     $shift_id = $check->shift_id;
-        //     $teacher_id = $check->teacher_id;
-        //     $n['exist_mifo'] = TeacherAssign::with(['subjectAssign','group','shift'])
-        //             ->where('subject_assign_id',$id)
-        //             ->where('group_id',$group_id)
-        //             ->where('shift_id',$shift_id)
-        //             ->where('deleted_at',null)
-        //             ->get();
-
-        //     return view('pages.setup.teacher_assign.exist_create', $n);
-        //    }
-
         return view('pages.setup.teacher_assign.create', $n);
     }
 
@@ -61,33 +46,48 @@ class TeacherAssignController extends Controller
     //store function for store information
     public function store(Request $req)
     {
-        dd($req->all());
-
         $this->check_access('add teacher_assign');
-        // TeacherAssign::where('subject_assign_id', )->delete();
-        foreach ($req->subjec_assign_id as $key => $sa) {
+        // dd($req->all());
 
-
-            foreach ($sa as $data) {
-                // dd($data);
-                $insert = new TeacherAssign;
-                $insert->teacher_id = $data['teacher_id'];
-                $insert->group_id = $data['group'];
-                $insert->shift_id = $data['shift_id'];
-                $insert->subject_assign_id = $req->subject_assign[$key];
-                $insert->created_by = auth()->user()->id;
-                $insert->save();
+        foreach ($req->teacher_assign as $key => $teacher_assign) {
+            if ($key == 0) {
+                $s_id = 0;
             }
 
+            if ($s_id != $teacher_assign['subject_assign_id']) {
+                $delete = TeacherAssign::where('subject_assign_id', $teacher_assign['subject_assign_id'])->delete();
+            }
+
+            $s_id = $teacher_assign['subject_assign_id'];
+
+
+            $teacher_assign_check = TeacherAssign::where('subject_assign_id', $teacher_assign['subject_assign_id'])
+                ->where('group_id', $teacher_assign['group_id'])
+                ->where('shift_id', $teacher_assign['shift_id'])
+                ->where('deleted_at', null)->first();
+            if ($teacher_assign_check == null) {
+                // dd($teacher_assign);
+
+                $insert = new TeacherAssign;
+                $insert->subject_assign_id = $teacher_assign['subject_assign_id'];
+                $insert->teacher_id = $teacher_assign['teacher_id'];
+                $insert->shift_id = $teacher_assign['shift_id'];
+                $insert->group_id = $teacher_assign['group_id'];
+                $insert->save();
+            } else {
+                $this->message('error', 'Subject is already assigned with same teacher, group and shift');
+                return back();
+            }
         }
         $this->message('success', 'Subjects Successfully Assigned');
-        return back();
+        return redirect()->route('teacher-assign.index');
     }
 
     //Show all information
     public function index()
     {
-        $n['minfo'] = TeacherAssign::where('deleted_at', null)->groupBy(['subject_assign_id'])->get();
+        $n['minfo'] = TeacherAssign::with('created_user','updated_user','deleted_user','subjectAssign','group','shift')->where('deleted_at', null)->get()->groupBy(['subject_assign_id']);
+        // dd($n['minfo']);
         return view('pages.setup.teacher_assign.index', $n);
     }
 
@@ -101,7 +101,72 @@ class TeacherAssignController extends Controller
         $delete->deleted_by = Auth::user()->id;
         $delete->deleted_at = Carbon::now()->toDateTimeString();
         $delete->save();
-        $this->message('success', 'Teacher "'.$delete->subjectAssign->subject->name.'" deleted successfully');
+        $this->message('success', 'Teacher "' . $delete->subjectAssign->subject->name . '" deleted successfully');
+        return redirect()->route('teacher-assign.index');
+    }
+
+    public function assign($id){
+        $this->check_access('add teacher_assign');
+
+        $data_fetch = TeacherAssign::findOrFail($id);
+        $subject_assign_id = $data_fetch->subject_assign_id;
+
+        $n['minfo'] = TeacherAssign::where('subject_assign_id', $subject_assign_id)
+                    ->where('deleted_at', null)
+                    ->get();
+
+        // $n['sds'] = $n['data']->first();
+
+        $n['group'] = Group::where('deleted_at', null)
+            ->get();
+        $n['shift'] = Shift::where('deleted_at', null)
+            ->get();
+        $n['teacher'] = Teacher::where('deleted_at', null)->get();
+
+        return view('pages.setup.teacher_assign.assign', $n);
+    }
+    public function assignStore(Request $req){
+        $this->check_access('add teacher_assign');
+        $delete = TeacherAssign::where('subject_assign_id', $req->subject_assign_id)->delete();
+        foreach($req->teacher_assign as $teacher_assign){
+            $insert = new TeacherAssign;
+            $insert->subject_assign_id = $req->subject_assign_id;
+            $insert->teacher_id = $teacher_assign['teacher_id'];
+            $insert->group_id = $teacher_assign['group_id'];
+            $insert->shift_id = $teacher_assign['shift_id'];
+            $insert->save();
+        }
+        // foreach ($req->teacher_assign as $key => $teacher_assign) {
+        //     if ($key == 0) {
+        //         $s_id = 0;
+        //     }
+
+        //     if ($s_id != $teacher_assign['subject_assign_id']) {
+        //         $delete = TeacherAssign::where('subject_assign_id', $teacher_assign['subject_assign_id'])->delete();
+        //     }
+
+        //     $s_id = $teacher_assign['subject_assign_id'];
+
+
+        //     $teacher_assign_check = TeacherAssign::where('subject_assign_id', $teacher_assign['subject_assign_id'])
+        //         ->where('group_id', $teacher_assign['group_id'])
+        //         ->where('shift_id', $teacher_assign['shift_id'])
+        //         ->where('deleted_at', null)->first();
+        //     if ($teacher_assign_check == null) {
+        //         // dd($teacher_assign);
+
+        //         $insert = new TeacherAssign;
+        //         $insert->subject_assign_id = $teacher_assign['subject_assign_id'];
+        //         $insert->teacher_id = $teacher_assign['teacher_id'];
+        //         $insert->shift_id = $teacher_assign['shift_id'];
+        //         $insert->group_id = $teacher_assign['group_id'];
+        //         $insert->save();
+        //     } else {
+        //         $this->message('error', 'Subject is already assigned with same teacher, group and shift');
+        //         return back();
+        //     }
+        // }
+        $this->message('success', 'Subjects Successfully Assigned');
         return redirect()->route('teacher-assign.index');
     }
 }

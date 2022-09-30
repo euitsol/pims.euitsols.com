@@ -19,7 +19,6 @@
                             <h4>Teacher Assign</h4>
                         </span>
                         <span class="float-right">
-                            {{-- <a href="{{ route('teacher-assign.create') }}" class="btn btn-info">Assign Teacher</a> --}}
                         </span>
                     </div>
                     <div class="card-body">
@@ -35,40 +34,40 @@
                                         <th>Semesters</th>
                                         <th>Subjects</th>
                                         <th>Teacher</th>
-                                        <th>Group</th>
-                                        <th>Shift</th>
-                                        <th>Created At</th>
-                                        <th>Created By</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($minfo as $value)
-                                                <tr>
-                                                    <td>{{ $loop->index+1 }}</td>
-                                                    <td>{{ $value->subjectAssign->session->start . '-' . $value->subjectAssign->session->end }}</td>
-                                                    <td>{{ $value->subjectAssign->department->department_name }}</td>
-                                                    <td>{{ $value->subjectAssign->semester->name }}</td>
-                                                    <td>{{ $value->subjectAssign->subject->name }}</td>
-                                                    <td>{{ $value->teacher_id }}</td>
-                                                    <td>{{ $value->group->name }}</td>
-                                                    <td>{{ $value->shift->name }}</td>
-                                                    <td>{{ date('d-m-Y', strtotime($value->created_at)) }}</td>
-                                                    <td>{{ $value->created_user->name ?? 'system' }}</td>
-                                                    <td class="text-middle py-0 align-middle">
-                                                        <div class="btn-group">
-                                                            <a href="javascript:void(0)" class="btn btn-info btnView"
-                                                                data-id="{{ $value->id }}"><i class="fas fa-eye"></i></a>
-                                                            <a href="{{ route('subject-assign.edit', $value->id) }}"
-                                                                class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
-                                                            <a href="{{ route('teacher-assign.destroy', $value->id) }}"
-                                                                class="btn btn-danger btnDelete"><i
-                                                                    class="fas fa-trash"></i></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-
-
+                                    @foreach ($minfo as $value1)
+                                        @php
+                                            $data = $value1->first();
+                                        @endphp
+                                        <tr>
+                                            <td>{{ $loop->index + 1 }}</td>
+                                            <td>{{ $data->subjectAssign->session->start . '-' . $data->subjectAssign->session->end }}
+                                            </td>
+                                            <td>{{ $data->subjectAssign->department->department_name }}</td>
+                                            <td>{{ $data->subjectAssign->semester->name }}</td>
+                                            <td>{{ $data->subjectAssign->subject->name }}</td>
+                                            <td>
+                                                @foreach ($value1 as $key => $value2)
+                                                    @if ($key != 0)
+                                                        <br>
+                                                    @endif
+                                                    <span>Teacher: {{ $value2->teacher->name }}</span> | <span>Group:
+                                                        {{ $value2->group->name }} | </span><span>Shift:
+                                                        {{ $value2->shift->name }}</span>
+                                                @endforeach
+                                            </td>
+                                            <td class="text-middle py-0 align-middle">
+                                                <div class="btn-group">
+                                                    <a href="{{ route('teacher-assign.assign', $data->id) }}"
+                                                        class="btn btn-info" title="Assign Teacher"><i
+                                                            class="fas fa-arrow-right"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -164,13 +163,13 @@
                         orientation: 'potrait',
                         pagesize: 'LETTER',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4]
+                            columns: [0, 1, 2, 3, 4, 5]
                         }
                     },
                     {
                         extend: 'print',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4]
+                            columns: [0, 1, 2, 3, 4, 5]
                         }
                     }, 'pageLength'
                 ]

@@ -300,6 +300,8 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
             Route::get('/edit/{id}', [TeacherAssignController::class, 'edit'])->name('edit');
             Route::post('/edit-store', [TeacherAssignController::class, 'update'])->name('update');
             Route::get('/delete/{id}', [TeacherAssignController::class, 'destroy'])->name('destroy');
+            Route::get('/assign/{id}', [TeacherAssignController::class, 'assign'])->name('assign');
+            Route::post('/assign/store', [TeacherAssignController::class, 'assignStore'])->name('assign-store');
         });
 
     });
