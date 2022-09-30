@@ -74,6 +74,12 @@
                             <p>Pending Student</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('decline_list') }}" class="nav-link">
+                            <i class="nav-icon fas fa-minus"></i>
+                            <p>Declined Student</p>
+                        </a>
+                    </li>
                 </ul>
             </li>
         @endif
