@@ -194,7 +194,8 @@
                 return false;
             }
 
-            var url = "<?php echo url('/subject-fetch'); ?>/";
+            // var url = "<?php echo url('/subject-fetch'); ?>/";
+            var url = "{{route('subject-fetch.ajax')}}";
 
             $.ajax({
                 url: url,
