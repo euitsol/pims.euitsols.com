@@ -112,7 +112,7 @@
                 dom: 'Bfrtip',
                 buttons: [{
                         extend: 'pdfHtml5',
-                        title: 'District Management',
+                        title: 'Subjects Assign Management',
                         download: 'open',
                         orientation: 'potrait',
                         pagesize: 'LETTER',
