@@ -193,8 +193,6 @@
                 alert('You have to select Semester');
                 return false;
             }
-
-            // var url = "<?php echo url('/subject-fetch'); ?>/";
             var url = "{{route('subject-fetch.ajax')}}";
 
             $.ajax({
