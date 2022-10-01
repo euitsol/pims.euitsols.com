@@ -7,11 +7,6 @@
 @endpush
 
 @push('page_css')
-    <style>
-        .select2-container--default .select2-search--inline .select2-search__field {
-            border: none !important;
-        }
-    </style>
 @endpush
 
 @section('content')
@@ -332,68 +327,5 @@
 
         }
 
-
-
-        //reset department on session change
-        $("#session_id").change(function() {
-            $('#department_id').prop('selectedIndex', 0);
-            $("#subject_id").prop('disabled', true);
-        });
-
-        //reset department on semester change
-        $("#semester_id").on('change', function() {
-            $('#department_id').prop('selectedIndex', 0);
-            $('#subject_id').prop('selectedIndex', 0);
-            $("#subject_id").prop('disabled', true);
-
-        });
-
-        //Fetch subject on department change
-        $("#department_id").on('change', function() {
-            $("#subject_id").prop('disabled', false);
-            $('#subject_id').val('').trigger('change');
-            // $('#semester_id').val('').trigger('change');
-
-            var department_id = $(this).val();
-            var subject_id = $('#subject_id').val();
-            var session_id = $('#session_id').val();
-            var semester_id = $('#semester_id').val();
-
-            //Session validation
-            if (session_id == '') {
-                alert('You have to select Session');
-                return false;
-            }
-            //Semester validation
-            if (semester_id == '') {
-                alert('You have to select Semester');
-                return false;
-            }
-
-            var url = "<?php echo url('/subject-fetch'); ?>/";
-
-            $.ajax({
-                url: url,
-                method: 'POST',
-                data: {
-                    'department_id': department_id,
-                    'semester_id': semester_id,
-                    'session_id': session_id,
-                    "_token": "{{ csrf_token() }}"
-                },
-                success: function(response) {
-                    // console.log(response);
-                    var data = '<option value="" hidden>Select Subject</option>'
-                    $.each(response, function(index, value) {
-                        data += '<option value="' + value.id + '" class= "' + value.result +
-                            '">' + value.name + '</option>';
-                    });
-
-                    $('#subject_id').html(data);
-                    $('#subject_id .true').prop('disabled', true);
-
-                }
-            });
-        });
     </script>
 @endpush

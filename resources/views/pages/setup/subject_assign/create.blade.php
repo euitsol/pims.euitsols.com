@@ -7,11 +7,6 @@
 @endpush
 
 @push('page_css')
-    <style>
-        .select2-container--default .select2-search--inline .select2-search__field {
-            border: none !important;
-        }
-    </style>
 @endpush
 
 @section('content')
@@ -157,7 +152,7 @@
 
 @push('page_scripts')
     <script>
-        
+
         //select2 tools
         $(document).ready(function() {
             $('.select2').select2();
