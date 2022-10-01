@@ -75,7 +75,8 @@ class TeacherAssignController extends Controller
                 $insert->group_id = $teacher_assign['group_id'];
                 $insert->save();
             } else {
-                $this->message('error', 'Teacher is already assigned with same teacher, group and shift');
+
+                $this->message('error', 'Subject "'.$teacher_assign_check->subjectAssign->subject->name.'" is already assigned with same teacher, group and shift');
                 return back();
             }
         }
