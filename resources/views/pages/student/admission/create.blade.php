@@ -576,10 +576,9 @@
                             <div class="form-group">
                                 <label for="exam_id_${count - 1}">Exam Name: <span class="text-danger">*</span></label>
                                 <select  name="exams[${count - 1}][exam_id]" class="form-control exam_id" id="exam_id_${count - 1}" required>
-                                    <option value="">Select Exam Name</option>
+                                    <option value="" hidden>Select Exam Name</option>
                                     @foreach ($exam_name as $n)
-                                        <option
-                                        value="{{$n->id}}">{{$n->name}}"</option>
+                                        <option value="{{$n->id}}">{{$n->name}}</option>
                                         @endforeach
                                 </select>
                             </div>
@@ -594,7 +593,7 @@
                             <div class="form-group">
                                 <label for="division_${count - 1}">Division: <span class="text-danger">*</span></label>
                                 <select id="division_${count - 1}" name="exams[${count - 1}][group]"  class="form-control" required>
-                                    <option value="">Select Division</option>
+                                    <option value="" hidden>Select Division</option>
                                     <option value="Science">Science</option>
                                     <option value="Bussiness Studies">Bussiness Studies</option>
                                     <option value="Humanities">Humanities</option>
@@ -605,7 +604,7 @@
                             <div class="form-group">
                                 <label for="board_id_${count - 1}">Board: <span class="text-danger">*</span></label>
                                 <select id="board_id_${count - 1}" name="exams[${count - 1}][board_id]"  class="form-control" required>
-                                    <option value="">Select Education Board</option>
+                                    <option value="" hidden>Select Education Board</option>
                                     @foreach ($board as $n)
                                         <option value="{{$n->id}}">
                                             {{$n->name}}
@@ -681,13 +680,10 @@
         function check_validation(input_id){
             result = [];
             $.each(input_id.reverse(), function( index, value ) {
-                console.log(value);
                 if($(value)[0].checkValidity()){
-                    console.log('true');
                     result.push(true);
                 }else{
                     $(value).get(0).reportValidity();
-                    console.log('false');
                     result.push(false);
                 }
             });

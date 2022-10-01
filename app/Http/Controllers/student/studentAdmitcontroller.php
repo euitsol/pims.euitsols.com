@@ -194,6 +194,7 @@ class studentAdmitcontroller extends Controller
         $n['division'] = Division::where('deleted_by','=',null)->get();
         $n['district'] = District::where('deleted_by','=',null)->get();
         $n['data'] = studentInfo::with(['created_user', 'updated_user', 'deleted_user','academicInfo','department','bloodGroup','division','district'])->where('id',$id)->first();
+
         return view('pages.student.admission.edit',$n);
     }
 
@@ -361,7 +362,7 @@ class studentAdmitcontroller extends Controller
         return response()->json($data);
     }
 
-    public function student_file_download($id){
+    public function student_reg_download($id){
         $data = AcademicInfo::findOrFail($id);
 
         if(Storage::exists($data->reg_card)) {

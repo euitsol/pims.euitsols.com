@@ -198,7 +198,7 @@
 
                                         <div class="col-sm-6">
                                             <select class="form-control" name="gender" id="gender">
-                                                <option value="">Select Gender</option>
+                                                <option value="" hidden>Select Gender</option>
                                                 <option value="Male" @if ($db_data->gender == 'Male') selected @endif>
                                                     Male</option>
                                                 <option value="Female"@if ($db_data->gender == 'Female') selected @endif>
@@ -213,7 +213,7 @@
 
                                         <div class="col-sm-6">
                                             <input type="number" class="form-control" id="nid" name="nid"
-                                                value="{{ $db_data->nid }}" placeholder="Enter Teacher's Phone" required>
+                                                value="{{ $db_data->nid }}" placeholder="Enter Teacher's NID">
                                             @if ($errors->has('nid'))
                                                 <span class="text-danger">{{ $errors->first('nid') }}</span>
                                             @endif

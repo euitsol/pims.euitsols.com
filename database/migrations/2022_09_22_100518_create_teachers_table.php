@@ -25,8 +25,8 @@ return new class extends Migration
             $table->string("email")->unique();
             $table->string("nid")->unique();
             $table->string("gender");
-            $table->text("present_address");
-            $table->text("permanant_address");
+            $table->text("present_address")->nullable();
+            $table->text("permanant_address")->nullable();
             $table->string('photo')->nullable();
             $table->timestamps();
             $table->unsignedBigInteger('created_by')->nullable();

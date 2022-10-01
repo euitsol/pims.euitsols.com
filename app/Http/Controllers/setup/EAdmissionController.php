@@ -43,7 +43,7 @@ class EAdmissionController extends Controller
     {
         $this->check_access('add exam-name');
         $this->validate($request, [
-            'name' => 'required|unique:eadmissions,name|string|max:255',
+            "required|unique:eadmissions,name,$request->id,id,deleted_at,NULL|string|max:255",
             'short_name' => 'required|unique:eadmissions,short_name|string|max:255',
         ]);
 
@@ -100,10 +100,11 @@ class EAdmissionController extends Controller
         $this->validate($request, [
             'id' => 'required|exists:eadmissions,id',
         ]);
+        dd('this');
 
         $update = eadmission::findOrFail($request->id);
         if($update->name != $request->name){
-            $this->validate($request, ['name' => 'required|unique:eadmissions,name|string|max:255']);
+            $this->validate($request, ['name' => "required|unique:eadmissions,name,$request->id,id,deleted_at,NULL|string|max:255"]);
         }
         if($update->short_name != $request->short_name){
             $this->validate($request, ['short_name' => 'required|unique:eadmissions,short_name|string|max:255']);
