@@ -43,7 +43,7 @@ class EAdmissionController extends Controller
     {
         $this->check_access('add exam-name');
         $this->validate($request, [
-            "required|unique:eadmissions,name,$request->id,id,deleted_at,NULL|string|max:255",
+            // "required|unique:eadmissions,name,$request->id,id,deleted_at,NULL|string|max:255",
             'short_name' => 'required|unique:eadmissions,short_name|string|max:255',
         ]);
 

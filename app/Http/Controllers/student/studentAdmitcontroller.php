@@ -353,8 +353,17 @@ class studentAdmitcontroller extends Controller
             }
             $update_academic_info->save();
        }
-        $this->message('success',"Student admit successfully");
+        $this->message('success',"Pending student updated successfully");
         return redirect()->back();
+    }
+    public function delete($id){
+        $this->check_access('delete subject-ssign');
+        $delete = studentInfo::where('deleted_at',null)->where('id',$id)->first();
+        $delete->deleted_at = Carbon::now()->toDateTimeString();
+        $delete->deleted_by = Auth::user()->id;
+        $delete->save();
+        $this->message('success','Pending student successfully deleted');
+        return redirect()->route('student.student-admit.index');
     }
 
     public function ajax($id){
@@ -392,7 +401,7 @@ class studentAdmitcontroller extends Controller
         $data->save();
 
         $this->message('success', 'Student '.$data->name.' Declined Successfully');
-        return redirect()->route('student-admit.index');
+        return redirect()->route('student.student-admit.index');
     }
 
     public function accept_student($id){

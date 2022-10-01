@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
     //Dashboard
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
+    //user roll permission
     Route::group(['as' => 'users.', 'prefix' => 'users'], function() {
 
         // Users management
@@ -92,39 +93,62 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::get('/permission/delete/{id}', [UserController::class, 'permission_delete'])->name('permission.delete');
     });
 
-    //Admission Module
-    Route::resource('student-admit', studentAdmitcontroller::class);
-    // Route::get('/division_ajax/{id}', [studentAdmitcontroller::class,'ajax']);
-    Route::get('/student/division_ajax/{id}', [studentAdmitcontroller::class,'ajax'])->name('ajax');
-    Route::get('/student/admitted/{id}', [studentAdmitcontroller::class,'delete'])->name('student.admitted.destroy');
-    Route::post('/student/admitted/update', [studentAdmitcontroller::class,'update'])->name('student.admitted.update');
+    //All Common Ajax here
+        //District fetch according to divission
+        Route::get('district-fetch/{id}', [studentAdmitcontroller::class, 'ajax'])->name('district_fetch.ajax');
 
-    Route::get('/student/decline/{id}', [studentAdmitcontroller::class,'decline_student'])->name('student.decline');
-    Route::get('/student/accept/{id}', [studentAdmitcontroller::class,'accept_student'])->name('student.accept');
+        //Subject Fetch accordingly Department
+        Route::post('/subject-fetch', [SubjectAssignController::class, 'ajax'])->name('subject-fetch.ajax');
 
-    Route::get('/student/registration-download/{id}', [studentAdmitcontroller::class,'student_reg_download'])->name('student.reg.download');
-    Route::get('/student/marksheet-download/{id}', [studentAdmitcontroller::class,'student_marksheet_download'])->name('student.marksheet.download');
+    //Student
+    Route::group(['as'=>'student.','prefix'=>'student'],function(){
 
-    Route::get('/student/decline', [studentAdmitcontroller::class, 'decline_list'])->name('decline_list');
-    Route::get('/student/decline/edit/{id}', [studentAdmitcontroller::class, 'decline_edit'])->name('decline_edit');
-    Route::post('/student/decline/update}', [studentAdmitcontroller::class, 'decline_update'])->name('decline_update');
-    Route::get('/student/decline/show/{id}', [studentAdmitcontroller::class, 'decline_show'])->name('decline_show');
+        //Admission module
+        Route::group(['prefix'=>'admission'],function(){
+
+            //Admit student
+            Route::resource('student-admit', studentAdmitcontroller::class);
+            Route::get('/admitted/{id}', [studentAdmitcontroller::class,'delete'])->name('admitted.destroy');
+
+            // Decline students
+            Route::group(['as'=>'admitted.decline.','prefix'=>'decline'],function(){
+                Route::get('/std/{id}', [studentAdmitcontroller::class,'decline_student'])->name('d');
+                Route::get('/list', [studentAdmitcontroller::class, 'decline_list'])->name('list');
+                Route::get('/show/{id}', [studentAdmitcontroller::class, 'decline_show'])->name('show');
+                Route::get('/edit/{id}', [studentAdmitcontroller::class, 'decline_edit'])->name('edit');
+                // Route::post('/decline/update}', [studentAdmitcontroller::class, 'decline_update'])->name('decline_update');
+
+            });
+
+
+
+            Route::get('/accept/{id}', [studentAdmitcontroller::class,'accept_student'])->name('accept');
+            Route::get('/registration-download/{id}', [studentAdmitcontroller::class,'student_reg_download'])->name('reg.download');
+            Route::get('/marksheet-download/{id}', [studentAdmitcontroller::class,'student_marksheet_download'])->name('marksheet.download');
+
+            //Semester Assign for  admitted student
+            route::get('/std-assign',[SemesterAssignAdmitStd::class,'index'])->name('index');
+        });
+
+        // Student
+        Route::get('/student/info/{id}', [studentAdmitcontroller::class, 'info'])->name('student.info');
+    });
 
 
     Route::group(['prefix'=> 'setup'],function(){
+        //department Module
+        Route::group(['prefix'=>'department'],function(){
 
-            //department Module
-            Route::group(['prefix'=>'department'],function(){
-
-                Route::resource('department', departmentController::class);
-                Route::get('department/delete/{id}', [departmentController::class,'delete'])->name('department.delete');
-            });
+            Route::resource('department', departmentController::class);
+            Route::get('department/delete/{id}', [departmentController::class,'delete'])->name('department.delete');
+        });
 
 
-            // Exam name for admission
-            Route::group(['prefix'=>'exam-name-admission'],function(){
-                Route::resource('exam-name-admission', EAdmissionController::class);
-            });
+        // Exam name for admission
+        Route::group(['prefix'=>'exam-name-admission'],function(){
+            Route::resource('exam-name-admission', EAdmissionController::class);
+        });
+
         // Board
         Route::group(['as' => 'board.', 'prefix' => 'board'], function() {
             Route::get('/view', [BoardController::class, 'index'])->name('index');
@@ -240,7 +264,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
             Route::get('/edit/{id}', [LetterGradeController::class, 'edit'])->name('edit');
             Route::post('/edit-store', [LetterGradeController::class, 'update'])->name('update');
             Route::get('/delete/{id}', [LetterGradeController::class, 'destroy'])->name('destroy');
-    });
+        });
 
         // Credit
         Route::group(['as' => 'credit.', 'prefix' => 'credit'], function() {
@@ -312,10 +336,6 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         });
 
     });
-     //Subject Fetch accordingly Department
-     Route::post('/subject-fetch', [SubjectAssignController::class, 'ajax'])->name('subject-fetch.ajax');
-
-
 });
 
 
@@ -330,11 +350,6 @@ Route::group(['as' => 'teacher.', 'prefix' => 'teacher'], function() {
     Route::post('/edit-store', [TeacherController::class, 'update'])->name('update');
     Route::get('/delete/{id}', [TeacherController::class, 'destroy'])->name('destroy');
     Route::get('division_ajax/{id}', [TeacherController::class, 'ajax'])->name('ajax');
-
-    //Semester Assign for admitted student
-    Route::group(['as'=> 'semester-assign.', 'prefix'=>'semester-assign'],function(){
-        route::get('/view',[SemesterAssignAdmitStd::class,'index'])->name('index');
-    });
 
 });
 

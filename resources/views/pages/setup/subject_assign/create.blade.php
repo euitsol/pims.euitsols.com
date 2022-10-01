@@ -157,7 +157,7 @@
 
 @push('page_scripts')
     <script>
-        
+
         //select2 tools
         $(document).ready(function() {
             $('.select2').select2();
