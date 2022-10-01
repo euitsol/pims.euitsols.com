@@ -27,4 +27,8 @@ class TeacherAssign extends Model
     public function shift(){
         return $this->belongsTo(Shift::class,'shift_id');
      }
+    public function teacher(){
+        return $this->belongsTo(Teacher::class,'teacher_id');
+     }
+   
 }
