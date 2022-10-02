@@ -86,7 +86,7 @@
         @endif
 
         {{-- Student info  --}}
-        @if (Auth::user()->can('view std_info') || Auth::user()->role->id == 1)
+        {{-- @if (Auth::user()->can('view std_info') || Auth::user()->role->id == 1)
             <li class="nav-item">
                 <a href="" class="nav-link">
                     <i class="nav-icon far fa-circle"></i>
@@ -99,18 +99,18 @@
                         $semester = App\Models\Semester::where('deleted_at',null)->get();
                     @endphp
                         @forelse ($semester as $key => $value)
-                        {{-- <li class="nav-item">
+                        <li class="nav-item">
                             <a href="{{ route('student.info',$value->id) }}" class="nav-link">
                                 <i class="nav-icon fas fa-minus"></i>
                                 <p>{{$value->name}}</p>
                             </a>
-                        </li> --}}
+                        </li>
                         @empty
                             <li>There is no semester</li>
                         @endforelse
                 </ul>
             </li>
-        @endif
+        @endif --}}
     </ul>
 </li>
 
