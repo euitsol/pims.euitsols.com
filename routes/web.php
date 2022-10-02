@@ -314,11 +314,8 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         // Routine
         Route::group(['as' => 'routine.', 'prefix' => 'routine'], function() {
             Route::get('/view', [RoutineController::class, 'index'])->name('index');
-            Route::get('/add-view', [RoutineController::class, 'create'])->name('create');
-            Route::post('/add-store', [RoutineController::class, 'store'])->name('store');
-            Route::get('/details/{id}', [RoutineController::class, 'show'])->name('show');
-            Route::get('/edit/{id}', [RoutineController::class, 'edit'])->name('edit');
-            Route::post('/edit-store', [RoutineController::class, 'update'])->name('update');
+            Route::post('/search', [RoutineController::class, 'search'])->name('search');
+
             Route::get('/delete/{id}', [RoutineController::class, 'destroy'])->name('destroy');
         });
 
