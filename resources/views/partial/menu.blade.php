@@ -76,7 +76,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('student.admitted.decline.list') }}" class="nav-link">
+                        <a href="{{ route('student.admitted.decline.list') }}" class="nav-link {{Request::is('student/admission/decline/*') ? 'active' : ''}}">
                             <i class="nav-icon fas fa-minus"></i>
                             <p>Declined Student</p>
                         </a>
