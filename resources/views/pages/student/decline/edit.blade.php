@@ -76,7 +76,7 @@
                             @if (Auth::user()->can('user view') || Auth::user()->role->id == 1)<a href="{{ route('users.index') }}" class="btn btn-info">Back</a>@endif
                         </span> --}}
                         <span class="float-right">
-                            <a href="{{ route('decline_list') }}" class="btn btn-info">Back</a>
+                            <a href="{{ route('student.admitted.decline.list') }}" class="btn btn-info">Back</a>
                         </span>
                     </div>
                     <div class="card-body">
@@ -90,7 +90,7 @@
                                     <span class="step" id="step-3">3</span>
                                 </div>
 
-                                <form action="{{ route('decline_update') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                                <form action="{{ route('student.admitted.decline.update') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
                                     @csrf
                                     <input type="hidden" name="id" value="{{$data->id}}">
                                     <div class="tab" id="tab-1" style="display: block">
@@ -501,7 +501,7 @@
             $('#district').removeAttr("disabled");
             var division_id = $(this).val();
 
-            let url = ("{{ route('ajax', ['id']) }}");
+            let url = ("{{ route('district_fetch.ajax', ['id']) }}");
             let _url = url.replace('id', division_id);
                 if(division!=""){
                     $.ajaxSetup({

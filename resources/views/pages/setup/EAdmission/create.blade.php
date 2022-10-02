@@ -24,6 +24,18 @@
                     </span>
                 </div>
                 <div class="card-body">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach($errors->all() as $err)
+                                <li>
+                                    {{$err}}
+                                </li>
+                                @endforeach
+                            </ul>
+                        </div>
+
+                    @endif
                     <div class="row">
                         <div class="col-md-10 m-auto">
                             <form action="{{ route('exam-name-admission.store') }}" method="POST" class="form-horizontal">

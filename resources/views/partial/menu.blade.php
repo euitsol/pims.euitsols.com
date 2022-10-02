@@ -43,7 +43,7 @@
 
 
 {{-- Student Mangement --}}
-<li class="nav-item">
+<li class="nav-item {{ Request::is('student/*') ? 'menu-open' : ''}}">
     <a href="#" class="nav-link">
         <i class="nav-icon fas fa-users"></i>
         <p>
@@ -52,9 +52,10 @@
         </p>
     </a>
     <ul class="nav nav-treeview">
+        {{-- Admission  --}}
         @if (Auth::user()->can('view admission') || Auth::user()->role->id == 1)
-            <li class="nav-item">
-                <a href="{{ route('users.index') }}" class="nav-link">
+            <li class="nav-item {{Request::is('student/admission/*') ? 'menu-open': '' }}">
+                <a href="" class="nav-link">
                     <i class="nav-icon far fa-circle"></i>
                     <p>Admission
                         <i class="fas fa-angle-left right"></i>
@@ -63,19 +64,19 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="{{ route('student-admit.create') }}" class="nav-link">
+                        <a href="{{ route('student.student-admit.create') }}" class="nav-link {{Request::is('student/admission/student-admit/create') ? 'active' : ''}}">
                             <i class="nav-icon fas fa-minus"></i>
                             <p>Admit Student</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('student-admit.index') }}" class="nav-link">
+                        <a href="{{ route('student.student-admit.index') }}" class="nav-link {{Request::is('student/admission/student-admit') ? 'active' : ''}}">
                             <i class="nav-icon fas fa-minus"></i>
                             <p>Pending Student</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('decline_list') }}" class="nav-link">
+                        <a href="{{ route('student.admitted.decline.list') }}" class="nav-link {{Request::is('student/admission/decline/*') ? 'active' : ''}}">
                             <i class="nav-icon fas fa-minus"></i>
                             <p>Declined Student</p>
                         </a>
@@ -83,6 +84,33 @@
                 </ul>
             </li>
         @endif
+
+        {{-- Student info  --}}
+        {{-- @if (Auth::user()->can('view std_info') || Auth::user()->role->id == 1)
+            <li class="nav-item">
+                <a href="" class="nav-link">
+                    <i class="nav-icon far fa-circle"></i>
+                    <p>student ifno
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    @php
+                        $semester = App\Models\Semester::where('deleted_at',null)->get();
+                    @endphp
+                        @forelse ($semester as $key => $value)
+                        <li class="nav-item">
+                            <a href="{{ route('student.info',$value->id) }}" class="nav-link">
+                                <i class="nav-icon fas fa-minus"></i>
+                                <p>{{$value->name}}</p>
+                            </a>
+                        </li>
+                        @empty
+                            <li>There is no semester</li>
+                        @endforelse
+                </ul>
+            </li>
+        @endif --}}
     </ul>
 </li>
 
