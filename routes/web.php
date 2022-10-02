@@ -105,10 +105,13 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
 
         //Admission module
         Route::group(['prefix'=>'admission'],function(){
-
             //Admit student
             Route::resource('student-admit', studentAdmitcontroller::class);
             Route::get('/admitted/{id}', [studentAdmitcontroller::class,'delete'])->name('admitted.destroy');
+
+            // Student's Academic inf download
+            Route::get('/registration-download/{id}', [studentAdmitcontroller::class,'student_reg_download'])->name('reg.download');
+            Route::get('/marksheet-download/{id}', [studentAdmitcontroller::class,'student_marksheet_download'])->name('marksheet.download');
 
             // Decline students
             Route::group(['as'=>'admitted.decline.','prefix'=>'decline'],function(){
@@ -116,18 +119,14 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
                 Route::get('/list', [studentAdmitcontroller::class, 'decline_list'])->name('list');
                 Route::get('/show/{id}', [studentAdmitcontroller::class, 'decline_show'])->name('show');
                 Route::get('/edit/{id}', [studentAdmitcontroller::class, 'decline_edit'])->name('edit');
-                // Route::post('/decline/update}', [studentAdmitcontroller::class, 'decline_update'])->name('decline_update');
-
+                Route::post('/update}', [studentAdmitcontroller::class, 'decline_update'])->name('update');
             });
 
-
-
-            Route::get('/accept/{id}', [studentAdmitcontroller::class,'accept_student'])->name('accept');
-            Route::get('/registration-download/{id}', [studentAdmitcontroller::class,'student_reg_download'])->name('reg.download');
-            Route::get('/marksheet-download/{id}', [studentAdmitcontroller::class,'student_marksheet_download'])->name('marksheet.download');
-
-            //Semester Assign for  admitted student
-            route::get('/std-assign',[SemesterAssignAdmitStd::class,'index'])->name('index');
+            //Accept student (route('student.admitted.accept. ...'))
+            Route::group(['as'=>'admitted.accept.','prefix'=>'accept'],function(){
+                Route::get('create/{id}', [studentAdmitcontroller::class,'accept_student'])->name('create');//route name = student.admitted.accept.create
+                route::get('/store',[SemesterAssignAdmitStd::class,'accept_student-store'])->name('store');//route name = student.admitted.accept.store
+            });
         });
 
         // Student

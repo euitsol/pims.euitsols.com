@@ -405,7 +405,7 @@ class studentAdmitcontroller extends Controller
     }
 
     public function accept_student($id){
-
+        
     }
 
     public function decline_list(Request $request){

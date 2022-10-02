@@ -35,7 +35,7 @@
                     <span class="float-right">
                         <button type="button" onclick="printT('registration-form')" class="btn btn-dark btn-sm"><i class="fa fa-print"></i> Registration Form </button>
                         <a href="{{ route('student.accept', $student->id) }}" class="btn btn-info btn-sm" title="Accept Regestration"><i class="fas fa-user-check"></i></a>
-                        <a href="{{ route('decline_list') }}" class="btn btn-secondary btn-sm">Back</a>
+                        <a href="{{ route('student.admitted.decline.list') }}" class="btn btn-secondary btn-sm">Back</a>
                     </span>
                 </div>
                 <div class="card-body">
