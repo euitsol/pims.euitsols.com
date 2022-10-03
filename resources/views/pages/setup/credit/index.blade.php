@@ -161,7 +161,20 @@
 @push('page_scripts')
     <script>
         $(document).ready(function() {
-            $('#table').DataTable({
+            var table = $('#table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('credit.index') }}",
+                columns: [
+                    {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                    {data: 'credit_number', name: 'credit_number'},
+                    {data: 'marks', name: 'marks'},
+                    {data: 'class_hour', name: 'class_hour'},
+                    {data: 'total_class', name: 'total_class'},
+                    {data: 'created_at', name: 'created_at'},
+                    {data: 'created_user', name: 'created_user'},
+                    {data: 'action', name: 'action', orderable: false, searchable: false},
+                ],
                 dom: 'Bfrtip',
                 buttons: [{
                         extend: 'pdfHtml5',
@@ -181,7 +194,7 @@
                     }, 'pageLength'
                 ]
             });
-            $('.btnView').click(function() {
+            $('#table').on('click', 'tbody tr td .btn-group .btnView', function () {
                 if ($(this).data('id') != null || $(this).data('id') != '') {
                     let url = ("{{ route('credit.show', ['id']) }}");
                     let _url = url.replace('id', $(this).data('id'));
