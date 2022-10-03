@@ -28,11 +28,11 @@ class SemesterAssignAdmitStd extends Controller
     public function store(Request $req){
         $this->check_access('add admitted_std_accept');
         $rules = [
-            "student_id" =>"required|unique:student_infos",
-            "session_id" =>"required",
-            "semester_id" =>"required",
-            "group_id" =>"required",
-            "shift_id" =>"required",
+            "student_id" =>"required|unique:student_infos,student_id",
+            "session_id" =>"required|exists:sessions,id",
+            "semester_id" =>"required|exists:semesters,id",
+            "group_id" =>"required|exists:groups,id",
+            "shift_id" =>"required|exists:shifts,id",
         ];
         $msg = [];
 
@@ -47,6 +47,8 @@ class SemesterAssignAdmitStd extends Controller
 
         $check = AdmittedStdAssign::where('deleted_at',null)
                                     ->where('student_infos_id',$req->std_info_id)
+                                    ->where('session_id',$req->session_id)
+                                    ->where('semester_id',$req->semester_id)
                                     ->first();
         if($check != null){
             $student =studentInfo::findOrFail($req->std_info_id);
