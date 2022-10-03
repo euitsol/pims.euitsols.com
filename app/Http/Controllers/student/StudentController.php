@@ -10,12 +10,14 @@ use App\Models\Semester;
 
 class StudentController extends Controller
 {
+    public function __construct() {
+        return $this->middleware('auth');
+    }
     public function index($id){
         $this->check_access('view student');
         $n['minfo'] = Semester::with('admittedStdAssign')->where('deleted_at',null)->where('id',$id)->first();
 
         $n['page_name'] = 'Student Info';
-        // dd($n);
         return view('pages.student.index',$n);
     }
 

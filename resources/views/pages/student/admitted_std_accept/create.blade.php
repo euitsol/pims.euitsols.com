@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Assign Admitted Student Mangement')
+@section('title', 'Assign Admitted Student')
 
 @push('third_party_stylesheets')
 
@@ -11,7 +11,6 @@
     <style>
         .row span {
             font-size: 18px;
-            /* margin: 10px,0px,10px,0px; */
         }
 
     </style>
@@ -26,9 +25,6 @@
                         <span class="float-left">
                             <h1 class="card-title">Admitted Student Assign</h1>
                         </span>
-                        {{-- <span class="float-right">
-                            <a href="{{ route('board.create') }}" class="btn btn-info">Add new Board</a>
-                        </span> --}}
                     </div>
                     <div class="card-body">
                         @include('partial.flush-message')

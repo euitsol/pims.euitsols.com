@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Student List')
+@section('title', 'View students according to semester')
 
 @push('third_party_stylesheets')
 <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
@@ -17,7 +17,7 @@
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>View {{$page_name}}</h4>
+                        <h4>View students from {{$minfo->name}}</h4>
                     </span>
                 </div>
                 <div class="card-body">

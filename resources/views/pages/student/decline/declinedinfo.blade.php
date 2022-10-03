@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Declined student Information Show')
+@section('title', 'Declined student Registration Form')
 
 @push('third_party_stylesheets')
 

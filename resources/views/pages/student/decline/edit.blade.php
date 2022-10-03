@@ -300,10 +300,6 @@
                                                 </div>
                                         </fieldset>
                                     </div>
-                                    {{-- @dd($data->academicInfo) --}}
-
-
-
                                     <div class="tab" id="tab-3" style="display: none">
                                         <fieldset>
                                             <h2 class="text-center">Academic Information</h2>
@@ -428,14 +424,9 @@
                                             @endisset
                                                 {{-- Append External exam  --}}
                                             <div id="append_exam">
-
                                             </div>
-
-                                            {{-- Add More button  --}}
-                                            {{-- @dd($data->academicInfo) --}}
-                                            {{-- {{"cooount-". $data->academicInfo->count()}} --}}
+                                            
                                             <div id="add_more" class="floating-cart" data-count="{{$i}}" title="Add a new academic info">
-
                                                 <i class="fas fa-plus"></i>
                                             </div>
                                             <div class="float-left">
