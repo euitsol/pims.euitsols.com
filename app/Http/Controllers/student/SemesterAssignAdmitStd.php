@@ -52,7 +52,7 @@ class SemesterAssignAdmitStd extends Controller
                                     ->first();
         if($check != null){
             $student =studentInfo::findOrFail($req->std_info_id);
-            $this->message('error', "student ( $student->name ) already assigned");
+            $this->message('error', "Student ( $student->name ) already assigned");
             return back();
         }
         //insert student id in student info table
