@@ -139,7 +139,17 @@
 @push('page_scripts')
     <script>
         $(document).ready(function() {
-            $('#table').DataTable({
+            var table = $('#table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('lettergrade.index') }}",
+                columns: [
+                    {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                    {data: 'name', name: 'name'},
+                    {data: 'created_at', name: 'created_at'},
+                    {data: 'created_user', name: 'created_user'},
+                    {data: 'action', name: 'action', orderable: false, searchable: false},
+                ],
                 dom: 'Bfrtip',
                 buttons: [{
                         extend: 'pdfHtml5',
@@ -159,7 +169,8 @@
                     }, 'pageLength'
                 ]
             });
-            $('.btnView').click(function() {
+
+            $('#table').on('click', 'tbody tr td .btn-group .btnView', function () {
                 if ($(this).data('id') != null || $(this).data('id') != '') {
                     let url = ("{{ route('lettergrade.show', ['id']) }}");
                     let _url = url.replace('id', $(this).data('id'));

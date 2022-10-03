@@ -171,7 +171,7 @@
                 dom: 'Bfrtip',
                 buttons: [{
                         extend: 'pdfHtml5',
-                        title: 'Credit Management',
+                        title: 'Grade Calculation Management',
                         download: 'open',
                         orientation: 'potrait',
                         pagesize: 'LETTER',
