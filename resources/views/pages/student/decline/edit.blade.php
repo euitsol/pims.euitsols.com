@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Declined Student')
+@section('title', 'Edit Declined Student')
 
 @push('third_party_stylesheets')
 <link rel="stylesheet" href="{{ asset('assets/css/Datepicker/datepicker.min.css') }}">

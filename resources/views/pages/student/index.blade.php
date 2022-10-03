@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Admitted student')
+@section('title', 'Student List')
 
 @push('third_party_stylesheets')
 <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
@@ -37,7 +37,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-
                                 @forelse($minfo as $key => $value)
                                 @foreach ($value->admittedStdAssign  as $key=> $value1)
                                     <tr>
@@ -86,6 +85,7 @@
 @push('page_scripts')
 <script>
 $(document).ready(function() {
+
     $('#table').DataTable( {
         dom: 'Bfrtip',
         buttons: [

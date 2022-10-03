@@ -18,7 +18,7 @@ class SemesterAssignAdmitStd extends Controller
 
         $n['page_name'] = 'Semester Assign for Admitted Student';
         $n['db_data']= studentInfo::where('deleted_by','=',null)->where('id','=',$id)->first();
-        $n['session']= Session::where('deleted_by','=',null)->get();
+        $n['session']= Session::where('deleted_by','=',null)->latest()->get();
         $n['semester']= Semester::where('deleted_by','=',null)->get();
         $n['group']= Group::where('deleted_by','=',null)->get();
         $n['shift']= Shift::where('deleted_by','=',null)->get();
@@ -44,6 +44,15 @@ class SemesterAssignAdmitStd extends Controller
             "shift_id" => 'Shift'
         ];
         $this->validate($req,$rules,$msg,$attributes);
+
+        $check = AdmittedStdAssign::where('deleted_at',null)
+                                    ->where('student_infos_id',$req->std_info_id)
+                                    ->first();
+        if($check != null){
+            $student =studentInfo::findOrFail($req->std_info_id);
+            $this->message('error', "student ( $student->name ) already assigned");
+            return back();
+        }
         //insert student id in student info table
         $update_std_info = studentInfo::findOrFail($req->std_info_id);
         $update_std_info->student_id = $req->student_id;
@@ -59,7 +68,7 @@ class SemesterAssignAdmitStd extends Controller
         $insert->shift_id = $req->shift_id;
         $insert->save();
 
-        $this->message('success', 'Admitted Student assigned Successfullly');
+        $this->message('success', 'Admitted student assigned successfullly');
         return redirect()->route('student.student-admit.index');
     }
 }
