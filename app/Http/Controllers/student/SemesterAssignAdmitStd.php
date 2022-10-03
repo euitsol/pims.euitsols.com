@@ -28,7 +28,7 @@ class SemesterAssignAdmitStd extends Controller
     public function store(Request $req){
         $this->check_access('add admitted_std_accept');
         $rules = [
-            "student_id" =>"required",
+            "student_id" =>"required|unique:student_infos",
             "session_id" =>"required",
             "semester_id" =>"required",
             "group_id" =>"required",

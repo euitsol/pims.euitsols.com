@@ -27,10 +27,7 @@ use App\Http\Controllers\setup\SubjectAssignController;
 use App\Http\Controllers\setup\TeacherAssignController;
 use App\Http\Controllers\teacher\TeacherController;
 use App\Http\Controllers\student\SemesterAssignAdmitStd;
-
-
-
-
+use App\Http\Controllers\student\StudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -129,8 +126,8 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
             });
         });
 
-        // Student
-        Route::get('/student/info/{id}', [studentAdmitcontroller::class, 'info'])->name('student.info');
+        // Student Information
+        Route::get('/information/index/{id}', [StudentController::class, 'index'])->name('index');//route name = student.index
     });
 
 
