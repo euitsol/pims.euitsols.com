@@ -19,7 +19,9 @@
                             <h4>View Divisions</h4>
                         </span>
                         <span class="float-right">
-                            @if(Auth::user()->can('add division') || Auth::user()->role->id == 1)<a href="{{ route('division.create') }}" class="btn btn-info">Add new Division</a>@endif
+                            @if (Auth::user()->can('add division') || Auth::user()->role->id == 1)
+                                <a href="{{ route('division.create') }}" class="btn btn-info">Add new Division</a>
+                            @endif
                         </span>
                     </div>
                     <div class="card-body">
@@ -38,7 +40,6 @@
                                 </thead>
                                 <tbody>
                                     @forelse($db_data as $key => $d)
-
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $d->name }}</td>
@@ -49,11 +50,13 @@
                                                     <a href="javascript:void(0)" class="btn btn-info btnView"
                                                         data-id="{{ $d->id }}"><i class="fas fa-eye"></i></a>
                                                     @if (Auth::user()->can('edit division') || Auth::user()->role->id == 1)
-                                                    <a href="{{ route('division.edit', $d->id) }}"
-                                                        class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                                        <a href="{{ route('division.edit', $d->id) }}"
+                                                            class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                                     @endif
                                                     @if (Auth::user()->can('delete division') || Auth::user()->role->id == 1)
-                                                    <a href="{{ route('division.destroy', $d->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
+                                                        <a href="{{ route('division.destroy', $d->id) }}"
+                                                            class="btn btn-danger btnDelete"><i
+                                                                class="fas fa-trash"></i></a>
                                                     @endif
                                                 </div>
                                             </td>
@@ -139,7 +142,35 @@
 @push('page_scripts')
     <script>
         $(document).ready(function() {
-            $('#table').DataTable({
+            var table = $('#table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('division.index') }}",
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'created_at'
+                    },
+                    {
+                        data: 'created_user',
+                        name: 'created_user'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                ],
                 dom: 'Bfrtip',
                 buttons: [{
                         extend: 'pdfHtml5',
@@ -148,18 +179,18 @@
                         orientation: 'potrait',
                         pagesize: 'LETTER',
                         exportOptions: {
-                            columns: [0, 1, 2, 3]
+                            columns: [0, 1, 2, 3, 4]
                         }
                     },
                     {
                         extend: 'print',
                         exportOptions: {
-                            columns: [0, 1, 2, 3]
+                            columns: [0, 1, 2, 3, 4]
                         }
                     }, 'pageLength'
                 ]
             });
-            $('.btnView').click(function() {
+            $('#table').on('click', 'tbody tr td .btn-group .btnView', function() {
                 if ($(this).data('id') != null || $(this).data('id') != '') {
                     let url = ("{{ route('division.show', ['id']) }}");
                     let _url = url.replace('id', $(this).data('id'));
@@ -171,11 +202,13 @@
 
                             $('#view-name').html(response.name);
                             // $('#view-short-name').html(response.short_name);
-                            $('#view-createdAt').html(response.created_at ? new Date(response
+                            $('#view-createdAt').html(response.created_at ? new Date(
+                                response
                                 .created_at) : '');
                             $('#view-createdBy').html(response.created_user ? response
                                 .created_user.name : 'system');
-                            $('#view-updatedAt').html(response.updated_at ? new Date(response
+                            $('#view-updatedAt').html(response.updated_at ? new Date(
+                                response
                                 .updated_at) : '');
                             $('#view-updatedBy').html(response.updated_user ? response
                                 .updated_user.name : '');
