@@ -7,7 +7,7 @@
 }
 
 .select2 {
-    width: auto;
+    width: 100% !important;
     display: block;
     /* height: 38px !important; */
 }

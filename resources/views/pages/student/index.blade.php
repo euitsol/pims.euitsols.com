@@ -37,14 +37,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-
-                                @forelse($minfo as $key => $value)
-                                @foreach ($value->admittedStdAssign  as $key=> $value1)
+                                @foreach ($minfo->admittedStdAssign  as $key=> $value1)
                                     <tr>
                                         {{-- @dd($value) --}}
                                        <td>{{ $key + 1 }}</td>
                                        <td>{{ $value1->studentInfo->department->department_name}}</td>
-                                       <td>{{ $value->name }}</td>
+                                       <td>{{ $minfo->name }}</td>
                                        <td>{{ $value1->studentInfo->name }}</td>
                                        <td>{{ $value1->studentInfo->phone }}</td>
                                        <td>{{ date('d-m-Y', strtotime($value1->studentInfo->created_at)); }}</td>
@@ -52,7 +50,7 @@
                                            <div class="btn-group">
 
                                                {{-- //view  --}}
-                                               <a href="{{route('student.student-admit.show',$value1->studentInfo->id)}}" class="btn btn-info btnView" data-id="{{ $value->id }}"><i class="fas fa-eye"></i></a>
+                                               <a href="{{route('student.student-admit.show',$value1->studentInfo->id)}}" class="btn btn-info btnView"><i class="fas fa-eye"></i></a>
 
                                                {{-- //edit  --}}
                                                <a href="{{ route('student.student-admit.edit', $value1->studentInfo->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
@@ -65,8 +63,6 @@
 
                                     </tr>
                                     @endforeach
-                                @empty
-                                @endforelse
                             </tbody>
                         </table>
                     </div>

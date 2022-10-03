@@ -12,7 +12,7 @@ class StudentController extends Controller
 {
     public function index($id){
         $this->check_access('view student');
-        $n['minfo'] = Semester::with('admittedStdAssign')->where('deleted_at',null)->where('id',$id)->get();
+        $n['minfo'] = Semester::with('admittedStdAssign')->where('deleted_at',null)->where('id',$id)->first();
 
         $n['page_name'] = 'Student Info';
         // dd($n);
