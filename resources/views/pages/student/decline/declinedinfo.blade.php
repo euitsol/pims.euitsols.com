@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Declined student')
+@section('title', 'Declined student Information Show')
 
 @push('third_party_stylesheets')
 

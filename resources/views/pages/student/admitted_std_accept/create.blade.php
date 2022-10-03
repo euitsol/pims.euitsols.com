@@ -1,8 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Admit Student Mangement')
+@section('title', 'Assign Admitted Student Mangement')
 
 @push('third_party_stylesheets')
+
+<link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 @endpush
 
 @push('page_css')
@@ -47,7 +49,7 @@
                                         <span>Department's Name</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <span>: {{ $db_data->departments_id }}</span>
+                                        <span>: {{ $db_data->department->department_name }}</span>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -109,7 +111,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="student_id">Student ID</label>
-                                                <input type="text" class="form-control" id="student_id" name="student_id" value="{{ old('student_id') }}" placeholder="Enter Student ID">
+                                                <input type="number" class="form-control" id="student_id" name="student_id" value="{{ old('student_id') }}" placeholder="Enter Student ID">
                                                 @if ($errors->has('student_id'))
                                                     <span class="text-danger">{{ $errors->first('student_id') }}</span>
                                                 @endif
@@ -202,4 +204,9 @@
 @endpush
 
 @push('page_scripts')
+<script>
+    $(document).ready(function(){
+        $('select').select2();
+    });
+</script>
 @endpush

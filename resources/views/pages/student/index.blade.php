@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Admitted student')
+@section('title', 'Student List')
 
 @push('third_party_stylesheets')
 <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
@@ -38,8 +38,8 @@
                             </thead>
                             <tbody>
                                 @foreach ($minfo->admittedStdAssign  as $key=> $value1)
+
                                     <tr>
-                                        {{-- @dd($value) --}}
                                        <td>{{ $key + 1 }}</td>
                                        <td>{{ $value1->studentInfo->department->department_name}}</td>
                                        <td>{{ $minfo->name }}</td>
@@ -82,6 +82,7 @@
 @push('page_scripts')
 <script>
 $(document).ready(function() {
+
     $('#table').DataTable( {
         dom: 'Bfrtip',
         buttons: [

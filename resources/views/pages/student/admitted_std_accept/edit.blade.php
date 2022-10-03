@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'User Management - User')
+@section('title', 'Assign Admitted Student Mangement')
 
 @push('third_party_stylesheets')
 
