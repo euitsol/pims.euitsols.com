@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Admitted student')
+@section('title', 'Pending students')
 
 @push('third_party_stylesheets')
 <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">

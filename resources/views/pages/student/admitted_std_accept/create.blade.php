@@ -1,15 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'Admit Student Mangement')
+@section('title', 'Assign Admitted Student')
 
 @push('third_party_stylesheets')
+
+<link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 @endpush
 
 @push('page_css')
     <style>
         .row span {
             font-size: 18px;
-            /* margin: 10px,0px,10px,0px; */
         }
 
     </style>
@@ -22,11 +23,8 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="float-left">
-                            <h1 class="card-title">Semester Assign for Admitted Student</h1>
+                            <h1 class="card-title">Admitted Student Assign</h1>
                         </span>
-                        {{-- <span class="float-right">
-                            <a href="{{ route('board.create') }}" class="btn btn-info">Add new Board</a>
-                        </span> --}}
                     </div>
                     <div class="card-body">
                         @include('partial.flush-message')
@@ -47,7 +45,7 @@
                                         <span>Department's Name</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <span>: {{ $db_data->departments_id }}</span>
+                                        <span>: {{ $db_data->department->department_name }}</span>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -101,25 +99,34 @@
                                 <h3 class="card-title">Assign Student</h3>
                             </div>
                             <div class="card-body">
-                                @if ($errors->any())
-                                    <div class="alert alert-danger">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endif
-                                <form action="" method="POST" class="form-horizontal">
+                                <form action="{{route('student.admitted.accept.store')}}" method="POST" class="form-horizontal">
                                     @csrf
+                                    <input type="hidden" name="std_info_id" value="{{$db_data->id}}">
                                     <div class="row">
 
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="student_id">Student ID</label>
-                                                <input type="text" class="form-control" id="student_id" name="student_id" value="{{ old('student_id') }}" placeholder="Enter Student ID" required>
+                                                <input type="number" class="form-control" id="student_id" name="student_id" value="{{ old('student_id') }}" placeholder="Enter Student ID">
                                                 @if ($errors->has('student_id'))
                                                     <span class="text-danger">{{ $errors->first('student_id') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="session_id">Session</label>
+                                                <select name="session_id" class="form-control" id="session_id"
+                                                    style="width: 100%;">
+
+                                                    <option value="" hidden>Select Session</option>
+                                                    @foreach ($session as $n)
+                                                        <option value="{{ $n->id }}" @if(old('session_id') ==$n->id) selected @endif >{{ $n->start.'-'.$n->end }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @if ($errors->has('session_id'))
+                                                    <span class="text-danger">{{ $errors->first('session_id') }}</span>
                                                 @endif
                                             </div>
                                         </div>
@@ -141,16 +148,16 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="session_id">Session</label>
-                                                <select name="session_id" class="form-control"
-                                                    style="width: 100%;">
-                                                    <option value="" hidden>Select Session</option>
-                                                    @foreach ($session as $n)
-                                                        <option value="{{ $n->id }}" @if(old('session_id') ==$n->id) selected @endif>{{ $n->start.'-'.$n->end }}</option>
+                                                <label for="group_id">Group</label>
+                                                <select name="group_id" id="group_id" class="form-control"
+                                                    style="width: 100%;" >
+                                                    <option value="" hidden>Select Group</option>
+                                                    @foreach ($group as $n)
+                                                        <option value="{{ $n->id }}" @if(old('group_id') ==$n->id) selected @endif>{{ $n->name }}</option>
                                                     @endforeach
                                                 </select>
-                                                @if ($errors->has('session_id'))
-                                                    <span class="text-danger">{{ $errors->first('session_id') }}</span>
+                                                @if ($errors->has('group_id'))
+                                                    <span class="text-danger">{{ $errors->first('group_id') }}</span>
                                                 @endif
                                             </div>
                                         </div>
@@ -169,21 +176,7 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="group_id">Group</label>
-                                                <select name="group_id" id="group_id" class="form-control"
-                                                    style="width: 100%;" >
-                                                    <option value="" hidden>Select Group</option>
-                                                    @foreach ($group as $n)
-                                                        <option value="{{ $n->id }}" @if(old('group_id') ==$n->id) selected @endif>{{ $n->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @if ($errors->has('group_id'))
-                                                    <span class="text-danger">{{ $errors->first('group_id') }}</span>
-                                                @endif
-                                            </div>
-                                        </div>
+
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-sm-3" for="guard_name"></label>
@@ -207,4 +200,9 @@
 @endpush
 
 @push('page_scripts')
+<script>
+    $(document).ready(function(){
+        $('select').select2();
+    });
+</script>
 @endpush

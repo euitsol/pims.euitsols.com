@@ -6,11 +6,8 @@
 <link rel="stylesheet" href="{{ asset('assets/css/Datepicker/datepicker.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 
-<link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
-<link
-    href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
-    rel="stylesheet"
-/>
+<link rel="stylesheet" href="{{ asset('assets/css/filepond/filepond.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/filepond/filepond-plugin-image-preview.css') }}">
 
 @endpush
 
@@ -44,6 +41,9 @@
         .floating-cart i {
             line-height: 3.2rem;
             font-size: 23px;
+        }
+        .select2-container {
+            width: 100% !important;
         }
 
     </style>

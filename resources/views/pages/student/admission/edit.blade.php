@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Admit Student')
+@section('title', 'Edit Admitted Student')
 
 @push('third_party_stylesheets')
 <link rel="stylesheet" href="{{ asset('assets/css/Datepicker/datepicker.min.css') }}">
@@ -298,10 +298,6 @@
                                                 </div>
                                         </fieldset>
                                     </div>
-                                    {{-- @dd($data->academicInfo) --}}
-
-
-
                                     <div class="tab" id="tab-3" style="display: none">
                                         <fieldset>
                                             <h2 class="text-center">Academic Information</h2>
@@ -426,12 +422,8 @@
                                             @endisset
                                                 {{-- Append External exam  --}}
                                             <div id="append_exam">
-
                                             </div>
 
-                                            {{-- Add More button  --}}
-                                            {{-- @dd($data->academicInfo) --}}
-                                            {{-- {{"cooount-". $data->academicInfo->count()}} --}}
                                             <div id="add_more" class="floating-cart" data-count="{{$i}}" title="Add a new academic info">
 
                                                 <i class="fas fa-plus"></i>

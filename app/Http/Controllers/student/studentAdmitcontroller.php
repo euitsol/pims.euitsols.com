@@ -404,10 +404,6 @@ class studentAdmitcontroller extends Controller
         return redirect()->route('student.student-admit.index');
     }
 
-    public function accept_student($id){
-        
-    }
-
     public function decline_list(Request $request){
         $n['data'] = studentInfo::with(['created_user', 'updated_user', 'deleted_user','academicInfo'])->where('deleted_at', null)->where('status', -1)->latest()->orderBy('departments_id')->get();
         $n['page_name'] = 'Declined Students';

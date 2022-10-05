@@ -89,11 +89,11 @@
         @endif
 
         {{-- Student info  --}}
-        {{-- @if (Auth::user()->can('view std_info') || Auth::user()->role->id == 1)
-            <li class="nav-item">
+        @if (Auth::user()->can('view std_info') || Auth::user()->role->id == 1)
+            <li class="nav-item {{Request::is('student/information/*') ? 'menu-open' : ''}}">
                 <a href="" class="nav-link">
                     <i class="nav-icon far fa-circle"></i>
-                    <p>student ifno
+                    <p>Student Info
                         <i class="fas fa-angle-left right"></i>
                     </p>
                 </a>
@@ -103,7 +103,7 @@
                     @endphp
                         @forelse ($semester as $key => $value)
                         <li class="nav-item">
-                            <a href="{{ route('student.info',$value->id) }}" class="nav-link">
+                            <a href="{{ route('student.index',$value->id) }}" class="nav-link {{Request::is('student/information/index/'.$value->id) ? 'active' : ''}}">
                                 <i class="nav-icon fas fa-minus"></i>
                                 <p>{{$value->name}}</p>
                             </a>
@@ -113,7 +113,7 @@
                         @endforelse
                 </ul>
             </li>
-        @endif --}}
+        @endif
     </ul>
 </li>
 

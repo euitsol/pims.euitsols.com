@@ -3,11 +3,11 @@
     position: absolute;
     top: 7px;
     right: 1px;
-    width: 20px;
+    /* width: 100% !important; */
 }
 
 .select2 {
-    width: auto;
+    width: 100% !important;
     display: block;
     /* height: 38px !important; */
 }

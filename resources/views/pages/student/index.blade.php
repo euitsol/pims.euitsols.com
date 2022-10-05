@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Decline List of Admitted student')
+@section('title', 'View students according to semester')
 
 @push('third_party_stylesheets')
 <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
@@ -17,10 +17,7 @@
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>View {{$page_name}}</h4>
-                    </span>
-                    <span class="float-right">
-                        <a href="{{ route('student.student-admit.create') }}" class="btn btn-info">Admit new Student</a>
+                        <h4>View students from {{$minfo->name}}</h4>
                     </span>
                 </div>
                 <div class="card-body">
@@ -31,7 +28,8 @@
                             <thead>
                                 <tr>
                                     <th>SL</th>
-                                    <th>Department Name</th>
+                                    <th>Department</th>
+                                    <th>Semester</th>
                                     <th>Student Name</th>
                                     <th>Student Phone</th>
                                     <th>Created At</th>
@@ -39,30 +37,32 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($data as $key => $value)
+                                @foreach ($minfo->admittedStdAssign  as $key=> $value1)
+
                                     <tr>
-                                        <td>{{ $key + 1 }}</td>
-                                        <td>{{ $value->department->department_name ?? ''}}</td>
-                                        <td>{{ $value->name }}</td>
-                                        <td>{{ $value->phone }}</td>
-                                        <td>{{ date('d-m-Y', strtotime($value->created_at)); }}</td>
-                                        <td>
-                                            <div class="btn-group">
+                                       <td>{{ $key + 1 }}</td>
+                                       <td>{{ $value1->studentInfo->department->department_name}}</td>
+                                       <td>{{ $minfo->name }}</td>
+                                       <td>{{ $value1->studentInfo->name }}</td>
+                                       <td>{{ $value1->studentInfo->phone }}</td>
+                                       <td>{{ date('d-m-Y', strtotime($value1->studentInfo->created_at)); }}</td>
+                                       <td>
+                                           <div class="btn-group">
 
-                                                {{-- //view  --}}
-                                                <a href="{{route('student.admitted.decline.show',$value->id)}}" class="btn btn-info btnView" data-id="{{ $value->id }}"><i class="fas fa-eye"></i></a>
+                                               {{-- //view  --}}
+                                               <a href="{{route('student.show',$value1->studentInfo->id)}}" class="btn btn-info btnView"><i class="fas fa-eye"></i></a>
 
-                                                {{-- //edit  --}}
-                                                <a href="{{ route('student.admitted.decline.edit', $value->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                               {{-- //edit  --}}
+                                               <a href="{{ route('student.student-admit.edit', $value1->studentInfo->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
 
-                                                {{-- //delete  --}}
-                                                <a href="{{ route('student.admitted.destroy', $value->id) }}" class="btn btn-danger btnDelete "><i class="fas fa-trash"></i></a>
+                                               {{-- //delete  --}}
+                                               <a href="{{ route('student.admitted.destroy', $value1->studentInfo->id) }}" class="btn btn-danger btnDelete" title="Delete"><i class="fas fa-trash"></i></a>
 
-                                            </div>
-                                        </td>
+                                           </div>
+                                       </td>
+
                                     </tr>
-                                @empty
-                                @endforelse
+                                    @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -82,6 +82,7 @@
 @push('page_scripts')
 <script>
 $(document).ready(function() {
+
     $('#table').DataTable( {
         dom: 'Bfrtip',
         buttons: [

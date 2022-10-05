@@ -26,11 +26,8 @@ use App\Http\Controllers\setup\NationaltyController;
 use App\Http\Controllers\setup\SubjectAssignController;
 use App\Http\Controllers\setup\TeacherAssignController;
 use App\Http\Controllers\teacher\TeacherController;
-use App\Http\Controllers\setup\SemesterAssignAdmitStd;
-
-
-
-
+use App\Http\Controllers\student\SemesterAssignAdmitStd;
+use App\Http\Controllers\student\StudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -125,15 +122,16 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
                 Route::post('/update}', [studentAdmitcontroller::class, 'decline_update'])->name('update');
             });
 
-            //Accept student (route('student.admitted.accept. ...'))
+            //Accept student
             Route::group(['as'=>'admitted.accept.','prefix'=>'accept'],function(){
-                Route::get('create/{id}', [studentAdmitcontroller::class,'accept_student'])->name('create');//route name = student.admitted.accept.create
-                route::get('/store',[SemesterAssignAdmitStd::class,'accept_student-store'])->name('store');//route name = student.admitted.accept.store
+                Route::get('create/{id}', [SemesterAssignAdmitStd::class,'create'])->name('create');//route name = student.admitted.accept.create
+                route::post('/store',[SemesterAssignAdmitStd::class,'store'])->name('store');//route name = student.admitted.accept.store
             });
         });
 
-        // Student
-        Route::get('/student/info/{id}', [studentAdmitcontroller::class, 'info'])->name('student.info');
+        // Student Information
+        Route::get('/information/index/{id}', [StudentController::class, 'index'])->name('index');//route name = student.index
+        Route::get('/information/show/{id}', [StudentController::class, 'show'])->name('show');//route name = student.show
     });
 
 
