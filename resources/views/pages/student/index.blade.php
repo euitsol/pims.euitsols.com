@@ -50,7 +50,7 @@
                                            <div class="btn-group">
 
                                                {{-- //view  --}}
-                                               <a href="{{route('student.student-admit.show',$value1->studentInfo->id)}}" class="btn btn-info btnView"><i class="fas fa-eye"></i></a>
+                                               <a href="{{route('student.show',$value1->studentInfo->id)}}" class="btn btn-info btnView"><i class="fas fa-eye"></i></a>
 
                                                {{-- //edit  --}}
                                                <a href="{{ route('student.student-admit.edit', $value1->studentInfo->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>

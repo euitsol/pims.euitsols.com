@@ -20,5 +20,13 @@ class StudentController extends Controller
         $n['page_name'] = 'Student Info';
         return view('pages.student.index',$n);
     }
+    public function show($id)
+    {
+        $student = studentInfo::with(['created_user', 'updated_user', 'deleted_user', 'department', 'bloodGroup', 'division', 'district', 'academicInfo'])->where('deleted_at', null)->where('id', $id)->first();
+        $semester_infos =AdmittedStdAssign::where('student_infos_id',$id)
+                                            ->where('deleted_at',null)
+                                            ->latest()->get();
+        return view('pages.student.admission.registration',[ 'student' => $student,'semester_infos'=>$semester_infos ]);
+    }
 
 }
