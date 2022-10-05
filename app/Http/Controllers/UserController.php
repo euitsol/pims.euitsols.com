@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 use DB;
+use DataTables;
 
 class UserController extends Controller
 {
@@ -24,8 +25,34 @@ class UserController extends Controller
         return $this->middleware('auth');
     }
 
-    public function index(){
+    public function index(Request $request){
         $this->check_access('view user');
+        if ($request->ajax()) {
+            $users = User::with(['created_user','role'])->where('deleted_at', null)->latest()->get();
+            return Datatables::of($users)
+                    ->addIndexColumn()
+                    ->editColumn('created_at', function($data){ $formatedDate = date('d-m-Y', strtotime($data->created_at)); return $formatedDate; })
+                    ->addColumn('created_user', function ($data) {
+                        return $data->created_user->name ?? 'system';
+                    })
+                    ->addColumn('role', function ($data) {
+                        return $data->role->name;
+                    })
+                    ->addColumn('action', function($data){
+                        $btn = '<div class="btn-group">';
+                        $btn .= '<a href="javascript:void(0)" class="btn btn-info btnView" data-id="' .$data->id. '"><i class="fas fa-eye"></i></a>';
+                        if(Auth::user()->can('edit user') || Auth::user()->role->id == 1){
+                            $btn .= '<a href="'.route("users.edit", $data->id).'" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>';
+                        }
+                        if(Auth::user()->can('delete user') || Auth::user()->role->id == 1){
+                            $btn .= '<a href="'.route("users.delete", $data->id).'" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>';
+                        }
+                        $btn .= '</div>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
         $users = User::where('deleted_at', null)->latest()->get();
         return view('users.index', [ 'users' => $users ]);
     }
@@ -112,8 +139,31 @@ class UserController extends Controller
         }
     }
 
-    public function role_index(){
+    public function role_index(Request $request){
         $this->check_access('view role');
+        if ($request->ajax()){
+            $roles = CustomRole::with(['created_user'])->where('deleted_at', null)->latest()->get();
+            return Datatables::of($roles)
+                    ->addIndexColumn()
+                    ->editColumn('created_at', function($data){ $formatedDate = date('d-m-Y', strtotime($data->created_at)); return $formatedDate; })
+                    ->addColumn('created_user', function ($data) {
+                        return $data->created_user->name ?? 'system';
+                    })
+                    ->addColumn('action', function($data){
+                        $btn = '<div class="btn-group">';
+                        $btn .= '<a href="javascript:void(0)" class="btn btn-info btnView" data-id="' .$data->id. '"><i class="fas fa-eye"></i></a>';
+                        if(Auth::user()->can('edit role') || Auth::user()->role->id == 1){
+                            $btn .= '<a href="'.route("users.role.edit", $data->id).'" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>';
+                        }
+                        if(Auth::user()->can('delete role') || Auth::user()->role->id == 1){
+                            $btn .= '<a href="'.route("users.role.delete", $data->id).'" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>';
+                        }
+                        $btn .= '</div>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
         $roles = CustomRole::where('deleted_at', null)->latest()->get();
         return view('users.role.index', [ 'roles' => $roles ]);
     }
@@ -191,8 +241,31 @@ class UserController extends Controller
         }
     }
 
-    public function permission_view(){
+    public function permission_view(Request $request){
         $this->check_access('view permission');
+        if ($request->ajax()){
+            $permissions = CustomPermission::with(['created_user'])->where('deleted_at', null)->latest()->get();
+            return Datatables::of($permissions)
+                    ->addIndexColumn()
+                    ->editColumn('created_at', function($data){ $formatedDate = date('d-m-Y', strtotime($data->created_at)); return $formatedDate; })
+                    ->addColumn('created_user', function ($data) {
+                        return $data->created_user->name ?? 'system';
+                    })
+                    ->addColumn('action', function($data){
+                        $btn = '<div class="btn-group">';
+                        $btn .= '<a href="javascript:void(0)" class="btn btn-info btnView" data-id="' .$data->id. '"><i class="fas fa-eye"></i></a>';
+                        if(Auth::user()->can('edit permission') || Auth::user()->role->id == 1){
+                            $btn .= '<a href="'.route("users.permission.edit", $data->id).'" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>';
+                        }
+                        if(Auth::user()->can('delete permission') || Auth::user()->role->id == 1){
+                            $btn .= '<a href="'.route("users.permission.delete", $data->id).'" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>';
+                        }
+                        $btn .= '</div>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
         $permissions = CustomPermission::where('deleted_at', null)->orderBy('prefix')->get();
         return view('users.permission.index', [ 'permissions' => $permissions ]);
     }

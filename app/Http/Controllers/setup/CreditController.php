@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use App\Models\Credit;
+use DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class CreditController extends Controller
 {
@@ -15,9 +17,34 @@ class CreditController extends Controller
         return $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $this->check_access('view credit');
+        if ($request->ajax()) {
+            $credits = Credit::with(['created_user'])->where('deleted_at', null)->latest()->get();
+            return Datatables::of($credits)
+                    ->addIndexColumn()
+                    ->editColumn('created_at', function($data){ $formatedDate = date('d-m-Y', strtotime($data->created_at)); return $formatedDate; })
+                    ->editColumn('credit_number', function($data){ $format_number = number_format((float)$data->credit_number, 2, '.', ''); return $format_number; })
+                    ->editColumn('class_hour', function($data){ $format_class_hour = $data->class_hour.  $data->class_hour_type(); return $format_class_hour; })
+                    ->addColumn('created_user', function ($data) {
+                        return $data->created_user->name ?? 'system';
+                    })
+                    ->addColumn('action', function($data){
+                        $btn = '<div class="btn-group">';
+                        $btn .= '<a href="javascript:void(0)" class="btn btn-info btnView" data-id="' .$data->id. '"><i class="fas fa-eye"></i></a>';
+                        if(Auth::user()->can('edit credit') || Auth::user()->role->id == 1){
+                            $btn .= '<a href="'.route("credit.edit", $data->id).'" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>';
+                        }
+                        if(Auth::user()->can('delete credit') || Auth::user()->role->id == 1){
+                            $btn .= '<a href="'.route("credit.destroy", $data->id).'" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>';
+                        }
+                        $btn .= '</div>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
         $n['db_data'] = Credit::where('deleted_at', null)->latest()->get();
         return view('pages.setup.credit.index',$n);
     }

@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Response;
 use Carbon\Carbon;
 use App\Models\Division;
 use App\Models\District;
+use DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class DistrictController extends Controller
 {
@@ -16,8 +18,35 @@ class DistrictController extends Controller
         return $this->middleware('auth');
     }
 
-    public function index(){
+    public function index(Request $request){
         $this->check_access('view district');
+        if ($request->ajax()) {
+            $districts = District::with(['created_user','division'])->where('deleted_at', null)->latest()->get();
+            return Datatables::of($districts)
+                    ->addIndexColumn()
+                    ->editColumn('created_at', function($data){ $formatedDate = date('d-m-Y', strtotime($data->created_at)); return $formatedDate; })
+                    ->addColumn('created_user', function ($data) {
+                        return $data->created_user->name ?? 'system';
+                    })
+                    ->addColumn('division', function ($data) {
+                        return $data->division->name;
+                    })
+                    ->addColumn('action', function($data){
+                        $btn = '<div class="btn-group">';
+                        $btn .= '<a href="javascript:void(0)" class="btn btn-info btnView" data-id="' .$data->id. '"><i class="fas fa-eye"></i></a>';
+                        if(Auth::user()->can('edit district') || Auth::user()->role->id == 1){
+                            $btn .= '<a href="'.route("district.edit", $data->id).'" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>';
+                        }
+                        if(Auth::user()->can('delete district') || Auth::user()->role->id == 1){
+                            $btn .= '<a href="'.route("district.delete", $data->id).'" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>';
+                        }
+                        $btn .= '</div>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+
         $districts = District::where('deleted_at', null)->orderBy('division_id')->latest()->get();
         return view('pages.setup.district.index', ['districts' => $districts ]);
     }

@@ -3,11 +3,10 @@
 @section('title', 'Department Management')
 
 @push('third_party_stylesheets')
-<link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
 @endpush
 
 @push('page_css')
-
 @endpush
 
 @section('content')
@@ -17,10 +16,13 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="float-left">
-                            <h4>View {{$page_name}}</h4>
+                            <h4>View {{ $page_name }}</h4>
                         </span>
                         <span class="float-right">
-                            @if(Auth::user()->can('add department') || Auth::user()->role->id == 1)<a href="{{ route('department.create') }}" class="btn btn-info">Add new {{$page_name}}</a>@endif
+                            @if (Auth::user()->can('add department') || Auth::user()->role->id == 1)
+                                <a href="{{ route('department.create') }}" class="btn btn-info">Add new
+                                    {{ $page_name }}</a>
+                            @endif
                         </span>
                     </div>
                     <div class="card-body">
@@ -31,7 +33,7 @@
                                 <thead>
                                     <tr>
                                         <th>SL</th>
-                                        <th>{{$page_name }} Name</th>
+                                        <th>{{ $page_name }} Name</th>
                                         <th>Short Name</th>
                                         <th>Created At</th>
                                         <th>Created By</th>
@@ -44,21 +46,25 @@
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $value->department_name }}</td>
                                             <td>{{ $value->short_name }}</td>
-                                            <td>{{ date('d-m-Y', strtotime($value->created_at)); }}</td>
+                                            <td>{{ date('d-m-Y', strtotime($value->created_at)) }}</td>
                                             <td>{{ $value->created_user->name ?? 'system' }}</td>
                                             <td>
                                                 <div class="btn-group">
                                                     {{-- //view  --}}
-                                                    <a href="javascript:void(0)" class="btn btn-info btnView" data-id="{{ $value->id }}"><i class="fas fa-eye"></i></a>
+                                                    <a href="javascript:void(0)" class="btn btn-info btnView"
+                                                        data-id="{{ $value->id }}"><i class="fas fa-eye"></i></a>
 
                                                     {{-- //edit  --}}
-                                                    @if(Auth::user()->can('edit department') || Auth::user()->role->id == 1)
-                                                        <a href="{{ route('department.edit', $value->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                                    @if (Auth::user()->can('edit department') || Auth::user()->role->id == 1)
+                                                        <a href="{{ route('department.edit', $value->id) }}"
+                                                            class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                                     @endif
 
                                                     {{-- //delete  --}}
-                                                    @if(Auth::user()->can('delete department') || Auth::user()->role->id == 1)
-                                                        <a href="{{ route('department.delete', $value->id) }}" class="btn btn-danger btnDelete "><i class="fas fa-trash"></i></a>
+                                                    @if (Auth::user()->can('delete department') || Auth::user()->role->id == 1)
+                                                        <a href="{{ route('department.delete', $value->id) }}"
+                                                            class="btn btn-danger btnDelete "><i
+                                                                class="fas fa-trash"></i></a>
                                                     @endif
                                                 </div>
                                             </td>
@@ -140,59 +146,94 @@
 @endsection
 
 @push('third_party_scripts')
-<script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script>
 @endpush
 
 @push('page_scripts')
-<script>
-$(document).ready(function() {
-    $('#table').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                extend: 'pdfHtml5',
-                title: 'Department Management',
-                download: 'open',
-                orientation: 'potrait',
-                pagesize: 'LETTER',
-                exportOptions: {
-                    columns: [0,1,2,3,4]
+    <script>
+        $(document).ready(function() {
+            var table = $('#table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('department.index') }}",
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'department_name',
+                        name: 'department_name'
+                    },
+                    {
+                        data: 'short_name',
+                        name: 'short_name'
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'created_at'
+                    },
+                    {
+                        data: 'created_user',
+                        name: 'created_user'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                ],
+                dom: 'Bfrtip',
+                buttons: [{
+                        extend: 'pdfHtml5',
+                        title: 'Department Management',
+                        download: 'open',
+                        orientation: 'potrait',
+                        pagesize: 'LETTER',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4]
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4]
+                        }
+                    }, 'pageLength'
+                ]
+            });
+
+            //view-modal
+            $('#table').on('click', 'tbody tr td .btn-group .btnView', function () {
+                if ($(this).data('id') != null || $(this).data('id') != '') {
+                    let url = ("{{ route('department.show', ['id']) }}");
+                    let _url = url.replace('id', $(this).data('id'));
+                    $.ajax({
+                        url: _url,
+                        method: "GET",
+                        success: function(response) {
+                            console.log(response);
+
+                            $('#view-name').html(response.department_name);
+                            $('#view-short-name').html(response.short_name);
+                            $('#view-createdAt').html(response.created_at ? new Date(response
+                                .created_at) : '');
+                            $('#view-createdBy').html(response.created_user ? response
+                                .created_user.name : 'system');
+                            $('#view-updatedAt').html(response.updated_at ? new Date(response
+                                .updated_at) : '');
+                            $('#view-updatedBy').html(response.updated_user ? response
+                                .updated_user.name : '');
+
+                            $('#view-modal').modal('show');
+                        }
+                    });
+                } else {
+                    alart('Something went wrong');
                 }
-            },
-            {
-                extend: 'print',
-                exportOptions: {
-                    columns: [0,1,2,3,4]
-                }
-            }, 'pageLength'
-        ]
-    });
-
-      //view-modal
-      $('.btnView').click( function(){
-            if($(this).data('id') != null || $(this).data('id') != ''){
-                let url = ("{{ route('department.show', ['id']) }}");
-                let _url = url.replace('id', $(this).data('id'));
-                $.ajax({
-                    url: _url,
-                    method: "GET",
-                    success: function (response) {
-                        console.log(response);
-
-                        $('#view-name').html(response.department_name);
-                        $('#view-short-name').html(response.short_name);
-                        $('#view-createdAt').html(response.created_at ? new Date(response.created_at) : '');
-                        $('#view-createdBy').html(response.created_user ? response.created_user.name : 'system');
-                        $('#view-updatedAt').html(response.updated_at ? new Date(response.updated_at) : '');
-                        $('#view-updatedBy').html(response.updated_user ? response.updated_user.name: '');
-
-                        $('#view-modal').modal('show');
-                    }
-                });
-            }else{
-                alart('Something went wrong');
-            }
+            });
         });
-});
-</script>
+    </script>
 @endpush
