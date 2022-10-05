@@ -56,7 +56,7 @@
                                                <a href="{{ route('student.student-admit.edit', $value1->studentInfo->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
 
                                                {{-- //delete  --}}
-                                               <a href="{{ route('student.admitted.destroy', $value1->studentInfo->id) }}" class="btn btn-danger btnDelete" title="Delete"><i class="fas fa-trash"></i></a>
+                                               <a href="{{ route('student.admitted.destroy', $value1->id) }}" class="btn btn-danger btnDelete" title="Delete"><i class="fas fa-trash"></i></a>
 
                                            </div>
                                        </td>
