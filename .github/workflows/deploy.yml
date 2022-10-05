@@ -23,7 +23,6 @@ jobs:
     - run: chmod -R a+x node_modules
     - run: npm install
     - run: npm run production
-    - run: composer dump-autoload
     - run: composer update
 
     - name: executing remote ssh commands using password
