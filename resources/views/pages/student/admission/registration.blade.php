@@ -30,23 +30,21 @@
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">
-                        {{-- @dd($student) --}}
                         @if ($student->student_id)
                             <h4>Student Details</h4>
                         @else
                             <h4>Registration Form</h4>
                         @endif
-                        {{-- <h4>Registration Form</h4> --}}
                     </span>
                     <span class="float-right">
                         @if ($student->student_id)
                         <button type="button" onclick="printT('registration-form')" class="btn btn-dark btn-sm"><i class="fa fa-print"></i> Student Details </button>
-                        <a href="{{ route('student.student-admit.index') }}" class="btn btn-secondary btn-sm">Back</a>
+                        {{-- <a href="{{ route('student.student-admit.index') }}" class="btn btn-secondary btn-sm">Back</a> --}}
                         @else
                             <button type="button" onclick="printT('registration-form')" class="btn btn-dark btn-sm"><i class="fa fa-print"></i> Registration Form </button>
                             <a href="{{ route('student.admitted.decline.d', $student->id) }}" class="btn btn-danger btn-sm" title="Decline Regestration" onclick="alert('Are you sure you want to decline?')"><i class="fas fa-user-times"></i></a>
                             <a href="{{ route('student.admitted.accept.create', $student->id) }}" class="btn btn-info btn-sm" title="Accept Regestration"><i class="fas fa-user-check"></i></a>
-                            <a href="{{ route('student.student-admit.index') }}" class="btn btn-secondary btn-sm">Back</a>
+                            {{-- <a href="{{ route('student.index',$student->id) }}" class="btn btn-secondary btn-sm">Back</a> --}}
                         @endif
                     </span>
                 </div>

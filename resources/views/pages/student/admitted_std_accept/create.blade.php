@@ -12,7 +12,11 @@
         .row span {
             font-size: 18px;
         }
+        .student_id_generator{
 
+             margin: 5px 0px 0px 2px;
+             padding-left: 10px
+        }
     </style>
 @endpush
 
@@ -107,7 +111,8 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="student_id">Student ID</label>
-                                                <input type="number" class="form-control" id="student_id" name="student_id" value="{{ old('student_id') }}" placeholder="Enter Student ID">
+                                                <input type="number" class="form-control" id="student_id" name="student_id" value="" placeholder="Enter Student ID">
+                                                <button type="button" class="btn btn-primary student_id_generator" id="student_id_generator" value="0">ID generator</button>
                                                 @if ($errors->has('student_id'))
                                                     <span class="text-danger">{{ $errors->first('student_id') }}</span>
                                                 @endif
@@ -203,6 +208,21 @@
 <script>
     $(document).ready(function(){
         $('select').select2();
+        //Student ID show
+        $('#student_id_generator').click(function(){
+            $id = "{{$student_id}}";
+
+            if($(this).val()==0){
+                $("#student_id").val($id);
+                $(this).val(1);
+            }else{
+                if($(this).val()==1){
+                    $("#student_id").val('');
+                    $(this).val(0);
+                }   
+            }
+
+        });
     });
 </script>
 @endpush

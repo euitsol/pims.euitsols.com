@@ -10,6 +10,7 @@ use App\Models\Shift;
 use App\Models\Group;
 use App\Models\Session;
 use App\Models\AdmittedStdAssign;
+use Illuminate\Support\Facades\Date;
 
 class SemesterAssignAdmitStd extends Controller
 {
@@ -22,6 +23,10 @@ class SemesterAssignAdmitStd extends Controller
         $n['semester']= Semester::where('deleted_by','=',null)->get();
         $n['group']= Group::where('deleted_by','=',null)->get();
         $n['shift']= Shift::where('deleted_by','=',null)->get();
+        //Student id create
+        $year = date('Y');
+        $month = date('m');
+        $n['student_id'] = $year.$month.$id;
         return view('pages.student.admitted_std_accept.create',$n);
     }
 
