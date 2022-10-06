@@ -11261,7 +11261,7 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
 .brand-link .brand-image {
   float: left;
   line-height: 0.8;
-  margin-left: 0.8rem;
+  /* margin-left: 0.8rem; */
   margin-right: 0.5rem;
   margin-top: -3px;
   max-height: 33px;

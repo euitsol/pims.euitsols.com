@@ -129,6 +129,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         // Student Information
         Route::get('/information/index/{id}', [StudentController::class, 'index'])->name('index');//route name = student.index
         Route::get('/information/show/{id}', [StudentController::class, 'show'])->name('show');//route name = student.show
+        Route::get('/information/ajax', [StudentController::class, 'ajax'])->name('ajax');//route name = student.ajax
     });
 
 

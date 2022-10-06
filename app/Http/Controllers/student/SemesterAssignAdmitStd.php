@@ -11,6 +11,7 @@ use App\Models\Group;
 use App\Models\Session;
 use App\Models\AdmittedStdAssign;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Auth;
 
 class SemesterAssignAdmitStd extends Controller
 {
@@ -73,6 +74,7 @@ class SemesterAssignAdmitStd extends Controller
         $insert->semester_id = $req->semester_id;
         $insert->group_id = $req->group_id;
         $insert->shift_id = $req->shift_id;
+        $insert->created_by = Auth::user()->id;
         $insert->save();
 
         $this->message('success', 'Admitted student assigned successfullly');

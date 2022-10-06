@@ -100,7 +100,6 @@ class SubjectAssignController extends Controller
                 $result = $value->subjectIsAssign($session_id,$semester_id,$department_id);
                 $subject[$key]["result"]=$result;
             }
-
         return response()->json($subject);
    }
 
