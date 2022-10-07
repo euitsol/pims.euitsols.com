@@ -36,16 +36,8 @@ class StudentController extends Controller
         return view('pages.student.admission.registration',[ 'student' => $student,'semester_infos'=>$semester_infos ]);
     }
 
+    //Ajax filter
     public function ajax(Request $req){
-        // if($req->session_id )
-
-        // $student_info = DB::table('admitted_std_assigns');
-        // $student_info->join('semesters','admitted_std_assigns.semester_id','=','semesters.id');
-        // $student_info->join('student_infos','admitted_std_assigns.student_infos_id','=','student_infos.id');
-        // $student_info->join('sessions','admitted_std_assigns.session_id','=','sessions.id');
-        // $student_info->join('student_infos','admitted_std_assigns.student_infos_id','=','student_infos.id');
-        // $student_info->select('admitted_std_assigns.*','semesters.name','student_infos.name','student_infos.student_id');
-
         $student_info = AdmittedStdAssign::with('session','studentInfo','semester','group','shift')
         ->where('deleted_at',null)->where('semester_id',$req->semester_id);
 
@@ -62,9 +54,11 @@ class StudentController extends Controller
             $student_info->where('shift_id',$req->shift_id);
         }
 
-
         $students = $student_info->get();
-
+        foreach($students as $key => $value){
+            $departments = $value->departmentAjax($value->studentInfo->departments_id);
+            $students[$key]['departments']= $departments;
+        }
         return response()->json($students);
     }
 

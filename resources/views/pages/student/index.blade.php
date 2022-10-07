@@ -30,6 +30,7 @@
                                 <label for="session_id">Session</label>
                                 <select name="session_id" class="form-control" id="session_id">
                                     <option value="" hidden>Select Session</option>
+                                    <option value="">All</option>
                                     @foreach ($session as $n)
                                         <option value="{{ $n->id }}" @if(old('session_id') ==$n->id) selected @endif >{{ $n->start.'-'.$n->end }}</option>
                                     @endforeach
@@ -61,6 +62,7 @@
                                 <select name="group_id" id="group_id" class="form-control"
                                     style="width: 100%;" >
                                     <option value="" hidden>Select Group</option>
+                                    <option value="">All</option>
                                     @foreach ($group as $n)
                                         <option value="{{ $n->id }}" @if(old('group_id') ==$n->id) selected @endif>{{ $n->name }}</option>
                                     @endforeach
@@ -76,6 +78,7 @@
                                 <select name="shift_id" id="shift_id" class="form-control"
                                     style="width: 100%;">
                                     <option value="" hidden>Select Shift</option>
+                                    <option value="">All</option>
                                     @foreach ($shift as $n)
                                         <option value="{{ $n->id }}" @if(old('shift_id') ==$n->id) selected @endif>{{ $n->name }}</option>
                                     @endforeach
@@ -205,7 +208,7 @@ $("#session_id, #group_id,#shift_id").change(function(){
                  tr += `<tr>
                             <td>${index+1}</td>
                             <td>${value.session.start+'-'+value.session.start }</td>
-                            <td>${value.student_info.departments_id}</td>
+                            <td>${value.departments.department_name}</td>
                             <td>${value.group.name }</td>
                             <td>${value.shift.name }</td>
                             <td>${value.student_info.student_id }</td>
