@@ -75,11 +75,12 @@ class TeacherAssignController extends Controller
                 $insert->group_id = $teacher_assign['group_id'];
                 $insert->save();
             } else {
-                $this->message('error', 'Subject is already assigned with same teacher, group and shift');
+
+                $this->message('error', 'Subject "'.$teacher_assign_check->subjectAssign->subject->name.'" is already assigned with same teacher, group and shift');
                 return back();
             }
         }
-        $this->message('success', 'Subjects Successfully Assigned');
+        $this->message('success', 'Teachers Successfully Assigned');
         return redirect()->route('teacher-assign.index');
     }
 
@@ -136,37 +137,7 @@ class TeacherAssignController extends Controller
             $insert->shift_id = $teacher_assign['shift_id'];
             $insert->save();
         }
-        // foreach ($req->teacher_assign as $key => $teacher_assign) {
-        //     if ($key == 0) {
-        //         $s_id = 0;
-        //     }
-
-        //     if ($s_id != $teacher_assign['subject_assign_id']) {
-        //         $delete = TeacherAssign::where('subject_assign_id', $teacher_assign['subject_assign_id'])->delete();
-        //     }
-
-        //     $s_id = $teacher_assign['subject_assign_id'];
-
-
-        //     $teacher_assign_check = TeacherAssign::where('subject_assign_id', $teacher_assign['subject_assign_id'])
-        //         ->where('group_id', $teacher_assign['group_id'])
-        //         ->where('shift_id', $teacher_assign['shift_id'])
-        //         ->where('deleted_at', null)->first();
-        //     if ($teacher_assign_check == null) {
-        //         // dd($teacher_assign);
-
-        //         $insert = new TeacherAssign;
-        //         $insert->subject_assign_id = $teacher_assign['subject_assign_id'];
-        //         $insert->teacher_id = $teacher_assign['teacher_id'];
-        //         $insert->shift_id = $teacher_assign['shift_id'];
-        //         $insert->group_id = $teacher_assign['group_id'];
-        //         $insert->save();
-        //     } else {
-        //         $this->message('error', 'Subject is already assigned with same teacher, group and shift');
-        //         return back();
-        //     }
-        // }
-        $this->message('success', 'Subjects Successfully Assigned');
+        $this->message('success', 'Teachers Successfully Assigned');
         return redirect()->route('teacher-assign.index');
     }
 }

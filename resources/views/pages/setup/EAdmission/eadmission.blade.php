@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'User Management')
+@section('title', 'Exam-Admission Management')
 
 @push('third_party_stylesheets')
     <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
@@ -154,29 +154,61 @@
 @push('page_scripts')
     <script>
         $(document).ready(function() {
-            $('#table').DataTable({
+            var table = $('#table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('exam-name-admission.index') }}",
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'short_name',
+                        name: 'short_name'
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'created_at'
+                    },
+                    {
+                        data: 'created_user',
+                        name: 'created_user'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                ],
                 dom: 'Bfrtip',
                 buttons: [{
                         extend: 'pdfHtml5',
-                        title: 'User Management',
+                        title: 'Exam-Admission Management',
                         download: 'open',
                         orientation: 'potrait',
                         pagesize: 'LETTER',
                         exportOptions: {
-                            columns: [0, 1, 2, 3]
+                            columns: [0, 1, 2, 3, 4]
                         }
                     },
                     {
                         extend: 'print',
                         exportOptions: {
-                            columns: [0, 1, 2, 3]
+                            columns: [0, 1, 2, 3, 4]
                         }
                     }, 'pageLength'
                 ]
             });
 
-
-            $('.btnView').click(function() {
+            //view-modal
+            $('#table').on('click', 'tbody tr td .btn-group .btnView', function (){
                 if ($(this).data('id') != null || $(this).data('id') != '') {
                     let url = ("{{ route('exam-name-admission.show', ['id']) }}");
                     let _url = url.replace('id', $(this).data('id'));

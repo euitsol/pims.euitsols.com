@@ -9,6 +9,8 @@ use App\Models\Semester;
 use App\Models\Session;
 use App\Models\SemesterDuration;
 use Illuminate\Support\Facades\Response;
+use DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class SemesterDurationController extends Controller
 {
@@ -17,8 +19,38 @@ class SemesterDurationController extends Controller
         return $this->middleware('auth');
     }
 
-    public function index(){
+    public function index(Request $request){
         $this->check_access('view semester-duration');
+        if ($request->ajax()) {
+            $semesterduration = SemesterDuration::with(['created_user', 'session', 'semester'])->where('deleted_at', null)->latest()->get();
+            return Datatables::of($semesterduration)
+                    ->addIndexColumn()
+                    ->editColumn('created_at', function($data){ $formatedDate = date('d-m-Y', strtotime($data->created_at)); return $formatedDate; })
+                    ->editColumn('duration', function($data){ $format_duration =  date('M-Y', strtotime($data->start)).' - '. date('M-Y', strtotime($data->end));return $format_duration; })
+                    ->addColumn('created_user', function ($data) {
+                        return $data->created_user->name ?? 'system';
+                    })
+                    ->addColumn('session', function ($data) {
+                        return $data->session->start.' - '. $data->session->end;
+                    })
+                    ->addColumn('semester', function ($data) {
+                        return $data->semester->name;
+                    })
+                    ->addColumn('action', function($data){
+                        $btn = '<div class="btn-group">';
+                        $btn .= '<a href="javascript:void(0)" class="btn btn-info btnView" data-id="' .$data->id. '"><i class="fas fa-eye"></i></a>';
+                        if(Auth::user()->can('edit semester-duration') || Auth::user()->role->id == 1){
+                            $btn .= '<a href="'.route("semesterDuration.edit", $data->id).'" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>';
+                        }
+                        if(Auth::user()->can('delete semester-duration') || Auth::user()->role->id == 1){
+                            $btn .= '<a href="'.route("semesterDuration.delete", $data->id).'" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>';
+                        }
+                        $btn .= '</div>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
         $semester_sessions = SemesterDuration::where('deleted_at', null)->orderBy('session_id')->latest()->get();
         return view('pages.setup.semester_duration.index', ['semester_sessions' => $semester_sessions]);
     }

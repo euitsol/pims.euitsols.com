@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Department;
 use Illuminate\Support\Facades\Response;
 use Carbon\Carbon;
+use DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class departmentController extends Controller
 {
@@ -21,10 +23,33 @@ class departmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
 
         $this->check_access('view department');
+        if ($request->ajax()) {
+            $departments = Department::with(['created_user'])->where('deleted_at', null)->latest()->get();
+            return Datatables::of($departments)
+                    ->addIndexColumn()
+                    ->editColumn('created_at', function($data){ $formatedDate = date('d-m-Y', strtotime($data->created_at)); return $formatedDate; })
+                    ->addColumn('created_user', function ($data) {
+                        return $data->created_user->name ?? 'system';
+                    })
+                    ->addColumn('action', function($data){
+                        $btn = '<div class="btn-group">';
+                        $btn .= '<a href="javascript:void(0)" class="btn btn-info btnView" data-id="' .$data->id. '"><i class="fas fa-eye"></i></a>';
+                        if(Auth::user()->can('edit department') || Auth::user()->role->id == 1){
+                            $btn .= '<a href="'.route("department.edit", $data->id).'" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>';
+                        }
+                        if(Auth::user()->can('delete department') || Auth::user()->role->id == 1){
+                            $btn .= '<a href="'.route("department.delete", $data->id).'" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>';
+                        }
+                        $btn .= '</div>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
         $n['data'] = Department::where('deleted_by', null)->get();
         $n['page_name'] = 'Department';
         return view('pages.setup.deparment.show', $n);
