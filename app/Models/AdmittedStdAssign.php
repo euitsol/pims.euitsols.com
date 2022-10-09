@@ -24,4 +24,7 @@ class AdmittedStdAssign extends Model
     public function shift(){
         return $this->belongsTo(Shift::class,'shift_id');
     }
+    public function departmentAjax($id){
+        return Department::find($id);
+    }
 }

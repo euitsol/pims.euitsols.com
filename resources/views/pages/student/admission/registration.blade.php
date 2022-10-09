@@ -30,13 +30,22 @@
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>Registration Form</h4>
+                        @if ($student->student_id)
+                            <h4>Student Details</h4>
+                        @else
+                            <h4>Registration Form</h4>
+                        @endif
                     </span>
                     <span class="float-right">
-                        <button type="button" onclick="printT('registration-form')" class="btn btn-dark btn-sm"><i class="fa fa-print"></i> Registration Form </button>
-                        <a href="{{ route('student.admitted.decline.d', $student->id) }}" class="btn btn-danger btn-sm" title="Decline Regestration" onclick="alert('Are you sure you want to decline?')"><i class="fas fa-user-times"></i></a>
-                        <a href="{{ route('student.admitted.accept.create', $student->id) }}" class="btn btn-info btn-sm" title="Accept Regestration"><i class="fas fa-user-check"></i></a>
-                        <a href="{{ route('student.student-admit.index') }}" class="btn btn-secondary btn-sm">Back</a>
+                        @if ($student->student_id)
+                        <button type="button" onclick="printT('registration-form')" class="btn btn-dark btn-sm"><i class="fa fa-print"></i> Student Details </button>
+                        {{-- <a href="{{ route('student.student-admit.index') }}" class="btn btn-secondary btn-sm">Back</a> --}}
+                        @else
+                            <button type="button" onclick="printT('registration-form')" class="btn btn-dark btn-sm"><i class="fa fa-print"></i> Registration Form </button>
+                            <a href="{{ route('student.admitted.decline.d', $student->id) }}" class="btn btn-danger btn-sm" title="Decline Regestration" onclick="alert('Are you sure you want to decline?')"><i class="fas fa-user-times"></i></a>
+                            <a href="{{ route('student.admitted.accept.create', $student->id) }}" class="btn btn-info btn-sm" title="Accept Regestration"><i class="fas fa-user-check"></i></a>
+                            {{-- <a href="{{ route('student.index',$student->id) }}" class="btn btn-secondary btn-sm">Back</a> --}}
+                        @endif
                     </span>
                 </div>
                 <div class="card-body">
@@ -75,7 +84,12 @@
                                     <tr>
                                         <td>Student ID</td>
                                         <td>:</td>
-                                        <td>{{$student->id}}</td>
+                                        <td>@if ($student->student_id)
+                                                {{$student->student_id}}
+                                                @else
+                                                {{'Not assigned'}}
+                                            @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Full Name</td>
@@ -258,7 +272,6 @@
                                             <th>Semester</th>
                                             <th>Group</th>
                                             <th>Shift</th>
-                                            <th>Student ID</th>
                                             <th>C.G.P.A</th>
                                             <th>Status</th>
                                             {{-- <th class="download">Download</th> --}}
@@ -271,7 +284,6 @@
                                                 <td>{{ $semester_infos->semester->name }}</td>
                                                 <td>{{ $semester_infos->group->name }}</td>
                                                 <td>{{ $semester_infos->shift->name }}</td>
-                                                <td>{{ $semester_infos->studentInfo->student_id }}</td>
                                                 {{-- <td>{{ optional($ac->board)->name }}</td>
                                                 <td>{{ $ac->group }}</td>
                                                 <td>{{ $ac->roll }}</td>
