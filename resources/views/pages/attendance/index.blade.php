@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'View students according to semester')
+@section('title', 'Attendance Management')
 
 @push('third_party_stylesheets')
-    <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 @endpush
 
 @push('page_css')
@@ -16,18 +16,18 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="float-left">
-                            <h4>View Attendance</h4>
+                            <h4>Attendance</h4>
                         </span>
                     </div>
                     <div class="card-body">
-                        <form action="">
+                        <form action="{{route('attendance.subject_fetch')}}" method="POST">
                             @csrf
                             <input type="hidden" name="semester_id" value="">
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="session_id">Session</label>
-                                        <select name="session_id" class="form-control" id="session_id">
+                                        <select name="session_id" class="form-control select" id="session_id">
                                             <option value="" hidden>Select Session</option>
                                             @foreach ($session as $n)
                                                 <option value="{{ $n->id }}"
@@ -44,7 +44,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="department_id">Department</label>
-                                        <select name="department_id" class="form-control" id="department_id">
+                                        <select name="department_id" class="form-control select" id="department_id">
                                             <option value="" hidden>Select Department</option>
                                             @foreach ($department as $n)
                                                 <option value="{{ $n->id }}"
@@ -61,7 +61,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="semester_id">Semester</label>
-                                        <select name="semester_id" class="form-control" id="semester_id">
+                                        <select name="semester_id" class="form-control select" id="semester_id">
                                             <option value="" hidden>Select Semester</option>
                                             @foreach ($semester as $n)
                                                 <option value="{{ $n->id }}"
@@ -78,7 +78,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="shift_id">Shift</label>
-                                        <select name="shift_id" id="shift_id" class="form-control" style="width: 100%;">
+                                        <select name="shift_id" id="shift_id" class="form-control select" style="width: 100%;">
                                             <option value="" hidden>Select Shift</option>
                                             @foreach ($shift as $n)
                                                 <option value="{{ $n->id }}"
@@ -92,10 +92,10 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="group_id">Group</label>
-                                        <select name="group_id" id="group_id" class="form-control" style="width: 100%;">
+                                        <select name="group_id" id="group_id" class="form-control select" style="width: 100%;">
                                             <option value="" hidden>Select Group</option>
                                             @foreach ($group as $n)
                                                 <option value="{{ $n->id }}"
@@ -109,14 +109,11 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="teacher_id">teacher</label>
-                                        <select name="teacher_id" id="teacher_id" class="form-control" style="width: 100%;">
-                                            <option value="" hidden>Select teacher</option>
-                                            {{-- @foreach ($teacher as $n)
-                                        <option value="{{ $n->id }}" @if (old('teacher_id') == $n->id) selected @endif>{{ $n->name }}</option>
-                                    @endforeach --}}
+                                <div class="col-md-4">
+                                    <div class="form-group" id="teacher_div">
+                                        <label for="teacher_id">Teacher</label>
+                                        <select name="teacher_id" id="teacher_id" class="form-control select" style="width: 100%;" onclick="teacherFetch()">
+                                            <option value="" hidden>Select Teacher</option>
                                         </select>
                                         @if ($errors->has('teacher_id'))
                                             <span class="text-danger">{{ $errors->first('teacher_id') }}</span>
@@ -124,20 +121,59 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="subject_id">subject</label>
-                                        <select name="subject_id" id="subject_id" class="form-control" style="width: 100%;">
-                                            <option value="" hidden>Select subject</option>
+                                <div class="col-md-4">
+                                    <div class="form-group" id="subject_div">
+                                        <label for="subject_id">Subject</label>
+                                        <select name="subject_id" id="subject_id" class="form-control select" style="width: 100%;">
+                                            <option value="" hidden>Select Subject</option>
                                         </select>
-                                        @if ($errors->has('subject_id'))
-                                            <span class="text-danger">{{ $errors->first('subject_id') }}</span>
-                                        @endif
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-center mt-3">
+                                    <button class="btn btn-success col-md-4">Search</button>
                                 </div>
                             </div>
                         </form>
                     </div>
+                </div>
+                <div class="card">
+                    @if (isset($classes))
+                    @foreach ($classes as $n )
+                    <div class="card-body">
+                        @include('partial.flush-message')
+
+                        <div class="table table-responsive">
+                            <table id="table" class="">
+                                <thead>
+                                    <tr>
+                                        <th>SL</th>
+                                        <th>Class</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @for ($i = 1;$i<=$n->credit->total_class;$i++)
+                                        <tr>
+                                            <td>{{ $i }}</td>
+                                            <td> {{'Class '.$i}}</td>
+                                            <td></td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    @endfor
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+
+                    @endforeach
+                    @endif
                 </div>
             </div>
         </div>
@@ -146,35 +182,43 @@
 @endsection
 
 @push('third_party_scripts')
-    <script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script>
+    {{-- Select2 --}}
+    <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 @endpush
 
 @push('page_scripts')
     <script>
+
         $(document).ready(function() {
-            $('#table').DataTable({
-                dom: 'Bfrtip',
-                buttons: [{
-                        extend: 'pdfHtml5',
-                        title: 'Attendance Management',
-                        download: 'open',
-                        orientation: 'potrait',
-                        pagesize: 'LETTER',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3]
-                        }
-                    },
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3]
-                        }
-                    }, 'pageLength'
-                ]
+
+            $('.select').select2();
+
+            // teacher validation
+            $('#teacher_div').click(function(){
+                if($('#department_id').val()==''){
+                    alert('Select Department');
+                    return;
+                }
+            });
+
+            // Subject Validation
+             $('#subject_div').click(function(){
+                if($('#session_id').val()==''){
+                    alert('Select Session');
+                    return;
+                }
+                if($('#department_id').val()==''){
+                    alert('Select Department');
+                    return;
+                }
+                if($('#semester_id').val()==''){
+                    alert('Select Semester');
+                    return;
+                }
             });
         });
 
-        //Teacher fetch according to Department
+            //Teacher fetch according to Department
         $("#department_id").change(function() {
             var department_id = $(this).val();
             $.ajax({
@@ -219,22 +263,7 @@
                     $('#subject_id').html(option);
                 }
             });
-
         });
 
-        $('#subject_id').click(function(){
-            if($('#session_id').val()==''){
-                alert('Select Session');
-                return;
-            }
-            if($('#department_id').val()==''){
-                alert('Select Department');
-                return;
-            }
-            if($('#semester_id').val()==''){
-                alert('Select Semester');
-                return;
-            }
-        })
     </script>
 @endpush
