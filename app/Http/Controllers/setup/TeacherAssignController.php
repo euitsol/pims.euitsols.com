@@ -37,7 +37,7 @@ class TeacherAssignController extends Controller
             ->get();
         $n['shift'] = Shift::where('deleted_at', null)
             ->get();
-        $n['teacher'] = Teacher::where('deleted_at', null)->get();
+        $n['teacher'] = Teacher::where('deleted_at', null)->where('departments_id',$data_fetch->department_id)->get();
 
         return view('pages.setup.teacher_assign.create', $n);
     }
