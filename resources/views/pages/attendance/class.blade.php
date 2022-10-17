@@ -4,37 +4,7 @@
 
 
 @push('page_css')
-    <style>
-        .info p i {
-            color: #fb00ff;
-            font-size: 15px;
-        }
-
-        .info p span {
-            font-weight: 800;
-            font-size: 15px;
-            color: blue;
-        }
-
-        .info {
-            margin-bottom: 25px;
-            font-size: 17px;
-        }
-
-        .info p {
-            margin-bottom: 1px !important;
-        }
-
-        .card1 {
-            width: 49%;
-            margin-right: 5px;
-        }
-
-        .card2 {
-            width: 49%;
-            margin-left: 5px;
-        }
-    </style>
+<link href="{{ mix('css/deleteMe.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')
