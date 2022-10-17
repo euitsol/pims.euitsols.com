@@ -49,7 +49,6 @@
                         </span>
                     </div>
                     <div class="card-body">
-
                                 @include('partial.flush-message')
                                 <div class="info row">
                                     <div class="col-md-1">
@@ -76,6 +75,9 @@
                                         </p>
                                         <p><i class="fas fa-arrow-circle-down"></i> <span>subject:</span>
                                             {{ $minfo->subject->name }}
+                                        </p>
+                                        <p><i class="fas fa-arrow-circle-down"></i> <span>Class:</span>
+                                            {{ 'Class'.$class}}
                                         </p>
                                     </div>
                                 </div>

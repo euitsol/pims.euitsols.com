@@ -141,43 +141,6 @@
                         </form>
                     </div>
                 </div>
-                <div class="card">
-                    @if (isset($classes))
-                    @foreach ($classes as $n )
-                    <div class="card-body">
-                        @include('partial.flush-message')
-
-                        <div class="table table-responsive">
-                            <table id="table" class="">
-                                <thead>
-                                    <tr>
-                                        <th>SL</th>
-                                        <th>Class</th>
-                                        <th>Date</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                    @for ($i = 1;$i<=$n->credit->total_class;$i++)
-                                        <tr>
-                                            <td>{{ $i }}</td>
-                                            <td> {{'Class '.$i}}</td>
-                                            <td></td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                    @endfor
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-
-
-                    @endforeach
-                    @endif
-                </div>
             </div>
         </div>
     </div>
@@ -221,12 +184,13 @@
             //Teacher fetch according to Department
             $("#department_id").change(function() {
                 var department_id = $(this).val();
-                departmentChange(department_id);
+                teacherFetch(department_id);
             });
-            var old_department_id = '{{old('department_id') ?? ''}}';
+            var old_teacher_id = '{{old('teacher_id') ?? ''}}';
 
-            if(old_department_id != ''){
-                departmentChange(old_department_id);
+            if(old_teacher_id != ''){
+                console.log('old_teacher_id')
+                teacherFetch(old_teacher_id);
                 $('#teacher_id').val({{old('teacher_id')}}).trigger('change.select2');
             }
 
@@ -235,19 +199,20 @@
                 var session_id = $('#session_id').val();
                 var department_id = $('#department_id').val();
                 var semester_id = $('#semester_id').val();
-                subjectChange(session_id,department_id,semester_id);
+                subjectFetch(session_id,department_id,semester_id);
             });
+
             var old_subject_id = '{{old('subject_id') ?? ''}}';
             if(old_subject_id != ''){
                 var session_id = $('#session_id').val();
                 var department_id = $('#department_id').val();
                 var semester_id = $('#semester_id').val();
-                subjectChange(session_id,department_id,semester_id);
+                subjectFetch(session_id,department_id,semester_id);
                 $('#subject_id').val({{old('subject_id')}}).trigger('change.select2');
             }
         });
 
-        function departmentChange(department_id){
+        function teacherFetch(department_id){
             $.ajax({
                 url: "{{ route('teacher_fetch.ajax') }}",
                 method: 'GET',
@@ -270,7 +235,7 @@
 
         //Subject fetch according to session, department, semester
         // $("#session_id, #department_id, #semester_id").change(function() {
-            function subjectChange(session_id,department_id,semester_id){
+            function subjectFetch(session_id,department_id,semester_id){
             var session_id = session_id;
             var department_id = department_id;
             var semester_id = semester_id;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdmittedStdAssign;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\Semester;
@@ -16,12 +17,8 @@ use App\Models\TeacherAssign;
 
 class AttendanceController extends Controller
 {
-    public function index(){
-        $atttendance = Attendance::where('deleted_at',null)->get();
-        echo "This is't necessary";
-    }
 
-    public function create(){
+    public function filter(){
         $this->check_access('add student');
         $n['session']= Session::where('deleted_by','=',null)->latest()->get();
         $n['department']= Department::where('deleted_by','=',null)->get();
@@ -73,32 +70,40 @@ class AttendanceController extends Controller
             $group_id = $req->group_id;
             $teacher_id = $req->teacher_id;
 
-            $n['classes'] = Subject::with(['credit'])->where('deleted_at',null)
-                            ->where('id',$req->subject_id)
-                            ->get();
-            // $n['session']= Session::where('deleted_by','=',null)->latest()->get();
-            // $n['department']= Department::where('deleted_by','=',null)->get();
-            // $n['semester']= Semester::where('deleted_by','=',null)->get();
-            // $n['shift']= Shift::where('deleted_by','=',null)->get();
-            // $n['group']= Group::where('deleted_by','=',null)->get();
+            $check = Attendance::where('deleted_by',null)
+                    ->where('session_id',$session_id)
+                    ->where('departments_id',$department_id)
+                    ->where('semester_id',$semester_id)
+                    ->where('subject_id',$subject_id)
+                    ->where('shift_id',$shift_id)
+                    ->where('group_id',$group_id)
+                    ->where('teacher_id',$teacher_id)
+                    ->first();
 
-            $n['session']= Session::where('id','=',$session_id)
-                            ->where('deleted_by','=',null)
-                            ->latest()->first();
-            $n['department']= Department::where('id','=',$department_id)
-                                        ->where('deleted_by','=',null)
-                                        ->first();
-            $n['semester']= Semester::where('id','=',$semester_id)
-                            ->where('deleted_by','=',null)->first();
-            $n['shift']= Shift::where('id','=',$shift_id)
-                        ->where('deleted_by','=',null)->first();
-            $n['group']= Group::where('id','=',$group_id)
-                        ->where('deleted_by','=',null)->first();
-            $n['subject']= Subject::where('id','=',$subject_id)
-                        ->where('deleted_by','=',null)->first();
-            $n['teacher']= Teacher::where('id','=',$teacher_id)
-                        ->where('deleted_by','=',null)->first();
+            if($check==null){
+                $insert = new Attendance();
+                $insert->session_id = $session_id;
+                $insert->departments_id = $department_id;
+                $insert->semester_id = $semester_id;
+                $insert->subject_id = $subject_id;
+                $insert->shift_id = $shift_id;
+                $insert->group_id = $group_id;
+                $insert->teacher_id = $teacher_id;
+                $insert->save();
+                $id = $insert->id;
+            }else{
+                $id = $check->id;
+            }
+            $n['minfo'] = Attendance::with(['created_user','session','department','semester','subject','group','shift','teacher'])->findOrFail($id);
+
 
             return view('pages.attendance.class',$n);
+    }
+
+    public function create($id,$class){
+        $n['minfo'] = Attendance::with(['created_user','session','department','semester','subject','group','shift','teacher'])->find($id);
+        $n['students'] = AdmittedStdAssign::with('studentInfo')->where('semester_id',$n['minfo']->semester_id)->get();
+        $n['class'] = $class;
+        return view('pages.attendance.create',$n);
     }
 }

@@ -337,7 +337,7 @@
 {{-- Attendance Managment --}}
 @if (Auth::user()->hasAnyPermission(['view attendance']) || Auth::user()->role->id == 1)
     <li class="nav-item ">
-        <a href="{{route('attendance.create')}}" class="nav-link {{ Request::is('attendance/*') ? 'active' : '' }}">
+        <a href="{{route('attendance.filter')}}" class="nav-link {{ Request::is('attendance/*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-chalkboard-teacher"></i>
             <p>
                 Attendance
