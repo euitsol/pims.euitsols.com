@@ -20,7 +20,7 @@
                         </span>
                     </div>
                     <div class="card-body">
-                        <form action="{{route('attendance.subject_fetch')}}" method="POST">
+                        <form action="{{route('attendance.class')}}" method="POST">
                             @csrf
                             <input type="hidden" name="semester_id" value="">
                             <div class="row">
@@ -78,7 +78,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="shift_id">Shift</label>
-                                        <select name="shift_id" id="shift_id" class="form-control select" style="width: 100%;">
+                                        <select name="shift_id" id="shift_id" class="form-control select" >
                                             <option value="" hidden>Select Shift</option>
                                             @foreach ($shift as $n)
                                                 <option value="{{ $n->id }}"
@@ -95,7 +95,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="group_id">Group</label>
-                                        <select name="group_id" id="group_id" class="form-control select" style="width: 100%;">
+                                        <select name="group_id" id="group_id" class="form-control select" >
                                             <option value="" hidden>Select Group</option>
                                             @foreach ($group as $n)
                                                 <option value="{{ $n->id }}"
@@ -112,7 +112,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group" id="teacher_div">
                                         <label for="teacher_id">Teacher</label>
-                                        <select name="teacher_id" id="teacher_id" class="form-control select" style="width: 100%;" onclick="teacherFetch()">
+                                        <select name="teacher_id" id="teacher_id" class="form-control select" >
                                             <option value="" hidden>Select Teacher</option>
                                         </select>
                                         @if ($errors->has('teacher_id'))
@@ -124,9 +124,12 @@
                                 <div class="col-md-4">
                                     <div class="form-group" id="subject_div">
                                         <label for="subject_id">Subject</label>
-                                        <select name="subject_id" id="subject_id" class="form-control select" style="width: 100%;">
+                                        <select name="subject_id" id="subject_id" class="form-control select" >
                                             <option value="" hidden>Select Subject</option>
                                         </select>
+                                        @if ($errors->has('subject_id'))
+                                        <span class="text-danger">{{ $errors->first('subject_id') }}</span>
+                                    @endif
                                     </div>
                                 </div>
                             </div>
@@ -188,11 +191,9 @@
 
 @push('page_scripts')
     <script>
-
         $(document).ready(function() {
 
             $('.select').select2();
-
             // teacher validation
             $('#teacher_div').click(function(){
                 if($('#department_id').val()==''){
@@ -216,14 +217,41 @@
                     return;
                 }
             });
-        });
 
             //Teacher fetch according to Department
-        $("#department_id").change(function() {
-            var department_id = $(this).val();
+            $("#department_id").change(function() {
+                var department_id = $(this).val();
+                departmentChange(department_id);
+            });
+            var old_department_id = '{{old('department_id') ?? ''}}';
+
+            if(old_department_id != ''){
+                departmentChange(old_department_id);
+                $('#teacher_id').val({{old('teacher_id')}}).trigger('change.select2');
+            }
+
+            $("#session_id, #department_id, #semester_id").change(function() {
+
+                var session_id = $('#session_id').val();
+                var department_id = $('#department_id').val();
+                var semester_id = $('#semester_id').val();
+                subjectChange(session_id,department_id,semester_id);
+            });
+            var old_subject_id = '{{old('subject_id') ?? ''}}';
+            if(old_subject_id != ''){
+                var session_id = $('#session_id').val();
+                var department_id = $('#department_id').val();
+                var semester_id = $('#semester_id').val();
+                subjectChange(session_id,department_id,semester_id);
+                $('#subject_id').val({{old('subject_id')}}).trigger('change.select2');
+            }
+        });
+
+        function departmentChange(department_id){
             $.ajax({
                 url: "{{ route('teacher_fetch.ajax') }}",
                 method: 'GET',
+                async:false,
                 data: {
                     department_id: department_id,
                 },
@@ -237,17 +265,19 @@
                     $('#teacher_id').html(option);
                 }
             });
+        }
 
-        });
 
         //Subject fetch according to session, department, semester
-        $("#session_id, #department_id, #semester_id").change(function() {
-            var session_id = $('#session_id').val();
-            var department_id = $('#department_id').val();
-            var semester_id = $('#semester_id').val();
+        // $("#session_id, #department_id, #semester_id").change(function() {
+            function subjectChange(session_id,department_id,semester_id){
+            var session_id = session_id;
+            var department_id = department_id;
+            var semester_id = semester_id;
             $.ajax({
                 url: "{{ route('subject_assign_fetch.ajax') }}",
                 method: 'GET',
+                async:false,
                 data: {
                     session_id: session_id,
                     department_id: department_id,
@@ -263,7 +293,8 @@
                     $('#subject_id').html(option);
                 }
             });
-        });
+            }
+        // });
 
     </script>
 @endpush

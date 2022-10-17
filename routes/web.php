@@ -349,7 +349,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
     Route::group(['as' => 'attendance.', 'prefix' => 'attendance'], function() {
         Route::get('/view', [AttendanceController::class, 'index'])->name('index');
         Route::get('/create', [AttendanceController::class, 'create'])->name('create');
-        Route::post('/subject/fetch', [AttendanceController::class, 'subjectFetch'])->name('subject_fetch');
+        Route::post('/class', [AttendanceController::class, 'class'])->name('class');
         Route::post('/add-store', [AttendanceController::class, 'store'])->name('store');
         Route::get('/details/{id}', [AttendanceController::class, 'show'])->name('show');
         Route::get('/edit/{id}', [AttendanceController::class, 'edit'])->name('edit');

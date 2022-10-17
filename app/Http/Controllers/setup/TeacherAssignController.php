@@ -116,7 +116,6 @@ class TeacherAssignController extends Controller
                     ->where('deleted_at', null)
                     ->get();
 
-        // $n['sds'] = $n['data']->first();
 
         $n['group'] = Group::where('deleted_at', null)
             ->get();
@@ -126,6 +125,7 @@ class TeacherAssignController extends Controller
 
         return view('pages.setup.teacher_assign.assign', $n);
     }
+
     public function assignStore(Request $req){
         $this->check_access('add teacher_assign');
         $delete = TeacherAssign::where('subject_assign_id', $req->subject_assign_id)->delete();

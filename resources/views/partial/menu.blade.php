@@ -341,7 +341,6 @@
             <i class="nav-icon fas fa-chalkboard-teacher"></i>
             <p>
                 Attendance
-
             </p>
         </a>
     </li>
