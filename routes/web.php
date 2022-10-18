@@ -28,6 +28,7 @@ use App\Http\Controllers\setup\TeacherAssignController;
 use App\Http\Controllers\teacher\TeacherController;
 use App\Http\Controllers\student\SemesterAssignAdmitStd;
 use App\Http\Controllers\student\StudentController;
+use App\Http\Controllers\AttendanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,11 +95,17 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
     });
 
     //All Common Ajax here
-        //District fetch according to divission
-        Route::get('district-fetch/{id}', [studentAdmitcontroller::class, 'ajax'])->name('district_fetch.ajax');
+    //District fetch according to divission
+    Route::get('district-fetch/{id}', [studentAdmitcontroller::class, 'ajax'])->name('district_fetch.ajax');
 
-        //Subject Fetch accordingly Department
-        Route::post('/subject-fetch', [SubjectAssignController::class, 'ajax'])->name('subject-fetch.ajax');
+    //Subject Fetch accordingly Department
+    Route::post('/subject-fetch', [SubjectAssignController::class, 'ajax'])->name('subject-fetch.ajax');
+
+    //Subject Assign fetch means subject fetch accordingly session,department,semester from subject_assigns table
+    Route::get('/subject-assign-fetch', [AttendanceController::class, 'subjectAssignFetch'])->name('subject_assign_fetch.ajax');
+
+    //Teacher fetch accordingly department
+    Route::get('/teacher-fetch', [AttendanceController::class, 'ajax'])->name('teacher_fetch.ajax');
 
     //Student
     Route::group(['as'=>'student.','prefix'=>'student'],function(){
@@ -336,6 +343,20 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
             Route::post('/assign/store', [TeacherAssignController::class, 'assignStore'])->name('assign-store');
         });
 
+    });
+
+    // Attendance Magement
+    Route::group(['as' => 'attendance.', 'prefix' => 'attendance'], function() {
+        Route::get('/filter', [AttendanceController::class, 'filter'])->name('filter');
+        Route::get('/create/{id}/{class}', [AttendanceController::class, 'create'])->name('create');
+        Route::post('/class', [AttendanceController::class, 'class'])->name('class');
+        Route::post('/add-store', [AttendanceController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [AttendanceController::class, 'show'])->name('show');
+        Route::get('/edit/{id}', [AttendanceController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [AttendanceController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [AttendanceController::class, 'destroy'])->name('destroy');
+        Route::get('/assign/{id}', [AttendanceController::class, 'assign'])->name('assign');
+        Route::post('/assign/store', [AttendanceController::class, 'assignStore'])->name('assign-store');
     });
 });
 
