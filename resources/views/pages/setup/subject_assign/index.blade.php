@@ -55,7 +55,7 @@
                                                     @php $count = 0; $total_credit = 0;  @endphp
                                                     <td>
                                                         @foreach ($value3 as $value4)
-                                                            @if($count!=0) | @endif
+                                                            @if($count != 0) | @endif
                                                             {{ $value4->subject->name }}
                                                             @php
                                                                 $count++;

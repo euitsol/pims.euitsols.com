@@ -88,6 +88,7 @@
             </li>
         @endif
 
+
         {{-- Student info  --}}
         @if (Auth::user()->can('view std_info') || Auth::user()->role->id == 1)
             <li class="nav-item {{Request::is('student/information/*') ? 'menu-open' : ''}}">
@@ -134,6 +135,7 @@
     'view subject',
     'view grade-calculation',
     'view nationality',
+    'view routine',
 ]) || Auth::user()->role->id == 1)
     <li class="nav-item {{ Request::is('setup/*') ? 'menu-open' : '' }}">
         <a href="#" class="nav-link ">
@@ -242,6 +244,15 @@
                         <p>Nationality</p>
                     </a>
                 </li>
+            @endif        
+            @if (Auth::user()->can('view routine') || Auth::user()->role->id == 1)
+              <li class="nav-item">
+                  <a href="{{ route('routine.index') }}"
+                      class="nav-link {{ Request::is('setup/routine/*') ? 'active' : '' }}">
+                      <i class="nav-icon fas fa-minus"></i>
+                      <p>Routine</p>
+                  </a>
+              </li>
             @endif
             @if (Auth::user()->can('view semester') || Auth::user()->role->id == 1)
                 <li class="nav-item">

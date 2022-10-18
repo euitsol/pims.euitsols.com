@@ -29,6 +29,7 @@ use App\Http\Controllers\teacher\TeacherController;
 use App\Http\Controllers\student\SemesterAssignAdmitStd;
 use App\Http\Controllers\student\StudentController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\setup\RoutineController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,9 @@ Route::get('/clear-cache', function(){
     return "Cache is cleared";
 });
 
+
+Route::get('/calendar-event', [CalenderController::class, 'index']);
+Route::post('/calendar-crud-ajax', [CalenderController::class, 'calendarEvents']);
 
 Auth::routes();
 
@@ -341,6 +345,14 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
             Route::get('/delete/{id}', [TeacherAssignController::class, 'destroy'])->name('destroy');
             Route::get('/assign/{id}', [TeacherAssignController::class, 'assign'])->name('assign');
             Route::post('/assign/store', [TeacherAssignController::class, 'assignStore'])->name('assign-store');
+        });
+
+        // Routine
+        Route::group(['as' => 'routine.', 'prefix' => 'routine'], function() {
+            Route::get('/view', [RoutineController::class, 'index'])->name('index');
+            Route::post('/search', [RoutineController::class, 'search'])->name('search');
+
+            Route::get('/delete/{id}', [RoutineController::class, 'destroy'])->name('destroy');
         });
 
     });
