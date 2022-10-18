@@ -1,7 +1,12 @@
 @extends('layouts.app')
 
 @section('title', 'Attendance Management')
-
+@push('third_party_stylesheets')
+    <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/icheck-bootstrap/icheck-bootstrap/icheck-bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/css/Datepicker/datepicker.min.css') }}">
+    {{-- <link href="{{ asset('assets/css/icheck-bootstrap/icheck-bootstrap/icheck-bootstrap.css') }}" rel="stylesheet"> --}}
+@endpush
 
 @push('page_css')
     <style>
@@ -24,16 +29,6 @@
         .info p {
             margin-bottom: 1px !important;
         }
-
-        .card1 {
-            width: 49%;
-            margin-right: 5px;
-        }
-
-        .card2 {
-            width: 49%;
-            margin-left: 5px;
-        }
     </style>
 @endpush
 
@@ -41,100 +36,130 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-12">
+                <form action="{{ route('attendance.store') }}" method="POST">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="float-left">
+                                <h4>Attendance</h4>
+                            </span>
+                        </div>
 
-                <div class="card">
-                    <div class="card-header">
-                        <span class="float-left">
-                            <h4>Attendance</h4>
-                        </span>
-                    </div>
-                    <div class="card-body">
-                                @include('partial.flush-message')
-                                <div class="info row">
-                                    <div class="col-md-1">
-
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p><i class="fas fa-arrow-circle-down"></i><span> Session: </span>
-                                            {{ $minfo->session->start . '-' . $minfo->session->end }}</p>
-                                        <p><i class="fas fa-arrow-circle-down"></i> <span> Department: </span>
-                                            {{ $minfo->department->short_name }}</p>
-                                        <p><i class="fas fa-arrow-circle-down"></i> <span> Semester: </span>
-                                            {{ $minfo->semester->name }}</p>
-                                        <p><i class="fas fa-arrow-circle-right"></i> <span>Shift:</span> {{ $minfo->shift->name }}
-                                        </p>
-                                    </div>
-                                    <div class="col-md-5">
-
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p><i class="fas fa-arrow-circle-down"></i> <span>Group:</span> {{ $minfo->group->name }}
-                                        </p>
-                                        <p><i class="fas fa-arrow-circle-down"></i> <span>Teacher:</span>
-                                            {{ $minfo->teacher->name }}
-                                        </p>
-                                        <p><i class="fas fa-arrow-circle-down"></i> <span>subject:</span>
-                                            {{ $minfo->subject->name }}
-                                        </p>
-                                        <p><i class="fas fa-arrow-circle-down"></i> <span>Class:</span>
-                                            {{ 'Class'.$class}}
-                                        </p>
-                                    </div>
+                        @csrf
+                        <div class="card-body">
+                            @include('partial.flush-message')
+                            <div class="info row">
+                                <div class="col-md-1">
                                 </div>
-                                <div class="d-flex w-100">
-                                    <div class="card card1">
-                                        <div class="table table-responsive">
-                                            <table id="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Class</th>
-                                                        <th>Date</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @for ($i = 1; $i <=  $minfo->subject->credit->total_class; $i++)
-                                                    @if ($i % 2 != 0)
-                                                    <tr>
-                                                        <td> {{ 'Class ' . $i }}</td>
-                                                        <td></td>
-                                                        <td><a href="{{route("attendance.create",[$minfo->id,$i])}}"><i class="fas fa-arrow-right"></i></a></td>
-                                                    </tr>
-                                                @endif
-                                                    @endfor
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="card card2">
-                                        <div class="table table-responsive">
-                                            <table id="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Class</th>
-                                                        <th>Date</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @for ($i = 1; $i <= $minfo->subject->credit->total_class; $i++)
-                                                        @if ($i % 2 == 0)
-                                                            <tr>
-                                                                <td> {{ 'Class ' . $i }}</td>
-                                                                <td></td>
-                                                                <td><a href="{{route("attendance.create",[$minfo->id,$i])}}"><i class="fas fa-arrow-right"></i></a></td>
-                                                            </tr>
-                                                        @endif
-                                                    @endfor
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                                <div class="col-md-3">
+                                    <p><i class="fas fa-arrow-circle-down"></i><span> Session: </span>
+                                        {{ $minfo->session->start . '-' . $minfo->session->end }}</p>
+                                    <p><i class="fas fa-arrow-circle-down"></i> <span> Department: </span>
+                                        {{ $minfo->department->short_name }}</p>
+                                    <p><i class="fas fa-arrow-circle-down"></i> <span> Semester: </span>
+                                        {{ $minfo->semester->name }}</p>
+                                    <p><i class="fas fa-arrow-circle-right"></i> <span>Shift:</span>
+                                        {{ $minfo->shift->name }}
+                                    </p>
                                 </div>
+                                <div class="col-md-5">
+                                </div>
+                                <div class="col-md-3">
+                                    <p><i class="fas fa-arrow-circle-down"></i> <span>Group:</span>
+                                        {{ $minfo->group->name }}
+                                    </p>
+                                    <p><i class="fas fa-arrow-circle-down"></i> <span>Teacher:</span>
+                                        {{ $minfo->teacher->name }}
+                                    </p>
+                                    <p><i class="fas fa-arrow-circle-down"></i> <span>subject:</span>
+                                        {{ $minfo->subject->name }}
+                                    </p>
+                                    <p><i class="fas fa-arrow-circle-down"></i> <span>Class:</span>
+                                        {{ 'Class' . $class }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="class" value="{{ $class }}">
+                            <input type="hidden" name="attendance_id" value="{{ $minfo->id }}">
+                            <div class="row justify-center">
+                                <div class="col-md-4">
+
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="date" class="form-control mb-3 date text-center"
+                                        placeholder="Select Date" autocomplete="off">
+                                </div>
+                                <div class="col-md-4">
+                                    @if ($errors->has('date'))
+                                    <script>
+                                        alert('You have to select Date')
+                                    </script>
+                                @endif
+                                </div>
+                            </div>
+                            <div class="table table-responsive">
+                                <table id="table">
+                                    <thead>
+                                        <tr>
+                                            <th>SL</th>
+                                            <th>Student ID</th>
+                                            <th>Student Name</th>
+                                            <th>Student Phone</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                        @foreach ($students as $key => $student)
+                                            <tr>
+                                                <td>{{ $key + 1 }}</td>
+                                                <td>{{ $student->studentInfo->student_id }}</td>
+                                                <td>{{ $student->studentInfo->name }}</td>
+                                                <td>{{ $student->studentInfo->phone }}</td>
+                                                <input type="hidden" name="student[{{ $key }}][id]"
+                                                    value="{{ $student->studentInfo->id }}">
+                                                <td>
+                                                    <div class="icheck-success d-inline">
+                                                        <input type="radio" name="student[{{ $key }}][attendance]" id="attendance_check_{{ $key }}"
+                                                            checked value="1">
+                                                        <label for="attendance_check_{{ $key }}">P </label>
+                                                    </div>
+                                                    <div class="icheck-danger d-inline">&nbsp;
+                                                        <input type="radio" name="student[{{ $key }}][attendance]" id="attendance_check_a{{ $key }}"
+                                                            value="-1">
+                                                        <label for="attendance_check_a{{ $key }}"> A</label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <div class="row mb-5">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-3 text-center">
+                            <button type="submit" class="btn btn-success">Save Attendance</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
+    </div>
     @endsection
+    @push('third_party_scripts')
+        <script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script>
+        {{-- //datpicker --}}
+        <script src="{{ asset('assets/js/Datepicker/datepicker.min.js') }}"></script>
+    @endpush
     @push('page_scripts')
+        <script>
+            $('.date').datepicker({
+                autoclose: true,
+                format: 'dd/mm/yyyy'
+
+            });
+        </script>
     @endpush

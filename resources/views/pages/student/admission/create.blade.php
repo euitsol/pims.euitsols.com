@@ -673,7 +673,7 @@
         function addDatePicker(className){
             $('.'+className).datepicker({
                 autoclose: true,
-                format: " yyyy",
+                format: "yyyy",
                 viewMode: "years",
                 minViewMode: "years"
             });

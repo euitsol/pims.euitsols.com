@@ -350,13 +350,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::get('/filter', [AttendanceController::class, 'filter'])->name('filter');
         Route::get('/create/{id}/{class}', [AttendanceController::class, 'create'])->name('create');
         Route::post('/class', [AttendanceController::class, 'class'])->name('class');
-        Route::post('/add-store', [AttendanceController::class, 'store'])->name('store');
-        Route::get('/details/{id}', [AttendanceController::class, 'show'])->name('show');
-        Route::get('/edit/{id}', [AttendanceController::class, 'edit'])->name('edit');
-        Route::post('/edit-store', [AttendanceController::class, 'update'])->name('update');
-        Route::get('/delete/{id}', [AttendanceController::class, 'destroy'])->name('destroy');
-        Route::get('/assign/{id}', [AttendanceController::class, 'assign'])->name('assign');
-        Route::post('/assign/store', [AttendanceController::class, 'assignStore'])->name('assign-store');
+        Route::post('/store', [AttendanceController::class, 'store'])->name('store');
     });
 });
 
