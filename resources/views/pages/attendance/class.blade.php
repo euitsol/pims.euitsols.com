@@ -2,9 +2,38 @@
 
 @section('title', 'Attendance Management')
 
-
 @push('page_css')
-<link href="{{ mix('css/deleteMe.css') }}" rel="stylesheet">
+<style>
+    .info p i {
+    color: #fb00ff;
+    font-size: 15px;
+}
+
+.info p span {
+    font-weight: 800;
+    font-size: 15px;
+    color: blue;
+}
+
+.info {
+    margin-bottom: 25px;
+    font-size: 17px;
+}
+
+.info p {
+    margin-bottom: 1px !important;
+}
+
+.card1 {
+    width: 49%;
+    margin-right: 5px;
+}
+
+.card2 {
+    width: 49%;
+    margin-left: 5px;
+}
+</style>
 @endpush
 
 @section('content')
