@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Admitted student')
+@section('title', 'Registration Form of Admitted Student')
 
 @push('third_party_stylesheets')
 
@@ -30,13 +30,22 @@
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>Registration Form</h4>
+                        @if ($student->student_id)
+                            <h4>Student Details</h4>
+                        @else
+                            <h4>Registration Form</h4>
+                        @endif
                     </span>
                     <span class="float-right">
-                        <button type="button" onclick="printT('registration-form')" class="btn btn-dark btn-sm"><i class="fa fa-print"></i> Registration Form </button>
-                        <a href="{{ route('student.decline', $student->id) }}" class="btn btn-danger btn-sm" title="Decline Regestration" onclick="alert('Are you sure you want to decline?')"><i class="fas fa-user-times"></i></a>
-                        <a href="{{ route('student.accept', $student->id) }}" class="btn btn-info btn-sm" title="Accept Regestration"><i class="fas fa-user-check"></i></a>
-                        <a href="{{ route('student-admit.index') }}" class="btn btn-secondary btn-sm">Back</a>
+                        @if ($student->student_id)
+                        <button type="button" onclick="printT('registration-form')" class="btn btn-dark btn-sm"><i class="fa fa-print"></i> Student Details </button>
+                        {{-- <a href="{{ route('student.student-admit.index') }}" class="btn btn-secondary btn-sm">Back</a> --}}
+                        @else
+                            <button type="button" onclick="printT('registration-form')" class="btn btn-dark btn-sm"><i class="fa fa-print"></i> Registration Form </button>
+                            <a href="{{ route('student.admitted.decline.d', $student->id) }}" class="btn btn-danger btn-sm" title="Decline Regestration" onclick="alert('Are you sure you want to decline?')"><i class="fas fa-user-times"></i></a>
+                            <a href="{{ route('student.admitted.accept.create', $student->id) }}" class="btn btn-info btn-sm" title="Accept Regestration"><i class="fas fa-user-check"></i></a>
+                            {{-- <a href="{{ route('student.index',$student->id) }}" class="btn btn-secondary btn-sm">Back</a> --}}
+                        @endif
                     </span>
                 </div>
                 <div class="card-body">
@@ -75,7 +84,12 @@
                                     <tr>
                                         <td>Student ID</td>
                                         <td>:</td>
-                                        <td>{{$student->id}}</td>
+                                        <td>@if ($student->student_id)
+                                                {{$student->student_id}}
+                                                @else
+                                                {{'Not assigned'}}
+                                            @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Full Name</td>
@@ -238,6 +252,85 @@
 
                 </div>
             </div>
+
+            {{-- Student's semester information --}}
+            @isset($semester_infos)
+                <div class="card">
+                    <div class="card-header">
+                        <span class="float-left">
+                            <h4>Student's Semester Information</h4>
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div id="registration-form" style="padding: 0%;">
+                            <div class="mt-3 clr">
+                                <table class="table table-bordered text-center ">
+                                    <thead>
+                                        <tr class="">
+                                            {{-- <th>Student ID</th> --}}
+                                            <th>Session</th>
+                                            <th>Semester</th>
+                                            <th>Group</th>
+                                            <th>Shift</th>
+                                            <th>C.G.P.A</th>
+                                            <th>Status</th>
+                                            {{-- <th class="download">Download</th> --}}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($semester_infos as $key => $semester_infos)
+                                            <tr class="">
+                                                <td>{{ $semester_infos->session->start.'-'.$semester_infos->session->end }}</td>
+                                                <td>{{ $semester_infos->semester->name }}</td>
+                                                <td>{{ $semester_infos->group->name }}</td>
+                                                <td>{{ $semester_infos->shift->name }}</td>
+                                                {{-- <td>{{ optional($ac->board)->name }}</td>
+                                                <td>{{ $ac->group }}</td>
+                                                <td>{{ $ac->roll }}</td>
+                                                <td>{{ $ac->reg_no }}</td> --}}
+                                                {{-- <td>{{ $ac->passing_year }}</td> --}}
+                                                <td>{{ number_format((float)$ac->gpa, 2, '.', ''); }}</td>
+                                                <td>@if ($key ==0)
+                                                        {{'Current'}}
+                                                        @else
+                                                        {{"Passed"}}
+                                                    @endif
+                                                </td>
+                                                {{-- <td class="download">
+                                                    <a target="_blank" href="{{ route('student.reg.download', $ac->id) }}" class="btn btn-sm btn-success" title="Download registration info"><i class="fas fa-download"></i></a>
+                                                    <a target="_blank" href="{{ route('student.marksheet.download', $ac->id) }}" class="btn btn-sm btn-success" title="Download marksheet info"><i class="fas fa-file-download"></i></a>
+                                                </td> --}}
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {{-- <div class="row offset-md-1 mt-5 mb-3">
+                                <div class="col-md-10">
+                                    <p class="text-center w-84 font-italic">
+                                    <i class="fas fa-quote-left quote"></i> The above information is true to the
+                                        best of my knowledge.  I authorized {{ env('INSTITUTE_NAME') }}
+                                        of Bangladesh to release any information required to process my
+                                        claims. <i class="fas fa-quote-right quote"></i>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row justify-content-between mt-5">
+                                <p class="border-top" style="margin-left: 5%;">Authorized Signature</p>
+                                <p class="border-top" style="margin-right: 5%;">Student Signature</p>
+                            </div>
+
+                            <div class="row justify-content-center mt-5">
+                                <p class="">{{ env('APP_URL') }}</p>
+                            </div> --}}
+
+                        </div>
+
+                    </div>
+                </div>
+            @endisset
         </div>
     </div>
 </div>

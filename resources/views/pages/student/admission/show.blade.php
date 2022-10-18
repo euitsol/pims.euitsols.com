@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Admitted student')
+@section('title', 'Pending students')
 
 @push('third_party_stylesheets')
 <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
@@ -20,7 +20,7 @@
                         <h4>View {{$page_name}}</h4>
                     </span>
                     <span class="float-right">
-                        <a href="{{ route('student-admit.create') }}" class="btn btn-info">Admit new Student</a>
+                        <a href="{{ route('student.student-admit.create') }}" class="btn btn-info">Admit new Student</a>
                     </span>
                 </div>
                 <div class="card-body">
@@ -50,13 +50,13 @@
                                             <div class="btn-group">
 
                                                 {{-- //view  --}}
-                                                <a href="{{route('student-admit.show',$value->id)}}" class="btn btn-info btnView" data-id="{{ $value->id }}"><i class="fas fa-eye"></i></a>
+                                                <a href="{{route('student.student-admit.show',$value->id)}}" class="btn btn-info btnView" data-id="{{ $value->id }}"><i class="fas fa-eye"></i></a>
 
                                                 {{-- //edit  --}}
-                                                <a href="{{ route('student-admit.edit', $value->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                                <a href="{{ route('student.student-admit.edit', $value->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
 
                                                 {{-- //delete  --}}
-                                                <a href="{{ route('student.admitted.destroy', $value->id) }}" class="btn btn-danger btnDelete "><i class="fas fa-trash"></i></a>
+                                                <a href="{{ route('student.admitted.destroy', $value->id) }}" class="btn btn-danger btnDelete" title="Delete"><i class="fas fa-trash"></i></a>
 
                                             </div>
                                         </td>

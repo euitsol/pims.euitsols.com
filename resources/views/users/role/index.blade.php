@@ -134,29 +134,39 @@
 
 @push('page_scripts')
 <script>
-$(document).ready(function() {
-    $('#table').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                extend: 'pdfHtml5',
-                title: 'User Management',
-                download: 'open',
-                orientation: 'potrait',
-                pagesize: 'LETTER',
-                exportOptions: {
-                    columns: [0,1,2,3]
-                }
-            },
-            {
-                extend: 'print',
-                exportOptions: {
-                    columns: [0,1,2,3]
-                }
-            }, 'pageLength'
-        ]
-    });
-    $('.btnView').click( function(){
+    $(document).ready(function() {
+        var table = $('#table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('users.role.index') }}",
+            columns: [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                {data: 'name', name: 'name'},
+                {data: 'created_at', name: 'created_at'},
+                {data: 'created_user', name: 'created_user'},
+                {data: 'action', name: 'action', orderable: false, searchable: false},
+            ],
+            dom: 'Bfrtip',
+            buttons: [{
+                    extend: 'pdfHtml5',
+                    title: 'User Management',
+                    download: 'open',
+                    orientation: 'potrait',
+                    pagesize: 'LETTER',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3]
+                    }
+                },
+                {
+                    extend: 'print',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3]
+                    }
+                }, 'pageLength'
+            ]
+        });
+
+        $('#table').on('click', 'tbody tr td .btn-group .btnView', function () {
         if($(this).data('id') != null || $(this).data('id') != ''){
             let url = ("{{ route('users.role.details', ['id']) }}");
             let _url = url.replace('id', $(this).data('id'));

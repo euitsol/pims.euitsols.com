@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Admit Student')
+@section('title', 'Edit Admitted Student')
 
 @push('third_party_stylesheets')
 <link rel="stylesheet" href="{{ asset('assets/css/Datepicker/datepicker.min.css') }}">
@@ -73,7 +73,7 @@
                             <h4>{{ $page_name }}</h4>
                         </span>
                         <span class="float-right">
-                            {{-- @if (Auth::user()->can('user view') || Auth::user()->role->id == 1)<a href="{{ route('users.index') }}" class="btn btn-info">Back</a>@endif --}}
+                            @if (Auth::user()->can('user view') || Auth::user()->role->id == 1)<a href="{{ route('student.student-admit.index') }}" class="btn btn-info">Back</a>@endif
                         </span>
                     </div>
                     <div class="card-body">
@@ -87,8 +87,9 @@
                                     <span class="step" id="step-3">3</span>
                                 </div>
 
-                                <form action="{{ route('student.admitted.update') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                                <form action="{{ route('student.student-admit.update',$data->id) }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
                                     @csrf
+                                    @method('PUT')
                                     <input type="hidden" name="id" value="{{$data->id}}">
                                     <div class="tab" id="tab-1" style="display: block">
                                         @if ($errors->any())
@@ -297,10 +298,6 @@
                                                 </div>
                                         </fieldset>
                                     </div>
-                                    {{-- @dd($data->academicInfo) --}}
-
-
-
                                     <div class="tab" id="tab-3" style="display: none">
                                         <fieldset>
                                             <h2 class="text-center">Academic Information</h2>
@@ -425,12 +422,8 @@
                                             @endisset
                                                 {{-- Append External exam  --}}
                                             <div id="append_exam">
-
                                             </div>
 
-                                            {{-- Add More button  --}}
-                                            {{-- @dd($data->academicInfo) --}}
-                                            {{-- {{"cooount-". $data->academicInfo->count()}} --}}
                                             <div id="add_more" class="floating-cart" data-count="{{$i}}" title="Add a new academic info">
 
                                                 <i class="fas fa-plus"></i>
@@ -498,7 +491,7 @@
             $('#district').removeAttr("disabled");
             var division_id = $(this).val();
 
-            let url = ("{{ route('ajax', ['id']) }}");
+            let url = ("{{ route('district_fetch.ajax', 'id') }}");
             let _url = url.replace('id', division_id);
                 if(division!=""){
                     $.ajaxSetup({

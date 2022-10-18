@@ -31,4 +31,8 @@ class SubjectAssign extends Model
     public function deleted_user(){
         return $this->belongsTo(User::class, 'deleted_by', 'id');
     }
+
+    public function teacherAssign(){
+        return $this->hasMany(TeacherAssign::class, 'subject_assign_id');
+    }
 }

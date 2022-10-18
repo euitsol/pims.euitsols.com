@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Semester;
 use Illuminate\Support\Facades\Response;
+use DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class SemesterController extends Controller
 {
@@ -15,8 +17,31 @@ class SemesterController extends Controller
         return $this->middleware('auth');
     }
 
-    public function index(){
+    public function index(Request $request){
         $this->check_access('view semester');
+        if ($request->ajax()) {
+            $semesters = Semester::with(['created_user'])->where('deleted_at', null)->latest()->get();
+            return Datatables::of($semesters)
+                    ->addIndexColumn()
+                    ->editColumn('created_at', function($data){ $formatedDate = date('d-m-Y', strtotime($data->created_at)); return $formatedDate; })
+                    ->addColumn('created_user', function ($data) {
+                        return $data->created_user->name ?? 'system';
+                    })
+                    ->addColumn('action', function($data){
+                        $btn = '<div class="btn-group">';
+                        $btn .= '<a href="javascript:void(0)" class="btn btn-info btnView" data-id="' .$data->id. '"><i class="fas fa-eye"></i></a>';
+                        if(Auth::user()->can('edit semester') || Auth::user()->role->id == 1){
+                            $btn .= '<a href="'.route("semester.edit", $data->id).'" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>';
+                        }
+                        if(Auth::user()->can('delete semester') || Auth::user()->role->id == 1){
+                            $btn .= '<a href="'.route("semester.delete", $data->id).'" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>';
+                        }
+                        $btn .= '</div>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
         $semesters = Semester::where('deleted_at', null)->latest()->get();
         return view('pages.setup.semester.index', [ 'semesters' => $semesters ]);
     }

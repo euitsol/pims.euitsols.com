@@ -6,11 +6,8 @@
 <link rel="stylesheet" href="{{ asset('assets/css/Datepicker/datepicker.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 
-<link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
-<link
-    href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
-    rel="stylesheet"
-/>
+<link rel="stylesheet" href="{{ asset('assets/css/filepond/filepond.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/filepond/filepond-plugin-image-preview.css') }}">
 
 @endpush
 
@@ -45,6 +42,9 @@
             line-height: 3.2rem;
             font-size: 23px;
         }
+        .select2-container {
+            width: 100% !important;
+        }
 
     </style>
 @endpush
@@ -59,7 +59,6 @@
                             <h4>Add {{ $page_name }}</h4>
                         </span>
                         <span class="float-right">
-                            {{-- @if (Auth::user()->can('user view') || Auth::user()->role->id == 1)<a href="{{ route('users.index') }}" class="btn btn-info">Back</a>@endif --}}
                         </span>
                     </div>
                     <div class="card-body">
@@ -73,7 +72,7 @@
                                     <span class="step" id="step-3">3</span>
                                 </div>
 
-                                <form action="{{ route('student-admit.store') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                                <form action="{{ route('student.student-admit.store') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
                                     @csrf
                                     <div class="tab" id="tab-1" style="display: block">
                                         @if ($errors->any())
@@ -452,6 +451,9 @@
         $('#division').change(function(){
             $('#district').removeAttr("disabled");
             var division_id = $(this).val();
+            // district_fetch
+            var url1 = '{{route('district_fetch.ajax','id')}}'
+           var url = url1.replace('id',division_id);
                 if(division!=""){
                     $.ajaxSetup({
                         headers: {
@@ -461,7 +463,7 @@
                     $.ajax({
                         type: "GET",
                         dataType: 'json',
-                        url: "division_ajax/"+division_id,
+                        url: url,
                         success:function(respose){
                             console.log(respose);
                             var data = '<option value="">Select Your District</option>';
