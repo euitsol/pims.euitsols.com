@@ -6,9 +6,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 @endpush
 
-@push('page_css')
-@endpush
-
 @section('content')
     <div class="container-fluid">
         <div class="row justify-content-center">
@@ -148,14 +145,12 @@
 @endsection
 
 @push('third_party_scripts')
-    {{-- Select2 --}}
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 @endpush
 
 @push('page_scripts')
     <script>
         $(document).ready(function() {
-
             $('.select').select2();
             // teacher validation
             $('#teacher_div').click(function(){

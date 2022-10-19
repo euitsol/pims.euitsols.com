@@ -40,14 +40,14 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-12">
-
                 <div class="card">
                     <div class="card-header">
                         <span class="float-left">
-                            <h4>Attendance</h4>
+                            <h4>Classes for subject "{{ $minfo->subject->name }}"</h4>
                         </span>
                     </div>
                     <div class="card-body">
+                        @include('partial.flush-message')
                         @if (isset($present))
                             <div class="row">
                                 <div class="col-md-4 offset-md-4 text-center">
@@ -63,7 +63,6 @@
                         @endif
                         <div class="info row">
                             <div class="col-md-1">
-
                             </div>
                             <div class="col-md-3">
                                 <p><i class="fas fa-arrow-circle-down"></i><span> Session: </span>
@@ -77,7 +76,6 @@
                                 </p>
                             </div>
                             <div class="col-md-5">
-
                             </div>
                             <div class="col-md-3">
                                 <p><i class="fas fa-arrow-circle-down"></i> <span>Group:</span>
@@ -98,8 +96,8 @@
                                         <thead>
                                             <tr>
                                                 <th>Class</th>
-                                                {{-- <th>Date</th> --}}
-                                                <th>Action</th>
+                                                <th>Date</th>
+                                                <th class="text-center">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -107,8 +105,13 @@
                                                 @if ($i % 2 != 0)
                                                     <tr>
                                                         <td> {{ 'Class ' . $i }}</td>
-                                                        <td><a href="{{ route('attendance.create', [$minfo->id, $i]) }}"><i
-                                                                    class="fas fa-arrow-right"></i></a></td>
+                                                        <td>{{ $minfo->getDate($i)->date ?? '' }}</td>
+                                                        <td class="d-flex justify-content-around">
+                                                            <a href="{{ route('attendance.create', [$minfo->id, $i]) }}"><i
+                                                                    class="fas fa-arrow-right"></i></a>
+                                                            <span
+                                                                class="btn btn-sm @if (isset($minfo->getDate($i)->date)) btn-info @else btn-warning @endif">{{ $minfo->countStd($minfo->semester->id) ?? '' }}/{{ $minfo->countPresentStd($i) ?? '' }}</span>
+                                                        </td>
                                                     </tr>
                                                 @endif
                                             @endfor
@@ -123,7 +126,7 @@
                                             <tr>
                                                 <th>Class</th>
                                                 <th>Date</th>
-                                                <th>Action</th>
+                                                <th class="text-center">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -131,9 +134,13 @@
                                                 @if ($i % 2 == 0)
                                                     <tr>
                                                         <td> {{ 'Class ' . $i }}</td>
-                                                        <td></td>
-                                                        <td><a href="{{ route('attendance.create', [$minfo->id, $i]) }}"><i
-                                                                    class="fas fa-arrow-right"></i></a></td>
+                                                        <td>{{ $minfo->getDate($i)->date ?? '' }}</td>
+                                                        <td class="d-flex justify-content-around">
+                                                            <a href="{{ route('attendance.create', [$minfo->id, $i]) }}"><i
+                                                                    class="fas fa-arrow-right"></i></a>
+                                                            <span
+                                                                class="btn btn-sm @if (isset($minfo->getDate($i)->date)) btn-info @else btn-warning @endif">{{ $minfo->countStd($minfo->semester->id) ?? '' }}/{{ $minfo->countPresentStd($i) ?? '' }}</span>
+                                                        </td>
                                                     </tr>
                                                 @endif
                                             @endfor
@@ -147,5 +154,3 @@
             </div>
         </div>
     @endsection
-    @push('page_scripts')
-    @endpush

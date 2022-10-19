@@ -22,7 +22,6 @@ class AttendanceController extends Controller
 
     public function filter()
     {
-        $this->check_access('add student');
         $n['session'] = Session::where('deleted_by', '=', null)->latest()->get();
         $n['department'] = Department::where('deleted_by', '=', null)->get();
         $n['semester'] = Semester::where('deleted_by', '=', null)->get();
@@ -48,8 +47,6 @@ class AttendanceController extends Controller
 
     public function filterStore(Request $req)
     {
-        $this->check_access('add attendance');
-
         //validation
         $this->validate($req, [
             "session_id" => "required|exists:subject_assigns,session_id",
@@ -109,7 +106,7 @@ class AttendanceController extends Controller
     {
         $n['minfo'] = Attendance::with(['created_user', 'session', 'department', 'semester', 'subject', 'group', 'shift', 'teacher'])->findOrFail($id);
 
-        return view('pages.attendance.class',$n);
+        return view('pages.attendance.class', $n);
     }
 
     public function create($id, $class)
@@ -117,6 +114,9 @@ class AttendanceController extends Controller
         $n['minfo'] = Attendance::with(['created_user', 'session', 'department', 'semester', 'subject', 'group', 'shift', 'teacher'])->find($id);
         $n['students'] = AdmittedStdAssign::with('studentInfo')->where('semester_id', $n['minfo']->semester_id)->get();
         $n['class'] = $class;
+        $n['attendance_taken'] = StdAttendance::where('class',$class)
+                                    ->where('attendance_id',$id)
+                                    ->first();
         return view('pages.attendance.create', $n);
     }
 
@@ -129,12 +129,10 @@ class AttendanceController extends Controller
         $absent = 0;
         foreach ($req->student as $student) {
             if ($student['attendance'] == 1) {
-                $present ++;
-
+                $present++;
             }
             if ($student['attendance'] == -1) {
                 $absent++;
-
             }
             $check = StdAttendance::where('student_infos_id', $student['id'])
                 ->where('attendance_id', $req->attendance_id)
@@ -160,11 +158,7 @@ class AttendanceController extends Controller
                 $check->save();
             }
         }
-        // $n['minfo'] = Attendance::with(['created_user', 'session', 'department', 'semester', 'subject', 'group', 'shift', 'teacher'])->findOrFail();
-        // $n['present']= $present;
-        // $n['absent']= $absent;
-        // $n['class']= $req->class;
-        // $n['date']= $req->date;
-        return redirect()->route('attendance.class', $req->attendance_id);
+        $total_std = $present + $absent;
+        return redirect()->route('attendance.class', $req->attendance_id)->with('success', "Class-$req->class; Date: $req->date; Total students: $total_std; Present: $present;  Absent: $absent");
     }
 }

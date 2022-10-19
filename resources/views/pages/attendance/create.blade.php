@@ -2,10 +2,8 @@
 
 @section('title', 'Attendance Management')
 @push('third_party_stylesheets')
-    <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/icheck-bootstrap/icheck-bootstrap/icheck-bootstrap.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/Datepicker/datepicker.min.css') }}">
-    {{-- <link href="{{ asset('assets/css/icheck-bootstrap/icheck-bootstrap/icheck-bootstrap.css') }}" rel="stylesheet"> --}}
 @endpush
 
 @push('page_css')
@@ -37,14 +35,15 @@
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-12">
                 <form action="{{ route('attendance.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="class" value="{{ $class }}">
+                    <input type="hidden" name="attendance_id" value="{{ $minfo->id }}">
                     <div class="card">
                         <div class="card-header">
                             <span class="float-left">
                                 <h4>Attendance</h4>
                             </span>
                         </div>
-
-                        @csrf
                         <div class="card-body">
                             @include('partial.flush-message')
                             <div class="info row">
@@ -78,23 +77,20 @@
                                     </p>
                                 </div>
                             </div>
-
-                            <input type="hidden" name="class" value="{{ $class }}">
-                            <input type="hidden" name="attendance_id" value="{{ $minfo->id }}">
                             <div class="row justify-center">
                                 <div class="col-md-4">
-
                                 </div>
                                 <div class="col-md-3">
                                     <input type="text" name="date" class="form-control mb-3 date text-center"
-                                        placeholder="Select Date" autocomplete="off">
+                                        placeholder="Select Date" autocomplete="off"
+                                        value="{{ $attendance_taken->date ?? '' }}">
                                 </div>
                                 <div class="col-md-4">
                                     @if ($errors->has('date'))
-                                    <script>
-                                        alert('You have to select Date')
-                                    </script>
-                                @endif
+                                        <script>
+                                            alert('You have to select Date')
+                                        </script>
+                                    @endif
                                 </div>
                             </div>
                             <div class="table table-responsive">
@@ -108,9 +104,7 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-
                                     <tbody>
-
                                         @foreach ($students as $key => $student)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
@@ -121,13 +115,18 @@
                                                     value="{{ $student->studentInfo->id }}">
                                                 <td>
                                                     <div class="icheck-success d-inline">
-                                                        <input type="radio" name="student[{{ $key }}][attendance]" id="attendance_check_{{ $key }}"
-                                                            checked value="1">
+                                                        <input type="radio"
+                                                            name="student[{{ $key }}][attendance]"
+                                                            id="attendance_check_{{ $key }}" value="1"
+                                                            checked>
                                                         <label for="attendance_check_{{ $key }}">P </label>
                                                     </div>
                                                     <div class="icheck-danger d-inline">&nbsp;
-                                                        <input type="radio" name="student[{{ $key }}][attendance]" id="attendance_check_a{{ $key }}"
-                                                            value="-1">
+                                                        <input type="radio"
+                                                            name="student[{{ $key }}][attendance]"
+                                                            id="attendance_check_a{{ $key }}" value="-1"
+                                                            @isset($attendance_taken) @if ($attendance_taken->attendance($minfo->id, $student->studentInfo->id)) checked @endif
+                                                            @endisset>
                                                         <label for="attendance_check_a{{ $key }}"> A</label>
                                                     </div>
                                                 </td>
@@ -148,18 +147,18 @@
             </div>
         </div>
     </div>
-    @endsection
-    @push('third_party_scripts')
-        <script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script>
-        {{-- //datpicker --}}
-        <script src="{{ asset('assets/js/Datepicker/datepicker.min.js') }}"></script>
-    @endpush
-    @push('page_scripts')
-        <script>
-            $('.date').datepicker({
-                autoclose: true,
-                format: 'dd/mm/yyyy'
+@endsection
 
-            });
-        </script>
-    @endpush
+@push('third_party_scripts')
+    <script src="{{ asset('assets/js/Datepicker/datepicker.min.js') }}"></script>
+@endpush
+
+@push('page_scripts')
+    <script>
+        $('.date').datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy'
+
+        });
+    </script>
+@endpush

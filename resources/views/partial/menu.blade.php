@@ -337,9 +337,7 @@
     <li class="nav-item ">
         <a href="{{route('attendance.filter')}}" class="nav-link {{ Request::is('attendance/*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-chalkboard-teacher"></i>
-            <p>
-                Attendance
-            </p>
+            <p>Attendance </p>
         </a>
     </li>
 @endif
