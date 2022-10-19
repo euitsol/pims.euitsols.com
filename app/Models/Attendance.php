@@ -39,4 +39,30 @@ class Attendance extends Model
     public function teacher(){
         return $this->belongsTo(Teacher::class,'teacher_id');
      }
+     public function getDate($class){
+        $attendace_id = $this->id;
+
+        $get_data = StdAttendance::where('attendance_id',$attendace_id)
+                ->where('class',$class)
+                ->first();
+        return $get_data;
+    }
+     public function countStd($semester_id){
+
+        $students = AdmittedStdAssign::where('semester_id',$semester_id)
+                ->where('deleted_at',null)
+                ->get();
+        $student_count = count($students);
+        return $student_count;
+    }
+
+     public function countPresentStd($class){
+        $attendace_id = $this->id;
+        $present_students = StdAttendance::where('attendance_id',$attendace_id)
+                    ->where('class',$class)
+                    ->where('attendance',1)
+                    ->get();
+        $present_students = count($present_students);
+        return $present_students;
+    }
 }

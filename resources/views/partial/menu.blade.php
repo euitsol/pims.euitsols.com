@@ -102,16 +102,14 @@
                     @php
                         $semester = App\Models\Semester::where('deleted_at',null)->get();
                     @endphp
-                        @forelse ($semester as $key => $value)
+                        @foreach ($semester as $key => $value)
                         <li class="nav-item">
                             <a href="{{ route('student.index',$value->id) }}" class="nav-link {{Request::is('student/information/index/'.$value->id) ? 'active' : ''}}">
                                 <i class="nav-icon fas fa-minus"></i>
                                 <p>{{$value->name}}</p>
                             </a>
                         </li>
-                        @empty
-                            <li>There is no semester</li>
-                        @endforelse
+                        @endforeach
                 </ul>
             </li>
         @endif
@@ -350,9 +348,7 @@
     <li class="nav-item ">
         <a href="{{route('attendance.filter')}}" class="nav-link {{ Request::is('attendance/*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-chalkboard-teacher"></i>
-            <p>
-                Attendance
-            </p>
+            <p>Attendance </p>
         </a>
     </li>
 @endif
