@@ -28,7 +28,7 @@ class AttendanceController extends Controller
         $n['semester'] = Semester::where('deleted_by', '=', null)->get();
         $n['shift'] = Shift::where('deleted_by', '=', null)->get();
         $n['group'] = Group::where('deleted_by', '=', null)->get();
-        return view('pages.attendance.index', $n);
+        return view('pages.attendance.filter', $n);
     }
     public function ajax(Request $request)
     {
@@ -46,7 +46,7 @@ class AttendanceController extends Controller
         return response()->json($subject);
     }
 
-    public function class(Request $req)
+    public function filterStore(Request $req)
     {
         $this->check_access('add attendance');
 
@@ -101,10 +101,15 @@ class AttendanceController extends Controller
         } else {
             $id = $check->id;
         }
+
+        return redirect()->route('attendance.class', $id);
+    }
+
+    public function class($id)
+    {
         $n['minfo'] = Attendance::with(['created_user', 'session', 'department', 'semester', 'subject', 'group', 'shift', 'teacher'])->findOrFail($id);
 
-
-        return view('pages.attendance.class', $n);
+        return view('pages.attendance.class',$n);
     }
 
     public function create($id, $class)
@@ -146,7 +151,6 @@ class AttendanceController extends Controller
                 $insert->created_by = Auth::user()->id;
                 $insert->save();
             } else {
-
                 $check->student_infos_id = $student['id'];
                 $check->attendance_id = $req->attendance_id;
                 $check->class = $req->class;
@@ -156,12 +160,11 @@ class AttendanceController extends Controller
                 $check->save();
             }
         }
-        $n['minfo'] = Attendance::with(['created_user', 'session', 'department', 'semester', 'subject', 'group', 'shift', 'teacher'])->findOrFail($req->attendance_id);
-        $n['present']= $present;
-        $n['absent']= $absent;
-        $n['class']= $req->class;
-        $n['date']= $req->date;
-
-        return view('pages.attendance.class',$n);
+        // $n['minfo'] = Attendance::with(['created_user', 'session', 'department', 'semester', 'subject', 'group', 'shift', 'teacher'])->findOrFail();
+        // $n['present']= $present;
+        // $n['absent']= $absent;
+        // $n['class']= $req->class;
+        // $n['date']= $req->date;
+        return redirect()->route('attendance.class', $req->attendance_id);
     }
 }

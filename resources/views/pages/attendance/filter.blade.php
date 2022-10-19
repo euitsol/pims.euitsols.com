@@ -20,7 +20,7 @@
                         </span>
                     </div>
                     <div class="card-body">
-                        <form action="{{route('attendance.class')}}" method="POST">
+                        <form action="{{route('attendance.filter.store')}}" method="POST">
                             @csrf
                             <input type="hidden" name="semester_id" value="">
                             <div class="row">

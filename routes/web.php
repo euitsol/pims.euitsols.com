@@ -348,8 +348,9 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
     // Attendance Magement
     Route::group(['as' => 'attendance.', 'prefix' => 'attendance'], function() {
         Route::get('/filter', [AttendanceController::class, 'filter'])->name('filter');
+        Route::post('/filter/store', [AttendanceController::class, 'filterStore'])->name('filter.store');
+        Route::get('/class/{n}', [AttendanceController::class, 'class'])->name('class');
         Route::get('/create/{id}/{class}', [AttendanceController::class, 'create'])->name('create');
-        Route::post('/class', [AttendanceController::class, 'class'])->name('class');
         Route::post('/store', [AttendanceController::class, 'store'])->name('store');
     });
 });
