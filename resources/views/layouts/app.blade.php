@@ -13,7 +13,7 @@
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/custom/table.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/custom/custom.css') }}" rel="stylesheet">
-
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     @stack('third_party_stylesheets')
 
     @stack('page_css')
@@ -41,6 +41,24 @@
 
 <script src="{{ asset('assets/js/custom.js') }}"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script>
+    @if(session('success'))
+        toastr.success("{{ session('success') }}");
+    @endif
+
+    @if(session('error'))
+        toastr.error("{{ session('error') }}");
+    @endif
+
+    @if(Session::has('info'))
+        toastr.info("{{ session('info') }}");
+    @endif
+
+    @if(Session::has('warning'))
+        toastr.warning("{{ session('warning') }}");
+    @endif
+  </script>
 @stack('page_scripts')
 </body>
 </html>

@@ -362,6 +362,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::get('/class/{n}', [AttendanceController::class, 'class'])->name('class');
         Route::get('/create/{id}/{class}', [AttendanceController::class, 'create'])->name('create');
         Route::post('/store', [AttendanceController::class, 'store'])->name('store');
+        Route::get('/course/contents/{attendace_id}/{class}', [AttendanceController::class, 'corContent'])->name('course.content'); //route = attendance.course.content
     });
 });
 
