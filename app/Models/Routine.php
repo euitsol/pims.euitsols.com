@@ -36,4 +36,9 @@ class Routine extends Model
     public function deleted_user(){
         return $this->belongsTo(User::class, 'deleted_by', 'id');
     }
+
+    public function get_subjects(){
+        $subjects = SubjectAssign::with(['subject'])->where('session_id', $this->session_id)->where('department_id', $this->department_id)->where('semester_id', $this->semester_id)->where('deleted_at', null)->latest()->get();
+        return $subjects;
+    }
 }

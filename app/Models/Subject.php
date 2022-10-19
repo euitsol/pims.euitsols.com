@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\SubjectAssign;
+use Carbon\Carbon;
 
 class Subject extends Model
 {
@@ -36,5 +37,16 @@ class Subject extends Model
         }else{
             return false;
         }
+    }
+
+    public function duration(){
+        $duration = '';
+        if($this->credit->hour_minute == 1){
+            $duration = $this->credit->class_hour * 60;
+        }else{
+            $duration = $this->credit->class_hour;
+        }
+        $duration = floor($duration / 60).':'.($duration - floor($duration / 60) * 60);
+        return $duration;
     }
 }
