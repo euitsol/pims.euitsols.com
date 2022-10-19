@@ -11,6 +11,7 @@ use App\Models\Department;
 use App\Models\Group;
 use App\Models\Shift;
 use App\Models\Routine;
+use App\Models\RoutineDates;
 
 class RoutineController extends Controller
 {
@@ -48,5 +49,42 @@ class RoutineController extends Controller
         }
         return view('pages.setup.routine.create', ['routine' => $routine]);
 
+    }
+    public function calendarEvents(Request $request){
+        switch ($request->type) {
+            case 'create':
+                $event = RoutineDates::create([
+                    'subject_id ' => $request->subject_id ,
+                    'routine_id' => $request->routine_id,
+                    'day' => $request->day,
+                    'start' => $request->start,
+                    'end' => $request->end,
+                ]);
+
+               return response()->json($event);
+              break;
+
+            case 'edit':
+               $event = RoutineDates::find($request->id)->update([
+                    'subject_id ' => $request->subject_id ,
+                    'routine_id' => $request->routine_id,
+                    'day' => $request->day,
+                    'start' => $request->start,
+                    'end' => $request->end,
+               ]);
+
+               return response()->json($event);
+              break;
+
+            case 'delete':
+               $event = RoutineDates::find($request->id)->delete();
+
+               return response()->json($event);
+              break;
+
+            default:
+
+              break;
+         }
     }
 }

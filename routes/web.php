@@ -47,10 +47,6 @@ Route::get('/clear-cache', function(){
     return "Cache is cleared";
 });
 
-
-Route::get('/calendar-event', [CalenderController::class, 'index']);
-Route::post('/calendar-crud-ajax', [CalenderController::class, 'calendarEvents']);
-
 Auth::routes();
 
 //File pond file upload
@@ -351,6 +347,8 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         Route::group(['as' => 'routine.', 'prefix' => 'routine'], function() {
             Route::get('/view', [RoutineController::class, 'index'])->name('index');
             Route::post('/search', [RoutineController::class, 'search'])->name('search');
+            Route::post('/event-crud', [RoutineController::class, 'calendarEvents'])->name('event.crud');
+
 
             Route::get('/delete/{id}', [RoutineController::class, 'destroy'])->name('destroy');
         });

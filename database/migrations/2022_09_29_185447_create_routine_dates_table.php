@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger("subject_id");
             $table->unsignedBigInteger("routine_id");
             $table->text('title');
+            $table->integer('day');
             $table->date('start');
             $table->date('end');
             $table->timestamps();
