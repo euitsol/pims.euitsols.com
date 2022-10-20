@@ -65,14 +65,16 @@ class TeacherAssignController extends Controller
                 ->where('group_id', $teacher_assign['group_id'])
                 ->where('shift_id', $teacher_assign['shift_id'])
                 ->where('deleted_at', null)->first();
+
             if ($teacher_assign_check == null) {
                 // dd($teacher_assign);
-
                 $insert = new TeacherAssign;
                 $insert->subject_assign_id = $teacher_assign['subject_assign_id'];
+
                 $insert->teacher_id = $teacher_assign['teacher_id'];
-                $insert->shift_id = $teacher_assign['shift_id'];
                 $insert->group_id = $teacher_assign['group_id'];
+                $insert->shift_id = $teacher_assign['shift_id'];
+
                 $insert->save();
             } else {
 
@@ -116,7 +118,6 @@ class TeacherAssignController extends Controller
                     ->where('deleted_at', null)
                     ->get();
 
-
         $n['group'] = Group::where('deleted_at', null)
             ->get();
         $n['shift'] = Shift::where('deleted_at', null)
@@ -128,14 +129,30 @@ class TeacherAssignController extends Controller
 
     public function assignStore(Request $req){
         $this->check_access('add teacher_assign');
-        $delete = TeacherAssign::where('subject_assign_id', $req->subject_assign_id)->delete();
-        foreach($req->teacher_assign as $teacher_assign){
-            $insert = new TeacherAssign;
-            $insert->subject_assign_id = $req->subject_assign_id;
-            $insert->teacher_id = $teacher_assign['teacher_id'];
-            $insert->group_id = $teacher_assign['group_id'];
-            $insert->shift_id = $teacher_assign['shift_id'];
-            $insert->save();
+
+        foreach($req->teacher_assign as $key => $teacher_assign){
+
+            if($key === 0){
+                TeacherAssign::where('subject_assign_id', $req->subject_assign_id)->delete();
+            }
+
+            $teacher_assign_check = TeacherAssign::where('subject_assign_id', $req->subject_assign_id)
+                ->where('group_id', $teacher_assign['group_id'])
+                ->where('shift_id', $teacher_assign['shift_id'])
+                ->where('teacher_id', $teacher_assign['teacher_id'])
+                ->where('deleted_at', null)->first();
+            if($teacher_assign_check==null){
+                $insert = new TeacherAssign;
+                $insert->subject_assign_id = $req->subject_assign_id;
+                $insert->teacher_id = $teacher_assign['teacher_id'];
+                $insert->group_id = $teacher_assign['group_id'];
+                $insert->shift_id = $teacher_assign['shift_id'];
+                $insert->save();
+            }else {
+
+                $this->message('error', 'Subject "'.$teacher_assign_check->subjectAssign->subject->name.'" is already assigned with same teacher, group and shift');
+                return redirect()->route('teacher-assign.index');
+            }
         }
         $this->message('success', 'Teachers Successfully Assigned');
         return redirect()->route('teacher-assign.index');

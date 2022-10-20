@@ -212,7 +212,7 @@
 
             //Teacher fetch according to Subject, Group, Shift
             $("#subject_id, #group_id, #shift_id").change(function() {
-                var subject_id = $(this).val();
+                var subject_id = $('#subject_id').val();
                 var group_id = $('#group_id').val();
                 var shift_id = $('#shift_id').val();
                 teacherFetch(subject_id, group_id, shift_id);
@@ -267,18 +267,12 @@
                 },
                 success: function(response) {
                     var option = "<option value='' hidden>Select Teacher</option>";
-                    if (response == '') {
-
-                        option += `
-                        <option value="">There is no teacher in</option>
-                        `;
-                    } else {
                         $.each(response, function(index, value) {
                             option += `
                         <option value="${value.teacher.id}">${value.teacher.name}</option>
                         `;
                         });
-                    }
+
                     $('#teacher_id').html(option);
                 }
             });
