@@ -10,6 +10,10 @@
     .short-view tr{
 line-height: 1px;
 }
+.custom-card{
+    margin: 0px auto;
+    width: 60%;
+}
 </style>
 @endpush
 
@@ -27,9 +31,37 @@ line-height: 1px;
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-4"></div>
-                            <div class="col-md-4"></div>
-                            <div class="col-md-4">
+                            <div class="col-md-9">
+                                <form action="" enctype="multipart/form-data">
+                                    <div class="row justify-content-center">
+                                     <div class="col-md-10">
+                                         <!-- textarea -->
+                                         <div class="form-group">
+                                           <label>Class Content: </label>
+                                           <textarea class="form-control" rows="8" placeholder="Enter class content here" cols="6"></textarea>
+                                         </div>
+                                     </div>
+                                    </div>
+                                     <div class="row mb-4 justify-content-center">
+                                         <div class="col-md-10">
+                                             <!-- textarea -->
+                                             <label for="">Upload Files:</label>
+                                             <div class="custom-file">
+                                                 <input type="file" class="custom-file-input" id="customFile" multiple >
+                                                 <label class="custom-file-label" for="customFile">Choose file</label>
+                                               </div>
+                                         </div>
+                                     </div>
+                                     <div class="row mb-3 mt-4 justify-content-center">
+                                        <div class="col-md-10">
+                                            <div class="float-right">
+                                                <button class="btn btn-success">Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                 </form>
+                            </div>
+                            <div class="col-md-3">
                                 <div class="table-responsive">
                                     <table class="table short-view table-borderless table-striped">
                                         <tbody id="view-tbody">
@@ -87,17 +119,6 @@ line-height: 1px;
                                 </div>
                             </div>
                         </div>
-                        <form action="">
-                            <div class="form-group">
-                                <label for="class_contents">Class Contents</label>
-                                <input type="text" id="class_contents">
-                            </div>
-                            <div class="form-group">
-
-                                <label for="files">Files </label>
-                                <input type="text" id="files">
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
