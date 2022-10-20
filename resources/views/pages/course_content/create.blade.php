@@ -38,7 +38,7 @@ line-height: 1px;
                                          <!-- textarea -->
                                          <div class="form-group">
                                            <label>Class Content: </label>
-                                           <textarea class="form-control" rows="8" placeholder="Enter class content here" cols="6"></textarea>
+                                           <textarea class="form-control ckeditor" rows="8" placeholder="Enter class content here" cols="6"></textarea>
                                          </div>
                                      </div>
                                     </div>
@@ -127,8 +127,11 @@ line-height: 1px;
 @endsection
 
 @push('third_party_scripts')
+    <script src="{{ asset('assets/ckeditor/build/ckeditor.js') }}"></script>
 @endpush
 
 @push('page_scripts')
-    <script></script>
+    <script>
+        ClassicEditor.create( document.querySelector( '.ckeditor' ))
+    </script>
 @endpush
