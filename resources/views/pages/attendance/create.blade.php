@@ -13,7 +13,6 @@
             color: #fb00ff;
             font-size: 15px;
         }
-
         .info p span {
             font-weight: 800;
             font-size: 15px;
@@ -108,7 +107,7 @@
                                                 <td>{{ $student->studentInfo->name }}</td>
                                                 <td>{{ $student->studentInfo->phone }}</td>
                                                 <input type="hidden" name="student[{{ $key }}][id]"
-                                                    value="{{ $student->studentInfo->id }}">
+                                                    value="">
                                                 <td>
                                                     <div class="icheck-success d-inline">
                                                         <input type="radio"
@@ -159,8 +158,13 @@
 
         $(document).ready(function(){
             @if ($errors->has('date'))
-                toastr.error("You have to select Date");
+                toastr.error("Please, select date");
             @endif
+
+            @if ($errors->has('student.*.id'))
+                toastr.error("There is no student");
+            @endif
+
         });
     </script>
 @endpush

@@ -30,13 +30,9 @@ class AttendanceController extends Controller
         $n['group'] = Group::where('deleted_by', '=', null)->get();
         return view('pages.attendance.filter', $n);
     }
-    public function ajax(Request $request)
-    {
-        $teachers = Teacher::where('deleted_by', '=', null)->where('departments_id', '=', $request->department_id)->latest()->get();
-        return response()->json($teachers);
-    }
 
-    public function subjectAssignFetch(Request $req)
+
+    public function subjectFetch(Request $req)
     {
         $subject = SubjectAssign::with(['subject'])->where('deleted_by', '=', null)
             ->where('session_id', $req->session_id)
@@ -44,6 +40,19 @@ class AttendanceController extends Controller
             ->where('semester_id', $req->semester_id)
             ->latest()->get();
         return response()->json($subject);
+    }
+
+    public function teacherFetch(Request $request)
+    {
+
+        $subject_assign_id = SubjectAssign::where('deleted_by', '=', null)->where('subject_id', '=', $request->subject_id)->latest()->first();
+        $teachers = TeacherAssign::with('teacher')
+                    ->where('deleted_by', '=', null)
+                    ->where('subject_assign_id', '=', $subject_assign_id->id)
+                    ->where('group_id', '=', $request->group_id)
+                    ->where('shift_id', '=', $request->shift_id)
+                    ->latest()->get();
+        return response()->json($teachers);
     }
 
     public function filterStore(Request $req)
@@ -124,7 +133,8 @@ class AttendanceController extends Controller
     public function store(Request $req)
     {
         $this->validate($req, [
-            'date' => 'required'
+            'date' => 'required',
+            'student.*.id' => 'required'
         ]);
         $present = 0;
         $absent = 0;

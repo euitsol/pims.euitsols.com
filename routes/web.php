@@ -102,10 +102,10 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
     Route::post('/subject-fetch', [SubjectAssignController::class, 'ajax'])->name('subject-fetch.ajax');
 
     //Subject Assign fetch means subject fetch accordingly session,department,semester from subject_assigns table
-    Route::get('/subject-assign-fetch', [AttendanceController::class, 'subjectAssignFetch'])->name('subject_assign_fetch.ajax');
+    Route::get('/subject-assign-fetch', [AttendanceController::class, 'subjectFetch'])->name('subject_fetch.ajax');
 
-    //Teacher fetch accordingly department
-    Route::get('/teacher-fetch', [AttendanceController::class, 'ajax'])->name('teacher_fetch.ajax');
+    //Teacher fetch accordingly subject
+    Route::get('/teacher-fetch', [AttendanceController::class, 'teacherFetch'])->name('teacher_fetch.ajax');
 
     //Student
     Route::group(['as'=>'student.','prefix'=>'student'],function(){
