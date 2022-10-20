@@ -16,6 +16,7 @@ use App\Models\Teacher;
 use App\Models\SubjectAssign;
 use App\Models\TeacherAssign;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\Mailer\Transport\Dsn;
 
 class AttendanceController extends Controller
 {
@@ -159,6 +160,13 @@ class AttendanceController extends Controller
             }
         }
         $total_std = $present + $absent;
-        return redirect()->route('attendance.class', $req->attendance_id)->with('success', "Class-$req->class; Date: $req->date; Total students: $total_std; Present: $present;  Absent: $absent");
+
+        return redirect()->route('attendance.course.content', [$req->attendance_id,$req->class])->with('success', "Class-$req->class; Date: $req->date; Total students: $total_std; Present: $present;  Absent: $absent");
+    }
+
+    function corContent($attendance_id,$class){
+            $n['minfo'] = Attendance::with(['created_user', 'session', 'department', 'semester', 'subject', 'group', 'shift', 'teacher'])->findOrFail($attendance_id);
+            $n['class'] = $class;
+        return view('pages.course_content.index',$n);
     }
 }

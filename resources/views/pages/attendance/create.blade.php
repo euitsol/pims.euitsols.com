@@ -4,6 +4,7 @@
 @push('third_party_stylesheets')
     <link href="{{ asset('assets/css/icheck-bootstrap/icheck-bootstrap/icheck-bootstrap.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/Datepicker/datepicker.min.css') }}">
+
 @endpush
 
 @push('page_css')
@@ -45,7 +46,6 @@
                             </span>
                         </div>
                         <div class="card-body">
-                            @include('partial.flush-message')
                             <div class="info row">
                                 <div class="col-md-1">
                                 </div>
@@ -69,7 +69,7 @@
                                     <p><i class="fas fa-arrow-circle-down"></i> <span>Teacher:</span>
                                         {{ $minfo->teacher->name }}
                                     </p>
-                                    <p><i class="fas fa-arrow-circle-down"></i> <span>subject:</span>
+                                    <p><i class="fas fa-arrow-circle-down"></i> <span>Subject:</span>
                                         {{ $minfo->subject->name }}
                                     </p>
                                     <p><i class="fas fa-arrow-circle-down"></i> <span>Class:</span>
@@ -86,11 +86,7 @@
                                         value="{{ $attendance_taken->date ?? '' }}">
                                 </div>
                                 <div class="col-md-4">
-                                    @if ($errors->has('date'))
-                                        <script>
-                                            alert('You have to select Date')
-                                        </script>
-                                    @endif
+
                                 </div>
                             </div>
                             <div class="table table-responsive">
@@ -159,6 +155,12 @@
             autoclose: true,
             format: 'dd/mm/yyyy'
 
+        });
+
+        $(document).ready(function(){
+            @if ($errors->has('date'))
+                toastr.error("You have to select Date");
+            @endif
         });
     </script>
 @endpush
