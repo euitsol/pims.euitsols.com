@@ -111,12 +111,14 @@ class TeacherAssignController extends Controller
     public function assign($id){
         $this->check_access('add teacher_assign');
 
-        $data_fetch = TeacherAssign::findOrFail($id);
-        $subject_assign_id = $data_fetch->subject_assign_id;
+        // $data_fetch = TeacherAssign::findOrFail($id);
+        // $subject_assign_id = $data_fetch->subject_assign_id;
 
-        $n['minfo'] = TeacherAssign::where('subject_assign_id', $subject_assign_id)
+        $n['minfo'] = TeacherAssign::where('subject_assign_id', $id)
                     ->where('deleted_at', null)
                     ->get();
+
+                    // dd($n);
 
         $n['group'] = Group::where('deleted_at', null)
             ->get();
@@ -151,7 +153,7 @@ class TeacherAssignController extends Controller
             }else {
 
                 $this->message('error', 'Subject "'.$teacher_assign_check->subjectAssign->subject->name.'" is already assigned with same teacher, group and shift');
-                return redirect()->route('teacher-assign.index');
+                return back();
             }
         }
         $this->message('success', 'Teachers Successfully Assigned');
