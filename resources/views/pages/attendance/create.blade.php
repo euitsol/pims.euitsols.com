@@ -107,7 +107,7 @@
                                                 <td>{{ $student->studentInfo->name }}</td>
                                                 <td>{{ $student->studentInfo->phone }}</td>
                                                 <input type="hidden" name="student[{{ $key }}][id]"
-                                                    value="">
+                                                    value="{{ $student->studentInfo->id }}">
                                                 <td>
                                                     <div class="icheck-success d-inline">
                                                         <input type="radio"
