@@ -43,7 +43,7 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="float-left">
-                            <h4>Classes for subject "{{ $minfo->subject->name }}"</h4>
+                            <h4>Classes for {{ $minfo->subject->name }}</h4>
                         </span>
                     </div>
                     <div class="card-body">
@@ -106,11 +106,13 @@
                                                     <tr>
                                                         <td> {{ 'Class ' . $i }}</td>
                                                         <td>{{ $minfo->getDate($i)->date ?? '' }}</td>
-                                                        <td class="d-flex justify-content-around">
-                                                            <a href="{{ route('attendance.create', [$minfo->id, $i]) }}"><i
-                                                                    class="fas fa-arrow-right"></i></a>
+                                                        <td class="text-center">
                                                             <span
                                                                 class="btn btn-sm @if (isset($minfo->getDate($i)->date)) btn-info @else btn-warning @endif">{{ $minfo->countStd($minfo->semester->id) ?? '' }}/{{ $minfo->countPresentStd($i) ?? '' }}</span>
+
+                                                            <a class="btn btn-sm btn-success" title="Click for attendance"
+                                                                href="{{ route('attendance.create', [$minfo->id, $i]) }}"><i
+                                                                    class="fas fa-arrow-right text-white"></i></a>
                                                         </td>
                                                     </tr>
                                                 @endif
@@ -135,11 +137,13 @@
                                                     <tr>
                                                         <td> {{ 'Class ' . $i }}</td>
                                                         <td>{{ $minfo->getDate($i)->date ?? '' }}</td>
-                                                        <td class="d-flex justify-content-around">
-                                                            <a href="{{ route('attendance.create', [$minfo->id, $i]) }}"><i
-                                                                    class="fas fa-arrow-right"></i></a>
+                                                        <td class="text-center">
                                                             <span
                                                                 class="btn btn-sm @if (isset($minfo->getDate($i)->date)) btn-info @else btn-warning @endif">{{ $minfo->countStd($minfo->semester->id) ?? '' }}/{{ $minfo->countPresentStd($i) ?? '' }}</span>
+
+                                                            <a class="btn btn-sm btn-success" title="Click for attendance"
+                                                                href="{{ route('attendance.create', [$minfo->id, $i]) }}"><i
+                                                                    class="fas fa-arrow-right text-white"></i></a>
                                                         </td>
                                                     </tr>
                                                 @endif
