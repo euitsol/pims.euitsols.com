@@ -161,13 +161,10 @@
         },
 
 
-        eventAdd: function (event, delta) {
+        eventReceive: function (event, delta) {
             console.log(event)
         },
 
-        eventClick: function (event) {
-            var eventDelete = confirm("Are you sure?");
-        },
       });
 
       new Draggable(containerEl, {
