@@ -12,18 +12,21 @@ class ClassContentController extends Controller
 {
     function index($attendance_id,$class){
         $std_attendance = StdAttendance::where('attendance_id',$attendance_id)->where('class',$class)->first();
-        // dd($std_attendance);
         $n['class_content'] = ClassContent::where('deleted_at',null)->where('std_attendance_id',$std_attendance->id)->get();
-        // dd($n);
+        $n['class'] = $class;
+        $n['attendance_id'] = $attendance_id;
         return view('pages.class_content.index',$n);
     }
+
     function create($attendance_id, $class)
     {
         $n['minfo'] = StdAttendance::with(['created_user', 'studentInfo', 'attendances'])
             ->where('attendance_id', $attendance_id)
             ->where('class', $class)->first();
+        $n['class_content'] = ClassContent::where('std_attendance_id',$n['minfo']->id)->first();
         $n['class'] = $class;
         $n['attendance_id'] = $attendance_id;
+
         return view('pages.class_content.create', $n);
     }
 

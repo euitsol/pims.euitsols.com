@@ -28,10 +28,19 @@
                     <span class="float-left">
                         <h4>Class Content</h4>
                     </span>
+                    <span class="float-right">
+                        @if (Auth::user()->can('user view') || Auth::user()->role->id == 1)
+                            <a href="{{ route('class_content.create',[$attendance_id,$class])}}" class="btn btn-info">Edit</a>
+                        @endif
+                    </span>
+
+                </div>
+                <div class="card-body">
                     @php
-                       $minfo =  $class_content->first();
-                    @endphp
-                    <div class="col-md-3 float-right">
+                    $minfo =  $class_content->first();
+                 @endphp
+                <div class="row">
+                    <div class="col-md-3 offset-md-9">
                         <div class="table-responsive">
                             <table class="table short-view table-borderless table-striped">
                                 <tbody id="view-tbody">
@@ -89,7 +98,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
                     @foreach ($class_content as $class_content)
                     {!! $class_content->class_content !!}
 

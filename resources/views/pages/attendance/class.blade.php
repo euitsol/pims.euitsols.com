@@ -45,6 +45,12 @@
                         <span class="float-left">
                             <h4>Classes for {{ $minfo->subject->name }}</h4>
                         </span>
+                        <span class="float-right">
+                            @if (Auth::user()->can('user view') || Auth::user()->role->id == 1)
+                                <a href="{{ route('attendance.filter') }}" class="btn btn-info">Back</a>
+                            @endif
+                        </span>
+
                     </div>
                     <div class="card-body">
                         @include('partial.flush-message')

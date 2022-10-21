@@ -15,6 +15,10 @@
             margin: 0px auto;
             width: 60%;
         }
+
+        .ck-editor__editable_inline {
+            min-height: 70vh;
+        }
     </style>
 @endpush
 
@@ -28,6 +32,9 @@
                             <h4>Class Details (Class-{{ $class }})</h4>
                         </span>
                         <span class="float-right">
+                            @if (Auth::user()->can('user view') || Auth::user()->role->id == 1)
+                                <a href="{{ route('attendance.create',[$attendance_id,$class]) }}" class="btn btn-info">Back</a>
+                            @endif
                         </span>
                     </div>
                     <div class="card-body">
@@ -45,7 +52,7 @@
                                             <div class="form-group">
                                                 <label>Class Content: </label>
                                                 <textarea name="class_content" class="form-control ckeditor" rows="8" placeholder="Enter class content here"
-                                                    cols="6"></textarea>
+                                                    cols="6" >@if(isset($class_content->class_content)) {!! $class_content->class_content !!} @endif</textarea>
                                                 @if ($errors->has('class_content'))
                                                     <span class="text-danger">{{ $errors->first('class_content') }}</span>
                                                 @endif
@@ -62,8 +69,8 @@
                                                     id="customFile" multiple>
                                                 <label class="custom-file-label" for="customFile">Choose file</label>
                                                 @if ($errors->has('file'))
-                                                <span class="text-danger">{{ $errors->first('file') }}</span>
-                                            @endif
+                                                    <span class="text-danger">{{ $errors->first('file') }}</span>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -120,6 +127,13 @@
                                                 <td>:</td>
                                                 <td>
                                                     <span> {{ $minfo->attendances->subject->name }}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Teacher</td>
+                                                <td>:</td>
+                                                <td>
+                                                    <span> {{ $minfo->attendances->teacher->name }}</span>
                                                 </td>
                                             </tr>
                                             <tr>
