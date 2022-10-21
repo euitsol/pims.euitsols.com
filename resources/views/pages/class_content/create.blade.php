@@ -38,6 +38,7 @@
                                     @csrf
                                     <input type="hidden" name="std_attendance_id" value="{{ $minfo->id }}">
                                     <input type="hidden" name="class" value="{{ $class }}">
+                                    <input type="hidden" name="attendance_id" value="{{ $attendance_id }}">
                                     <div class="row justify-content-center">
                                         <div class="col-md-10">
                                             <!-- textarea -->

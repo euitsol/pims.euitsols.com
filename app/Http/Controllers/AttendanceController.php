@@ -31,7 +31,6 @@ class AttendanceController extends Controller
         return view('pages.attendance.filter', $n);
     }
 
-
     public function subjectFetch(Request $req)
     {
         $subject = SubjectAssign::with(['subject'])->where('deleted_by', '=', null)
@@ -115,7 +114,6 @@ class AttendanceController extends Controller
     public function class($id)
     {
         $n['minfo'] = Attendance::with(['created_user', 'session', 'department', 'semester', 'subject', 'group', 'shift', 'teacher'])->findOrFail($id);
-
         return view('pages.attendance.class', $n);
     }
 

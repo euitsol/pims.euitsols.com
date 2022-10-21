@@ -380,6 +380,6 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
     Route::group(['as' => 'class_content.', 'prefix' => 'class-content'], function () {
         Route::get('/create/{attendace_id}/{class}', [ClassContentController::class, 'create'])->name('create'); //route = class_content.create
         Route::post('/store', [ClassContentController::class, 'store'])->name('store'); //route = class_content.store
-        Route::get('/index', [ClassContentController::class, 'index'])->name('index'); //route = class_content.index
+        Route::get('/index/{id}/{class}', [ClassContentController::class, 'index'])->name('index'); //route = class_content.index
     });
 });
