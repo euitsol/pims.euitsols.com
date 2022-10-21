@@ -1,20 +1,21 @@
 @extends('layouts.app')
 
-@section('title', 'Course Content Managment')
+@section('title', 'Class Content Managment')
 
 @push('third_party_stylesheets')
 @endpush
 
 @push('page_css')
-<style>
-    .short-view tr{
-line-height: 1px;
-}
-.custom-card{
-    margin: 0px auto;
-    width: 60%;
-}
-</style>
+    <style>
+        .short-view tr {
+            line-height: 1px;
+        }
+
+        .custom-card {
+            margin: 0px auto;
+            width: 60%;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -24,7 +25,7 @@ line-height: 1px;
                 <div class="card">
                     <div class="card-header">
                         <span class="float-left">
-                            <h4>Class Details (Class-{{$class}})</h4>
+                            <h4>Class Details (Class-{{ $class }})</h4>
                         </span>
                         <span class="float-right">
                         </span>
@@ -32,34 +33,47 @@ line-height: 1px;
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-9">
-                                <form action="" enctype="multipart/form-data">
+                                <form action="{{ route('class_content.store') }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="hidden" name="std_attendance_id" value="{{ $minfo->id }}">
+                                    <input type="hidden" name="class" value="{{ $class }}">
                                     <div class="row justify-content-center">
-                                     <div class="col-md-10">
-                                         <!-- textarea -->
-                                         <div class="form-group">
-                                           <label>Class Content: </label>
-                                           <textarea class="form-control ckeditor" rows="8" placeholder="Enter class content here" cols="6"></textarea>
-                                         </div>
-                                     </div>
+                                        <div class="col-md-10">
+                                            <!-- textarea -->
+                                            <div class="form-group">
+                                                <label>Class Content: </label>
+                                                <textarea name="class_content" class="form-control ckeditor" rows="8" placeholder="Enter class content here"
+                                                    cols="6"></textarea>
+                                                @if ($errors->has('class_content'))
+                                                    <span class="text-danger">{{ $errors->first('class_content') }}</span>
+                                                @endif
+                                            </div>
+
+                                        </div>
                                     </div>
-                                     <div class="row mb-4 justify-content-center">
-                                         <div class="col-md-10">
-                                             <!-- textarea -->
-                                             <label for="">Upload Files:</label>
-                                             <div class="custom-file">
-                                                 <input type="file" class="custom-file-input" id="customFile" multiple >
-                                                 <label class="custom-file-label" for="customFile">Choose file</label>
-                                               </div>
-                                         </div>
-                                     </div>
-                                     <div class="row mb-3 mt-4 justify-content-center">
+                                    <div class="row mb-4 justify-content-center">
+                                        <div class="col-md-10">
+                                            <!-- textarea -->
+                                            <label for="">Upload Files:</label>
+                                            <div class="custom-file">
+                                                <input type="file" name="file" class="custom-file-input"
+                                                    id="customFile" multiple>
+                                                <label class="custom-file-label" for="customFile">Choose file</label>
+                                                @if ($errors->has('file'))
+                                                <span class="text-danger">{{ $errors->first('file') }}</span>
+                                            @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 mt-4 justify-content-center">
                                         <div class="col-md-10">
                                             <div class="float-right">
                                                 <button class="btn btn-success">Submit</button>
                                             </div>
                                         </div>
                                     </div>
-                                 </form>
+                                </form>
                             </div>
                             <div class="col-md-3">
                                 <div class="table-responsive">
@@ -69,42 +83,42 @@ line-height: 1px;
                                                 <td>Session</td>
                                                 <td>:</td>
                                                 <td>
-                                                    <span>{{ $minfo->session->start . '-' . $minfo->session->end }}</span>
+                                                    <span>{{ $minfo->attendances->session->start . '-' . $minfo->attendances->session->end }}</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Department</td>
                                                 <td>:</td>
                                                 <td>
-                                                    <span> {{ $minfo->department->short_name }}</span>
+                                                    <span> {{ $minfo->attendances->department->short_name }}</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Semester</td>
                                                 <td>:</td>
                                                 <td>
-                                                    <span> {{ $minfo->semester->name }}</span>
+                                                    <span> {{ $minfo->attendances->semester->name }}</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Shift</td>
                                                 <td>:</td>
                                                 <td>
-                                                    <span>{{ $minfo->shift->name }}</span>
+                                                    <span>{{ $minfo->attendances->shift->name }}</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Group</td>
                                                 <td>:</td>
                                                 <td>
-                                                    <span> {{ $minfo->group->name }}</span>
+                                                    <span> {{ $minfo->attendances->group->name }}</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Subject</td>
                                                 <td>:</td>
                                                 <td>
-                                                    <span> {{ $minfo->subject->name }}</span>
+                                                    <span> {{ $minfo->attendances->subject->name }}</span>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -132,6 +146,6 @@ line-height: 1px;
 
 @push('page_scripts')
     <script>
-        ClassicEditor.create( document.querySelector( '.ckeditor' ))
+        ClassicEditor.create(document.querySelector('.ckeditor'))
     </script>
 @endpush

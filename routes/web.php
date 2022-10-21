@@ -29,6 +29,7 @@ use App\Http\Controllers\teacher\TeacherController;
 use App\Http\Controllers\student\SemesterAssignAdmitStd;
 use App\Http\Controllers\student\StudentController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\ClassContentController;
 use App\Http\Controllers\setup\RoutineController;
 
 /*
@@ -42,7 +43,7 @@ use App\Http\Controllers\setup\RoutineController;
 |
 */
 
-Route::get('/clear-cache', function(){
+Route::get('/clear-cache', function () {
     Artisan::call('optimize:clear');
     return "Cache is cleared";
 });
@@ -52,16 +53,16 @@ Auth::routes();
 //File pond file upload
 Route::post('/file-upload/uploads', [FileUploadController::class, 'uploads'])->name('file.upload');
 
-Route::group(['middleware' => ['auth', 'checkstatus']], function() {
+Route::group(['middleware' => ['auth', 'checkstatus']], function () {
 
     //Dashboard
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
     //user roll permission
-    Route::group(['as' => 'users.', 'prefix' => 'users'], function() {
+    Route::group(['as' => 'users.', 'prefix' => 'users'], function () {
 
         // Users management
-        Route::group(['prefix' => 'user-management'], function() {
+        Route::group(['prefix' => 'user-management'], function () {
             Route::get('/view', [UserController::class, 'index'])->name('index');
             Route::get('/add', [UserController::class, 'add'])->name('add');
             Route::post('/add-store', [UserController::class, 'store'])->name('store');
@@ -108,21 +109,21 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
     Route::get('/teacher-fetch', [AttendanceController::class, 'teacherFetch'])->name('teacher_fetch.ajax');
 
     //Student
-    Route::group(['as'=>'student.','prefix'=>'student'],function(){
+    Route::group(['as' => 'student.', 'prefix' => 'student'], function () {
 
         //Admission module
-        Route::group(['prefix'=>'admission'],function(){
+        Route::group(['prefix' => 'admission'], function () {
             //Admit student
             Route::resource('student-admit', studentAdmitcontroller::class);
-            Route::get('/admitted/{id}', [studentAdmitcontroller::class,'delete'])->name('admitted.destroy');
+            Route::get('/admitted/{id}', [studentAdmitcontroller::class, 'delete'])->name('admitted.destroy');
 
             // Student's Academic inf download
-            Route::get('/registration-download/{id}', [studentAdmitcontroller::class,'student_reg_download'])->name('reg.download');
-            Route::get('/marksheet-download/{id}', [studentAdmitcontroller::class,'student_marksheet_download'])->name('marksheet.download');
+            Route::get('/registration-download/{id}', [studentAdmitcontroller::class, 'student_reg_download'])->name('reg.download');
+            Route::get('/marksheet-download/{id}', [studentAdmitcontroller::class, 'student_marksheet_download'])->name('marksheet.download');
 
             // Decline students
-            Route::group(['as'=>'admitted.decline.','prefix'=>'decline'],function(){
-                Route::get('/std/{id}', [studentAdmitcontroller::class,'decline_student'])->name('d');
+            Route::group(['as' => 'admitted.decline.', 'prefix' => 'decline'], function () {
+                Route::get('/std/{id}', [studentAdmitcontroller::class, 'decline_student'])->name('d');
                 Route::get('/list', [studentAdmitcontroller::class, 'decline_list'])->name('list');
                 Route::get('/show/{id}', [studentAdmitcontroller::class, 'decline_show'])->name('show');
                 Route::get('/edit/{id}', [studentAdmitcontroller::class, 'decline_edit'])->name('edit');
@@ -130,35 +131,35 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
             });
 
             //Accept student
-            Route::group(['as'=>'admitted.accept.','prefix'=>'accept'],function(){
-                Route::get('create/{id}', [SemesterAssignAdmitStd::class,'create'])->name('create');//route name = student.admitted.accept.create
-                route::post('/store',[SemesterAssignAdmitStd::class,'store'])->name('store');//route name = student.admitted.accept.store
+            Route::group(['as' => 'admitted.accept.', 'prefix' => 'accept'], function () {
+                Route::get('create/{id}', [SemesterAssignAdmitStd::class, 'create'])->name('create'); //route name = student.admitted.accept.create
+                route::post('/store', [SemesterAssignAdmitStd::class, 'store'])->name('store'); //route name = student.admitted.accept.store
             });
         });
 
         // Student Information
-        Route::get('/information/index/{id}', [StudentController::class, 'index'])->name('index');//route name = student.index
-        Route::get('/information/show/{id}', [StudentController::class, 'show'])->name('show');//route name = student.show
-        Route::get('/information/ajax', [StudentController::class, 'ajax'])->name('ajax');//route name = student.ajax, url=>student/information/ajax
+        Route::get('/information/index/{id}', [StudentController::class, 'index'])->name('index'); //route name = student.index
+        Route::get('/information/show/{id}', [StudentController::class, 'show'])->name('show'); //route name = student.show
+        Route::get('/information/ajax', [StudentController::class, 'ajax'])->name('ajax'); //route name = student.ajax, url=>student/information/ajax
     });
 
 
-    Route::group(['prefix'=> 'setup'],function(){
+    Route::group(['prefix' => 'setup'], function () {
         //department Module
-        Route::group(['prefix'=>'department'],function(){
+        Route::group(['prefix' => 'department'], function () {
 
             Route::resource('department', departmentController::class);
-            Route::get('department/delete/{id}', [departmentController::class,'delete'])->name('department.delete');
+            Route::get('department/delete/{id}', [departmentController::class, 'delete'])->name('department.delete');
         });
 
 
         // Exam name for admission
-        Route::group(['prefix'=>'exam-name-admission'],function(){
+        Route::group(['prefix' => 'exam-name-admission'], function () {
             Route::resource('exam-name-admission', EAdmissionController::class);
         });
 
         // Board
-        Route::group(['as' => 'board.', 'prefix' => 'board'], function() {
+        Route::group(['as' => 'board.', 'prefix' => 'board'], function () {
             Route::get('/view', [BoardController::class, 'index'])->name('index');
             Route::get('/add', [BoardController::class, 'create'])->name('create');
             Route::post('/add-store', [BoardController::class, 'store'])->name('store');
@@ -169,7 +170,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         });
 
         //Semester
-        Route::group(['as' => 'semester.', 'prefix' => 'semester'], function() {
+        Route::group(['as' => 'semester.', 'prefix' => 'semester'], function () {
             Route::get('/view', [SemesterController::class, 'index'])->name('index');
             Route::get('/add', [SemesterController::class, 'add'])->name('add');
             Route::post('/add-store', [SemesterController::class, 'store'])->name('store');
@@ -178,8 +179,8 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
             Route::post('/edit-store', [SemesterController::class, 'edit_store'])->name('edit.store');
             Route::get('/delete/{id}', [SemesterController::class, 'delete'])->name('delete');
         });
-            //Session
-        Route::group(['as' => 'session.', 'prefix' => 'session'], function() {
+        //Session
+        Route::group(['as' => 'session.', 'prefix' => 'session'], function () {
             Route::get('/view', [SessionController::class, 'index'])->name('index');
             Route::get('/add', [SessionController::class, 'add'])->name('add');
             Route::post('/add-store', [SessionController::class, 'store'])->name('store');
@@ -188,8 +189,8 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
             Route::post('/edit-store', [SessionController::class, 'edit_store'])->name('edit.store');
             Route::get('/delete/{id}', [SessionController::class, 'delete'])->name('delete');
         });
-            //Session
-        Route::group(['as' => 'session.', 'prefix' => 'session'], function() {
+        //Session
+        Route::group(['as' => 'session.', 'prefix' => 'session'], function () {
             Route::get('/view', [SessionController::class, 'index'])->name('index');
             Route::get('/add', [SessionController::class, 'add'])->name('add');
             Route::post('/add-store', [SessionController::class, 'store'])->name('store');
@@ -198,8 +199,8 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
             Route::post('/edit-store', [SessionController::class, 'edit_store'])->name('edit.store');
             Route::get('/delete/{id}', [SessionController::class, 'delete'])->name('delete');
         });
-            //Semester Duration
-        Route::group(['as' => 'semesterDuration.', 'prefix' => 'semester-duration'], function() {
+        //Semester Duration
+        Route::group(['as' => 'semesterDuration.', 'prefix' => 'semester-duration'], function () {
             Route::get('/view', [SemesterDurationController::class, 'index'])->name('index');
             Route::get('/add', [SemesterDurationController::class, 'add'])->name('add');
             Route::post('/add-store', [SemesterDurationController::class, 'store'])->name('store');
@@ -209,8 +210,8 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
             Route::get('/delete/{id}', [SemesterDurationController::class, 'delete'])->name('delete');
             Route::get('/get-duration/{session_id}', [SemesterDurationController::class, 'get_duration'])->name('duration');
         });
-            // Group
-        Route::group(['as' => 'group.', 'prefix' => 'group'], function() {
+        // Group
+        Route::group(['as' => 'group.', 'prefix' => 'group'], function () {
             Route::get('/view', [GroupController::class, 'index'])->name('index');
             Route::get('/add', [GroupController::class, 'create'])->name('create');
             Route::post('/add-store', [GroupController::class, 'store'])->name('store');
@@ -219,8 +220,8 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
             Route::post('/edit-store', [GroupController::class, 'update'])->name('update');
             Route::get('/delete/{id}', [GroupController::class, 'destroy'])->name('destroy');
         });
-            // Blood Group
-        Route::group(['as' => 'bloodgroup.', 'prefix' => 'bloodgroup'], function() {
+        // Blood Group
+        Route::group(['as' => 'bloodgroup.', 'prefix' => 'bloodgroup'], function () {
             Route::get('/view', [BloodGroupController::class, 'index'])->name('index');
             Route::get('/add', [BloodGroupController::class, 'create'])->name('create');
             Route::post('/add-store', [BloodGroupController::class, 'store'])->name('store');
@@ -231,7 +232,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         });
 
         // Division
-        Route::group(['as' => 'division.', 'prefix' => 'division'], function() {
+        Route::group(['as' => 'division.', 'prefix' => 'division'], function () {
             Route::get('/view', [DivisionController::class, 'index'])->name('index');
             Route::get('/add', [DivisionController::class, 'create'])->name('create');
             Route::post('/add-store', [DivisionController::class, 'store'])->name('store');
@@ -242,7 +243,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         });
 
         // District
-        Route::group(['as' => 'district.', 'prefix' => 'district'], function() {
+        Route::group(['as' => 'district.', 'prefix' => 'district'], function () {
             Route::get('/view', [DistrictController::class, 'index'])->name('index');
             Route::get('/add', [DistrictController::class, 'add'])->name('add');
             Route::post('/add-store', [DistrictController::class, 'store'])->name('store');
@@ -253,7 +254,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         });
 
         // Shift
-        Route::group(['as' => 'shift.', 'prefix' => 'shift'], function() {
+        Route::group(['as' => 'shift.', 'prefix' => 'shift'], function () {
             Route::get('/view', [ShiftController::class, 'index'])->name('index');
             Route::get('/add', [ShiftController::class, 'create'])->name('create');
             Route::post('/add-store', [ShiftController::class, 'store'])->name('store');
@@ -264,7 +265,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         });
 
         // Letter Gradde
-        Route::group(['as' => 'lettergrade.', 'prefix' => 'lettergrade'], function() {
+        Route::group(['as' => 'lettergrade.', 'prefix' => 'lettergrade'], function () {
             Route::get('/view', [LetterGradeController::class, 'index'])->name('index');
             Route::get('/add', [LetterGradeController::class, 'create'])->name('create');
             Route::post('/add-store', [LetterGradeController::class, 'store'])->name('store');
@@ -275,7 +276,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         });
 
         // Credit
-        Route::group(['as' => 'credit.', 'prefix' => 'credit'], function() {
+        Route::group(['as' => 'credit.', 'prefix' => 'credit'], function () {
             Route::get('/view', [CreditController::class, 'index'])->name('index');
             Route::get('/add', [CreditController::class, 'create'])->name('create');
             Route::post('/add-store', [CreditController::class, 'store'])->name('store');
@@ -286,7 +287,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         });
 
         // Subject
-        Route::group(['as' => 'subject.', 'prefix' => 'subject'], function() {
+        Route::group(['as' => 'subject.', 'prefix' => 'subject'], function () {
             Route::get('/view', [SubjectController::class, 'index'])->name('index');
             Route::get('/add', [SubjectController::class, 'create'])->name('create');
             Route::post('/add-store', [SubjectController::class, 'store'])->name('store');
@@ -297,7 +298,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         });
 
         // Grade Calculation System
-        Route::group(['as' => 'grade.', 'prefix' => 'grade'], function() {
+        Route::group(['as' => 'grade.', 'prefix' => 'grade'], function () {
             Route::get('/view', [GradeCalculationController::class, 'index'])->name('index');
             Route::get('/add', [GradeCalculationController::class, 'create'])->name('create');
             Route::post('/add-store', [GradeCalculationController::class, 'store'])->name('store');
@@ -305,11 +306,10 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
             Route::get('/edit/{id}', [GradeCalculationController::class, 'edit'])->name('edit');
             Route::post('/edit-store', [GradeCalculationController::class, 'update'])->name('update');
             Route::get('/delete/{id}', [GradeCalculationController::class, 'destroy'])->name('destroy');
-
         });
 
         // Nationality
-        Route::group(['as' => 'nationality.', 'prefix' => 'nationality'], function() {
+        Route::group(['as' => 'nationality.', 'prefix' => 'nationality'], function () {
             Route::get('/view', [NationaltyController::class, 'index'])->name('index');
             Route::get('/add', [NationaltyController::class, 'create'])->name('create');
             Route::post('/add-store', [NationaltyController::class, 'store'])->name('store');
@@ -319,8 +319,8 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
             Route::get('/delete/{id}', [NationaltyController::class, 'destroy'])->name('destroy');
         });
 
-         // Subject Assign
-        Route::group(['as' => 'subject-assign.', 'prefix' => 'subject-assign'], function() {
+        // Subject Assign
+        Route::group(['as' => 'subject-assign.', 'prefix' => 'subject-assign'], function () {
             Route::get('/view', [SubjectAssignController::class, 'index'])->name('index');
             Route::get('/add-view', [SubjectAssignController::class, 'create'])->name('create');
             Route::post('/add-store', [SubjectAssignController::class, 'store'])->name('store');
@@ -330,8 +330,8 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
             Route::get('/delete/{id}', [SubjectAssignController::class, 'destroy'])->name('destroy');
         });
 
-          // Teacher Assign
-          Route::group(['as' => 'teacher-assign.', 'prefix' => 'teacher-assign'], function() {
+        // Teacher Assign
+        Route::group(['as' => 'teacher-assign.', 'prefix' => 'teacher-assign'], function () {
             Route::get('/view', [TeacherAssignController::class, 'index'])->name('index');
             Route::get('/create/{id}', [TeacherAssignController::class, 'create'])->name('create');
             Route::post('/add-store', [TeacherAssignController::class, 'store'])->name('store');
@@ -344,7 +344,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
         });
 
         // Routine
-        Route::group(['as' => 'routine.', 'prefix' => 'routine'], function() {
+        Route::group(['as' => 'routine.', 'prefix' => 'routine'], function () {
             Route::get('/view', [RoutineController::class, 'index'])->name('index');
             Route::post('/search', [RoutineController::class, 'search'])->name('search');
             Route::post('/event-crud', [RoutineController::class, 'calendarEvents'])->name('event.crud');
@@ -352,33 +352,34 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function() {
 
             Route::get('/delete/{id}', [RoutineController::class, 'destroy'])->name('destroy');
         });
+    });
 
+    // Teacher Module
+    Route::group(['as' => 'teacher.', 'prefix' => 'teacher'], function () {
+        Route::get('/view', [TeacherController::class, 'index'])->name('index');
+        Route::get('/add', [TeacherController::class, 'create'])->name('create');
+        Route::post('/add-store', [TeacherController::class, 'store'])->name('store');
+        Route::get('/details/{id}', [TeacherController::class, 'show'])->name('show');
+        Route::get('/info/{id}', [TeacherController::class, 'info'])->name('info');
+        Route::get('/edit/{id}', [TeacherController::class, 'edit'])->name('edit');
+        Route::post('/edit-store', [TeacherController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [TeacherController::class, 'destroy'])->name('destroy');
+        Route::get('division_ajax/{id}', [TeacherController::class, 'ajax'])->name('ajax');
     });
 
     // Attendance Magement
-    Route::group(['as' => 'attendance.', 'prefix' => 'attendance'], function() {
+    Route::group(['as' => 'attendance.', 'prefix' => 'attendance'], function () {
         Route::get('/filter', [AttendanceController::class, 'filter'])->name('filter');
         Route::post('/filter/store', [AttendanceController::class, 'filterStore'])->name('filter.store');
         Route::get('/class/{n}', [AttendanceController::class, 'class'])->name('class');
         Route::get('/create/{id}/{class}', [AttendanceController::class, 'create'])->name('create');
         Route::post('/store', [AttendanceController::class, 'store'])->name('store');
-        Route::get('/course/contents/create/{attendace_id}/{class}', [AttendanceController::class, 'corContent'])->name('course.content.create'); //route = attendance.course.content.create
-        Route::post('/course/contents//store', [AttendanceController::class, 'corContentStore'])->name('course.content.store'); //route = attendance.course.content.store
+    });
+
+    // Class Content Magement
+    Route::group(['as' => 'class_content.', 'prefix' => 'class-content'], function () {
+        Route::get('/create/{attendace_id}/{class}', [ClassContentController::class, 'create'])->name('create'); //route = class_content.create
+        Route::post('/store', [ClassContentController::class, 'store'])->name('store'); //route = class_content.store
+        Route::get('/index', [ClassContentController::class, 'index'])->name('index'); //route = class_content.index
     });
 });
-
-
-// Teacher Module
-Route::group(['as' => 'teacher.', 'prefix' => 'teacher'], function() {
-    Route::get('/view', [TeacherController::class, 'index'])->name('index');
-    Route::get('/add', [TeacherController::class, 'create'])->name('create');
-    Route::post('/add-store', [TeacherController::class, 'store'])->name('store');
-    Route::get('/details/{id}', [TeacherController::class, 'show'])->name('show');
-    Route::get('/info/{id}', [TeacherController::class, 'info'])->name('info');
-    Route::get('/edit/{id}', [TeacherController::class, 'edit'])->name('edit');
-    Route::post('/edit-store', [TeacherController::class, 'update'])->name('update');
-    Route::get('/delete/{id}', [TeacherController::class, 'destroy'])->name('destroy');
-    Route::get('division_ajax/{id}', [TeacherController::class, 'ajax'])->name('ajax');
-
-});
-
