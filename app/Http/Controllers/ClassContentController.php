@@ -12,7 +12,7 @@ class ClassContentController extends Controller
 {
     function index($attendance_id,$class){
         $std_attendance = StdAttendance::where('attendance_id',$attendance_id)->where('class',$class)->first();
-        $n['class_content'] = ClassContent::where('deleted_at',null)->where('std_attendance_id',$std_attendance->id)->get();
+        $n['class_content'] = ClassContent::where('deleted_at',null)->where('std_attendance_id',$std_attendance->id)->first();
         $n['class'] = $class;
         $n['attendance_id'] = $attendance_id;
         return view('pages.class_content.index',$n);
