@@ -39,12 +39,22 @@ class ClassContentController extends Controller
         ]);
 
         //Store class content
-        $insert = new ClassContent();
-        $insert->std_attendance_id = $req->std_attendance_id;
-        $insert->class = $req->class;
-        $insert->class_content = $req->class_content;
-        $insert->created_by = Auth::user()->id;
-        $insert->save();
+        $exist = ClassContent::where('std_attendance_id',$req->std_attendance_id)->where('class',$req->class)->first();
+        if($exist){
+            $exist->std_attendance_id = $req->std_attendance_id;
+            $exist->class = $req->class;
+            $exist->class_content = $req->class_content;
+            $exist->created_by = Auth::user()->id;
+            $exist->save();
+        }else{
+            $insert = new ClassContent();
+            $insert->std_attendance_id = $req->std_attendance_id;
+            $insert->class = $req->class;
+            $insert->class_content = $req->class_content;
+            $insert->created_by = Auth::user()->id;
+            $insert->save();
+        }
+
         return redirect()->route('class_content.index',[$req->attendance_id,$req->class])->with('success', 'Successfully class Content Assigned');
     }
 

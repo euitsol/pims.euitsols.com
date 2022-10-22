@@ -68,9 +68,6 @@
                                                 <input type="file" name="file" class="custom-file-input"
                                                     id="customFile" multiple>
                                                 <label class="custom-file-label" for="customFile">Choose file</label>
-                                                @if ($errors->has('file'))
-                                                    <span class="text-danger">{{ $errors->first('file') }}</span>
-                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -162,5 +159,15 @@
 @push('page_scripts')
     <script>
         ClassicEditor.create(document.querySelector('.ckeditor'))
+        $(document).ready(function(){
+            @if ($errors->has('class_content'))
+                toastr.error("Please, enter class content");
+            @endif
+
+            @if ($errors->has('student.*.id'))
+                toastr.error("There is no student");
+            @endif
+
+        });
     </script>
 @endpush
