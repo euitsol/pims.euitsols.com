@@ -157,11 +157,12 @@
     <script>
         $('.date').datepicker({
             autoclose: true,
-            format: 'dd/mm/yyyy'
-
+            // format: 'dd/mm/yyyy',
+            // maxDate: 18/10/2022
         });
 
         $(document).ready(function(){
+
             @if ($errors->has('date'))
                 toastr.error("Please, select date");
             @endif
@@ -170,6 +171,16 @@
                 toastr.error("There is no student");
             @endif
 
+            let date_time = new Date();
+            let date = date_time.getDate();
+            let month = date_time.getMonth()+1;
+            let year = date_time.getFullYear();
+            var current_date = date+'/'+month+'/'+year;
+            console.log(date_time.getMonth());
+
+            if(!$('.date').val()){
+                $('.date').val(current_date);
+            }
         });
     </script>
 @endpush

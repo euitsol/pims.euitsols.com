@@ -12,9 +12,7 @@ class ClassContentController extends Controller
 {
     function index($attendance_id,$class){
         $std_attendance = StdAttendance::where('attendance_id',$attendance_id)->where('class',$class)->first();
-        $n['class_content'] = ClassContent::where('deleted_at',null)->where('std_attendance_id',$std_attendance->id)->first();
-        $n['class'] = $class;
-        $n['attendance_id'] = $attendance_id;
+        $n['class_content'] = ClassContent::with('stdAttendance')->where('deleted_at',null)->where('std_attendance_id',$std_attendance->id)->first();
         return view('pages.class_content.index',$n);
     }
 
@@ -39,12 +37,20 @@ class ClassContentController extends Controller
         ]);
 
         //Store class content
-        $insert = new ClassContent();
-        $insert->std_attendance_id = $req->std_attendance_id;
-        $insert->class = $req->class;
-        $insert->class_content = $req->class_content;
-        $insert->created_by = Auth::user()->id;
-        $insert->save();
+        $exist = ClassContent::where('std_attendance_id',$req->std_attendance_id)->first();
+        if($exist){
+            $exist->std_attendance_id = $req->std_attendance_id;
+            $exist->class_content = $req->class_content;
+            $exist->created_by = Auth::user()->id;
+            $exist->save();
+        }else{
+            $insert = new ClassContent();
+            $insert->std_attendance_id = $req->std_attendance_id;
+            $insert->class_content = $req->class_content;
+            $insert->created_by = Auth::user()->id;
+            $insert->save();
+        }
+
         return redirect()->route('class_content.index',[$req->attendance_id,$req->class])->with('success', 'Successfully class Content Assigned');
     }
 

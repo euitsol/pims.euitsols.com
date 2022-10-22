@@ -16,8 +16,7 @@ return new class extends Migration
         Schema::create('class_contents', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('std_attendance_id');
-            $table->string('class_content');
-            $table->string('class');
+            $table->longText('class_content');
             $table->timestamps();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();

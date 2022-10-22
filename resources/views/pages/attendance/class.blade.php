@@ -90,8 +90,11 @@
                                 <p><i class="fas fa-arrow-circle-down"></i> <span>Teacher:</span>
                                     {{ $minfo->teacher->name }}
                                 </p>
-                                <p><i class="fas fa-arrow-circle-down"></i> <span>subject:</span>
+                                <p><i class="fas fa-arrow-circle-down"></i> <span>Subject:</span>
                                     {{ $minfo->subject->name }}
+                                </p>
+                                <p><i class="fas fa-arrow-circle-down"></i> <span>Credit:</span>
+                                    {{ $minfo->subject->credit->credit_number }}
                                 </p>
                             </div>
                         </div>
@@ -103,7 +106,8 @@
                                             <tr>
                                                 <th>Class</th>
                                                 <th>Date</th>
-                                                <th class="text-center">Action</th>
+                                                <th class="text-center">Attendance</th>
+                                                <th class="text-center">Class content</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -113,18 +117,29 @@
                                                         <td> {{ 'Class ' . $i }}</td>
                                                         <td>{{ $minfo->getDate($i)->date ?? '' }}</td>
                                                         <td class="text-center">
-                                                            @if ($minfo->classContentCheck($i))
-                                                                <a href="{{ route('class_content.index', [$minfo->id, $i]) }}"
-                                                                    class="btn btn-sm btn-info"  title="View of class Content"> <i
-                                                                        class="fas fa-info"></i></a>
-                                                            @endif
                                                             <span
                                                                 class="btn btn-sm @if (isset($minfo->getDate($i)->date)) btn-info @else btn-warning @endif">{{ $minfo->countStd($minfo->semester->id) ?? '' }}/{{ $minfo->countPresentStd($i) ?? '' }}</span>
-
                                                             <a class="btn btn-sm btn-success" title="Click for attendance"
                                                                 href="{{ route('attendance.create', [$minfo->id, $i]) }}"><i
                                                                     class="fas fa-arrow-right text-white"></i></a>
-
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @if ($minfo->classContentCheck($i))
+                                                            <a href="{{ route('class_content.index', [$minfo->id, $i]) }}"
+                                                                class="btn btn-sm btn-info"  title="View of class Content"> <i
+                                                                    class="fas fa-info"></i>
+                                                            </a>
+                                                            @elseif($minfo->attendanceCheck($i))
+                                                                <a href="{{ route('class_content.create', [$minfo->id, $i]) }}"
+                                                                class="btn btn-sm btn-success"  title="Add class Content"> <i
+                                                                    class="fas fa-info"></i>
+                                                                </a>
+                                                            @else
+                                                            <a href="javascript::void(0)"
+                                                                class="btn btn-sm btn-warning"  title="Please, take attendance first" onclick="return alert('Please, take attendance first')"> <i
+                                                                    class="fas fa-info"></i>
+                                                                </a>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 @endif
@@ -140,7 +155,8 @@
                                             <tr>
                                                 <th>Class</th>
                                                 <th>Date</th>
-                                                <th class="text-center">Action</th>
+                                                <th class="text-center">Attendance</th>
+                                                <th class="text-center">Class content</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -163,6 +179,24 @@
                                                                 href="{{ route('attendance.create', [$minfo->id, $i]) }}"><i
                                                                     class="fas fa-arrow-right text-white"></i></a>
 
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @if ($minfo->classContentCheck($i))
+                                                            <a href="{{ route('class_content.index', [$minfo->id, $i]) }}"
+                                                                class="btn btn-sm btn-info"  title="View of class Content"> <i
+                                                                    class="fas fa-info"></i>
+                                                            </a>
+                                                            @elseif($minfo->attendanceCheck($i))
+                                                                <a href="{{ route('class_content.create', [$minfo->id, $i]) }}"
+                                                                class="btn btn-sm btn-success"  title="Add class Content"> <i
+                                                                    class="fas fa-info"></i>
+                                                                </a>
+                                                            @else
+                                                            <a href="javascript::void(0)"
+                                                                class="btn btn-sm btn-warning"  title="Please, take attendance first" onclick="return alert('Please, take attendance first')"> <i
+                                                                    class="fas fa-info"></i>
+                                                                </a>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 @endif
