@@ -90,8 +90,11 @@
                                 <p><i class="fas fa-arrow-circle-down"></i> <span>Teacher:</span>
                                     {{ $minfo->teacher->name }}
                                 </p>
-                                <p><i class="fas fa-arrow-circle-down"></i> <span>subject:</span>
+                                <p><i class="fas fa-arrow-circle-down"></i> <span>Subject:</span>
                                     {{ $minfo->subject->name }}
+                                </p>
+                                <p><i class="fas fa-arrow-circle-down"></i> <span>Credit:</span>
+                                    {{ $minfo->subject->credit->credit_number }}
                                 </p>
                             </div>
                         </div>

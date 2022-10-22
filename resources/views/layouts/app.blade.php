@@ -57,7 +57,7 @@
     @if(Session::has('warning'))
         toastr.warning("{{ session('warning') }}");
     @endif
-  </script>
+</script>
 @stack('page_scripts')
 </body>
 </html>

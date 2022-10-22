@@ -162,6 +162,7 @@
         });
 
         $(document).ready(function(){
+
             @if ($errors->has('date'))
                 toastr.error("Please, select date");
             @endif
@@ -169,6 +170,11 @@
             @if ($errors->has('student.*.id'))
                 toastr.error("There is no student");
             @endif
+
+            let date_time = new Date();
+            date = date_time.getDate();
+            console.log(date);
+            $('.date').val(date_time);
 
         });
     </script>
