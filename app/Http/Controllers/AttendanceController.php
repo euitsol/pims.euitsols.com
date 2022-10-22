@@ -138,8 +138,8 @@ class AttendanceController extends Controller
                     ->where('date', $req->date)
                     ->where('class', $req->class)
                     ->first();
-                    
-        if ($date_check) {
+
+        // if ($date_check) {
             $present = 0;
             $absent = 0;
             foreach ($req->student as $student) {
@@ -174,9 +174,9 @@ class AttendanceController extends Controller
                     $check->save();
                 }
             }
-        } else {
-            return back()->with('error',"$req->date already taken,Please select another date");
-        }
+        // } else {
+        //     return back()->with('error',"$req->date already taken,Please select another date");
+        // }
         $total_std = $present + $absent;
 
         return redirect()->route('class_content.create', [$req->attendance_id, $req->class])->with('success', "Class-$req->class; Date: $req->date; Total students: $total_std; Present: $present;  Absent: $absent");
