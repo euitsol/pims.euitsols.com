@@ -115,7 +115,7 @@
                                                         <td class="text-center">
                                                             @if ($minfo->classContentCheck($i))
                                                                 <a href="{{ route('class_content.index', [$minfo->id, $i]) }}"
-                                                                    class="btn btn-sm btn-info"><i
+                                                                    class="btn btn-sm btn-info"  title="View of class Content"> <i
                                                                         class="fas fa-info"></i></a>
                                                             @endif
                                                             <span
@@ -153,7 +153,7 @@
                                                             @if ($minfo->classContentCheck($i))
                                                                 <a href="{{ route('class_content.index', [$minfo->id, $i]) }}"
                                                                     class="btn btn-sm btn-info"
-                                                                    title="Class Content Show"><i
+                                                                    title="View of class Content"><i
                                                                         class="fas fa-info"></i></a>
                                                             @endif
                                                             <span
