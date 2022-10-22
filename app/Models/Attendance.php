@@ -82,4 +82,13 @@ class Attendance extends Model
         return false;
        }
     }
+
+    public function attendanceCheck($class){
+        $check = StdAttendance::where('attendance_id',$this->id)->where('class',$class)->first();
+        if($check){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

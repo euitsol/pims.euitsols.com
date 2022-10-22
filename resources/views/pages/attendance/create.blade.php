@@ -157,8 +157,8 @@
     <script>
         $('.date').datepicker({
             autoclose: true,
-            format: 'dd/mm/yyyy'
-
+            // format: 'dd/mm/yyyy',
+            // maxDate: 18/10/2022
         });
 
         $(document).ready(function(){
@@ -172,10 +172,15 @@
             @endif
 
             let date_time = new Date();
-            date = date_time.getDate();
-            console.log(date);
-            $('.date').val(date_time);
+            let date = date_time.getDate();
+            let month = date_time.getMonth()+1;
+            let year = date_time.getFullYear();
+            var current_date = date+'/'+month+'/'+year;
+            console.log(date_time.getMonth());
 
+            if(!$('.date').val()){
+                $('.date').val(current_date);
+            }
         });
     </script>
 @endpush

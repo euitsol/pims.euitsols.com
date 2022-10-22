@@ -200,7 +200,16 @@
                 subjectFetch(session_id, department_id, semester_id);
             });
 
-            //Old subject check
+            //Subject value keep exist during return back
+            let old_session_id = '{{old('session_id') ?? ''}}';
+            let old_department_id = '{{old('department_id') ?? ''}}';
+            let old_semester_id = '{{old('semester_id') ?? ''}}';
+            if( old_session_id != '' && old_department_id != '' && old_semester_id != '' ){
+                subjectFetch(old_session_id,old_department_id,old_semester_id);
+            }
+
+
+            //Old subject fetch
             var old_subject_id = '{{ old('subject_id') ?? '' }}';
             if (old_subject_id != '') {
                 var session_id = $('#session_id').val();
@@ -210,6 +219,7 @@
                 $('#subject_id').val({{ old('subject_id') }}).trigger('change.select2');
             }
 
+
             //Teacher fetch according to Subject, Group, Shift
             $("#subject_id, #group_id, #shift_id").change(function() {
                 var subject_id = $('#subject_id').val();
@@ -217,6 +227,13 @@
                 var shift_id = $('#shift_id').val();
                 teacherFetch(subject_id, group_id, shift_id);
             });
+
+            //Teacher value keep exist during return back
+            let old_group_id = '{{old('group_id') ?? ''}}';
+            let old_shift_id = '{{old('shift_id') ?? ''}}';
+            if( old_subject_id != '' && old_group_id != '' && old_shift_id != '' ){
+                teacherFetch(old_subject_id,old_group_id,old_shift_id);
+            }
 
             //Old teacher check
             var old_teacher_id = '{{ old('teacher_id') ?? '' }}';

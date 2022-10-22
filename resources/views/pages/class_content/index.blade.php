@@ -29,15 +29,16 @@
                         </span>
                         <span class="float-right">
                             @if (Auth::user()->can('user view') || Auth::user()->role->id == 1)
-                                <a href="{{ route('class_content.create', [$attendance_id, $class]) }}"
-                                    class="btn btn-info">Edit</a>
+                                <a href="{{ route('class_content.create', [$class_content->stdAttendance->attendances->id, $class_content->stdAttendance->class]) }}"
+                                    class="btn btn-info"><i class="fas fa-edit"></i></a>
+                                <a href="{{ route('attendance.class',[$class_content->stdAttendance->attendances->id]) }}" class="btn btn-info">Back</a>
                             @endif
                         </span>
 
                     </div>
                     <div class="card-body">
                         @php
-                            $minfo = $class_content->first();
+                            $class_content = $class_content->first();
                         @endphp
                         <div class="row">
                             <div class="col-md-5">
@@ -48,7 +49,7 @@
                                                 <td>Session</td>
                                                 <td>:</td>
                                                 <td>
-                                                    <span>{{ $minfo->stdAttendance->attendances->session->start . '-' . $minfo->stdAttendance->attendances->session->end }}</span>
+                                                    <span>{{ $class_content->stdAttendance->attendances->session->start . '-' . $class_content->stdAttendance->attendances->session->end }}</span>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -56,21 +57,21 @@
                                                 <td>:</td>
                                                 <td>
                                                     <span>
-                                                        {{ $minfo->stdAttendance->attendances->department->short_name }}</span>
+                                                        {{ $class_content->stdAttendance->attendances->department->short_name }}</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Semester</td>
                                                 <td>:</td>
                                                 <td>
-                                                    <span> {{ $minfo->stdAttendance->attendances->semester->name }}</span>
+                                                    <span> {{ $class_content->stdAttendance->attendances->semester->name }}</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Shift</td>
                                                 <td>:</td>
                                                 <td>
-                                                    <span>{{ $minfo->stdAttendance->attendances->shift->name }}</span>
+                                                    <span>{{ $class_content->stdAttendance->attendances->shift->name }}</span>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -86,26 +87,26 @@
                                                 <td>Group</td>
                                                 <td>:</td>
                                                 <td>
-                                                    <span> {{ $minfo->stdAttendance->attendances->group->name }}</span>
+                                                    <span> {{ $class_content->stdAttendance->attendances->group->name }}</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Subject</td>
                                                 <td>:</td>
                                                 <td>
-                                                    <span> {{ $minfo->stdAttendance->attendances->subject->name }}</span>
+                                                    <span> {{ $class_content->stdAttendance->attendances->subject->name }}</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Class</td>
                                                 <td>:</td>
-                                                <td><span> {{ 'Class' . $minfo->class }} </span></td>
+                                                <td><span> {{ 'Class' . $class_content->stdAttendance->class }} </span></td>
                                             </tr>
                                             <tr>
                                                 <td>Teacher</td>
                                                 <td>:</td>
                                                 <td>
-                                                    <span> {{ $minfo->stdAttendance->attendances->teacher->name }}</span>
+                                                    <span> {{ $class_content->stdAttendance->attendances->teacher->name }}</span>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -114,7 +115,7 @@
                             </div>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-md-8 offset-md-2">
+                            <div class="col-md-8 mx-auto">
                                 {!! $class_content->class_content !!}
                             </div>
                         </div>

@@ -46,11 +46,11 @@ class AttendanceController extends Controller
 
         $subject_assign_id = SubjectAssign::where('deleted_by', '=', null)->where('subject_id', '=', $request->subject_id)->latest()->first();
         $teachers = TeacherAssign::with('teacher')
-                    ->where('deleted_by', '=', null)
-                    ->where('subject_assign_id', '=', $subject_assign_id->id)
-                    ->where('group_id', '=', $request->group_id)
-                    ->where('shift_id', '=', $request->shift_id)
-                    ->latest()->get();
+            ->where('deleted_by', '=', null)
+            ->where('subject_assign_id', '=', $subject_assign_id->id)
+            ->where('group_id', '=', $request->group_id)
+            ->where('shift_id', '=', $request->shift_id)
+            ->latest()->get();
         return response()->json($teachers);
     }
 
@@ -122,54 +122,63 @@ class AttendanceController extends Controller
         $n['minfo'] = Attendance::with(['created_user', 'session', 'department', 'semester', 'subject', 'group', 'shift', 'teacher'])->find($id);
         $n['students'] = AdmittedStdAssign::with('studentInfo')->where('semester_id', $n['minfo']->semester_id)->get();
         $n['class'] = $class;
-        $n['attendance_taken'] = StdAttendance::where('class',$class)
-                                    ->where('attendance_id',$id)
-                                    ->first();
+        $n['attendance_taken'] = StdAttendance::where('class', $class)
+            ->where('attendance_id', $id)
+            ->first();
         return view('pages.attendance.create', $n);
     }
 
     public function store(Request $req)
     {
         $this->validate($req, [
-            'date' => 'required',
+            "date" => "required|before:today",
             'student.*.id' => 'required'
         ]);
-        $present = 0;
-        $absent = 0;
-        foreach ($req->student as $student) {
-            if ($student['attendance'] == 1) {
-                $present++;
-            }
-            if ($student['attendance'] == -1) {
-                $absent++;
-            }
-            $check = StdAttendance::where('student_infos_id', $student['id'])
-                ->where('attendance_id', $req->attendance_id)
-                ->where('class', $req->class)
-                ->first();
+        $date_check = StdAttendance::where('attendance_id', $req->attendance_id)
+                    ->where('date', $req->date)
+                    ->where('class', $req->class)
+                    ->first();
+                    
+        if ($date_check) {
+            $present = 0;
+            $absent = 0;
+            foreach ($req->student as $student) {
+                if ($student['attendance'] == 1) {
+                    $present++;
+                }
+                if ($student['attendance'] == -1) {
+                    $absent++;
+                }
+                $check = StdAttendance::where('student_infos_id', $student['id'])
+                    ->where('attendance_id', $req->attendance_id)
+                    ->where('class', $req->class)
+                    ->first();
 
-            if ($check === null) {
-                $insert = new StdAttendance();
-                $insert->student_infos_id = $student['id'];
-                $insert->attendance_id = $req->attendance_id;
-                $insert->class = $req->class;
-                $insert->date = $req->date;
-                $insert->attendance = $student['attendance'];
-                $insert->created_by = Auth::user()->id;
-                $insert->save();
-            } else {
-                $check->student_infos_id = $student['id'];
-                $check->attendance_id = $req->attendance_id;
-                $check->class = $req->class;
-                $check->date = $req->date;
-                $check->attendance = $student['attendance'];
-                $check->created_by = Auth::user()->id;
-                $check->save();
+
+                if ($check === null) {
+                    $insert = new StdAttendance();
+                    $insert->student_infos_id = $student['id'];
+                    $insert->attendance_id = $req->attendance_id;
+                    $insert->class = $req->class;
+                    $insert->date = $req->date;
+                    $insert->attendance = $student['attendance'];
+                    $insert->created_by = Auth::user()->id;
+                    $insert->save();
+                } else {
+                    $check->student_infos_id = $student['id'];
+                    $check->attendance_id = $req->attendance_id;
+                    $check->class = $req->class;
+                    $check->date = $req->date;
+                    $check->attendance = $student['attendance'];
+                    $check->created_by = Auth::user()->id;
+                    $check->save();
+                }
             }
+        } else {
+            return back()->with('error',"$req->date already taken,Please select another date");
         }
         $total_std = $present + $absent;
 
-        return redirect()->route('class_content.create', [$req->attendance_id,$req->class])->with('success', "Class-$req->class; Date: $req->date; Total students: $total_std; Present: $present;  Absent: $absent");
+        return redirect()->route('class_content.create', [$req->attendance_id, $req->class])->with('success', "Class-$req->class; Date: $req->date; Total students: $total_std; Present: $present;  Absent: $absent");
     }
-
 }
