@@ -13,7 +13,7 @@ class AdmittedStdAssign extends Model
         return $this->belongsTo(studentInfo::class,'student_infos_id');
     }
     public function session(){
-        return $this->belongsTo(session::class,'session_id');
+        return $this->belongsTo(Session::class,'session_id');
     }
     public function semester(){
         return $this->belongsTo(Semester::class,'semester_id');
