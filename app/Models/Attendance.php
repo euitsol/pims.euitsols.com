@@ -65,4 +65,21 @@ class Attendance extends Model
         $present_students = count($present_students);
         return $present_students;
     }
+
+    public function classContentCheck($class){
+       $attendace_id =  $this->id;
+       $std_attendance = StdAttendance::where('attendance_id',$attendace_id)->where('class',$class)->first();
+
+       if(isset($std_attendance->id)){
+
+           $class_content = ClassContent::where('std_attendance_id',$std_attendance->id)->first();
+           if($class_content==null){
+            return false;
+           }else{
+            return true;
+           }
+       }else{
+        return false;
+       }
+    }
 }

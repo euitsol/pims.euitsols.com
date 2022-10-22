@@ -9,6 +9,22 @@ class StdAttendance extends Model
 {
     use HasFactory;
 
+    public function created_user(){
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+    public function updated_user(){
+        return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
+    public function deleted_user(){
+        return $this->belongsTo(User::class, 'deleted_by', 'id');
+    }
+    public function studentInfo(){
+        return $this->belongsTo(studentInfo::class,'student_infos_id');
+     }
+    public function attendances(){
+        return $this->belongsTo(Attendance::class,'attendance_id');
+     }
+
     public function attendance($attendance_id,$std_id){
 
         $class = $this->class;

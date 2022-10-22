@@ -43,8 +43,14 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="float-left">
-                            <h4>Classes for subject "{{ $minfo->subject->name }}"</h4>
+                            <h4>Classes for {{ $minfo->subject->name }}</h4>
                         </span>
+                        <span class="float-right">
+                            @if (Auth::user()->can('user view') || Auth::user()->role->id == 1)
+                                <a href="{{ route('attendance.filter') }}" class="btn btn-info">Back</a>
+                            @endif
+                        </span>
+
                     </div>
                     <div class="card-body">
                         @include('partial.flush-message')
@@ -106,11 +112,19 @@
                                                     <tr>
                                                         <td> {{ 'Class ' . $i }}</td>
                                                         <td>{{ $minfo->getDate($i)->date ?? '' }}</td>
-                                                        <td class="d-flex justify-content-around">
-                                                            <a href="{{ route('attendance.create', [$minfo->id, $i]) }}"><i
-                                                                    class="fas fa-arrow-right"></i></a>
+                                                        <td class="text-center">
+                                                            @if ($minfo->classContentCheck($i))
+                                                                <a href="{{ route('class_content.index', [$minfo->id, $i]) }}"
+                                                                    class="btn btn-sm btn-info"  title="View of class Content"> <i
+                                                                        class="fas fa-info"></i></a>
+                                                            @endif
                                                             <span
                                                                 class="btn btn-sm @if (isset($minfo->getDate($i)->date)) btn-info @else btn-warning @endif">{{ $minfo->countStd($minfo->semester->id) ?? '' }}/{{ $minfo->countPresentStd($i) ?? '' }}</span>
+
+                                                            <a class="btn btn-sm btn-success" title="Click for attendance"
+                                                                href="{{ route('attendance.create', [$minfo->id, $i]) }}"><i
+                                                                    class="fas fa-arrow-right text-white"></i></a>
+
                                                         </td>
                                                     </tr>
                                                 @endif
@@ -135,11 +149,20 @@
                                                     <tr>
                                                         <td> {{ 'Class ' . $i }}</td>
                                                         <td>{{ $minfo->getDate($i)->date ?? '' }}</td>
-                                                        <td class="d-flex justify-content-around">
-                                                            <a href="{{ route('attendance.create', [$minfo->id, $i]) }}"><i
-                                                                    class="fas fa-arrow-right"></i></a>
+                                                        <td class="text-center">
+                                                            @if ($minfo->classContentCheck($i))
+                                                                <a href="{{ route('class_content.index', [$minfo->id, $i]) }}"
+                                                                    class="btn btn-sm btn-info"
+                                                                    title="View of class Content"><i
+                                                                        class="fas fa-info"></i></a>
+                                                            @endif
                                                             <span
                                                                 class="btn btn-sm @if (isset($minfo->getDate($i)->date)) btn-info @else btn-warning @endif">{{ $minfo->countStd($minfo->semester->id) ?? '' }}/{{ $minfo->countPresentStd($i) ?? '' }}</span>
+
+                                                            <a class="btn btn-sm btn-success" title="Click for attendance"
+                                                                href="{{ route('attendance.create', [$minfo->id, $i]) }}"><i
+                                                                    class="fas fa-arrow-right text-white"></i></a>
+
                                                         </td>
                                                     </tr>
                                                 @endif

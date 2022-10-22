@@ -61,7 +61,7 @@
                                             </td>
                                             <td class="text-middle py-0 align-middle">
                                                 <div class="btn-group">
-                                                    <a href="{{ route('teacher-assign.assign', $data->id) }}"
+                                                    <a href="{{ route('teacher-assign.assign', $data->subjectAssign->id) }}"
                                                         class="btn btn-info" title="Assign Teacher"><i
                                                             class="fas fa-arrow-right"></i>
                                                     </a>

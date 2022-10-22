@@ -13,7 +13,6 @@
             color: #fb00ff;
             font-size: 15px;
         }
-
         .info p span {
             font-weight: 800;
             font-size: 15px;
@@ -43,6 +42,11 @@
                         <div class="card-header">
                             <span class="float-left">
                                 <h4>Attendance</h4>
+                            </span>
+                            <span class="float-right">
+                                @if (Auth::user()->can('user view') || Auth::user()->role->id == 1)
+                                    <a href="{{ route('attendance.class',$minfo->id) }}" class="btn btn-info">Back</a>
+                                @endif
                             </span>
                         </div>
                         <div class="card-body">
@@ -159,8 +163,13 @@
 
         $(document).ready(function(){
             @if ($errors->has('date'))
-                toastr.error("You have to select Date");
+                toastr.error("Please, select date");
             @endif
+
+            @if ($errors->has('student.*.id'))
+                toastr.error("There is no student");
+            @endif
+
         });
     </script>
 @endpush
