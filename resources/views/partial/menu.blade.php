@@ -144,15 +144,6 @@
             </p>
         </a>
         <ul class="nav nav-treeview">
-            @if (Auth::user()->can('view building') || Auth::user()->role->id == 1)
-                <li class="nav-item">
-                    <a href="{{ route('building.index') }}"
-                        class="nav-link {{ Request::is('setup/building/*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-minus"></i>
-                        <p>Buildings</p>
-                    </a>
-                </li>
-            @endif
             @if (Auth::user()->can('view blood-group') || Auth::user()->role->id == 1)
                 <li class="nav-item">
                     <a href="{{ route('bloodgroup.index') }}"
@@ -171,6 +162,15 @@
                     </a>
                 </li>
             @endif
+            @if (Auth::user()->can('view building') || Auth::user()->role->id == 1)
+            <li class="nav-item">
+                <a href="{{ route('building.index') }}"
+                    class="nav-link {{ Request::is('setup/building/*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-minus"></i>
+                    <p>Buildings</p>
+                </a>
+            </li>
+        @endif
             @if (Auth::user()->can('view credit') || Auth::user()->role->id == 1)
                 <li class="nav-item">
                     <a href="{{ route('credit.index') }}"

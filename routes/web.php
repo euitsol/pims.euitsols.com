@@ -359,7 +359,6 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::get('/view', [BuildingController::class, 'index'])->name('index');
             Route::get('/add', [BuildingController::class, 'create'])->name('create');
             Route::post('/add-store', [BuildingController::class, 'store'])->name('store');
-            Route::get('/details/{id}', [BuildingController::class, 'show'])->name('show');
             Route::get('/edit/{id}', [BuildingController::class, 'edit'])->name('edit');
             Route::post('/edit-store', [BuildingController::class, 'update'])->name('update');
             Route::get('/delete/{id}', [BuildingController::class, 'destroy'])->name('destroy');

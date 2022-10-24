@@ -38,7 +38,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-sm-3" for="floor">Floor<span class="text-danger">*</span></label>
+                                    <label class="col-sm-3" for="floor">Number of floor<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
                                         <input class="form-control" type="text" name="floor" id="floor" value="{{ old('floor') }}" placeholder="Enter total floor of the building" required>
                                         @if ($errors->has('floor'))
