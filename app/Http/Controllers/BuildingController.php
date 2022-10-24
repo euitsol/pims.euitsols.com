@@ -24,9 +24,9 @@ class BuildingController extends Controller
     }
 
     public function store(Request $req){
-        $this->validate($req,[
-            'name' => 'required|unique:buildings,name',
-            'floor' => 'required',
+        $this->validate($req, [
+            'name' => 'required|string|unique:buildings,name',
+            'floor' => 'required|integer',
         ]);
         $insert = new Building();
         $insert->name = $req->name;
@@ -43,8 +43,8 @@ class BuildingController extends Controller
 
     public function update(Request $req){
         $this->validate($req,[
-            'name' => "required",
-            'floor' => 'required',
+            'name' => "required|string",
+            'floor' => 'required|integer',
         ]);
         $update = Building::findOrFail($req->id);
         $update->name = $req->name;

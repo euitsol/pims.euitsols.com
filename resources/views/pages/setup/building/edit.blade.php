@@ -22,7 +22,7 @@
                             @csrf
                                 <input type="hidden" name="id" value="{{ $building->id }}">
                                 <div class="form-group row">
-                                    <label class="col-sm-3" for="name">building Name<span class="text-danger">*</span></label>
+                                    <label class="col-sm-3" for="name">Building Name<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
                                         <input class="form-control" type="text" name="name" id="name" value="{{ $building->name }}" placeholder="Enter building name" required>
                                         @if ($errors->has('name'))
@@ -33,7 +33,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="floor">Number of floor<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
-                                        <input class="form-control" type="text" name="floor" id="floor" value="{{ $building->floor }}" placeholder="Enter total floor of the building" required>
+                                        <input class="form-control" type="number" name="floor" id="floor" value="{{ $building->floor }}" placeholder="Enter total floor of the building" required>
                                         @if ($errors->has('floor'))
                                             <span class="text-danger">{{ $errors->first('floor') }}</span>
                                         @endif
@@ -45,7 +45,6 @@
                                         <button type="submit" class="btn btn-primary w-100">Update</button>
                                     </div>
                                 </div>
-
                             </form>
                         </div>
                     </div>
