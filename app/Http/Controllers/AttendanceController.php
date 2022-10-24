@@ -15,6 +15,7 @@ use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\SubjectAssign;
 use App\Models\TeacherAssign;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Mailer\Transport\Dsn;
 
@@ -170,7 +171,8 @@ class AttendanceController extends Controller
                     $check->class = $req->class;
                     $check->date = $req->date;
                     $check->attendance = $student['attendance'];
-                    $check->created_by = Auth::user()->id;
+                    $check->updated_at = Carbon::now()->toDateTimeString();
+                    $check->updated_by = auth()->user()->id;
                     $check->save();
                 }
             }

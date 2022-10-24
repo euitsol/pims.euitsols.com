@@ -161,11 +161,10 @@
         });
 
         $(document).ready(function(){
-
             @if ($errors->has('date'))
                 toastr.error("Please, select date");
             @endif
-
+            
             @if ($errors->has('student.*.id'))
                 toastr.error("There is no student");
             @endif
@@ -176,10 +175,6 @@
             let year = date_time.getFullYear();
             var current_date = date+'/'+month+'/'+year;
             console.log(date_time.getMonth());
-
-            // if(!$('.date').val()){
-            //     $('.date').val(current_date);
-            // }
         });
     </script>
 @endpush
