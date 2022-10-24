@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class ClassContentController extends Controller
 {
+
+    public function __construct() {
+        return $this->middleware('auth');
+    }
+
     function index($attendance_id,$class){
         $std_attendance = StdAttendance::where('attendance_id',$attendance_id)->where('class',$class)->first();
         $n['class_content'] = ClassContent::with('stdAttendance')->where('deleted_at',null)->where('std_attendance_id',$std_attendance->id)->first();

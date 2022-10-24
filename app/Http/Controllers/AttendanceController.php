@@ -21,6 +21,9 @@ use Symfony\Component\Mailer\Transport\Dsn;
 
 class AttendanceController extends Controller
 {
+    public function __construct() {
+        return $this->middleware('auth');
+    }
 
     public function filter()
     {
