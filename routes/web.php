@@ -29,6 +29,7 @@ use App\Http\Controllers\teacher\TeacherController;
 use App\Http\Controllers\student\SemesterAssignAdmitStd;
 use App\Http\Controllers\student\StudentController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\ClassContentController;
 use App\Http\Controllers\setup\RoutineController;
 
@@ -352,6 +353,19 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
 
             Route::get('/delete/{id}', [RoutineController::class, 'destroy'])->name('destroy');
         });
+
+         // Building
+         Route::group(['as' => 'building.', 'prefix' => 'building'], function () {
+            Route::get('/view', [BuildingController::class, 'index'])->name('index');
+            Route::get('/add', [BuildingController::class, 'create'])->name('create');
+            Route::post('/add-store', [BuildingController::class, 'store'])->name('store');
+            Route::get('/details/{id}', [BuildingController::class, 'show'])->name('show');
+            Route::get('/edit/{id}', [BuildingController::class, 'edit'])->name('edit');
+            Route::post('/edit-store', [BuildingController::class, 'update'])->name('update');
+            Route::get('/delete/{id}', [BuildingController::class, 'destroy'])->name('destroy');
+        });
+
+
     });
 
     // Teacher Module
