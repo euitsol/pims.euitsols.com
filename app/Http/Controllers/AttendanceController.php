@@ -121,7 +121,12 @@ class AttendanceController extends Controller
     public function create($id, $class)
     {
         $n['minfo'] = Attendance::with(['created_user', 'session', 'department', 'semester', 'subject', 'group', 'shift', 'teacher'])->find($id);
-        $n['students'] = AdmittedStdAssign::with('studentInfo')->where('semester_id', $n['minfo']->semester_id)->get();
+        $n['students'] = AdmittedStdAssign::with('studentInfo')
+                        ->where('session_id', $n['minfo']->session_id)
+                        ->where('semester_id', $n['minfo']->semester_id)
+                        ->where('group_id', $n['minfo']->group_id)
+                        ->where('shift_id', $n['minfo']->shift_id)
+                        ->get();
         $n['class'] = $class;
         $n['attendance_taken'] = StdAttendance::where('class', $class)
             ->where('attendance_id', $id)
