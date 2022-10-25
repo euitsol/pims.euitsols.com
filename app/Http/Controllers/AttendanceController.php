@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AdmittedStdAssign;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
+use App\Models\Building;
 use App\Models\Semester;
 use App\Models\Shift;
 use App\Models\Group;
@@ -149,6 +150,7 @@ class AttendanceController extends Controller
                     ->first();
 
         // if ($date_check) {
+
             $present = 0;
             $absent = 0;
             foreach ($req->student as $student) {

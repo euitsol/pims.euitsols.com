@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\setup;
 
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\Building;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Nette\Utils\Json;
 
 class BuildingController extends Controller
 {
@@ -27,10 +29,12 @@ class BuildingController extends Controller
         $this->validate($req, [
             'name' => 'required|string|unique:buildings,name',
             'floor' => 'required|integer',
+            'location' => 'required',
         ]);
         $insert = new Building();
         $insert->name = $req->name;
         $insert->floor = $req->floor;
+        $insert->location = $req->location;
         $insert->created_by = Auth::user()->id;
         $insert->save();
         return redirect()->route('building.index')->with('success',"$req->name Successfully Added");
@@ -45,10 +49,12 @@ class BuildingController extends Controller
         $this->validate($req,[
             'name' => "required|string",
             'floor' => 'required|integer',
+            'location' => 'required',
         ]);
         $update = Building::findOrFail($req->id);
         $update->name = $req->name;
         $update->floor = $req->floor;
+        $update->location = $req->location;
         $update->updated_at = Carbon::now()->toDateTimeString();
         $update->updated_by = Auth::user()->id;
         $update->save();
@@ -63,6 +69,11 @@ class BuildingController extends Controller
         return redirect()->back()->with('success',"Building Successfully Deleted");
     }
 
+    public function show($id = null){
+        if($id!=null){
+            $building = Building::with(['created_user', 'updated_user', 'deleted_user'])->where('deleted_at', null)->where('id', $id)->first();
+            return response()->json($building);
+        }
 
-
+    }
 }

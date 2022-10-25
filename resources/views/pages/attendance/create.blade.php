@@ -84,10 +84,13 @@
                             <div class="row justify-center">
                                 <div class="col-md-4">
                                 </div>
-                                <div class="col-md-3">
-                                    <input type="text" name="date" class="form-control mb-3 date text-center"
+                                <div class="col-md-3 text-center mb-3">
+                                    <input type="text" name="date" class="form-control date text-center"
                                         placeholder="Select Date" autocomplete="off"
                                         value="{{ $attendance_taken->date ?? '' }}">
+                                        @if ($errors->has('date'))
+                                        <span class="text-danger text-center">{{ $errors->first('date') }}</span>
+                                    @endif
                                 </div>
                                 <div class="col-md-4">
 
@@ -161,14 +164,6 @@
         });
 
         $(document).ready(function(){
-            @if ($errors->has('date'))
-                toastr.error("Please, select date");
-            @endif
-            
-            @if ($errors->has('student.*.id'))
-                toastr.error("There is no student");
-            @endif
-
             let date_time = new Date();
             let date = date_time.getDate();
             let month = date_time.getMonth()+1;
