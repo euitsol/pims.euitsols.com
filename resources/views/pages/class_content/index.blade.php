@@ -37,9 +37,6 @@
 
                     </div>
                     <div class="card-body">
-                        @php
-                            $class_content = $class_content->first();
-                        @endphp
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="table-responsive">
