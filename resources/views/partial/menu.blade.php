@@ -162,6 +162,15 @@
                     </a>
                 </li>
             @endif
+            @if (Auth::user()->can('view building') || Auth::user()->role->id == 1)
+            <li class="nav-item">
+                <a href="{{ route('building.index') }}"
+                    class="nav-link {{ Request::is('setup/building/*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-minus"></i>
+                    <p>Buildings</p>
+                </a>
+            </li>
+        @endif
             @if (Auth::user()->can('view credit') || Auth::user()->role->id == 1)
                 <li class="nav-item">
                     <a href="{{ route('credit.index') }}"
@@ -242,7 +251,7 @@
                         <p>Nationality</p>
                     </a>
                 </li>
-            @endif        
+            @endif
             @if (Auth::user()->can('view routine') || Auth::user()->role->id == 1)
               <li class="nav-item">
                   <a href="{{ route('routine.index') }}"
