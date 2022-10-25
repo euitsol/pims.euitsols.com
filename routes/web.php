@@ -31,6 +31,7 @@ use App\Http\Controllers\student\StudentController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\setup\BuildingController;
 use App\Http\Controllers\ClassContentController;
+use App\Http\Controllers\setup\FloorController;
 use App\Http\Controllers\setup\RoutineController;
 
 /*
@@ -363,6 +364,11 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::post('/edit-store', [BuildingController::class, 'update'])->name('update');
             Route::get('/delete/{id}', [BuildingController::class, 'destroy'])->name('destroy');
             Route::get('/show/{id}', [BuildingController::class, 'show'])->name('show');
+        });
+
+         // Floor
+        Route::group(['as'=>'floor.','prefix' => 'floor'],function(){
+            Route::get('/create/{id}',[FloorController::class,'create'])->name('create');
         });
 
 
