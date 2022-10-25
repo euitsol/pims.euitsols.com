@@ -135,10 +135,10 @@
                                                                     class="fas fa-info"></i>
                                                                 </a>
                                                             @else
-                                                            <a href="javascript::void(0)"
-                                                                class="btn btn-sm btn-warning"  title="Please, take attendance first" onclick="return alert('Please, take attendance first')"> <i
+                                                            <button
+                                                                class="btn btn-sm btn-warning take_attendance"  title="Please, take attendance first"> <i
                                                                     class="fas fa-info"></i>
-                                                                </a>
+                                                                </button>
                                                             @endif
                                                         </td>
                                                     </tr>
@@ -192,10 +192,10 @@
                                                                     class="fas fa-info"></i>
                                                                 </a>
                                                             @else
-                                                            <a href="javascript::void(0)"
-                                                                class="btn btn-sm btn-warning"  title="Please, take attendance first" onclick="return alert('Please, take attendance first')"> <i
+                                                            <button
+                                                                class="btn btn-sm btn-warning take_attendance"  title="Please, take attendance first"> <i
                                                                     class="fas fa-info"></i>
-                                                                </a>
+                                                                </button>
                                                             @endif
                                                         </td>
                                                     </tr>
@@ -211,3 +211,12 @@
             </div>
         </div>
     @endsection
+    @push('page_scripts')
+    <script>
+        $(document).ready(function(){
+            $('.take_attendance').click(function(){
+                toastr.error("Please, take attendance first");
+            });
+        });
+    </script>
+@endpush

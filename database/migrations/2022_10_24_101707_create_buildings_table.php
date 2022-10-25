@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('floor');
+            $table->longText('location');
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();

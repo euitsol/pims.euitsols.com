@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AdmittedStdAssign;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
+use App\Models\Building;
 use App\Models\Semester;
 use App\Models\Shift;
 use App\Models\Group;
@@ -15,6 +16,7 @@ use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\SubjectAssign;
 use App\Models\TeacherAssign;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Mailer\Transport\Dsn;
 
@@ -138,7 +140,7 @@ class AttendanceController extends Controller
                     ->where('date', $req->date)
                     ->where('class', $req->class)
                     ->first();
-                    
+
         if ($date_check) {
             $present = 0;
             $absent = 0;
