@@ -15,17 +15,34 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="float-left">
-                            <h4>{{ $building->name }}</h4>
-                            <h4>1<sup>st</sup> floor</h4>
+                            Add class room
+                            {{-- <h4>{{ $building->name }}</h4>
+                            <h4>1<sup>st</sup> floor</h4> --}}
                         </span>
                         <span class="float-right">
-                            <input type="number" id="class_room" class="from-control border-primary" step="1"
-                                placeholder="Enter Total class room">
+                            <a href="{{ route('floor.index') }}" class="btn btn-info">Back</a>
+
                         </span>
                     </div>
                     <div class="card-body">
+
+                        <div class="border p-3 border-success">
+                            <div class="row row-cols-3 g-3">
+                                <div class="col">
+                                    <h4>{{ $building->name }}</h4>
+                                <h4>1<sup>st</sup> floor</h4>
+                                </div>
+                                <div class="col"></div>
+                                <div class="col float-right">
+                                    <input type="number" id="class_room" class="from-control border-primary" step="1"
+                                    placeholder="Enter Total class room">
+                                </div>
+
+                            </div>
+                        </div>
+
                         <form action="">
-                            <div class="row row-cols-3" id="append">
+                            <div class="row row-cols-3 mt-3" id="append">
                             </div>
 
                         </form>

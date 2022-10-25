@@ -369,9 +369,8 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
          // Floor
         Route::group(['as'=>'floor.','prefix' => 'floor'],function(){
             Route::get('/create/{id}',[FloorController::class,'create'])->name('create');
+            Route::get('/index',[FloorController::class,'index'])->name('index');
         });
-
-
     });
 
     // Teacher Module
