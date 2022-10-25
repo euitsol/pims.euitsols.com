@@ -140,7 +140,7 @@ class AttendanceController extends Controller
     public function store(Request $req)
     {
         $this->validate($req, [
-            "date" => "required|before:today",
+            "date" => "required|date",
             'student.*.id' => 'required'
         ]);
         $date_check = StdAttendance::where('attendance_id', $req->attendance_id)
