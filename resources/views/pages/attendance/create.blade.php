@@ -85,7 +85,7 @@
                                 <div class="col-md-4">
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" name="date" class="form-control mb-3 date text-center"
+                                    <input type="date" name="date" class="form-control mb-3 date text-center"
                                         placeholder="Select Date" autocomplete="off"
                                         value="{{ $attendance_taken->date ?? '' }}">
                                 </div>
@@ -157,16 +157,14 @@
     <script>
         $('.date').datepicker({
             autoclose: true,
-            // format: 'dd/mm/yyyy',
-            // maxDate: 18/10/2022
+            minDate : new Date(),
         });
 
         $(document).ready(function(){
-
             @if ($errors->has('date'))
                 toastr.error("Please, select date");
             @endif
-
+            
             @if ($errors->has('student.*.id'))
                 toastr.error("There is no student");
             @endif
@@ -177,10 +175,6 @@
             let year = date_time.getFullYear();
             var current_date = date+'/'+month+'/'+year;
             console.log(date_time.getMonth());
-
-            if(!$('.date').val()){
-                $('.date').val(current_date);
-            }
         });
     </script>
 @endpush
