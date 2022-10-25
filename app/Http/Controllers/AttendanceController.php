@@ -16,12 +16,15 @@ use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\SubjectAssign;
 use App\Models\TeacherAssign;
-use GuzzleHttp\Psr7\Response;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Mailer\Transport\Dsn;
 
 class AttendanceController extends Controller
 {
+    public function __construct() {
+        return $this->middleware('auth');
+    }
 
     public function filter()
     {
@@ -122,7 +125,12 @@ class AttendanceController extends Controller
     public function create($id, $class)
     {
         $n['minfo'] = Attendance::with(['created_user', 'session', 'department', 'semester', 'subject', 'group', 'shift', 'teacher'])->find($id);
-        $n['students'] = AdmittedStdAssign::with('studentInfo')->where('semester_id', $n['minfo']->semester_id)->get();
+        $n['students'] = AdmittedStdAssign::with('studentInfo')
+                        ->where('session_id', $n['minfo']->session_id)
+                        ->where('semester_id', $n['minfo']->semester_id)
+                        ->where('group_id', $n['minfo']->group_id)
+                        ->where('shift_id', $n['minfo']->shift_id)
+                        ->get();
         $n['class'] = $class;
         $n['attendance_taken'] = StdAttendance::where('class', $class)
             ->where('attendance_id', $id)
@@ -133,7 +141,7 @@ class AttendanceController extends Controller
     public function store(Request $req)
     {
         $this->validate($req, [
-            "date" => "required|before:today",
+            "date" => "required|date",
             'student.*.id' => 'required'
         ]);
         $date_check = StdAttendance::where('attendance_id', $req->attendance_id)
@@ -141,7 +149,8 @@ class AttendanceController extends Controller
                     ->where('class', $req->class)
                     ->first();
 
-        if ($date_check) {
+        // if ($date_check) {
+
             $present = 0;
             $absent = 0;
             foreach ($req->student as $student) {
@@ -172,13 +181,14 @@ class AttendanceController extends Controller
                     $check->class = $req->class;
                     $check->date = $req->date;
                     $check->attendance = $student['attendance'];
-                    $check->created_by = Auth::user()->id;
+                    $check->updated_at = Carbon::now()->toDateTimeString();
+                    $check->updated_by = auth()->user()->id;
                     $check->save();
                 }
             }
-        } else {
-            return back()->with('error',"$req->date already taken,Please select another date");
-        }
+        // } else {
+        //     return back()->with('error',"$req->date already taken,Please select another date");
+        // }
         $total_std = $present + $absent;
 
         return redirect()->route('class_content.create', [$req->attendance_id, $req->class])->with('success', "Class-$req->class; Date: $req->date; Total students: $total_std; Present: $present;  Absent: $absent");

@@ -160,8 +160,7 @@
     <script>
         $('.date').datepicker({
             autoclose: true,
-            // format: 'dd/mm/yyyy',
-            // maxDate: 18/10/2022
+            minDate : new Date(),
         });
 
         $(document).ready(function(){
@@ -171,10 +170,6 @@
             let year = date_time.getFullYear();
             var current_date = date+'/'+month+'/'+year;
             console.log(date_time.getMonth());
-
-            if(!$('.date').val()){
-                $('.date').val(current_date);
-            }
         });
     </script>
 @endpush
