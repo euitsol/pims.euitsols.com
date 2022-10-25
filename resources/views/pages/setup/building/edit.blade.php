@@ -40,6 +40,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
+                                    <label class="col-sm-3" for="location">Location<span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <textarea name="location" id="location" class="form-control" cols="30" rows="4" placeholder="Enter the building location here">{{$building->location}}</textarea>
+                                        @if ($errors->has('location'))
+                                            <span class="text-danger">{{ $errors->first('location') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="form-group row">
                                     <label class="col-sm-3"></label>
                                     <div class="col-sm-9">
                                         <button type="submit" class="btn btn-primary w-100">Update</button>
