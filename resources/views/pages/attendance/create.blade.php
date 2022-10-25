@@ -85,7 +85,7 @@
                                 <div class="col-md-4">
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="date" name="date" class="form-control mb-3 date text-center"
+                                    <input type="text" name="date" class="form-control mb-3 date text-center"
                                         placeholder="Select Date" autocomplete="off"
                                         value="{{ $attendance_taken->date ?? '' }}">
                                 </div>
