@@ -25,21 +25,24 @@
                         </span>
                     </div>
                     <div class="card-body">
-
-                        <div class="border p-3 border-success">
-                            <div class="row row-cols-3 g-3">
-                                <div class="col">
-                                    <h4>{{ $building->name }}</h4>
-                                <h4>1<sup>st</sup> floor</h4>
+                       @if ($building)
+                       @for ($i = 1; $i<=$building->floor;$i++)
+                            <div class="card">
+                                <div class="card-header">
+                                    <span class="float-left">{{$i}}<sup>st</sup> Floor </span>
+                                    <span class="float-right">  <input type="number" id="class_room" class="from-control border-primary class_room" step="1"
+                                                placeholder="Enter Total class room"></span>
                                 </div>
-                                <div class="col"></div>
-                                <div class="col float-right">
-                                    <input type="number" id="class_room" class="from-control border-primary" step="1"
-                                    placeholder="Enter Total class room">
-                                </div>
+                                <div class="card-body">
+                                    <div class="row row-cols-3 append">
 
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                       @endfor
+
+                       @endif
+
 
                         <form action="">
                             <div class="row row-cols-3 mt-3" id="append">
@@ -59,9 +62,10 @@
 @push('page_scripts')
     <script>
         $(document).ready(function() {
-            $('#class_room').keyup(function() {
 
-                var individual_room = `
+           $('.class_room').each(function(index){
+                $(this).keyup(function(){
+                           var individual_room = `
                                 <div class="col shadow border rounded p-3 individual_room">
                                     <input type="number" class="form-control mb-2" placeholder="Enter class room number">
                                     <textarea name="details" class="form-control" cols="10" rows="3" placeholder="Enter class room's details"></textarea>
@@ -70,19 +74,45 @@
                 var room_number = $(this).val();
 
                 if(room_number >0){
-                    $('#append .individual_room,.submit-btn').remove();
-                    console.log('remove');
+
+                    $('.append .individual_room,.submit-btn').eq(index).remove();
+
                     for (i = 1; i <= room_number; i++) {
-                    $('#append').append(individual_room);
+                    $('.append').eq(index).append(individual_room);
                 }
 
                 //Subbimt button add
-                $('#append').append(`<div class="col-12">
+                $('.append').eq(index).append(`<div class="col-12">
                                 <button class="btn btn-primary w-100 mt-2 submit-btn">Submit</button>
                             </div>`);
                 }
+                })
 
-            });
+           });
+            // $('#class_room').keyup(function() {
+
+            //     var individual_room = `
+            //                     <div class="col shadow border rounded p-3 individual_room">
+            //                         <input type="number" class="form-control mb-2" placeholder="Enter class room number">
+            //                         <textarea name="details" class="form-control" cols="10" rows="3" placeholder="Enter class room's details"></textarea>
+            //                     </div>
+            //                     `;
+            //     var room_number = $(this).val();
+
+            //     if(room_number >0){
+            //         $('#append .individual_room,.submit-btn').remove();
+            //         console.log('remove');
+            //         for (i = 1; i <= room_number; i++) {
+            //         $('#append').append(individual_room);
+            //     }
+
+            //     //Subbimt button add
+            //     $('#append').append(`<div class="col-12">
+            //                     <button class="btn btn-primary w-100 mt-2 submit-btn">Submit</button>
+            //                 </div>`);
+            //     }
+
+            // });
         });
     </script>
 @endpush

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class FloorController extends Controller
 {
    public function create($id){
+
     $n['building'] = Building::findOrFail($id);
     return view('pages.setup.floor.create',$n);
    }

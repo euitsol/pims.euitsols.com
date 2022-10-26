@@ -72,7 +72,7 @@
                         <h4>Floor</h4>
                     </span>
                     <span class="float-right">
-                        @if(Auth::user()->can('add building') || Auth::user()->role->id == 1)<a href="{{ route('floor.create',[$building->id]) }}" class="btn btn-info">Add class room</a>@endif
+                        {{-- @if(Auth::user()->can('add building') || Auth::user()->role->id == 1)<a href="{{ route('floor.create',[$building->id]) }}" class="btn btn-info">Add class room</a>@endif --}}
                     </span>
                 </div>
                 <div class="card-body">
@@ -106,6 +106,7 @@
                                             @if(Auth::user()->can('delete building') || Auth::user()->role->id == 1)
                                                 <a href="{{ route('building.destroy', $building->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
                                             @endif
+                                            <a href="{{ route('floor.create',[$building->id]) }}" class="btn btn-info"><i class="fas fa-arrow-right"></i></a>
                                         </div>
                                     </td>
                                 </tr>
