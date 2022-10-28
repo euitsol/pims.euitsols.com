@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 
 class FloorController extends Controller
 {
+    public function __construct() {
+        return $this->middleware('auth');
+    }
     public function create($id)
     {
 

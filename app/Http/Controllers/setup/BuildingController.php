@@ -5,6 +5,7 @@ namespace App\Http\Controllers\setup;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Building;
+use App\Models\Floor;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Nette\Utils\Json;
@@ -17,6 +18,7 @@ class BuildingController extends Controller
 
     public function index(){
         $n['buildings'] = Building::where('deleted_at',null)->get();
+        $n['floor'] = Floor::with('building')->where('deleted_at',null)->get();
         return view('pages.setup.building.index',$n);
     }
 
