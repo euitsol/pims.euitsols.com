@@ -100,13 +100,13 @@
                                         <div class="btn-group">
                                             <a href="javascript:void(0)" class="btn btn-info btnView"
                                             data-id="{{ $building->id }}"><i class="fas fa-eye"></i></a>
-                                            @if(Auth::user()->can('edit building') || Auth::user()->role->id == 1)
+                                            {{-- @if(Auth::user()->can('edit building') || Auth::user()->role->id == 1)
                                                 <a href="{{ route('building.edit', $building->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                             @endif
                                             @if(Auth::user()->can('delete building') || Auth::user()->role->id == 1)
                                                 <a href="{{ route('building.destroy', $building->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
-                                            @endif
-                                            <a href="{{ route('floor.create',[$building->id]) }}" class="btn btn-info"><i class="fas fa-arrow-right"></i></a>
+                                            @endif --}}
+                                            <a href="{{ route('floor.create',[$building->id]) }}" class="btn btn-success"><i class="fas fa-arrow-right"></i></a>
                                         </div>
                                     </td>
                                 </tr>
