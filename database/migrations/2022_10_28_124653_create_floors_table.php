@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('building_id');
             $table->integer('floor');
             $table->integer('room_no');
-            $table->integer('seat_num')->nullable();
+            $table->integer('total_seat')->nullable();
             $table->longText('room_details')->nullable();
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();

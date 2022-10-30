@@ -371,6 +371,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::get('/create/{id}',[FloorController::class,'create'])->name('create');
             Route::get('/index',[FloorController::class,'index'])->name('index');
             Route::post('/store',[FloorController::class,'store'])->name('store');
+            Route::get('/assigned/{id}',[FloorController::class,'assigned'])->name('assigned');
         });
     });
 

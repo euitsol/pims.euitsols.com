@@ -46,7 +46,6 @@
                                         </div>
                                     </div>
                                 @endfor
-
                             @endif
 
                             {{-- Class room append here --}}
@@ -70,7 +69,7 @@
     <script>
         $(document).ready(function() {
             $('.total_room').each(function(index) {
-                $(this).on('keyup', function() {
+                $(this).on('keyup change', function() {
 
                     var room_number = $(this).val();
 
@@ -80,12 +79,12 @@
                         for (var i = 1; i <= room_number; i++) {
                             var individual_room = `
                                 <div class="col shadow border rounded p-3 individual_room">
-                                    <input type="number" class="form-control mb-2 input${index}" placeholder="Enter class room number"  name="floor[${index}][room][${i}][room_no]" required>
+                                    <input type="number" class="form-control mb-2 input${index}" placeholder="Enter classroom number"  name="floor[${index}][room][${i}][room_no]" required>
                                     @if ($errors->has('floor[${index}][room][${i}][room_no]'))
                                         <span class="text-danger">{{ $errors->first('floor[${index}][room][${i}][room_no]') }}</span>
                                     @endif
-                                    <input type="number" class="form-control mb-2 input${index}" placeholder="Enter Seat number"  name="floor[${index}][room][${i}][seat_num]">
-                                    <textarea class="form-control" cols="10" rows="3" placeholder="Enter class room's details" name="floor[${index}][room][${i}][room_details]"></textarea>
+                                    <input type="number" class="form-control mb-2 input${index}" placeholder="Enter total seat"  name="floor[${index}][room][${i}][total_seat]">
+                                    <textarea class="form-control" cols="10" rows="3" placeholder="Enter classroom's details" name="floor[${index}][room][${i}][room_details]"></textarea>
                                 </div>
                                 `;
                             $('.append').eq(index).append(individual_room);

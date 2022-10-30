@@ -17,4 +17,14 @@ class Building extends Model
     public function deleted_user(){
         return $this->belongsTo(User::class, 'deleted_by', 'id');
     }
+
+    public function floorCheck(){
+        if(Floor::find($this->id)){
+
+            return true;
+        }else{
+            return false;
+        }
+
+    }
 }

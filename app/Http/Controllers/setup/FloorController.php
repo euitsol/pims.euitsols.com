@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 
 class FloorController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         return $this->middleware('auth');
     }
     public function create($id)
@@ -23,22 +24,22 @@ class FloorController extends Controller
     {
         foreach ($req->floor as $floor => $single_floor) {
             // dd($single_floor);
-            if(isset($single_floor['room'])){
-
+            if (isset($single_floor['room'])) {
                 foreach ($single_floor['room'] as $key => $value) {
-                    $this->validate($req,[
-                        "floor[$floor][room][$key][room_no]" => "required"
-                    ]);
                     $insert = new Floor();
                     $insert->floor = $floor;
                     $insert->building_id = $req->building_id;
                     $insert->room_no = $value['room_no'];
-                    $insert->seat_num = $value['seat_num'];
+                    $insert->total_seat = $value['total_seat'];
                     $insert->room_details = $value['room_details'];
                     $insert->save();
                 }
             }
-
         }
+    }
+
+    public function assigned($id){
+        $n['floor'] = Floor::with('created_user','updated_user','building')->where('deleted_at',null)->where('building_id',$id)->get()->groupBy('floor');
+        return view('pages.setup.floor.assinged',$n);
     }
 }

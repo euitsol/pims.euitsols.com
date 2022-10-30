@@ -89,24 +89,28 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($floor as $key => $floor)
+                                @forelse($buildings as $key => $floor)
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
-                                    <td>{{ $floor->building->name }}</td>
-                                    <td>{{ $floor->building->floor }}</td>
-                                    <td>{{ date('d-m-Y', strtotime($floor->building->created_at)) }}</td>
-                                    <td>{{ $floor->building->created_user->name ?? 'system' }}</td>
+                                    <td>{{ $building->name }}</td>
+                                    <td>{{ $building->floor }}</td>
+                                    <td>{{ date('d-m-Y', strtotime($building->created_at)) }}</td>
+                                    <td>{{ $building->created_user->name ?? 'system' }}</td>
                                     <td class="text-center">
                                         <div class="btn-group">
                                             <a href="javascript:void(0)" class="btn btn-info btnView"
-                                            data-id="{{ $floor->building->id }}"><i class="fas fa-eye"></i></a>
-                                            {{-- @if(Auth::user()->can('edit floor->building') || Auth::user()->role->id == 1)
-                                                <a href="{{ route('floor->building.edit', $floor->building->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                            data-id="{{ $building->id }}"><i class="fas fa-eye"></i></a>
+                                            {{-- @if(Auth::user()->can('edit building') || Auth::user()->role->id == 1)
+                                                <a href="{{ route('building.edit', $building->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                             @endif
-                                            @if(Auth::user()->can('delete floor->building') || Auth::user()->role->id == 1)
-                                                <a href="{{ route('floor->building.destroy', $floor->building->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
+                                            @if(Auth::user()->can('delete building') || Auth::user()->role->id == 1)
+                                                <a href="{{ route('building.destroy', $building->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
                                             @endif --}}
-                                            <a href="{{ route('floor.create',[$building->id]) }}" class="btn btn-success"><i class="fas fa-arrow-right"></i></a>
+                                            @if ($building->floorCheck())
+                                                <a href="{{ route('floor.assigned',[$building->id]) }}" class="btn btn-success" title="Assign Floor"><i class="fas fa-arrow-right"></i></a>
+                                                @else
+                                                <a href="{{ route('floor.create',[$building->id]) }}"  class="btn btn-success"><i class="fas fa-arrow-right"></i></a>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
