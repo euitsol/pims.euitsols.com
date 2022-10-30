@@ -44,9 +44,9 @@
                                                 <div class="col-md-3 shadow border border-5 border-secondary rounded p-3 individual_room">
 
                                                     {{-- Remove button  --}}
-                                                    <span class="remove_room btn btn-sm btn-danger mb-3 float-right">
-                                                        <i class="fas fa-times  "></i>
-                                                    </span>
+                                                    <button type="button" class="remove_room btn btn-sm btn-danger mb-3 float-right" onclick="removeRoom(this)">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
                                                     <input type="number" class="form-control mb-2" placeholder="Enter classroom number"  name="floor[{{$key}}][room][{{$key1}}][room_no]" value="{{$value->room_no}}" required>
                                                     <input type="number" class="form-control mb-2" placeholder="Enter total seat"  name="floor[{{$key}}][room][{{$key1}}][total_seat]" value="{{$value->total_seat}}">
                                                     <textarea class="form-control" cols="10" rows="3" placeholder="Enter classroom's details" name="floor[{{$key}}][room][{{$key1}}][room_details]">{{$value->room_details}}</textarea>
@@ -58,7 +58,7 @@
 
                                                 {{-- Add new room button  --}}
                                             <div class="col-md-3  shadow border border-5 border-secondary rounded p-3 d-flex align-items-center justify-content-center">
-                                                <button type="button" id="{{$last_room}}" class="new_room btn btn-success text-center">Add a new room</button>
+                                                <button type="button" id="{{$last_room}}" floor="{{$key}}" class="new_room btn btn-success text-center" onclick="newRoomAdd(this)">Add a new room</button>
                                             </div>
                                         </div>
                                     </div>
@@ -91,44 +91,37 @@
 
 @push('page_scripts')
     <script>
-        //roomRemove function
-        function roomRemove(){
-            $('.remove_room').each(function(index){
-                $(this).click(function(){
-                    $(this).parent().remove();
-                });
-            })
-           }
 
-           //Add room function
-        function addRoom(){
-            $('.new_room').each(function(index){
+        //New room add
+        function newRoomAdd(This){
+        let room_index = $(This).attr('id');
+            room_index = Number(room_index);
+            $(This).attr('id',room_index+1)
 
-                $(this).click(function(){
-                    var room_index = $(this).attr('id');
-                    var i = Number(room_index);
-                    let new_room = `
-                                            <div class="col-md-3 shadow border border-5 border-secondary rounded p-3 individual_room">
-                                                <span class="remove_room btn btn-sm btn-danger mb-3 float-right">
-                                                    <i class="fas fa-times  "></i>
-                                                </span>
-                                                <input type="number" class="form-control mb-2 input${index}" placeholder="Enter classroom number"  name="floor[${index}][room][${i}][room_no]" required>
-                                                @if ($errors->has('floor[${index}][room][${i}][room_no]'))
-                                                    <span class="text-danger">{{ $errors->first('floor[${index}][room][${i}][room_no]') }}</span>
-                                                @endif
-                                                <input type="number" class="form-control mb-2 input${index}" placeholder="Enter total seat"  name="floor[${index}][room][${i}][total_seat]">
-                                                <textarea class="form-control" cols="10" rows="3" placeholder="Enter classroom's details" name="floor[${index}][room][${i}][room_details]"></textarea>
-                                            </div>
+        let floor_index = $(This).attr('floor');
+            floor_index = Number(floor_index);
+
+            let new_room = `
+                            <div class="col-md-3 shadow border border-5 border-secondary rounded p-3 individual_room">
+                                <button type='button' class="remove_room btn btn-sm btn-danger mb-3 float-right" onclick="removeRoom(this)">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                                <input type="number" class="form-control mb-2 input${floor_index}" placeholder="Enter classroom number"  name="floor[${floor_index}][room][${room_index}][room_no]" required>
+                                @if ($errors->has('floor[${floor_index}][room][${room_index}][room_no]'))
+                                    <span class="text-danger">{{ $errors->first('floor[${floor_index}][room][${room_index}][room_no]') }}</span>
+                                @endif
+                                <input type="number" class="form-control mb-2 input${floor_index}" placeholder="Enter total seat"  name="floor[${floor_index}][room][${room_index}][total_seat]">
+                                <textarea class="form-control" cols="10" rows="3" placeholder="Enter classroom's details" name="floor[${floor_index}][room][${room_index}][room_details]"></textarea>
+                            </div>
                     `;
+                    $(new_room).insertBefore($(This).parent());
 
-                    $(this).attr('id',i+1);
-                    $(new_room).insertBefore($(this).parent());
-                    roomRemove();
-                });
-
-            });
         }
 
+        //Room remove
+        function removeRoom(This){
+            $(This).parent().remove();
+        }
 
         $(document).ready(function() {
              //Add new floor
@@ -145,22 +138,13 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-3  shadow border border-5 border-secondary rounded p-3 d-flex align-items-center justify-content-center">
-                                                <button type="button" id="0" class="new_room btn btn-success text-center">Add a new room</button>
+                                                <button type="button" id="0"  class="new_room btn btn-success text-center" onclick="newRoomAdd(this)">Add a new room</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>  `;
                 $(new_floor).insertBefore($(this).parent().parent());
-                addRoom();
-
                 });
-
-
-        //Add new room
-        addRoom();
-
-            //Remove button
-            roomRemove();
 
 
             //copy code
