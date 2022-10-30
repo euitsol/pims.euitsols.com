@@ -100,7 +100,7 @@
 
         let floor_index = $(This).attr('floor');
             floor_index = Number(floor_index);
-
+            console.log(room_index,floor_index);
             let new_room = `
                             <div class="col-md-3 shadow border border-5 border-secondary rounded p-3 individual_room">
                                 <button type='button' class="remove_room btn btn-sm btn-danger mb-3 float-right" onclick="removeRoom(this)">
@@ -138,7 +138,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-3  shadow border border-5 border-secondary rounded p-3 d-flex align-items-center justify-content-center">
-                                                <button type="button" id="0"  class="new_room btn btn-success text-center" onclick="newRoomAdd(this)">Add a new room</button>
+                                                <button type="button" id="0" floor="${floor_no}"  class="new_room btn btn-success text-center" onclick="newRoomAdd(this)">Add a new room</button>
                                             </div>
                                         </div>
                                     </div>
