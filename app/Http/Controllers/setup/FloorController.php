@@ -17,7 +17,7 @@ class FloorController extends Controller
     {
 
         $n['building'] = Building::findOrFail($id);
-        return view('pages.setup.floor.create', $n);
+        return view('pages.setup.floor.test', $n);
     }
 
     public function store(Request $req)
@@ -40,6 +40,6 @@ class FloorController extends Controller
 
     public function assigned($id){
         $n['floor'] = Floor::with('created_user','updated_user','building')->where('deleted_at',null)->where('building_id',$id)->get()->groupBy('floor');
-        return view('pages.setup.floor.assinged',$n);
+        return view('pages.setup.floor.assigned',$n);
     }
 }

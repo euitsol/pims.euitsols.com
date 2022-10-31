@@ -27,8 +27,11 @@
                         $building_name = $floor_building->first();
                     @endphp
                     <h4 class="cart-title text-center">{{ $building_name->building->name }}</h4>
-                        <form action="{{ route('floor.store') }}" method="POST">
-                            @csrf
+                    <form action="{{ route('floor.store') }}" method="POST">
+                        @csrf
+                        <div class="row text-center">
+                            <input class="text-center m-auto" type="number" class="">
+                        </div>
 
                             @foreach ($floor as $key=>$floor)
 
@@ -44,6 +47,7 @@
                                                 <div class="col-md-3 shadow border border-5 border-secondary rounded p-3 individual_room">
 
                                                     {{-- Remove button  --}}
+                                                    <button class="btn btn-sm btn-info float-left">{{$key1+1}}</button>
                                                     <button type="button" class="remove_room btn btn-sm btn-danger mb-3 float-right" onclick="removeRoom(this)">
                                                         <i class="fas fa-times"></i>
                                                     </button>
