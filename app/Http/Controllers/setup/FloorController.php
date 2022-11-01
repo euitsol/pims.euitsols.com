@@ -17,7 +17,7 @@ class FloorController extends Controller
     {
 
         $n['building'] = Building::findOrFail($id);
-        return view('pages.setup.floor.test', $n);
+        return view('pages.setup.floor.create', $n);
     }
 
     public function store(Request $req)
