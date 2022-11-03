@@ -43,9 +43,12 @@
 
                         {{-- Floor name input  --}}
                         <div class="mb-3 margin-left text-center">
-                            <input name="total_floor"  class="text-center form-control w-25 m-auto" type="number" id="total_floor" placeholder="Enter total floor"  hidden />
+                            <input name="total_floor"  class="text-center form-control w-25 m-auto" type="number" id="total_floor" placeholder="Enter total floor"  />
                             <span class="text-danger m-auto" style="display: none">Removed: <span id="removed_floor_info"></span></span>
                         </div>
+                       <div class="text-center">
+                        <button type="button" class="btn btn-sm btn-success ">Show room</button>
+                       </div>
 
                         {{-- Floor append here when enter total floor  --}}
                         <div class="floor-append" id="floor_append"></div>
@@ -88,6 +91,7 @@
         function totalRoom(This) {
             let total_room = Number($(This).val());
             let floor = Number($(This).attr("floor"));
+            console.log(floor);
             let add_new_room_btn = $("#floor"+floor).find('.new-room-col');
             $(add_new_room_btn).prevAll().remove();
             $("#undo_info" + floor)
@@ -102,7 +106,7 @@
                                 <button type='button' class="remove_room btn btn-sm btn-danger mb-3 float-right" floor="${floor}" room="${i}"  id="remove${floor}${i}" onclick="removeRoom(this)">
                                     <i class="fas fa-times"></i>
                                 </button>
-                                <input type="number" class="room_number form-control mb-2 class_no${floor}" placeholder="Enter classroom number" floor="${floor}" room="${i}" name="floor[${floor}][room][${i}][room_no]" onclick="hiddenTotal(this,${floor})" onfocusout="checkRoomNum(this)" value='${floor+99+i}' required>
+                                <input type="number" class="room_number form-control mb-2 class_no${floor}" placeholder="Enter classroom number" floor="${floor}" room="${i}" name="floor[${floor}][room][${i}][room_no]" onclick="hiddenTotal(this,${floor})" onfocusout="checkRoomNum(this)" value='${floor*100+i}' required>
                                 @if ($errors->has('floor[${floor}][room][${i}][room_no]'))
                                     <span class="text-danger">{{ $errors->first('floor[${floor}][room][${i}][room_no]') }}</span>
                                 @endif
@@ -139,7 +143,7 @@
                                     <button type='button' class="remove_room btn btn-sm btn-danger mb-3 float-right" floor="${floor}" room="${room}" id="remove${floor}${room}" onclick="removeRoom(this)">
                                         <i class="fas fa-times"></i>
                                     </button>
-                                    <input type="number" class="room_number form-control mb-2" placeholder="Enter classroom number" floor="${floor}" room="${room}"  name="floor[${floor}][room][${room}][room_no]" onclick="hiddenTotal(this,${floor})" onfocusout="checkRoomNum(this)" value='${floor+99+room}' required>
+                                    <input type="number" class="room_number form-control mb-2" placeholder="Enter classroom number" floor="${floor}" room="${room}"  name="floor[${floor}][room][${room}][room_no]" onclick="hiddenTotal(this,${floor})" onfocusout="checkRoomNum(this)" value='${floor*100+room}' required>
                                     @if ($errors->has('floor[${floor}][room][${room}][room_no]'))
                                         <span class="text-danger">{{ $errors->first('floor[${floor}][room][${room}][room_no]') }}</span>
                                     @endif
@@ -164,7 +168,8 @@
            $(".room_number").each(function(index){
                if(room_no>0){
                 if(room_no == $(this).val()){
-                    $(`<span class='text-danger'>Room number ${room_no} exists in the floor ${$(this).attr('floor')}</span>`).insertAfter($(This));
+                    $(This).next('span').remove();
+                    $(`<span class='text-danger mb-2'>Room number ${room_no} exists in the floor ${$(this).attr('floor')}</span>`).insertAfter($(This));
                     $(This).attr('style','background: #fce4e4;');
                     err_check = 1
                 }
