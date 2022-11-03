@@ -22,13 +22,15 @@ class FloorController extends Controller
 
     public function store(Request $req)
     {
+
         foreach ($req->floor as $floor => $single_floor) {
             // dd($single_floor);
             if (isset($single_floor['room'])) {
                 foreach ($single_floor['room'] as $key => $value) {
                     $insert = new Floor();
+                    $insert->building_name = $req->building_name;
                     $insert->floor = $floor;
-                    $insert->building_id = $req->building_id;
+                    $insert->location = '-1';
                     $insert->room_no = $value['room_no'];
                     $insert->total_seat = $value['total_seat'];
                     $insert->room_details = $value['room_details'];

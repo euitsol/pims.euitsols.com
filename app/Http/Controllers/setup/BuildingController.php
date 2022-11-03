@@ -17,8 +17,10 @@ class BuildingController extends Controller
     }
 
     public function index(){
-        $n['buildings'] = Building::where('deleted_at',null)->get();
-        $n['floor'] = Floor::with('building')->where('deleted_at',null)->get();
+        $n['buildings'] = Building::where('deleted_at',null)->groupBy('name')->get();
+        // $n['buildings'] = Building::where('deleted_at',null)->groupBy('name')->get();
+        // dd($n);
+        // $n['floor'] = Floor::with('building')->where('deleted_at',null)->get();
         return view('pages.setup.building.index',$n);
     }
 
@@ -28,17 +30,49 @@ class BuildingController extends Controller
     }
 
     public function store(Request $req){
-        $this->validate($req, [
-            'name' => 'required|string|unique:buildings,name',
-            'floor' => 'required|integer',
-            'location' => 'required',
-        ]);
-        $insert = new Building();
-        $insert->name = $req->name;
-        $insert->floor = $req->floor;
-        $insert->location = $req->location;
-        $insert->created_by = Auth::user()->id;
-        $insert->save();
+        // dd($req->all());
+        // $this->validate($req, [
+        //     'name' => 'required|string|unique:buildings,name',
+        //     'floor' => 'required|integer',
+        //     'location' => 'required',
+        // ]);
+        // $insert = new Building();
+        // $insert->name = $req->name;
+        // $insert->floor = $req->floor;
+        // $insert->location = $req->location;
+        // $insert->created_by = Auth::user()->id;
+        // $insert->save();
+        foreach ($req->floor as $floor => $single_floor) {
+            // dd($single_floor['total_room']);
+            $name = $req->building_name;
+            $total_floor = $req->total_floor;
+            if (isset($single_floor['room'])) {
+                $total_room = $single_floor['total_room'];
+                foreach ($single_floor['room'] as $key => $value) {
+                    $insert = new Building();
+                    $insert->name = $name;
+                    $insert->total_floor = $total_floor;
+                    $insert->floor = $floor;
+                    $insert->location = '0';
+                    $insert->total_room = $total_room;
+                    $insert->room = $value['room_no'];
+                    $insert->total_seat = $value['total_seat'];
+                    $insert->room_details = $value['room_details'];
+                    $insert->created_by = Auth::user()->id;
+                    $insert->save();
+                }
+            }else{
+                $insert = new Building();
+                $insert->name = $name;
+                $insert->total_floor = $total_floor;
+                $insert->floor = $floor;
+                $insert->location = 0;
+                $insert->total_room = 0;
+                $insert->total_seat = 0;
+                $insert->created_by = Auth::user()->id;
+                $insert->save();
+            }
+        }
         return redirect()->route('building.index')->with('success',"$req->name Successfully Added");
     }
 

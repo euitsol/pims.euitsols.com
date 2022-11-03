@@ -30,7 +30,9 @@
                                 <tr>
                                     <th>SL</th>
                                     <th>Building Name</th>
-                                    <th>Floor</th>
+                                    <th>Total Floor</th>
+                                    <th>Total Room</th>
+                                    <th>Total Seat</th>
                                     <th>Created At</th>
                                     <th>Created By</th>
                                     <th class="text-center">Action</th>
@@ -41,7 +43,9 @@
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $building->name }}</td>
-                                    <td>{{ $building->floor }}</td>
+                                    <td>{{ $building->total_floor }}</td>
+                                    <td>{{ $building->total_room }}</td>
+                                    <td>{{ $building->total_seat }}</td>
                                     <td>{{ date('d-m-Y', strtotime($building->created_at)) }}</td>
                                     <td>{{ $building->created_user->name ?? 'system' }}</td>
                                     <td class="text-center">
@@ -63,62 +67,6 @@
                         </table>
                     </div>
 
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <span class="float-left">
-                        <h4>Floor</h4>
-                    </span>
-                    <span class="float-right">
-                        {{-- @if(Auth::user()->can('add building') || Auth::user()->role->id == 1)<a href="{{ route('floor.create',[$building->id]) }}" class="btn btn-info">Add class room</a>@endif --}}
-                    </span>
-                </div>
-                <div class="card-body">
-                    <div class="table table-responsive">
-                        <table id="table" class="table">
-                            <thead>
-                                <tr>
-                                    <th>SL</th>
-                                    <th>Building Name</th>
-                                    <th>Floor</th>
-                                    <th>Created At</th>
-                                    <th>Created By</th>
-                                    <th class="text-center">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($buildings as $key => $floor)
-                                <tr>
-                                    <td>{{ $key + 1 }}</td>
-                                    <td>{{ $building->name }}</td>
-                                    <td>{{ $building->floor }}</td>
-                                    <td>{{ date('d-m-Y', strtotime($building->created_at)) }}</td>
-                                    <td>{{ $building->created_user->name ?? 'system' }}</td>
-                                    <td class="text-center">
-                                        <div class="btn-group">
-                                            <a href="javascript:void(0)" class="btn btn-info btnView"
-                                            data-id="{{ $building->id }}"><i class="fas fa-eye"></i></a>
-                                            {{-- @if(Auth::user()->can('edit building') || Auth::user()->role->id == 1)
-                                                <a href="{{ route('building.edit', $building->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
-                                            @endif
-                                            @if(Auth::user()->can('delete building') || Auth::user()->role->id == 1)
-                                                <a href="{{ route('building.destroy', $building->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
-                                            @endif --}}
-                                            @if ($building->floorCheck())
-                                                <a href="{{ route('floor.assigned',[$building->id]) }}" class="btn btn-success" title="Assign Floor"><i class="fas fa-arrow-right"></i></a>
-                                                @else
-                                                <a href="{{ route('floor.create',[$building->id]) }}"  class="btn btn-success"><i class="fas fa-arrow-right"></i></a>
-                                            @endif
-                                        </div>
-                                    </td>
-                                </tr>
-                                @empty
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
             </div>
         </div>
