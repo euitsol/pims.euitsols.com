@@ -37,17 +37,17 @@
                     <form action="{{ route('building.store') }}" method="POST">
                         @csrf
                         {{-- Building name input  --}}
-                        <h4 class="cart-title margin-left ">
+                        <div class="cart-title text-center mb-2">
                             <input type="text" name="building_name" id="building_name" class="form-control w-25 m-auto text-center" placeholder="Enter building name"/>
-                        </h4>
+                        </div>
 
                         {{-- Floor name input  --}}
                         <div class="mb-3 margin-left text-center">
-                            <input name="total_floor"  class="text-center form-control w-25 m-auto" type="number" id="total_floor" placeholder="Enter total floor"  />
+                            <input name="total_floor"  class="text-center form-control w-25 m-auto" type="number" id="total_floor" placeholder="Enter total floor" step="5"  />
                             <span class="text-danger m-auto" style="display: none">Removed: <span id="removed_floor_info"></span></span>
                         </div>
-                       <div class="text-center">
-                        <button type="button" class="btn btn-sm btn-success ">Show room</button>
+                       <div class="text-center mb-3">
+                        <button type="button" id="show_floor" class="btn btn-success ">Show floor</button>
                        </div>
 
                         {{-- Floor append here when enter total floor  --}}
@@ -257,16 +257,38 @@
         //Docuemnt.ready function
         $(document).ready(function () {
             // show total floor input feild
-            $("#building_name").on("keyup", function () {
-                if ($(this).val().length > 4) {
-                    $("#total_floor").prop("hidden", false);
+            // $("#building_name").on("keyup", function () {
+            //     if ($(this).val().length > 4) {
+            //         $("#total_floor").prop("hidden", false);
 
-                }
+            //     }
+            // });
+
+            $('#total_floor').on('keyup change',function(){
+                $("#show_floor").removeClass('btn-outline-success');
+                $("#show_floor").addClass('btn-success');
             });
 
             //floor add according to total floor
-            $("#total_floor").on("keyup", function () {
-                let total_floor = Number($(this).val());
+            $("#show_floor").on("click", function () {
+
+                if(!$("#building_name").val()){
+                    $('#building_name').next('span').remove();
+                    $("<span class='text-danger mb-2'>Enter Building Name</span>").insertAfter($("#building_name"));
+                    return false;
+                }else{
+                    $('#building_name').next('span').remove();
+                }
+
+                if(!$("#total_floor").val()){
+                    $('#total_floor').next('span').remove();
+                    $("<span class='text-danger'>Enter total floor</span>").insertAfter($("#total_floor"));
+                    return false;
+                }else{
+                    $('#total_floor').next('span').remove();
+                }
+
+                let total_floor = Number($("#total_floor").val());
                 $("#new_floor").children().children().attr("id", total_floor+1);
                 $(".submit-btn").prop("hidden", true);
                 $("#floor_append").empty();
@@ -280,7 +302,7 @@
                                                     <input type='number' class="total-room form-control" name='floor[${i}][total_room]' placeholder="Enter total room" floor="${i}"  id='total_room${i}' onkeyup='totalRoom(this)'>
                                                     <span class="text-danger" id='undo_info${i}' style="display:none">Removed: <span></span></span>
                                                 </div>
-                                                <span class="h4 pl-1 pt-1">${i}<sup>st</sup> Floor</span>
+                                                <span class="h4 pt-1">Floor-${i}</span>
                                                 <button type='button' class="btn btn-sm bg-danger float-md-left" onclick="floorRemove(this)" floor="${i}">Remove</button>
                                             </div>
                                             <div class="card-body">
@@ -300,6 +322,8 @@
                         $("#floor_append").append(new_floor);
                     }
                 }
+                $(this).removeClass('btn-success');
+                $(this).addClass('btn-outline-success');
             });
 
             //Add new floor
@@ -312,8 +336,8 @@
                                             <input type='number' class="total-room form-control" name='floor[${floor}][total_room]' placeholder="Enter total room" floor="${floor}"  id='total_room${floor}' onkeyup='totalRoom(this)'>
                                             <span class="text-danger" id='undo_info${floor}' style="display:none">Removed: <span></span></span>
                                         </div>
-                                        <span class="float-left h5">${floor}<sup>st</sup> Floor </span>
-                                        <button type='button' class="btn btn-sm bg-danger float-md-left" floor="${floor}" onclick="floorRemove(this)">Remove</button>
+                                        <span class=" h5">Floor-${floor} </span>
+                                        <button type='button' class="btn btn-sm bg-danger" floor="${floor}" onclick="floorRemove(this)">Remove</button>
                                     </div>
                                     <div class="card-body">
                                         <div class="row">

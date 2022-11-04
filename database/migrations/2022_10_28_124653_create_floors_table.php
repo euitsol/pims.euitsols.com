@@ -13,26 +13,23 @@ return new class extends Migration
      */
     public function up()
     {
-        // Schema::create('floors', function (Blueprint $table) {
-        //     $table->id();
-        //     $table->unsignedBigInteger('building_id');
-        //     $table->integer('floor');
-        //     $table->integer('room_no');
-        //     $table->integer('total_seat')->nullable();
-        //     $table->longText('room_details')->nullable();
-        //     $table->timestamps();
-        //     $table->timestamp('deleted_at')->nullable();
-        //     $table->unsignedBigInteger('created_by')->nullable();
-        //     $table->unsignedBigInteger('updated_by')->nullable();
-        //     $table->unsignedBigInteger('deleted_by')->nullable();
-        // });
+        Schema::create('floors', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('building_id');
+            $table->integer('floor');
+            $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->unsignedBigInteger('deleted_by')->nullable();
+        });
 
-        // Schema::table('floors', function (Blueprint $table) {
-        //     $table->foreign('building_id', 'floors_building')->references('id')->on('buildings')->onDelete('cascade')->onUpdate('cascade');
-        //     $table->foreign('created_by', 'floors_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-        //     $table->foreign('deleted_by', 'floors_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-        //     $table->foreign('updated_by', 'floors_updated')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-        // });
+        Schema::table('floors', function (Blueprint $table) {
+            $table->foreign('building_id', 'floors_building')->references('id')->on('buildings')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('created_by', 'floors_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('deleted_by', 'floors_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('updated_by', 'floors_updated')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+        });
     }
 
     /**

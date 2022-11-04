@@ -27,4 +27,34 @@ class Building extends Model
         }
 
     }
+    public function total_room(){
+        $floors = Floor::where('building_id',$this->id)->get();
+        $total_room = 0;
+        foreach($floors as $floor){
+             $total_room += count(Room::where('floor_id',$floor->id)->get());
+        }
+        return $total_room;
+    }
+
+    public function total_seat(){
+        $floors = Floor::where('building_id',$this->id)->get();
+        $total_seat = 0;
+        foreach($floors as $floor){
+            $rooms = Room::where('floor_id',$floor->id)->get();
+            foreach($rooms as $room)
+             $total_seat += $room->total_seat;
+        }
+        return $total_seat;
+    }
+
+    public function floorRoom($floor){
+        $floor = Floor::where('building_id',$this->id)->where('floor',$floor)->first();
+        $total_room = count(Room::where('floor_id',$floor->id)->get());
+        return $total_room;
+    }
+    public function rooms($floor){
+        $floor = Floor::where('building_id',$this->id)->where('floor',$floor)->first();
+        $rooms = Room::where('floor_id',$floor->id)->get();
+        return $rooms;
+    }
 }

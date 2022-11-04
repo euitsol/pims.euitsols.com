@@ -44,8 +44,8 @@
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $building->name }}</td>
                                     <td>{{ $building->total_floor }}</td>
-                                    <td>{{ $building->total_room }}</td>
-                                    <td>{{ $building->total_seat }}</td>
+                                    <td>{{ $building->total_room() }}</td>
+                                    <td>{{ $building->total_seat() }}</td>
                                     <td>{{ date('d-m-Y', strtotime($building->created_at)) }}</td>
                                     <td>{{ $building->created_user->name ?? 'system' }}</td>
                                     <td class="text-center">
