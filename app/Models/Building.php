@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Building extends Model
 {
@@ -30,6 +31,10 @@ class Building extends Model
     public function floors(){
         $floors = Floor::where('building_id',$this->id)->get();
         return $floors;
+    }
+    public function floor(){
+
+        return  $this->hasMany(Floor::class,'building_id');
     }
     public function total_room(){
         $floors = Floor::where('building_id',$this->id)->get();

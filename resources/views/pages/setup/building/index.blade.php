@@ -50,7 +50,7 @@
                                     <td>{{ $building->created_user->name ?? 'system' }}</td>
                                     <td class="text-center">
                                         <div class="btn-group">
-                                            <a href="javascript:void(0)" class="btn btn-info btnView"
+                                            <a href="{{route('building.show',[$building->id])}}" class="btn btn-info"
                                             data-id="{{ $building->id }}"><i class="fas fa-eye"></i></a>
                                             @if(Auth::user()->can('edit building') || Auth::user()->role->id == 1)
                                                 <a href="{{ route('building.edit', $building->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>

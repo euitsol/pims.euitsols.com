@@ -106,8 +106,8 @@ class BuildingController extends Controller
 
     public function show($id = null){
         if($id!=null){
-            $building = Building::with(['created_user', 'updated_user', 'deleted_user','floors'])->where('deleted_at', null)->where('id', $id)->first();
-            return view("pages.setup.building.show");
+            $n['building'] = Building::with(['created_user', 'updated_user', 'deleted_user','floor'])->where('deleted_at', null)->where('id', $id)->first();
+            return view("pages.setup.building.show",$n);
         }
 
     }
