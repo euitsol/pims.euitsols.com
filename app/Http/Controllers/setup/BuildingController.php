@@ -18,7 +18,7 @@ class BuildingController extends Controller
     }
 
     public function index(){
-        $n['buildings'] = Building::where('deleted_at',null)->get();
+        $n['buildings'] = Building::with(['created_user', 'updated_user', 'deleted_user','floor'])->where('deleted_at',null)->get();
         return view('pages.setup.building.index',$n);
     }
 

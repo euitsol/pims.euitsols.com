@@ -81,8 +81,10 @@
         //Hide total input field
         function hiddenTotal(This, trind) {
             let floor = $(This).attr('floor');
+
+            $("#show_floor").attr("style", "display: none;");
             $("#total_floor").prop("readonly", true);
-            $("#new_floor").prop("style", "block !important");
+            $("#new_floor").prop("style", "display: block !important;");
             $("#floor"+floor).find('.total-room').prop("readonly", true);
             $(This).parent().parent().children(".new-room-col").css("display", "block");
         }
@@ -106,12 +108,12 @@
                                 <button type='button' class="remove_room btn btn-sm btn-danger mb-3 float-right" floor="${floor}" room="${i}"  id="remove${floor}${i}" onclick="removeRoom(this)">
                                     <i class="fas fa-times"></i>
                                 </button>
-                                <input type="number" class="room_number form-control mb-2 class_no${floor}" placeholder="Enter classroom number" floor="${floor}" room="${i}" name="floor[${floor}][room][${i}][room_no]" onclick="hiddenTotal(this,${floor})" onfocusout="checkRoomNum(this)" value='${floor*100+i}' required>
+                                <input type="number" class="room_number form-control mb-2 class_no${floor}" placeholder="Enter classroom number" floor="${floor}" room="${i}" name="floor[${floor}][room][${i}][room_no]" onkeyup="hiddenTotal(this,${floor})" onfocusout="checkRoomNum(this)" value='${floor*100+i}' required>
                                 @if ($errors->has('floor[${floor}][room][${i}][room_no]'))
                                     <span class="text-danger">{{ $errors->first('floor[${floor}][room][${i}][room_no]') }}</span>
                                 @endif
-                                <input type="number" class="form-control mb-2 total_seat${floor}" placeholder="Enter total seat" floor="${floor}" room="${i}"  name="floor[${floor}][room][${i}][total_seat]" onclick="hiddenTotal(this,${floor})">
-                                <textarea class="form-control room_details${floor}" cols="10" rows="3" placeholder="Enter classroom's details" floor="${floor}" room="${i}" name="floor[${floor}][room][${i}][room_details]" onclick="hiddenTotal(this,${floor})"></textarea>
+                                <input type="number" class="form-control mb-2 total_seat${floor}" placeholder="Enter total seat" floor="${floor}" room="${i}"  name="floor[${floor}][room][${i}][total_seat]" onkeyup="hiddenTotal(this,${floor})">
+                                <textarea class="form-control room_details${floor}" cols="10" rows="3" placeholder="Enter classroom's details" floor="${floor}" room="${i}" name="floor[${floor}][room][${i}][room_details]" onkeyup="hiddenTotal(this,${floor})"></textarea>
                             </div>
                             <div class="col-md-3 shadow border border-5 border-secondary rounded p-3 d-flex align-items-center justify-content-center delete-me" id="undo${floor}${i}" style="display: none !important">
                                 <span class="badge rounded-pill bg-warning text-dark position-absolute top-0 start-0" style='left: 2px;top: 4px;'>${i}</span>
@@ -143,12 +145,12 @@
                                     <button type='button' class="remove_room btn btn-sm btn-danger mb-3 float-right" floor="${floor}" room="${room}" id="remove${floor}${room}" onclick="removeRoom(this)">
                                         <i class="fas fa-times"></i>
                                     </button>
-                                    <input type="number" class="room_number form-control mb-2" placeholder="Enter classroom number" floor="${floor}" room="${room}"  name="floor[${floor}][room][${room}][room_no]" onclick="hiddenTotal(this,${floor})" onfocusout="checkRoomNum(this)" value='${floor*100+room}' required>
+                                    <input type="number" class="room_number form-control mb-2" placeholder="Enter classroom number" floor="${floor}" room="${room}"  name="floor[${floor}][room][${room}][room_no]" onkeyup="hiddenTotal(this,${floor})" onfocusout="checkRoomNum(this)" value='${floor*100+room}' required>
                                     @if ($errors->has('floor[${floor}][room][${room}][room_no]'))
                                         <span class="text-danger">{{ $errors->first('floor[${floor}][room][${room}][room_no]') }}</span>
                                     @endif
-                                    <input type="number" class="form-control mb-2" placeholder="Enter total seat" floor="${floor}" room="${room}"  name="floor[${floor}][room][${room}][total_seat]" onclick="hiddenTotal(this,${floor})">
-                                    <textarea class="form-control" cols="10" rows="3" placeholder="Enter classroom's details" floor="${floor}" room="${room}" name="floor[${floor}][room][${room}][room_details]" onclick="hiddenTotal(this,${floor})"></textarea>
+                                    <input type="number" class="form-control mb-2" placeholder="Enter total seat" floor="${floor}" room="${room}"  name="floor[${floor}][room][${room}][total_seat]" onkeyup="hiddenTotal(this,${floor})">
+                                    <textarea class="form-control" cols="10" rows="3" placeholder="Enter classroom's details" floor="${floor}" room="${room}" name="floor[${floor}][room][${room}][room_details]" onkeyup="hiddenTotal(this,${floor})"></textarea>
                                 </div>
                                 <div class="col-md-3 shadow border border-5 border-secondary rounded p-3 d-flex align-items-center justify-content-center delete-me" id="undo${floor}${room}" style="display: none !important">
                                 <span class="badge rounded-pill bg-warning text-dark position-absolute top-0 start-0" style='left: 2px;top: 4px;'>${room}</span>
@@ -265,7 +267,6 @@
             // });
 
             $('#total_floor').on('keyup change',function(){
-                $("#show_floor").removeClass('btn-outline-success');
                 $("#show_floor").addClass('btn-success');
             });
 
@@ -323,7 +324,7 @@
                     }
                 }
                 $(this).removeClass('btn-success');
-                $(this).addClass('btn-outline-success');
+                $(this).addClass('border-success');
             });
 
             //Add new floor

@@ -43,7 +43,7 @@
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $building->name }}</td>
-                                    <td>{{ count($building->floors()) }}</td>
+                                    <td>{{ count($building->floor) }}</td>
                                     <td>{{ $building->total_room() }}</td>
                                     <td>{{ $building->total_seat() }}</td>
                                     <td>{{ date('d-m-Y', strtotime($building->created_at)) }}</td>

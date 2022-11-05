@@ -45,40 +45,6 @@
                     </span>
                 </div>
                 <div class="card-body" id="building_details">
-                    {{-- <div id="registration-form" style="padding: 0%;">
-                        <div class="row mt-3 d-flex align-items-center">
-                            <div class="col-md-3">
-                                <img src="{{asset('assets/image/default/site-logo.jpg')}}" height="35"
-                                    alt="logo">
-                            </div>
-                            <div class="col-md-8 offset-1 header-right">
-                                <h2 class="text-right  p-0 m-0 font-weight-bold">
-                                    European IT Solutions Institute
-                                </h2>
-                                <p class="text-right p-0 m-0">
-                                    Noor Mansion (3rd Floor), Plot#04, Main Road#01, Mirpur-10,
-                                    Dhaka-1216
-                                </p>
-                                <p class="text-right p-0 m-0">
-                                    <strong>Mobile:</strong>+880 1741 877 058,
-                                    <strong>Phone: </strong> +880 2580 508 45</p>
-                                <p class="text-right p-0 m-0">
-                                    <strong>Email:</strong> training@euitsols-inst.com,
-                                    <strong>Web:</strong> www.euitsols-inst.com
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row mt-5">
-                            <div class="registration-title col-md-6 offset-md-3">
-                                <h2 class="text-center text-white py-2">{{$building->name}}</h2>
-                            </div>
-                        </div>
-
-                        <div class="row justify-content-center mt-5">
-                            <p class="">{{ env('APP_URL') }}</p>
-                        </div>
-
-                    </div> --}}
                     <h4 class="w-100 text-center text-capitalize text-info">{{$building->name}}</h4>
                     <div class="row mb-5">
                         <div class="col-md-4 m-auto">

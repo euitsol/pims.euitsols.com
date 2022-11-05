@@ -19,19 +19,7 @@ class Building extends Model
         return $this->belongsTo(User::class, 'deleted_by', 'id');
     }
 
-    public function floorCheck(){
-        if(Floor::find($this->id)){
 
-            return true;
-        }else{
-            return false;
-        }
-
-    }
-    public function floors(){
-        $floors = Floor::where('building_id',$this->id)->get();
-        return $floors;
-    }
     public function floor(){
 
         return  $this->hasMany(Floor::class,'building_id');
