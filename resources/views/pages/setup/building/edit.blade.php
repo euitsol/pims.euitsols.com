@@ -34,25 +34,29 @@
                     </span>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('building.store') }}" method="POST">
+                    <form action="{{ route('building.update') }}" method="POST">
                         @csrf
                         {{-- Building name input  --}}
+                        <input type="hidden" name="id" value="{{$building->id}}">
                         <div class="cart-title text-center mb-2">
                             <input type="text" name="building_name" id="building_name" class="form-control w-25 m-auto text-center" placeholder="Enter building name" value="{{$building->name}}"/>
                         </div>
 
                         {{-- Floor name input  --}}
                         <div class="mb-3 margin-left text-center">
-                            <input name="total_floor"  class="text-center form-control w-25 m-auto" type="number" id="total_floor" placeholder="Enter total floor" step="1" value="{{$building->total_floor}}" readonly/>
+                            <input name="total_floor"  class="text-center form-control w-25 m-auto" type="number" id="total_floor" placeholder="Enter total floor" step="1" value="{{count($building->floors())}}" readonly/>
                             <span class="text-danger m-auto" style="display: none">Removed: <span id="removed_floor_info"></span></span>
                         </div>
 
                         {{-- Floor append here when enter total floor  --}}
-                        @for ($i = 1; $i<= $building->total_floor;$i++)
+                        @foreach ($building->floors() as $i => $floor)
+                        @php
+                            $i = $i+1;
+                        @endphp
                         <div class="card" id="floor{{$i}}">
                             <div class="card-header d-flex justify-content-between w-100">
                                 <div class="text-center">
-                                    <input type='number' class="total-room form-control"  placeholder="Enter total room" floor="{{$i}}"  id='total_room{{$i}}'  @if(count($building->rooms($i))>0) value="{{count($building->rooms($i))}}" readonly @else onkeyup='totalRoom(this)' @endif>
+                                    <input type='number' name='floor[{{$i}}][total_room]' class="total-room form-control"  placeholder="Enter total room" floor="{{$i}}"  id='total_room{{$i}}'  @if(count($floor->rooms())>0) value="{{count($floor->rooms())}}" readonly @else onkeyup='totalRoom(this)' @endif>
                                     <span class="text-danger" id='undo_info{{$i}}' style="display:none">Removed: <span></span></span>
                                 </div>
                                 <span class="h4 pt-1">Floor-{{$i}}</span>
@@ -60,9 +64,11 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    @if($building->rooms($i))
+                                    @if($floor->rooms() !== null)
                                         {{-- Room  --}}
-                                        @foreach($building->rooms($i) as $j => $room)
+                                        {{-- @dd($floor->rooms($i)) --}}
+
+                                        @foreach($floor->rooms() as $j => $room)
                                             @php
                                                 $j = $j+1;
                                             @endphp
@@ -80,11 +86,12 @@
                                                 <button type="button" id="undo_input${{$i.$j}}" floor="{{$i}}" room="{{$j}}"  class="undo btn btn-danger text-center" onclick="undo(this)">Undo</button>
                                             </div>
                                         @endforeach
-                                    @endif
 
-                                    <div class="col-md-3 new-room-col shadow border border-5 border-secondary rounded p-3 d-flex align-items-center justify-content-center" @if(count($building->rooms($i))<1) style='display:none !important;' @endif>
-                                        <button type="button" id="0" floor="{{$i}}" room='{{$j+1}}'  class="new_room btn btn-success text-center" onclick="newRoomAdd(this)">Add a new room</button>
+                                    <div class="col-md-3 new-room-col shadow border border-5 border-secondary rounded p-3 d-flex align-items-center justify-content-center" @if(!isset($j)) style="display: none !important" @endif>
+                                        <button type="button" id="0" floor="{{$i}}" room='@if(isset($j)) {{{$j+2 }}} @else 0 @endif'  class="new_room btn btn-success text-center" onclick="newRoomAdd(this)">Add a new room</button>
                                     </div>
+
+                                    @endif
 
                                 </div>
                             </div>
@@ -95,12 +102,12 @@
                             </div>
                         </div>
 
-                        @endfor
+                        @endforeach
 
                         {{-- Add new floor button  --}}
                         <div class="card" id="new_floor">
                             <div class="card-body d-flex align-items-center justify-content-center">
-                                <span id="{{$i}}" class="new_floor btn btn-success float-right mb-3">Add a new floor</span>
+                                <span id="{{$i+1}}" class="new_floor btn btn-success float-right mb-3">Add a new floor</span>
                             </div>
                         </div>
 

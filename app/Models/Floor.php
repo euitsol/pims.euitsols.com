@@ -22,4 +22,14 @@ class Floor extends Model
     public function building(){
         return $this->belongsTo(Building::class,'building_id','id');
     }
+    public function rooms(){
+            $rooms = Room::where('floor_id',$this->id)->get();
+            if($rooms){
+                return $rooms;
+            }else{
+                return [];
+            }
+    }
+
+    
 }

@@ -18,7 +18,7 @@ class BuildingController extends Controller
     }
 
     public function index(){
-        $n['buildings'] = Building::where('deleted_at',null)->groupBy('name')->get();
+        $n['buildings'] = Building::where('deleted_at',null)->get();
         return view('pages.setup.building.index',$n);
     }
 
@@ -29,7 +29,6 @@ class BuildingController extends Controller
     public function store(Request $req){
         $building_insert = new Building();
         $building_insert->name = $req->building_name;
-        $building_insert->total_floor = $req->total_floor;
         $building_insert->location = '0';
         $building_insert->created_by = Auth::user()->id;
         $building_insert->save();
@@ -60,18 +59,40 @@ class BuildingController extends Controller
     }
 
     public function update(Request $req){
-        $this->validate($req,[
-            'name' => "required|string",
-            'floor' => 'required|integer',
-            'location' => 'required',
-        ]);
-        $update = Building::findOrFail($req->id);
-        $update->name = $req->name;
-        $update->floor = $req->floor;
-        $update->location = $req->location;
-        $update->updated_at = Carbon::now()->toDateTimeString();
-        $update->updated_by = Auth::user()->id;
-        $update->save();
+    //    dd($req->all());
+       $building_update = Building::findOrFail($req->id);
+       $building_update->name = $req->building_name;
+       $building_update->location = '0';
+       $building_update->updated_by = Auth::user()->id;
+       $building_update->save();
+
+        //delete floor and room
+        $exists_floors = Floor::where('building_id',$req->id)->get();
+        foreach($exists_floors as $exist_floor){
+         Room::where('floor_id',$exist_floor->id)->delete();
+        }
+        Floor::where('building_id',$req->id)->delete();
+
+       foreach ($req->floor as $floor => $single_floor) {
+           //save floor
+           $floor_update = new Floor();
+           $floor_update->building_id = $building_update->id;
+           $floor_update->floor = $floor;
+           $floor_update->updated_by = Auth::user()->id;
+           $floor_update->save();
+           if (isset($single_floor['room'])) {
+               foreach ($single_floor['room'] as $key => $value) {
+                    //save room
+                   $room_update = new Room();
+                   $room_update->floor_id = $floor_update->id;
+                   $room_update->room = $value['room_no'];
+                   $room_update->total_seat = $value['total_seat'];
+                   $room_update->room_details = $value['room_details'];
+                   $room_update->updated_by = Auth::user()->id;
+                   $room_update->save();
+               }
+           }
+       }
         return redirect()->route('building.index')->with('success',"Building Successfully Updated");
     }
 
@@ -85,8 +106,8 @@ class BuildingController extends Controller
 
     public function show($id = null){
         if($id!=null){
-            $building = Building::with(['created_user', 'updated_user', 'deleted_user'])->where('deleted_at', null)->where('id', $id)->first();
-            return response()->json($building);
+            $building = Building::with(['created_user', 'updated_user', 'deleted_user','floors'])->where('deleted_at', null)->where('id', $id)->first();
+            return view("pages.setup.building.show");
         }
 
     }
