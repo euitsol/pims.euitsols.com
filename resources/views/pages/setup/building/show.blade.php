@@ -78,17 +78,19 @@
                                     <table class="table table-sm table-bordered table-striped table-success">
                                         <thead class="table-warning">
                                             <tr>
-                                                <th class="align-center">Room number</th>
-                                                <th class="align-center">Total seat </th>
-                                                <th class="align-center">Room details</th>
+                                                <th>Room number</th>
+                                                <th>Room name</th>
+                                                <th>Total seat </th>
+                                                <th>Room details</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                         @foreach($floor->room as $key => $room)
                                         <tr>
-                                            <td>{{ $room->room }}</td>
-                                            <td>{{ $room->total_seat }}</td>
-                                            <td>{! $room->room_details !}</td>
+                                            <td class="align-middle">{{ $room->room }}</td>
+                                            <td class="align-middle">{{ $room->name }}</td>
+                                            <td class="align-middle">{{ $room->total_seat }}</td>
+                                            <td class="align-middle">{!! $room->room_details !!}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>

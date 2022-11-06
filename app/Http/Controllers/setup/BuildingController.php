@@ -113,4 +113,14 @@ class BuildingController extends Controller
         }
 
     }
+
+    public function nameCheck(Request $req){
+        $check = Building::where('deleted_at',null)->where('name',$req->name)->first();
+        if($check === null){
+            return 1;
+        }else{
+            return 0;
+        }
+        // return response()->json($req->name);
+    }
 }

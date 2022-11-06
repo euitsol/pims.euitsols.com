@@ -78,7 +78,7 @@
                                                     <i class="fas fa-times"></i>
                                                 </button>
                                                 <input type="number" class="room_number form-control mb-2 class_no{{$i}}" placeholder="Enter room number" data-floor="{{$i}}" data-room="{{$j}}" name="floor[{{$i}}][room][{{$j}}][room_no]" value="{{$room->room}}" onfocusout="checkRoomNum(this)"  required>
-                                                <input type="text" class="room_name form-control mb-2 room_name{{$i}}" placeholder="Enter room name" data-floor="{{$i}}" data-room="{{$j}}" name="floor[{{$i}}][room][{{$j}}][room_name]">
+                                                <input type="text" class="room_name form-control mb-2 room_name{{$i}}" placeholder="Enter room name" data-floor="{{$i}}" data-room="{{$j}}" name="floor[{{$i}}][room][{{$j}}][room_name]" value="{{$room->name}}">
                                                 <input type="number" class="form-control mb-2 total_seat{{$i}}" placeholder="Enter total seat" data-floor="{{$i}}" data-room="{{$j}}"  name="floor[{{$i}}][room][{{$j}}][total_seat]" value="{{$room->total_seat}}">
                                                 <textarea class="form-control room_details{{$i}}" cols="10" rows="3" placeholder="Enter room's details" data-floor="{{$i}}" data-room="{{$j}}" name="floor[{{$i}}][room][{{$j}}][room_details]">{{$room->room_details}}</textarea>
                                             </div>

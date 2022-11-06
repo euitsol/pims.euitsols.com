@@ -364,6 +364,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::post('/edit-store', 'update')->name('update');
             Route::get('/delete/{id}', 'destroy')->name('destroy');
             Route::get('/show/{id}', 'show')->name('show');
+            Route::get('/name-check', 'nameCheck')->name('name_check');
         });
 
          // Floor

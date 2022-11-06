@@ -14,9 +14,28 @@
     .card-header::after{
         display: none;
     }
-    /* .margin-left{
-        margin-left: 105px !important;
-    } */
+    .spinner-border-sm {
+    width: 22px !important;
+    height: 22px !important;
+    border-width: 0.2em;
+}
+#check_name{
+    top: 7px;
+    right: 38%;
+}
+#check_name span{
+    display: none;
+}
+#check_name i#wrong{
+    font-size: 24px;
+    color: #f70909;
+    display: none;
+}
+#check_name i#right{
+    font-size: 23px;
+    color: green;
+    display: none;
+}
 </style>
 @endpush
 
@@ -37,13 +56,19 @@
                     <form action="{{ route('building.store') }}" method="POST">
                         @csrf
                         {{-- Building name input  --}}
-                        <div class="cart-title text-center mb-2">
-                            <input type="text" name="building_name" id="building_name" class="form-control w-25 m-auto text-center" placeholder="Enter building name"/>
+
+                        <div class="cart-title text-center mb-2 position-relative">
+                            <input type="text" name="building_name" id="building_name" class="form-control w-25 m-auto text-center" placeholder="Enter building name" step="0"/>
+                            <div id="check_name" class="position-absolute">
+                                <span id="spinner" class="custom-spinner spinner-border spinner-border-sm text-primary"></span>
+                                <i id="right" class="fas fa-check-circle"></i>
+                                <i id="wrong" class="fas fa-times-circle"></i>
+                            </div>
                         </div>
 
                         {{-- Floor name input  --}}
                         <div class="mb-3 margin-left text-center">
-                            <input name="total_floor"  class="text-center form-control w-25 m-auto" type="number" id="total_floor" placeholder="Enter total floor" step="5"  />
+                            <input name="total_floor"  class="text-center form-control w-25 m-auto" type="number" id="total_floor" placeholder="Enter total floor" step="0"  />
                             <span class="text-danger m-auto" style="display: none">Removed: <span id="removed_floor_info"></span></span>
                         </div>
                        <div class="text-center mb-3">
@@ -108,9 +133,9 @@
                                 <button type='button' class="remove_room btn btn-sm btn-danger mb-3 float-right" data-floor="${floor}" data-room="${i}"  id="remove${floor}${i}" onclick="removeRoom(this)">
                                     <i class="fas fa-times"></i>
                                 </button>
-                                <input type="number" class="room_number form-control mb-2 class_no${floor}" placeholder="Enter room number" data-floor="${floor}" data-room="${i}" name="floor[${floor}][room][${i}][room_no]" onkeyup="hiddenTotal(this,${floor})" onfocusout="checkRoomNum(this)" value='${floor*100+i}' required>
+                                <input type="number" step="0" class="room_number form-control mb-2 class_no${floor}" placeholder="Enter room number" data-floor="${floor}" data-room="${i}" name="floor[${floor}][room][${i}][room_no]" onkeyup="hiddenTotal(this,${floor})" onfocusout="checkRoomNum(this)" value='${floor*100+i}' required>
                                 <input type="text" class="room_number form-control mb-2 room_name${floor}" placeholder="Enter room name" data-floor="${floor}" data-room="${i}" name="floor[${floor}][room][${i}][room_name]" onkeyup="hiddenTotal(this,${floor})">
-                                <input type="number" class="form-control mb-2 total_seat${floor}" placeholder="Enter total seat" data-floor="${floor}" data-room="${i}"  name="floor[${floor}][room][${i}][total_seat]" onkeyup="hiddenTotal(this,${floor})">
+                                <input type="number" step="0" class="form-control mb-2 total_seat${floor}" placeholder="Enter total seat" data-floor="${floor}" data-room="${i}"  name="floor[${floor}][room][${i}][total_seat]" onkeyup="hiddenTotal(this,${floor})">
                                 <textarea class="form-control room_details${floor}" cols="10" rows="3" placeholder="Enter room's details" data-floor="${floor}" data-room="${i}" name="floor[${floor}][room][${i}][room_details]" onkeyup="hiddenTotal(this,${floor})"></textarea>
                             </div>
                             <div class="col-md-3 shadow border border-5 border-secondary rounded p-3 d-flex align-items-center justify-content-center delete-me" id="undo${floor}${i}" style="display: none !important">
@@ -143,9 +168,9 @@
                                     <button type='button' class="remove_room btn btn-sm btn-danger mb-3 float-right" data-floor="${floor}" data-room="${room}" id="remove${floor}${room}" onclick="removeRoom(this)">
                                         <i class="fas fa-times"></i>
                                     </button>
-                                    <input type="number" class="room_number form-control mb-2" placeholder="Enter room number" data-floor="${floor}" data-room="${room}"  name="floor[${floor}][room][${room}][room_no]" onkeyup="hiddenTotal(this,${floor})" onfocusout="checkRoomNum(this)" value='${floor*100+room}' required>
+                                    <input type="number" step="0" class="room_number form-control mb-2" placeholder="Enter room number" data-floor="${floor}" data-room="${room}"  name="floor[${floor}][room][${room}][room_no]" onkeyup="hiddenTotal(this,${floor})" onfocusout="checkRoomNum(this)" value='${floor*100+room}' required>
                                     <input type="text" class="room_name form-control mb-2" placeholder="Enter room name" data-floor="${floor}" data-room="${room}"  name="floor[${floor}][room][${room}][room_name]" onkeyup="hiddenTotal(this,${floor})">
-                                    <input type="number" class="form-control mb-2" placeholder="Enter total seat" data-floor="${floor}" data-room="${room}"  name="floor[${floor}][room][${room}][total_seat]" onkeyup="hiddenTotal(this,${floor})">
+                                    <input type="number" step="0" class="form-control mb-2" placeholder="Enter total seat" data-floor="${floor}" data-room="${room}"  name="floor[${floor}][room][${room}][total_seat]" onkeyup="hiddenTotal(this,${floor})">
                                     <textarea class="form-control" cols="10" rows="3" placeholder="Enter room's details" data-floor="${floor}" data-room="${room}" name="floor[${floor}][room][${room}][room_details]" onkeyup="hiddenTotal(this,${floor})"></textarea>
                                 </div>
                                 <div class="col-md-3 shadow border border-5 border-secondary rounded p-3 d-flex align-items-center justify-content-center delete-me" id="undo${floor}${room}" style="display: none !important">
@@ -254,13 +279,46 @@
 
         //Docuemnt.ready function
         $(document).ready(function () {
-            // show total floor input feild
-            // $("#building_name").on("keyup", function () {
-            //     if ($(this).val().length > 4) {
-            //         $("#total_floor").prop("hidden", false);
 
-            //     }
-            // });
+            $("#building_name").on('keyup',function () {
+
+                $(this).next('div#check_name').children('span#spinner').css('display','none');
+                $(this).next('div#check_name').children('i').css('display','none');
+                $("#check_name").children('i#wrong').css('display','none');
+                $("#building_name").attr('style','background: inherit;')
+
+                if($(this).val() !== ''){
+                    $(this).next('div#check_name').children('span#spinner').css('display','block');
+                    var building_name = $(this).val();
+                }else{
+                    return false;
+                }
+
+                $.ajax({
+                    type: "get",
+                    url: "{{route('building.name_check')}}",
+                    data: {
+                        name:building_name
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(response);
+                        if(response ===1){
+                            $("#check_name").children('span#spinner').css('display','none');
+                            $("#check_name").children('i#wrong').css('display','none');
+                            $("#building_name").attr('style','background: inherit;')
+                            $("#check_name").children('i#right').css('display','block');
+                            $("#show_floor").css('display','inline-block');
+                        }else{
+                            $("#check_name").children('span#spinner').css('display','none');
+                            $("#check_name").children('i#right').css('display','none');
+                            $("#show_floor").css('display','none');
+                            $("#check_name").children('i#wrong').css('display','block');
+                            $("#building_name").attr('style','background: #fce4e4;')
+                        }
+                    }
+                });
+             });
 
             $('#total_floor').on('keyup change',function(){
                 $("#show_floor").addClass('btn-success');
@@ -269,6 +327,7 @@
             //floor add according to total floor
             $("#show_floor").on("click", function () {
 
+                $("#total_floor").val(Math.round($("#total_floor").val()));
                 if(!$("#building_name").val()){
                     $('#building_name').next('span').remove();
                     $("<span class='text-danger mb-2'>Enter Building Name</span>").insertAfter($("#building_name"));
@@ -296,7 +355,7 @@
                         let new_floor = `<div class="card" id="floor${i}">
                                             <div class="card-header d-flex justify-content-between w-100">
                                                 <div class="text-center">
-                                                    <input type='number' class="total-room form-control" name='floor[${i}][total_room]' placeholder="Enter total room" data-floor="${i}"  id='total_room${i}' onkeyup='totalRoom(this)'>
+                                                    <input type='number' step="0" class="total-room form-control" name='floor[${i}][total_room]' placeholder="Enter total room" data-floor="${i}"  id='total_room${i}' onkeyup='totalRoom(this)'>
                                                     <span class="text-danger" id='undo_info${i}' style="display:none">Removed: <span></span></span>
                                                 </div>
                                                 <span class="h4 pt-1">Floor-${i}</span>
@@ -330,7 +389,7 @@
                 let new_floor = `<div class="card" id="floor${floor}">
                                     <div class="card-header d-flex justify-content-between w-100">
                                         <div class='text-center'>
-                                            <input type='number' class="total-room form-control" name='floor[${floor}][total_room]' placeholder="Enter total room" data-floor="${floor}"  id='total_room${floor}' onkeyup='totalRoom(this)'>
+                                            <input type='number' step="0" class="total-room form-control" name='floor[${floor}][total_room]' placeholder="Enter total room" data-floor="${floor}"  id='total_room${floor}' onkeyup='totalRoom(this)'>
                                             <span class="text-danger" id='undo_info${floor}' style="display:none">Removed: <span></span></span>
                                         </div>
                                         <span class=" h5">Floor-${floor} </span>
