@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('floor_id');
-            $table->integer('room')->nullable();
+            $table->integer('room');
+            $table->integer('name')->nullable();
             $table->integer('total_seat')->nullable();
             $table->longText('room_details')->nullable();
             $table->timestamps();

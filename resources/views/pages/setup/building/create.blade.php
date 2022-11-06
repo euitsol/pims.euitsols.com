@@ -80,7 +80,7 @@
 
         //Hide total input field
         function hiddenTotal(This, trind) {
-            let floor = $(This).attr('floor');
+            let floor = $(This).attr('data-floor');
 
             $("#show_floor").attr("style", "display: none;");
             $("#total_floor").prop("readonly", true);
@@ -92,7 +92,7 @@
         //Room append according to total room
         function totalRoom(This) {
             let total_room = Number($(This).val());
-            let floor = Number($(This).attr("floor"));
+            let floor = Number($(This).attr("data-floor"));
             console.log(floor);
             let add_new_room_btn = $("#floor"+floor).find('.new-room-col');
             $(add_new_room_btn).prevAll().remove();
@@ -105,19 +105,17 @@
                     let new_room = `
                             <div class="col-md-3 shadow border border-5 border-secondary rounded p-3 individual_room" id="room${floor}${i}">
                                 <span class="badge rounded-pill bg-warning text-dark position-absolute top-0 start-0" style='left: 2px;top: 4px;'>${i}</span>
-                                <button type='button' class="remove_room btn btn-sm btn-danger mb-3 float-right" floor="${floor}" room="${i}"  id="remove${floor}${i}" onclick="removeRoom(this)">
+                                <button type='button' class="remove_room btn btn-sm btn-danger mb-3 float-right" data-floor="${floor}" data-room="${i}"  id="remove${floor}${i}" onclick="removeRoom(this)">
                                     <i class="fas fa-times"></i>
                                 </button>
-                                <input type="number" class="room_number form-control mb-2 class_no${floor}" placeholder="Enter classroom number" floor="${floor}" room="${i}" name="floor[${floor}][room][${i}][room_no]" onkeyup="hiddenTotal(this,${floor})" onfocusout="checkRoomNum(this)" value='${floor*100+i}' required>
-                                @if ($errors->has('floor[${floor}][room][${i}][room_no]'))
-                                    <span class="text-danger">{{ $errors->first('floor[${floor}][room][${i}][room_no]') }}</span>
-                                @endif
-                                <input type="number" class="form-control mb-2 total_seat${floor}" placeholder="Enter total seat" floor="${floor}" room="${i}"  name="floor[${floor}][room][${i}][total_seat]" onkeyup="hiddenTotal(this,${floor})">
-                                <textarea class="form-control room_details${floor}" cols="10" rows="3" placeholder="Enter classroom's details" floor="${floor}" room="${i}" name="floor[${floor}][room][${i}][room_details]" onkeyup="hiddenTotal(this,${floor})"></textarea>
+                                <input type="number" class="room_number form-control mb-2 class_no${floor}" placeholder="Enter room number" data-floor="${floor}" data-room="${i}" name="floor[${floor}][room][${i}][room_no]" onkeyup="hiddenTotal(this,${floor})" onfocusout="checkRoomNum(this)" value='${floor*100+i}' required>
+                                <input type="text" class="room_number form-control mb-2 room_name${floor}" placeholder="Enter room name" data-floor="${floor}" data-room="${i}" name="floor[${floor}][room][${i}][room_name]" onkeyup="hiddenTotal(this,${floor})">
+                                <input type="number" class="form-control mb-2 total_seat${floor}" placeholder="Enter total seat" data-floor="${floor}" data-room="${i}"  name="floor[${floor}][room][${i}][total_seat]" onkeyup="hiddenTotal(this,${floor})">
+                                <textarea class="form-control room_details${floor}" cols="10" rows="3" placeholder="Enter room's details" data-floor="${floor}" data-room="${i}" name="floor[${floor}][room][${i}][room_details]" onkeyup="hiddenTotal(this,${floor})"></textarea>
                             </div>
                             <div class="col-md-3 shadow border border-5 border-secondary rounded p-3 d-flex align-items-center justify-content-center delete-me" id="undo${floor}${i}" style="display: none !important">
                                 <span class="badge rounded-pill bg-warning text-dark position-absolute top-0 start-0" style='left: 2px;top: 4px;'>${i}</span>
-                                <button type="button" id="undo_input${floor}${i}" floor="${floor}" room="${i}"  class="undo btn btn-danger text-center" onclick="undo(this)">Undo</button>
+                                <button type="button" id="undo_input${floor}${i}" data-floor="${floor}" data-room="${i}"  class="undo btn btn-danger text-center" onclick="undo(this)">Undo</button>
                             </div>
                     `;
 
@@ -129,32 +127,30 @@
                     .attr("id", room_index + 1);
                 $(add_new_room_btn)
                     .children()
-                    .attr("room", room_index + 1);
+                    .attr("data-room", room_index + 1);
             }
         }
         //New room add
         function newRoomAdd(This) {
-            let floor = Number($(This).attr("floor"));
-            let room = Number($(This).attr("room"));
+            let floor = Number($(This).attr("data-floor"));
+            let room = Number($(This).attr("data-room"));
 
-            $(This).attr("room", room + 1);
+            $(This).attr("data-room", room + 1);
 
             let new_room = `
                                 <div class="col-md-3 shadow border border-5 border-secondary rounded p-3 individual_room" id="room${floor}${room}">
                                     <span class="badge rounded-pill bg-warning text-dark position-absolute top-0 start-0" style='left: 2px;top: 4px;'>${room}</span>
-                                    <button type='button' class="remove_room btn btn-sm btn-danger mb-3 float-right" floor="${floor}" room="${room}" id="remove${floor}${room}" onclick="removeRoom(this)">
+                                    <button type='button' class="remove_room btn btn-sm btn-danger mb-3 float-right" data-floor="${floor}" data-room="${room}" id="remove${floor}${room}" onclick="removeRoom(this)">
                                         <i class="fas fa-times"></i>
                                     </button>
-                                    <input type="number" class="room_number form-control mb-2" placeholder="Enter classroom number" floor="${floor}" room="${room}"  name="floor[${floor}][room][${room}][room_no]" onkeyup="hiddenTotal(this,${floor})" onfocusout="checkRoomNum(this)" value='${floor*100+room}' required>
-                                    @if ($errors->has('floor[${floor}][room][${room}][room_no]'))
-                                        <span class="text-danger">{{ $errors->first('floor[${floor}][room][${room}][room_no]') }}</span>
-                                    @endif
-                                    <input type="number" class="form-control mb-2" placeholder="Enter total seat" floor="${floor}" room="${room}"  name="floor[${floor}][room][${room}][total_seat]" onkeyup="hiddenTotal(this,${floor})">
-                                    <textarea class="form-control" cols="10" rows="3" placeholder="Enter classroom's details" floor="${floor}" room="${room}" name="floor[${floor}][room][${room}][room_details]" onkeyup="hiddenTotal(this,${floor})"></textarea>
+                                    <input type="number" class="room_number form-control mb-2" placeholder="Enter room number" data-floor="${floor}" data-room="${room}"  name="floor[${floor}][room][${room}][room_no]" onkeyup="hiddenTotal(this,${floor})" onfocusout="checkRoomNum(this)" value='${floor*100+room}' required>
+                                    <input type="text" class="room_name form-control mb-2" placeholder="Enter room name" data-floor="${floor}" data-room="${room}"  name="floor[${floor}][room][${room}][room_name]" onkeyup="hiddenTotal(this,${floor})">
+                                    <input type="number" class="form-control mb-2" placeholder="Enter total seat" data-floor="${floor}" data-room="${room}"  name="floor[${floor}][room][${room}][total_seat]" onkeyup="hiddenTotal(this,${floor})">
+                                    <textarea class="form-control" cols="10" rows="3" placeholder="Enter room's details" data-floor="${floor}" data-room="${room}" name="floor[${floor}][room][${room}][room_details]" onkeyup="hiddenTotal(this,${floor})"></textarea>
                                 </div>
                                 <div class="col-md-3 shadow border border-5 border-secondary rounded p-3 d-flex align-items-center justify-content-center delete-me" id="undo${floor}${room}" style="display: none !important">
                                 <span class="badge rounded-pill bg-warning text-dark position-absolute top-0 start-0" style='left: 2px;top: 4px;'>${room}</span>
-                                <button type="button" id="undo_input${floor}${room}" floor="${floor}" room="${room}"  class="undo btn btn-danger text-center" onclick="undo(this)">Undo</button>
+                                <button type="button" id="undo_input${floor}${room}" data-floor="${floor}" data-room="${room}"  class="undo btn btn-danger text-center" onclick="undo(this)">Undo</button>
                             </div>
                         `;
             $(new_room).insertBefore($(This).parent());
@@ -171,7 +167,7 @@
                if(room_no>0){
                 if(room_no == $(this).val()){
                     $(This).next('span').remove();
-                    $(`<span class='text-danger mb-2'>Room number ${room_no} exists in the floor ${$(this).attr('floor')}</span>`).insertAfter($(This));
+                    $(`<span class='text-danger mb-2'>Room number ${room_no} exists in the floor ${$(this).attr('data-floor')}</span>`).insertAfter($(This));
                     $(This).attr('style','background: #fce4e4;');
                     err_check = 1
                 }
@@ -186,8 +182,8 @@
 
         //Room remove
         function removeRoom(This) {
-            let floor = $(This).attr("floor");
-            let room = $(This).attr("room");
+            let floor = $(This).attr("data-floor");
+            let room = $(This).attr("data-room");
             var floor_room = floor + room;
 
             $("#room" + floor_room).attr("hidden", true);
@@ -213,8 +209,8 @@
 
         //Undo function
         function undo(This) {
-            let floor = $(This).attr("floor");
-            let room = $(This).attr("room");
+            let floor = $(This).attr("data-floor");
+            let room = $(This).attr("data-room");
             let floor_room = floor + room;
             $("#undo" + floor_room).attr("style", "display: none !important;");
             $("#room" + floor_room).attr("hidden", false);
@@ -227,7 +223,7 @@
         }
 
         function floorRemove(This){
-            let floor = $(This).attr('floor');
+            let floor = $(This).attr('data-floor');
             $('#floor'+floor).css('display','none');
             $('#floor'+floor).find("input").prop('disabled',true);
             $('#undo_floor'+floor).css('display','block');
@@ -243,7 +239,7 @@
 
 
         function floorUndo(This){
-            let floor = $(This).attr('floor');
+            let floor = $(This).attr('data-floor');
             $('#undo_floor'+floor).css('display','none');
             $('#floor'+floor).css('display','block');
             $('#floor'+floor).find("input").prop('disabled',false);
@@ -300,23 +296,23 @@
                         let new_floor = `<div class="card" id="floor${i}">
                                             <div class="card-header d-flex justify-content-between w-100">
                                                 <div class="text-center">
-                                                    <input type='number' class="total-room form-control" name='floor[${i}][total_room]' placeholder="Enter total room" floor="${i}"  id='total_room${i}' onkeyup='totalRoom(this)'>
+                                                    <input type='number' class="total-room form-control" name='floor[${i}][total_room]' placeholder="Enter total room" data-floor="${i}"  id='total_room${i}' onkeyup='totalRoom(this)'>
                                                     <span class="text-danger" id='undo_info${i}' style="display:none">Removed: <span></span></span>
                                                 </div>
                                                 <span class="h4 pt-1">Floor-${i}</span>
-                                                <button type='button' class="btn btn-sm bg-danger float-md-left" onclick="floorRemove(this)" floor="${i}">Remove</button>
+                                                <button type='button' class="btn btn-sm bg-danger float-md-left" onclick="floorRemove(this)" data-floor="${i}">Remove</button>
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-md-3 new-room-col shadow border border-5 border-secondary rounded p-3 d-flex align-items-center justify-content-center" style='display: none !important'>
-                                                        <button type="button" id="0" floor="${i}" room='0'  class="new_room btn btn-success text-center" onclick="newRoomAdd(this)">Add a new room</button>
+                                                        <button type="button" id="0" data-floor="${i}" data-room='0'  class="new_room btn btn-success text-center" onclick="newRoomAdd(this)">Add a new room</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="card" id="undo_floor${i}" style="display: none;">
                                             <div class="card-body text-center">
-                                                <button type="button" id="undo${i}" floor="${i}"  class="btn btn-danger text-center" onclick="floorUndo(this)">Undo the Floor ${i}</button>
+                                                <button type="button" id="undo${i}" data-floor="${i}"  class="btn btn-danger text-center" onclick="floorUndo(this)">Undo the Floor ${i}</button>
                                             </div>
                                         </div> `;
 
@@ -334,23 +330,23 @@
                 let new_floor = `<div class="card" id="floor${floor}">
                                     <div class="card-header d-flex justify-content-between w-100">
                                         <div class='text-center'>
-                                            <input type='number' class="total-room form-control" name='floor[${floor}][total_room]' placeholder="Enter total room" floor="${floor}"  id='total_room${floor}' onkeyup='totalRoom(this)'>
+                                            <input type='number' class="total-room form-control" name='floor[${floor}][total_room]' placeholder="Enter total room" data-floor="${floor}"  id='total_room${floor}' onkeyup='totalRoom(this)'>
                                             <span class="text-danger" id='undo_info${floor}' style="display:none">Removed: <span></span></span>
                                         </div>
                                         <span class=" h5">Floor-${floor} </span>
-                                        <button type='button' class="btn btn-sm bg-danger" floor="${floor}" onclick="floorRemove(this)">Remove</button>
+                                        <button type='button' class="btn btn-sm bg-danger" data-floor="${floor}" onclick="floorRemove(this)">Remove</button>
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-3 new-room-col shadow border border-5 border-secondary rounded p-3 d-flex align-items-center justify-content-center" style='display: none !important'>
-                                                <button type="button" id="0" floor="${floor}" room="0"  class="new_room btn btn-success text-center" onclick="newRoomAdd(this)">Add a new room</button>
+                                                <button type="button" id="0" data-floor="${floor}" data-room="0"  class="new_room btn btn-success text-center" onclick="newRoomAdd(this)">Add a new room</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card" id="undo_floor${floor}" style="display: none;">
                                     <div class="card-body text-center">
-                                        <button type="button" id="undo${floor}" floor="${floor}"  class="btn btn-danger text-center" onclick="floorUndo(this)">Undo the Floor ${floor}</button>
+                                        <button type="button" id="undo${floor}" data-floor="${floor}"  class="btn btn-danger text-center" onclick="floorUndo(this)">Undo the Floor ${floor}</button>
                                     </div>
                                 </div> `;
                 $(new_floor).insertBefore($(this).parent().parent());

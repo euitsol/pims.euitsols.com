@@ -43,6 +43,7 @@ class BuildingController extends Controller
                     $room_insert = new Room();
                     $room_insert->floor_id = $floor_insert->id;
                     $room_insert->room = $value['room_no'];
+                    $room_insert->name = $value['room_name'];
                     $room_insert->total_seat = $value['total_seat'];
                     $room_insert->room_details = $value['room_details'];
                     $room_insert->created_by = Auth::user()->id;
@@ -86,6 +87,7 @@ class BuildingController extends Controller
                    $room_update = new Room();
                    $room_update->floor_id = $floor_update->id;
                    $room_update->room = $value['room_no'];
+                   $room_update->name = $value['room_name'];
                    $room_update->total_seat = $value['total_seat'];
                    $room_update->room_details = $value['room_details'];
                    $room_update->updated_by = Auth::user()->id;

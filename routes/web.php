@@ -356,14 +356,14 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
         });
 
          // Building
-         Route::group(['as' => 'building.', 'prefix' => 'building'], function () {
-            Route::get('/view', [BuildingController::class, 'index'])->name('index');
-            Route::get('/add', [BuildingController::class, 'create'])->name('create');
-            Route::post('/add-store', [BuildingController::class, 'store'])->name('store');
-            Route::get('/edit/{id}', [BuildingController::class, 'edit'])->name('edit');
-            Route::post('/edit-store', [BuildingController::class, 'update'])->name('update');
-            Route::get('/delete/{id}', [BuildingController::class, 'destroy'])->name('destroy');
-            Route::get('/show/{id}', [BuildingController::class, 'show'])->name('show');
+         Route::controller(BuildingController::class)->prefix('building')->name('building.')->group( function () {
+            Route::get('/view', 'index')->name('index');
+            Route::get('/add', 'create')->name('create');
+            Route::post('/add-store', 'store')->name('store');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::post('/edit-store', 'update')->name('update');
+            Route::get('/delete/{id}', 'destroy')->name('destroy');
+            Route::get('/show/{id}', 'show')->name('show');
         });
 
          // Floor

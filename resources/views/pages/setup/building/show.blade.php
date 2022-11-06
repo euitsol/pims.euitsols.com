@@ -58,7 +58,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>{{ count($building->floors()) }}</td>
+                                        <td>{{ count($building->floor) }}</td>
                                         <td>{{ $building->total_room() }}</td>
                                         <td>{{ $building->total_seat() }}</td>
                                     </tr>
@@ -78,9 +78,9 @@
                                     <table class="table table-sm table-bordered table-striped table-success">
                                         <thead class="table-warning">
                                             <tr>
-                                                <th>Room number</th>
-                                                <th>Total seat </th>
-                                                <th>Room details</th>
+                                                <th class="align-center">Room number</th>
+                                                <th class="align-center">Total seat </th>
+                                                <th class="align-center">Room details</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -88,7 +88,7 @@
                                         <tr>
                                             <td>{{ $room->room }}</td>
                                             <td>{{ $room->total_seat }}</td>
-                                            <td>{{ $room->room_details }}</td>
+                                            <td>{! $room->room_details !}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
