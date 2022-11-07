@@ -2,13 +2,6 @@
 
 @section('title', 'Library Management')
 
-@push('third_party_stylesheets')
-
-@endpush
-
-@push('page_css')
-
-@endpush
 
 @section('content')
 <div class="container-fluid">
@@ -55,14 +48,4 @@
     </div>
 </div>
 @endsection
-
-@push('third_party_scripts')
-
-@endpush
-
-@push('page_scripts')
-<script>
-
-</script>
-@endpush
 
