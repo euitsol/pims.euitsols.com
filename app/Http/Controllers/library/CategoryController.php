@@ -61,6 +61,7 @@ class CategoryController extends Controller
             $delete = Category::find($id);
             $delete->deleted_at = Carbon::now()->toDateTimeString();
             $delete->deleted_by = Auth::user()->id;
+            $delete->save();
             return back()->with('success','Successfully deleted');
         }
     }

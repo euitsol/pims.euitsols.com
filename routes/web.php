@@ -31,6 +31,7 @@ use App\Http\Controllers\student\StudentController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\setup\BuildingController;
 use App\Http\Controllers\ClassContentController;
+use App\Http\Controllers\library\BookshelfController;
 use App\Http\Controllers\library\CategoryController;
 use App\Http\Controllers\setup\RoutineController;
 
@@ -400,7 +401,11 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
 
     //Library Mangement
     Route::group(['as'=>'library.','prefix'=>'library'],function(){
+
+        //Setup
         Route::group(['as'=>'setup.','prefix'=>'setup'],function(){
+
+            //Category
             Route::controller(CategoryController::class)->prefix('category')->name('category.')->group(function(){
                 Route::get('/index','index')->name('index'); //route = library.setup.category.index
                 Route::get('/create','create')->name('create');//route = library.setup.category.create
@@ -408,6 +413,17 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
                 Route::get('/edit/{id}','edit')->name('edit');//route = library.setup.category.edit
                 Route::post('/update','update')->name('update');//route = library.setup.category.update
                 Route::get('/destroy/{id}','destroy')->name('destroy');//route = library.setup.category.destroy
+            });
+
+            //Bookshelf
+            Route::controller(BookshelfController::class)->prefix('bookshelf')->name('bookshelf.')->group(function(){
+                Route::get('/index','index')->name('index'); //route = library.setup.bookshelf.index
+                Route::get('/create','create')->name('create');//route = library.setup.bookshelf.create
+                Route::post('/store','store')->name('store');//route = library.setup.bookshelf.store
+                Route::get('/edit/{id}','edit')->name('edit');//route = library.setup.bookshelf.edit
+                Route::post('/update','update')->name('update');//route = library.setup.bookshelf.update
+                Route::get('/destroy/{id}','destroy')->name('destroy');//route = library.setup.bookshelf.destroy
+                Route::get('/show/{id}','show')->name('show');//route = library.setup.bookshelf.show
             });
         });
     });
