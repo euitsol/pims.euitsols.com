@@ -12,7 +12,7 @@
                         <h4>Books</h4>
                     </span>
                     <span class="float-right">
-                        @if(Auth::user()->can('add add-books') || Auth::user()->role->id == 1)<a href="{{ route('library.setup.add_book.create') }}" class="btn btn-info">Add new books</a>@endif
+                        @if(Auth::user()->can('add books') || Auth::user()->role->id == 1)<a href="{{ route('library.setup.book.create') }}" class="btn btn-info">Add new books</a>@endif
                     </span>
                 </div>
                 <div class="card-body">
@@ -46,10 +46,10 @@
                                             <a href="javascript:void(0)" class="btn btn-info btnView"
                                                         data-id="{{ $book->id }}"><i class="fas fa-eye"></i></a>
                                             @if(Auth::user()->can('edit book') || Auth::user()->role->id == 1)
-                                                <a href="{{ route('library.setup.add_book.edit', $book->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                                <a href="{{ route('library.setup.book.edit', $book->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                             @endif
                                             @if(Auth::user()->can('delete book') || Auth::user()->role->id == 1)
-                                                <a href="{{ route('library.setup.add_book.destroy', $book->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
+                                                <a href="{{ route('library.setup.book.destroy', $book->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
                                             @endif
                                         </div>
                                     </td>
@@ -180,7 +180,7 @@
         //view-modal
         $('.btnView').click( function(){
             if($(this).data('id') != null || $(this).data('id') != ''){
-                let url = ("{{ route('library.setup.add_book.show', ['id']) }}");
+                let url = ("{{ route('library.setup.book.show', ['id']) }}");
                 let _url = url.replace('id', $(this).data('id'));
                 $.ajax({
                     url: _url,

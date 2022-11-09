@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Library Management - Book')
+@section('title', 'Library Management - Edit Book')
 
 
 @section('content')
@@ -13,13 +13,13 @@
                         <h4>Edit {{$book->name}}</h4>
                     </span>
                     <span class="float-right">
-                        @if(Auth::user()->can('library-setup-category view') || Auth::user()->role->id == 1)<a href="{{ route('library.setup.add_book.index') }}" class="btn btn-info">Back</a>@endif
+                        @if(Auth::user()->can('library-setup-category view') || Auth::user()->role->id == 1)<a href="{{ route('library.setup.book.index') }}" class="btn btn-info">Back</a>@endif
                     </span>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-10 m-auto">
-                            <form action="{{ route('library.setup.add_book.update') }}" method="POST" class="form-horizontal">
+                            <form action="{{ route('library.setup.book.update') }}" method="POST" class="form-horizontal">
                                 @csrf
                                 <input type="hidden" name="id" value="{{$book->id}}">
 

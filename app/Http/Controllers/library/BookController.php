@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\library;
 
 use App\Http\Controllers\Controller;
-use App\Models\AddBook;
+use App\Models\Book;
 use App\Models\Category;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AddBookController extends Controller
+class BookController extends Controller
 {
     public function __construct()
     {
@@ -17,19 +17,19 @@ class AddBookController extends Controller
     }
 
     public function index(){
-        $n['books'] = AddBook::where('deleted_at',null)->get();
-        return view('pages.library.add_book.index',$n);
+        $n['books'] = Book::where('deleted_at',null)->get();
+        return view('pages.library.book.index',$n);
     }
 
     public function create(){
         $n['categories'] = Category::where('deleted_at',null)->get();
         $n['bookshelves'] = Category::where('deleted_at',null)->get();
-        return view('pages.library.add_book.create',$n);
+        return view('pages.library.book.create',$n);
     }
 
     public function store(Request $req){
         $this->validate($req,[
-            'name' => 'required|string|unique:add_books,name',
+            'name' => 'required|string|unique:books,name',
             'author_name' => 'required|string',
             'qty' => 'required|integer',
             'category_id' => 'required|integer|exists:categories,id',
@@ -42,7 +42,7 @@ class AddBookController extends Controller
             'bookshelf_id' => 'Books Name',
         ]);
 
-        $insert = new AddBook();
+        $insert = new Book();
         $insert->name = $req->name;
         $insert->author_name = $req->author_name;
         $insert->qty = $req->qty;
@@ -51,20 +51,20 @@ class AddBookController extends Controller
         $insert->created_by = Auth::user()->id;
         $insert->save();
         $this->message('success',"Successfully book - $req->name is added");
-        return redirect()->route('library.setup.add_book.index');
+        return redirect()->route('library.setup.book.index');
     }
 
     public function edit($id){
-        $n['book'] = AddBook::findOrFail($id);
+        $n['book'] = Book::findOrFail($id);
         $n['categories'] = Category::where('deleted_at',null)->get();
         $n['bookshelves'] = Category::where('deleted_at',null)->get();
-        return view('pages.library.add_book.edit',$n);
+        return view('pages.library.book.edit',$n);
     }
 
     public function update(Request $req){
         // dd($req->id);
         $this->validate($req,[
-            'name' => "required|string|unique:add_books,name,$req->id,id",
+            'name' => "required|string|unique:books,name,$req->id,id",
             'author_name' => 'required|string',
             'qty' => 'required|integer',
             'category_id' => 'required|integer|exists:categories,id',
@@ -77,7 +77,7 @@ class AddBookController extends Controller
             'bookshelf_id' => 'Books Name',
         ]);
 
-        $update = AddBook::findOrFail($req->id);
+        $update = Book::findOrFail($req->id);
         $update->name = $req->name;
         $update->author_name = $req->author_name;
         $update->qty = $req->qty;
@@ -86,12 +86,12 @@ class AddBookController extends Controller
         $update->updated_by = Auth::user()->id;
         $update->save();
         $this->message('success',"Successfully book - $req->name updated");
-        return redirect()->route('library.setup.add_book.index');
+        return redirect()->route('library.setup.book.index');
     }
 
     public function destroy($id =null){
         if($id != null){
-            $delete = AddBook::find($id);
+            $delete = Book::find($id);
             $delete->deleted_at = Carbon::now()->toDateTimeString();
             $delete->deleted_by = Auth::user()->id;
             $delete->save();
@@ -101,7 +101,7 @@ class AddBookController extends Controller
 
     public function show($id=null){
         if($id != null){
-            $book = AddBook::with(['created_user','updated_user','deleted_user','created_user','category','bookshelf'])->find($id);
+            $book = Book::with(['created_user','updated_user','deleted_user','created_user','category','bookshelf'])->find($id);
             return response()->json($book);
         }
     }

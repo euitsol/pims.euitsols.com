@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('add_books', function (Blueprint $table) {
+        Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('author_name');
@@ -26,12 +26,12 @@ return new class extends Migration
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();
         });
-        Schema::table('add_books', function (Blueprint $table) {
-            $table->foreign('category_id', 'add_books_category')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('bookshelf_id', 'add_books_bookshelf')->references('id')->on('bookshelves')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('created_by', 'add_books_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('deleted_by', 'add_books_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('updated_by', 'add_books_updated')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+        Schema::table('books', function (Blueprint $table) {
+            $table->foreign('category_id', 'books_category')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('bookshelf_id', 'books_bookshelf')->references('id')->on('bookshelves')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('created_by', 'books_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('deleted_by', 'books_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('updated_by', 'books_updated')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -42,6 +42,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('add_books');
+        Schema::dropIfExists('books');
     }
 };

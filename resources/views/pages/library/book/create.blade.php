@@ -12,13 +12,13 @@
                         <h4>Add new book</h4>
                     </span>
                     <span class="float-right">
-                        @if(Auth::user()->can('book view') || Auth::user()->role->id == 1)<a href="{{ route('library.setup.add_book.index') }}" class="btn btn-info">Back</a>@endif
+                        @if(Auth::user()->can('book view') || Auth::user()->role->id == 1)<a href="{{ route('library.setup.book.index') }}" class="btn btn-info">Back</a>@endif
                     </span>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-10 m-auto">
-                            <form action="{{ route('library.setup.add_book.store') }}" method="POST" class="form-horizontal">
+                            <form action="{{ route('library.setup.book.store') }}" method="POST" class="form-horizontal">
                             @csrf
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="name">Name<span class="text-danger">*</span></label>
