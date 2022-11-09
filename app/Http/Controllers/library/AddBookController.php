@@ -5,6 +5,7 @@ namespace App\Http\Controllers\library;
 use App\Http\Controllers\Controller;
 use App\Models\AddBook;
 use App\Models\Category;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,7 +39,7 @@ class AddBookController extends Controller
             'author_name' => 'Author Name',
             'qty' => 'Quantity',
             'category_id' => 'Category',
-            // 'bookshelf_id' => 'Books Name',
+            'bookshelf_id' => 'Books Name',
         ]);
 
         $insert = new AddBook();
@@ -49,27 +50,43 @@ class AddBookController extends Controller
         // $insert->bookshelf_id = $req->bookshelf_id;
         $insert->created_by = Auth::user()->id;
         $insert->save();
-        $this->message('success','Successfully Book is added');
+        $this->message('success',"Successfully book - $req->name is added");
         return redirect()->route('library.setup.add_book.index');
     }
 
     public function edit($id){
-        $n['AddBook'] = AddBook::findOrFail($id);
-        return view('pages.library.AddBook.edit',$n);
+        $n['book'] = AddBook::findOrFail($id);
+        $n['categories'] = Category::where('deleted_at',null)->get();
+        $n['bookshelves'] = Category::where('deleted_at',null)->get();
+        return view('pages.library.add_book.edit',$n);
     }
 
     public function update(Request $req){
         // dd($req->id);
         $this->validate($req,[
-            'name' => "required|string|unique:add_books,name,$req->id,id"
-        ],[],['name' => 'AddBook Name']);
+            'name' => "required|string|unique:add_books,name,$req->id,id",
+            'author_name' => 'required|string',
+            'qty' => 'required|integer',
+            'category_id' => 'required|integer|exists:categories,id',
+            // 'bookshelf_id' => 'required|integer|exists:bookshelves,id',
+        ],[],[
+            'name' => 'Book Name',
+            'author_name' => 'Author Name',
+            'qty' => 'Quantity',
+            'category_id' => 'Category',
+            'bookshelf_id' => 'Books Name',
+        ]);
 
         $update = AddBook::findOrFail($req->id);
         $update->name = $req->name;
+        $update->author_name = $req->author_name;
+        $update->qty = $req->qty;
+        $update->category_id = $req->category_id;
+        // $update->bookshelf_id = $req->bookshelf_id;
         $update->updated_by = Auth::user()->id;
         $update->save();
-        $this->message('success','Successfully AddBook updated');
-        return redirect()->route('library.setup.AddBook.index');
+        $this->message('success',"Successfully book - $req->name updated");
+        return redirect()->route('library.setup.add_book.index');
     }
 
     public function destroy($id =null){
@@ -77,7 +94,15 @@ class AddBookController extends Controller
             $delete = AddBook::find($id);
             $delete->deleted_at = Carbon::now()->toDateTimeString();
             $delete->deleted_by = Auth::user()->id;
-            return back()->with('success','Successfully deleted');
+            $delete->save();
+            return back()->with('success',"Successfully book - $delete->name deleted");
+        }
+    }
+
+    public function show($id=null){
+        if($id != null){
+            $book = AddBook::with(['created_user','updated_user','deleted_user','created_user','category','bookshelf'])->find($id);
+            return response()->json($book);
         }
     }
 

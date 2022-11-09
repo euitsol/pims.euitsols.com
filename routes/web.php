@@ -420,6 +420,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
                 Route::get('/edit/{id}','edit')->name('edit');//route = library.setup.add_book.edit
                 Route::post('/update','update')->name('update');//route = library.setup.add_book.update
                 Route::get('/destroy/{id}','destroy')->name('destroy');//route = library.setup.add_book.destroy
+                Route::get('/show/{id}','show')->name('show');//route = library.setup.add_book.show
             });
         });
     });

@@ -21,10 +21,10 @@ class AddBook extends Model
 
     public function category(){
 
-        return $this->belongsTo(AddBook::class,'category_id');
+        return $this->belongsTo(Category::class,'category_id');
     }
     public function bookshelf(){
 
-        return $this->belongsTo(AddBook::class,'category_id');
+        return $this->belongsTo(Category::class,'category_id');
     }
 }
