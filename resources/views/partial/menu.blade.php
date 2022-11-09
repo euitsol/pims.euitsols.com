@@ -391,6 +391,16 @@
 
                             </li>
                         @endif
+                        @if (Auth::user()->can('view add-book') || Auth::user()->role->id == 1)
+                            <li class="nav-item">
+                                <a href="{{route('library.setup.book.index')}}"
+                                    class="nav-link {{ Request::is('library/setup/books/*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-minus"></i>
+                                    <p>Books</p>
+                                </a>
+
+                            </li>
+                        @endif
                     </ul>
                 </li>
             @endif

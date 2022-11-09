@@ -31,8 +31,10 @@ use App\Http\Controllers\student\StudentController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\setup\BuildingController;
 use App\Http\Controllers\ClassContentController;
+use App\Http\Controllers\library\BookController;
 use App\Http\Controllers\library\CategoryController;
 use App\Http\Controllers\setup\RoutineController;
+use App\Models\AddBook;
 
 /*
 |--------------------------------------------------------------------------
@@ -408,6 +410,17 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
                 Route::get('/edit/{id}','edit')->name('edit');//route = library.setup.category.edit
                 Route::post('/update','update')->name('update');//route = library.setup.category.update
                 Route::get('/destroy/{id}','destroy')->name('destroy');//route = library.setup.category.destroy
+            });
+
+            //Add Book
+            Route::controller(BookController::class)->prefix('books')->name('book.')->group(function(){
+                Route::get('/index','index')->name('index'); //route = library.setup.book.index
+                Route::get('/create','create')->name('create');//route = library.setup.book.create
+                Route::post('/store','store')->name('store');//route = library.setup.book.store
+                Route::get('/edit/{id}','edit')->name('edit');//route = library.setup.book.edit
+                Route::post('/update','update')->name('update');//route = library.setup.book.update
+                Route::get('/destroy/{id}','destroy')->name('destroy');//route = library.setup.book.destroy
+                Route::get('/show/{id}','show')->name('show');//route = library.setup.book.show
             });
         });
     });
