@@ -424,7 +424,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
                 Route::post('/update','update')->name('update');//route = library.setup.bookshelf.update
                 Route::get('/destroy/{id}','destroy')->name('destroy');//route = library.setup.bookshelf.destroy
                 Route::get('/show/{id}','show')->name('show');//route = library.setup.bookshelf.show
-
+            });
             Route::controller(BookController::class)->prefix('books')->name('book.')->group(function(){
                 Route::get('/index','index')->name('index'); //route = library.setup.book.index
                 Route::get('/create','create')->name('create');//route = library.setup.book.create
