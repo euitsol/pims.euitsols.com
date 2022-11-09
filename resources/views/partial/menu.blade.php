@@ -381,14 +381,22 @@
                         <p>Setup <i class="fas fa-angle-left right"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
-                        @if (Auth::user()->can('view library-setup-category') || Auth::user()->role->id == 1)
+                        @if (Auth::user()->can('view category') || Auth::user()->role->id == 1)
                             <li class="nav-item">
                                 <a href="{{route('library.setup.category.index')}}"
-                                    class="nav-link {{ Request::is('attendance/setup/category*') ? 'active' : '' }}">
+                                    class="nav-link {{ Request::is('library/setup/category/*') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-minus"></i>
                                     <p>Category</p>
                                 </a>
-
+                            </li>
+                        @endif
+                        @if (Auth::user()->can('view bookshelf') || Auth::user()->role->id == 1)
+                            <li class="nav-item">
+                                <a href="{{route('library.setup.bookshelf.index')}}"
+                                    class="nav-link {{ Request::is('library/setup/bookshelf/*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-minus"></i>
+                                    <p>Bookshelf</p>
+                                </a>
                             </li>
                         @endif
                         @if (Auth::user()->can('view add-book') || Auth::user()->role->id == 1)
