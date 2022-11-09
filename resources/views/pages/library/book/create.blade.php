@@ -2,6 +2,10 @@
 
 @section('title', 'Library Management - Add Book')
 
+@push('third_party_stylesheets')
+    <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
+@endpush
+
 @section('content')
 <div class="container-fluid">
     <div class="row justify-content-center">
@@ -51,7 +55,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="category_id">Category<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
-                                        <select name="category_id" id="category_id" class="form-control" required>
+                                        <select name="category_id" id="category_id" class="form-control select2" required>
                                             <option value="" hidden>Select Category</option>
                                             @foreach ($categories as $category)
                                                 <option value="{{$category->id}}" @if(old('category_id') ==$category->id) selected @endif >{{$category->name}}</option>
@@ -66,7 +70,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="bookshelf_id">Bookshelf<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
-                                        <select name="bookshelf_id" id="bookshelf_id" class="form-control" required >
+                                        <select name="bookshelf_id" id="bookshelf_id" class="form-control select2" required >
                                             <option value="" hidden>Select Bookshelf</option>
                                             @foreach ($bookshelves as $bookshelf)
                                                 <option value="{{$bookshelf->id}}" @if(old('bookshelf_id') == $bookshelf->id) selected @endif >{{$bookshelf->name}}</option>
@@ -96,3 +100,14 @@
 </div>
 @endsection
 
+@push('third_party_scripts')
+     {{-- Select2 --}}
+     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+@endpush
+@push('page_scripts')
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+        });
+    </script>
+@endpush

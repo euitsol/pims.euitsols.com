@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Library Management')
+@section('title', 'Library Management - Edit Category')
 
 
 @section('content')

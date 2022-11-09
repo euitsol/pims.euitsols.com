@@ -4,6 +4,7 @@ namespace App\Http\Controllers\library;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
+use App\Models\Bookshelf;
 use App\Models\Category;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,13 +18,13 @@ class BookController extends Controller
     }
 
     public function index(){
-        $n['books'] = Book::where('deleted_at',null)->get();
+        $n['books'] = Book::where('deleted_at',null)->latest()->get();
         return view('pages.library.book.index',$n);
     }
 
     public function create(){
         $n['categories'] = Category::where('deleted_at',null)->get();
-        $n['bookshelves'] = Category::where('deleted_at',null)->get();
+        $n['bookshelves'] = Bookshelf::where('deleted_at',null)->get();
         return view('pages.library.book.create',$n);
     }
 
@@ -33,7 +34,7 @@ class BookController extends Controller
             'author_name' => 'required|string',
             'qty' => 'required|integer',
             'category_id' => 'required|integer|exists:categories,id',
-            // 'bookshelf_id' => 'required|integer|exists:bookshelves,id',
+            'bookshelf_id' => 'required|integer|exists:bookshelves,id',
         ],[],[
             'name' => 'Book Name',
             'author_name' => 'Author Name',
@@ -47,7 +48,7 @@ class BookController extends Controller
         $insert->author_name = $req->author_name;
         $insert->qty = $req->qty;
         $insert->category_id = $req->category_id;
-        // $insert->bookshelf_id = $req->bookshelf_id;
+        $insert->bookshelf_id = $req->bookshelf_id;
         $insert->created_by = Auth::user()->id;
         $insert->save();
         $this->message('success',"Successfully book - $req->name is added");
@@ -57,7 +58,7 @@ class BookController extends Controller
     public function edit($id){
         $n['book'] = Book::findOrFail($id);
         $n['categories'] = Category::where('deleted_at',null)->get();
-        $n['bookshelves'] = Category::where('deleted_at',null)->get();
+        $n['bookshelves'] = Bookshelf::where('deleted_at',null)->get();
         return view('pages.library.book.edit',$n);
     }
 

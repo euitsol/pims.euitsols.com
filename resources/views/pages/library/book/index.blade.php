@@ -2,6 +2,10 @@
 
 @section('title', 'Library Management - Books')
 
+@push('third_party_stylesheets')
+    <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
+@endpush
+
 @section('content')
 <div class="container-fluid">
     <div class="row justify-content-center">
@@ -12,7 +16,7 @@
                         <h4>Books</h4>
                     </span>
                     <span class="float-right">
-                        @if(Auth::user()->can('add books') || Auth::user()->role->id == 1)<a href="{{ route('library.setup.book.create') }}" class="btn btn-info">Add new books</a>@endif
+                        @if(Auth::user()->can('add books') || Auth::user()->role->id == 1)<a href="{{ route('library.setup.book.create') }}" class="btn btn-info">Add new book</a>@endif
                     </span>
                 </div>
                 <div class="card-body">
@@ -152,56 +156,59 @@
 @endsection
 
 @push('third_party_scripts')
-<script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script>
+     {{-- Select2 --}}
+     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 @endpush
 @push('page_scripts')
-<script>
-    $(document).ready(function() {
-        $('#table').DataTable({
-            dom: 'Bfrtip'
-            , buttons: [{
-                    extend: 'pdfHtml5'
-                    , title: 'Books'
-                    , download: 'open'
-                    , orientation: 'potrait'
-                    , pagesize: 'LETTER'
-                    , exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5]
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+            $('#table').DataTable({
+                dom: 'Bfrtip'
+                , buttons: [{
+                        extend: 'pdfHtml5'
+                        , title: 'Books'
+                        , download: 'open'
+                        , orientation: 'potrait'
+                        , pagesize: 'LETTER'
+                        , exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5]
+                        }
                     }
+                    , {
+                        extend: 'print'
+                        , exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5]
+                        }
+                    }, 'pageLength'
+                ]
+            });
+            //view-modal
+            $('.btnView').click( function(){
+                if($(this).data('id') != null || $(this).data('id') != ''){
+                    let url = ("{{ route('library.setup.book.show', ['id']) }}");
+                    let _url = url.replace('id', $(this).data('id'));
+                    $.ajax({
+                        url: _url,
+                        method: "GET",
+                        success: function (response) {
+                            $('#view-name').html(response.name);
+                            $('#view-author_name').html(response.author_name);
+                            $('#view-qty').html(response.qty);
+                            $('#view-category').html(response.category.name);
+                            $('#view-bookshelf').html(response.bookshelf.name);
+                            $('#view-createdAt').html(response.created_at ? new Date(response.created_at) : '');
+                            $('#view-createdBy').html(response.created_user ? response.created_user.name : 'system');
+                            $('#view-updatedAt').html(response.updated_at ? new Date(response.updated_at) : '');
+                            $('#view-updatedBy').html(response.updated_user ? response.updated_user.name: '');
+                            $('#view-modal').modal('show');
+                        }
+                    });
+                }else{
+                    alart('Something went wrong');
                 }
-                , {
-                    extend: 'print'
-                    , exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5]
-                    }
-                }, 'pageLength'
-            ]
+            });
         });
-        //view-modal
-        $('.btnView').click( function(){
-            if($(this).data('id') != null || $(this).data('id') != ''){
-                let url = ("{{ route('library.setup.book.show', ['id']) }}");
-                let _url = url.replace('id', $(this).data('id'));
-                $.ajax({
-                    url: _url,
-                    method: "GET",
-                    success: function (response) {
-                        $('#view-name').html(response.name);
-                        $('#view-author_name').html(response.author_name);
-                        $('#view-qty').html(response.qty);
-                        $('#view-category').html(response.category.name);
-                        $('#view-bookshelf').html(response.bookshelf.name);
-                        $('#view-createdAt').html(response.created_at ? new Date(response.created_at) : '');
-                        $('#view-createdBy').html(response.created_user ? response.created_user.name : 'system');
-                        $('#view-updatedAt').html(response.updated_at ? new Date(response.updated_at) : '');
-                        $('#view-updatedBy').html(response.updated_user ? response.updated_user.name: '');
-                        $('#view-modal').modal('show');
-                    }
-                });
-            }else{
-                alart('Something went wrong');
-            }
-        });
-    });
-</script>
+    </script>
 @endpush

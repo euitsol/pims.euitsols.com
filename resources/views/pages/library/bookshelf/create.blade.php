@@ -41,7 +41,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="col-sm-3" for="details"> details</label>
+                                    <label class="col-sm-3" for="details"> Details</label>
                                     <div class="col-sm-9">
                                         <textarea name="details"  id="details" class="form-control" cols="30" rows="6" placeholder="Bookshelf's details"></textarea>
                                         @if ($errors->has('details'))

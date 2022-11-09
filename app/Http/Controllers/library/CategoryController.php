@@ -16,7 +16,7 @@ class CategoryController extends Controller
     }
 
     public function index(){
-        $n['categories'] = Category::where('deleted_at',null)->get();
+        $n['categories'] = Category::where('deleted_at',null)->latest()->get();
         return view('pages.library.category.index',$n);
     }
 
@@ -63,6 +63,13 @@ class CategoryController extends Controller
             $delete->deleted_by = Auth::user()->id;
             $delete->save();
             return back()->with('success','Successfully deleted');
+        }
+    }
+
+    public function show($id = null){
+        if($id !=null){
+            $category =Category::with(['created_user','updated_user','deleted_user'])->find($id);
+            return response()->json($category);
         }
     }
 

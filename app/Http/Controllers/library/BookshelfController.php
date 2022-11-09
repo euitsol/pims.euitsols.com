@@ -16,7 +16,7 @@ class BookshelfController extends Controller
     }
 
     public function index(){
-        $n['bookshelves'] = Bookshelf::where('deleted_at',null)->get();
+        $n['bookshelves'] = Bookshelf::where('deleted_at',null)->latest()->get();
         return view('pages.library.bookshelf.index',$n);
     }
 
