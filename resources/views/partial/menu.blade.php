@@ -361,3 +361,58 @@
         </a>
     </li>
 @endif
+
+{{-- LIbrary Mangement --}}
+@if (Auth::user()->hasAnyPermission(['view library']) || Auth::user()->role->id == 1)
+    <li class="nav-item {{ Request::is('library/*') ? 'menu-open' : '' }}">
+        <a href="#" class="nav-link ">
+            <i class="fas fa-book"></i>
+            <p>
+                Libray
+                <i class="fas fa-angle-left right"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            @if (Auth::user()->can('view library-setup') || Auth::user()->role->id == 1)
+                <li class="nav-item {{ Request::is('library/setup/*') ? 'menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link">
+                        <i class="nav-icon far fa-circle"></i>
+                        <p>Setup <i class="fas fa-angle-left right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @if (Auth::user()->can('view category') || Auth::user()->role->id == 1)
+                            <li class="nav-item">
+                                <a href="{{route('library.setup.category.index')}}"
+                                    class="nav-link {{ Request::is('library/setup/category/*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-minus"></i>
+                                    <p>Category</p>
+                                </a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->can('view bookshelf') || Auth::user()->role->id == 1)
+                            <li class="nav-item">
+                                <a href="{{route('library.setup.bookshelf.index')}}"
+                                    class="nav-link {{ Request::is('library/setup/bookshelf/*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-minus"></i>
+                                    <p>Bookshelf</p>
+                                </a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->can('view add-book') || Auth::user()->role->id == 1)
+                            <li class="nav-item">
+                                <a href="{{route('library.setup.book.index')}}"
+                                    class="nav-link {{ Request::is('library/setup/books/*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-minus"></i>
+                                    <p>Books</p>
+                                </a>
+
+                            </li>
+                        @endif
+                    </ul>
+                </li>
+            @endif
+        </ul>
+    </li>
+@endif
+

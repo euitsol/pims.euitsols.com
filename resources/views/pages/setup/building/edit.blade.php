@@ -59,6 +59,7 @@
                                     <input type='number' name='floor[{{$i}}][total_room]' class="total-room form-control"  placeholder="Enter total room" data-floor="{{$i}}"  id='total_room{{$i}}'  @if(count($floor->rooms())>0) value="{{count($floor->rooms())}}" readonly @else onkeyup='totalRoom(this)' @endif>
                                     <span class="text-danger" id='undo_info{{$i}}' style="display:none">Removed: <span></span></span>
                                 </div>
+
                                 <span class="h4 pt-1">Floor-{{$i}}</span>
                                 <button type='button' class="btn btn-sm bg-danger float-md-left" onclick="floorRemove(this)" data-floor="{{$i}}">Remove</button>
                             </div>

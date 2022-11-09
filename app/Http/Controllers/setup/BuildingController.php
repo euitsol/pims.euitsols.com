@@ -10,7 +10,6 @@ use App\Models\Room;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
-
 class BuildingController extends Controller
 {
     public function __construct() {
