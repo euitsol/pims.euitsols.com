@@ -17,11 +17,11 @@ class BookshelfController extends Controller
 
     public function index(){
         $n['bookshelves'] = Bookshelf::where('deleted_at',null)->latest()->get();
-        return view('pages.library.bookshelf.index',$n);
+        return view('pages.library.setup.bookshelf.index',$n);
     }
 
     public function create(){
-        return view('pages.library.bookshelf.create');
+        return view('pages.library.setup.bookshelf.create');
     }
 
     public function store(Request $req){
@@ -45,7 +45,7 @@ class BookshelfController extends Controller
 
     public function edit($id){
         $n['bookshelf'] = Bookshelf::findOrFail($id);
-        return view('pages.library.bookshelf.edit',$n);
+        return view('pages.library.setup.bookshelf.edit',$n);
     }
 
     public function update(Request $req){
@@ -70,7 +70,6 @@ class BookshelfController extends Controller
 
     public function destroy($id =null){
         if($id != null){
-            // dd($id);
             $delete = Bookshelf::find($id);
             $delete->deleted_at = Carbon::now()->toDateTimeString();
             $delete->deleted_by = Auth::user()->id;

@@ -412,6 +412,15 @@
                     </ul>
                 </li>
             @endif
+            @if (Auth::user()->can('view library-student') || Auth::user()->role->id == 1)
+                <li class="nav-item ">
+                    <a href="{{route('library.student.index')}}"
+                        class="nav-link {{ Request::is('library/student/*') ? 'active' : '' }}">
+                        <i class="nav-icon far fa-circle"></i>
+                        <p>Register <i class="fas fa-angle-left right"></i></p>
+                    </a>
+                </li>
+            @endif
         </ul>
     </li>
 @endif

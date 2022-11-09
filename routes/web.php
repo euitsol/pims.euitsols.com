@@ -35,6 +35,7 @@ use App\Http\Controllers\setup\FloorController;
 use App\Http\Controllers\library\BookshelfController;
 use App\Http\Controllers\library\BookController;
 use App\Http\Controllers\library\CategoryController;
+use App\Http\Controllers\library\Studentcontroller as LibraryStudentcontroller;
 use App\Http\Controllers\setup\RoutineController;
 
 /*
@@ -436,6 +437,17 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
                 Route::get('/show/{id}','show')->name('show');//route = library.setup.book.show
 
             });
+        });
+        //End setup
+
+        //Student managment for library
+        Route::controller(LibraryStudentcontroller::class)->prefix('student')->name('student.')->group(function(){
+            Route::get('/index','index')->name('index');
+            Route::get('/create','create')->name('create');
+            Route::get('/store','store')->name('store');
+            Route::get('/edit/{id}','edit')->name('edit');
+            Route::get('/update','update')->name('update');
+            Route::get('/show/{id}','show')->name('show');
         });
     });
 

@@ -19,13 +19,13 @@ class BookController extends Controller
 
     public function index(){
         $n['books'] = Book::where('deleted_at',null)->latest()->get();
-        return view('pages.library.book.index',$n);
+        return view('pages.library.setup.book.index',$n);
     }
 
     public function create(){
         $n['categories'] = Category::where('deleted_at',null)->get();
         $n['bookshelves'] = Bookshelf::where('deleted_at',null)->get();
-        return view('pages.library.book.create',$n);
+        return view('pages.library.setup.book.create',$n);
     }
 
     public function store(Request $req){
@@ -59,7 +59,7 @@ class BookController extends Controller
         $n['book'] = Book::findOrFail($id);
         $n['categories'] = Category::where('deleted_at',null)->get();
         $n['bookshelves'] = Bookshelf::where('deleted_at',null)->get();
-        return view('pages.library.book.edit',$n);
+        return view('pages.library.setup.book.edit',$n);
     }
 
     public function update(Request $req){
