@@ -31,6 +31,7 @@ use App\Http\Controllers\student\StudentController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\setup\BuildingController;
 use App\Http\Controllers\ClassContentController;
+use App\Http\Controllers\library\CategoryController;
 use App\Http\Controllers\setup\RoutineController;
 
 /*
@@ -396,4 +397,19 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
         Route::post('/store', [ClassContentController::class, 'store'])->name('store'); //route = class_content.store
         Route::get('/index/{id}/{class}', [ClassContentController::class, 'index'])->name('index'); //route = class_content.index
     });
+
+    //Library Mangement
+    Route::group(['as'=>'library.','prefix'=>'library'],function(){
+        Route::group(['as'=>'setup.','prefix'=>'setup'],function(){
+            Route::controller(CategoryController::class)->prefix('category')->name('category.')->group(function(){
+                Route::get('/index','index')->name('index'); //route = library.setup.category.index
+                Route::get('/create','create')->name('create');//route = library.setup.category.create
+                Route::post('/store','store')->name('store');//route = library.setup.category.store
+                Route::get('/edit/{id}','edit')->name('edit');//route = library.setup.category.edit
+                Route::post('/update','update')->name('update');//route = library.setup.category.update
+                Route::get('/destroy/{id}','destroy')->name('destroy');//route = library.setup.category.destroy
+            });
+        });
+    });
+
 });
