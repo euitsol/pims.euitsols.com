@@ -414,6 +414,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
                 Route::get('/edit/{id}','edit')->name('edit');//route = library.setup.category.edit
                 Route::post('/update','update')->name('update');//route = library.setup.category.update
                 Route::get('/destroy/{id}','destroy')->name('destroy');//route = library.setup.category.destroy
+                Route::get('/show/{id}','show')->name('show');//route = library.setup.category.show
             });
 
             Route::controller(BookshelfController::class)->prefix('bookshelf')->name('bookshelf.')->group(function(){

@@ -25,6 +25,6 @@ class Book extends Model
     }
     public function bookshelf(){
 
-        return $this->belongsTo(Category::class,'category_id');
+        return $this->belongsTo(Bookshelf::class,'bookshelf_id');
     }
 }

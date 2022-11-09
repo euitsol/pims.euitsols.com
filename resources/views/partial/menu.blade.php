@@ -366,7 +366,7 @@
 @if (Auth::user()->hasAnyPermission(['view library']) || Auth::user()->role->id == 1)
     <li class="nav-item {{ Request::is('library/*') ? 'menu-open' : '' }}">
         <a href="#" class="nav-link ">
-            <i class="fas fa-book"></i>
+            <i class="nav-icon fas fa-book"></i>
             <p>
                 Libray
                 <i class="fas fa-angle-left right"></i>
