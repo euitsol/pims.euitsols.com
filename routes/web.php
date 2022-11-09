@@ -32,6 +32,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\setup\BuildingController;
 use App\Http\Controllers\ClassContentController;
 use App\Http\Controllers\library\BookshelfController;
+use App\Http\Controllers\library\BookController;
 use App\Http\Controllers\library\CategoryController;
 use App\Http\Controllers\setup\RoutineController;
 
@@ -61,7 +62,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
     //Dashboard
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
-    //user roll permission
+    //user role permission
     Route::group(['as' => 'users.', 'prefix' => 'users'], function () {
 
         // Users management
@@ -415,7 +416,6 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
                 Route::get('/destroy/{id}','destroy')->name('destroy');//route = library.setup.category.destroy
             });
 
-            //Bookshelf
             Route::controller(BookshelfController::class)->prefix('bookshelf')->name('bookshelf.')->group(function(){
                 Route::get('/index','index')->name('index'); //route = library.setup.bookshelf.index
                 Route::get('/create','create')->name('create');//route = library.setup.bookshelf.create
@@ -424,6 +424,16 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
                 Route::post('/update','update')->name('update');//route = library.setup.bookshelf.update
                 Route::get('/destroy/{id}','destroy')->name('destroy');//route = library.setup.bookshelf.destroy
                 Route::get('/show/{id}','show')->name('show');//route = library.setup.bookshelf.show
+
+            Route::controller(BookController::class)->prefix('books')->name('book.')->group(function(){
+                Route::get('/index','index')->name('index'); //route = library.setup.book.index
+                Route::get('/create','create')->name('create');//route = library.setup.book.create
+                Route::post('/store','store')->name('store');//route = library.setup.book.store
+                Route::get('/edit/{id}','edit')->name('edit');//route = library.setup.book.edit
+                Route::post('/update','update')->name('update');//route = library.setup.book.update
+                Route::get('/destroy/{id}','destroy')->name('destroy');//route = library.setup.book.destroy
+                Route::get('/show/{id}','show')->name('show');//route = library.setup.book.show
+
             });
         });
     });

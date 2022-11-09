@@ -1,13 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Building Management')
-
-@push('third_party_stylesheets')
-<link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
-@endpush
-
-@push('page_css')
-@endpush
+@section('title', 'Library Management - Books')
 
 @section('content')
 <div class="container-fluid">
@@ -16,61 +9,67 @@
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>Buildings</h4>
+                        <h4>Books</h4>
                     </span>
                     <span class="float-right">
-                        @if(Auth::user()->can('add building') || Auth::user()->role->id == 1)<a href="{{ route('building.create') }}" class="btn btn-info">Add new building</a>@endif
+                        @if(Auth::user()->can('add books') || Auth::user()->role->id == 1)<a href="{{ route('library.setup.book.create') }}" class="btn btn-info">Add new books</a>@endif
                     </span>
                 </div>
                 <div class="card-body">
-                    @include('partial.flush-message')
-
-                    <div class="table table-responsive">
-                        <table id="table" class="">
-                            <thead>
-                                <tr>
-                                    <th>SL</th>
-                                    <th>Building Name</th>
-                                    <th>Floor</th>
-                                    <th>Created At</th>
-                                    <th>Created By</th>
-                                    <th class="text-center">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($buildings as $key => $building)
-                                <tr>
-                                    <td>{{ $key + 1 }}</td>
-                                    <td>{{ $building->name }}</td>
-                                    <td>{{ $building->floor }}</td>
-                                    <td>{{ date('d-m-Y', strtotime($building->created_at)) }}</td>
-                                    <td>{{ $building->created_user->name ?? 'system' }}</td>
-                                    <td class="text-center">
+                    <table class="table table-striped text-center">
+                        <thead>
+                            <tr>
+                                <th>SL.</th>
+                                <th>Name</th>
+                                <th>Author's Name</th>
+                                <th>Quantity</th>
+                                <th>Category</th>
+                                <th>Bookshelves</th>
+                                <th>Created By</th>
+                                <th>Created At</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                @forelse ( $books as $key=>$book)
+                                   <tr>
+                                    <td>{{$key+1}}</td>
+                                    <td>{{$book->name}}</td>
+                                    <td>{{$book->author_name}}</td>
+                                    <td>{{$book->qty}}</td>
+                                    <td>{{$book->category->name}}</td>
+                                    <td>{{$book->bookshelf->name}}</td>
+                                    <td>{{$book->created_user->name}}</td>
+                                    <td>{{date('d-m-Y',strtotime($book->created_user->created_at))}}</td>
+                                    <td>
                                         <div class="btn-group">
                                             <a href="javascript:void(0)" class="btn btn-info btnView"
-                                            data-id="{{ $building->id }}"><i class="fas fa-eye"></i></a>
-                                            @if(Auth::user()->can('edit building') || Auth::user()->role->id == 1)
-                                                <a href="{{ route('building.edit', $building->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                                        data-id="{{ $book->id }}"><i class="fas fa-eye"></i></a>
+                                            @if(Auth::user()->can('edit book') || Auth::user()->role->id == 1)
+                                                <a href="{{ route('library.setup.book.edit', $book->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                             @endif
-                                            @if(Auth::user()->can('delete building') || Auth::user()->role->id == 1)
-                                                <a href="{{ route('building.destroy', $building->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
+                                            @if(Auth::user()->can('delete book') || Auth::user()->role->id == 1)
+                                                <a href="{{ route('library.setup.book.destroy', $book->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
                                             @endif
                                         </div>
                                     </td>
-                                </tr>
+                                   </tr>
                                 @empty
+                                    <tr>
+                                        <td colspan='9'><span>There are no books</span></td>
+                                    </tr>
                                 @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+
 {{-- Modals --}}
+
 <div class="modal fade" id="view-modal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -86,21 +85,33 @@
                         <table class="table table-borderless table-striped">
                             <tbody id="view-tbody">
                                 <tr>
-                                    <td>Building Name</td>
+                                    <td>Book's Name</td>
                                     <td>
                                         <span id="view-name"></span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Number of floor</td>
+                                    <td>Author's Name</td>
                                     <td>
-                                        <span id="view-floor"></span>
+                                        <span id="view-author_name"></span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Location</td>
+                                    <td>Quantity</td>
                                     <td>
-                                        <span id="view-location"></span>
+                                        <span id="view-qty"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Category</td>
+                                    <td>
+                                        <span id="view-category"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Bookshelf</td>
+                                    <td>
+                                        <span id="view-bookshelf"></span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -143,7 +154,6 @@
 @push('third_party_scripts')
 <script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script>
 @endpush
-
 @push('page_scripts')
 <script>
     $(document).ready(function() {
@@ -151,7 +161,7 @@
             dom: 'Bfrtip'
             , buttons: [{
                     extend: 'pdfHtml5'
-                    , title: 'Buildings'
+                    , title: 'Books'
                     , download: 'open'
                     , orientation: 'potrait'
                     , pagesize: 'LETTER'
@@ -167,24 +177,24 @@
                 }, 'pageLength'
             ]
         });
-
         //view-modal
         $('.btnView').click( function(){
             if($(this).data('id') != null || $(this).data('id') != ''){
-                let url = ("{{ route('building.show', ['id']) }}");
+                let url = ("{{ route('library.setup.book.show', ['id']) }}");
                 let _url = url.replace('id', $(this).data('id'));
                 $.ajax({
                     url: _url,
                     method: "GET",
                     success: function (response) {
                         $('#view-name').html(response.name);
-                        $('#view-floor').html(response.floor);
-                        $('#view-location').html(response.location);
+                        $('#view-author_name').html(response.author_name);
+                        $('#view-qty').html(response.qty);
+                        $('#view-category').html(response.category.name);
+                        $('#view-bookshelf').html(response.bookshelf.name);
                         $('#view-createdAt').html(response.created_at ? new Date(response.created_at) : '');
                         $('#view-createdBy').html(response.created_user ? response.created_user.name : 'system');
                         $('#view-updatedAt').html(response.updated_at ? new Date(response.updated_at) : '');
                         $('#view-updatedBy').html(response.updated_user ? response.updated_user.name: '');
-
                         $('#view-modal').modal('show');
                     }
                 });
@@ -192,8 +202,6 @@
                 alart('Something went wrong');
             }
         });
-
     });
 </script>
 @endpush
-
