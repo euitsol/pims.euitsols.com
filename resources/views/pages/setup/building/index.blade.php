@@ -16,7 +16,7 @@
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>buildings</h4>
+                        <h4>Buildings</h4>
                     </span>
                     <span class="float-right">
                         @if(Auth::user()->can('add building') || Auth::user()->role->id == 1)<a href="{{ route('building.create') }}" class="btn btn-info">Add new building</a>@endif
