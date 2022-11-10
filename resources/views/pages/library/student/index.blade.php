@@ -59,14 +59,16 @@
     </div>
 </div>
 
-@endsection
+@endsection 
 
 @push('third_party_scripts')
     <script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 @endpush
 @push('page_scripts')
     <script>
         $(document).ready(function() {
+            $('.select2').select2();
             $('#table').DataTable({
                 dom: 'Bfrtip'
                 , buttons: [{

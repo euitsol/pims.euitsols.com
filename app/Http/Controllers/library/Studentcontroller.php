@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\library;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdmittedStdAssign;
 use App\Models\LibraryStudent;
+use App\Models\studentInfo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class Studentcontroller extends Controller
+class StudentController extends Controller
 {
     public function __construct()
     {
@@ -21,19 +23,44 @@ class Studentcontroller extends Controller
     }
 
     public function create(){
-        return view('pages.library.student.create');
+        $n['students'] = AdmittedStdAssign::with(['studentInfo'])->latest()->get();
+        return view('pages.library.student.create',$n);
     }
 
     public function store(Request $req){
+        // dd($req->permanent_add);
         $this->validate($req,[
-            'name' => 'required|string|unique:categories,name'
-        ],[],['name' => 'Category Name']);
+            'name' => 'required|string',
+            'std_id' => 'integer|exists:library_students,std_id',
+            'age' => 'required|integer',
+            'phone' => 'required|numeric|unique:library_students,phone',
+            'present_add' => 'required',
+            'permanent_add' => 'required',
+            'ec_name' => 'required',
+            'ec_phone' => 'required|numeric',
+        ],[],[
+            'name' => 'Student Name',
+            'std_id' => 'Student ID',
+            'age' => 'Student Age',
+            'phone' =>"Student's Phone",
+            'present_add' => 'Present Address',
+            'permanent_add' => 'Permanent Address',
+            'ec_name' => 'Emergency Contact (Name)',
+            'ec_phone' => 'Emergency Contact (Phone)',
+        ]);
 
         $insert = new LibraryStudent();
+        $insert->std_id = $req->std_id;
         $insert->name = $req->name;
+        $insert->age = $req->age;
+        $insert->phone = $req->phone;
+        $insert->present_address = $req->present_add;
+        $insert->permanent_address = $req->permanent_add;
+        $insert->ec_name = $req->ec_name;
+        $insert->ec_phone = $req->ec_phone;
         $insert->created_by = Auth::user()->id;
         $insert->save();
-        $this->message('success','Successfully category created');
+        $this->message('success','Successfully student added');
         return redirect()->route('library.student.index');
     }
 
@@ -71,6 +98,11 @@ class Studentcontroller extends Controller
             $category =LibraryStudent::with(['created_user','updated_user','deleted_user'])->find($id);
             return response()->json($category);
         }
+    }
+
+    public function residentialStdShow(Request $req){
+        $student = studentInfo::Find($req->id);
+        return response()->json($student);
     }
 
 }

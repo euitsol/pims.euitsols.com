@@ -35,7 +35,7 @@ use App\Http\Controllers\setup\FloorController;
 use App\Http\Controllers\library\BookshelfController;
 use App\Http\Controllers\library\BookController;
 use App\Http\Controllers\library\CategoryController;
-use App\Http\Controllers\library\Studentcontroller as LibraryStudentcontroller;
+use App\Http\Controllers\library\StudentController as LibraryStudentcontroller;
 use App\Http\Controllers\setup\RoutineController;
 
 /*
@@ -113,6 +113,12 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
 
     //Teacher fetch accordingly subject
     Route::get('/teacher-fetch', [AttendanceController::class, 'teacherFetch'])->name('teacher_fetch.ajax');
+
+    // Student fetch according to student id
+    Route::get('/residential-student/show',[LibraryStudentController::class,'residentialStdShow'])->name('residentialStdShow');
+
+    //End All Common Ajax here
+
 
     //Student
     Route::group(['as' => 'student.', 'prefix' => 'student'], function () {
@@ -441,13 +447,14 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
         //End setup
 
         //Student managment for library
-        Route::controller(LibraryStudentcontroller::class)->prefix('student')->name('student.')->group(function(){
+        Route::controller(LibraryStudentController::class)->prefix('student')->name('student.')->group(function(){
             Route::get('/index','index')->name('index');
             Route::get('/create','create')->name('create');
-            Route::get('/store','store')->name('store');
+            Route::post('/store','store')->name('store');
             Route::get('/edit/{id}','edit')->name('edit');
             Route::get('/update','update')->name('update');
             Route::get('/show/{id}','show')->name('show');
+            Route::get('/destroy','destroy')->name('destroy');
         });
     });
 
