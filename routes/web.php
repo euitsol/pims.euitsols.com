@@ -35,7 +35,7 @@ use App\Http\Controllers\setup\FloorController;
 use App\Http\Controllers\library\BookshelfController;
 use App\Http\Controllers\library\BookController;
 use App\Http\Controllers\library\CategoryController;
-use App\Http\Controllers\library\StudentController as LibraryStudentcontroller;
+use App\Http\Controllers\library\LibraryStudentController;
 use App\Http\Controllers\setup\RoutineController;
 
 /*
