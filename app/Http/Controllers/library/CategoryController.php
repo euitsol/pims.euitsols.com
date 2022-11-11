@@ -17,11 +17,11 @@ class CategoryController extends Controller
 
     public function index(){
         $n['categories'] = Category::where('deleted_at',null)->latest()->get();
-        return view('pages.library.category.index',$n);
+        return view('pages.library.setup.category.index',$n);
     }
 
     public function create(){
-        return view('pages.library.category.create');
+        return view('pages.library.setup.category.create');
     }
 
     public function store(Request $req){
@@ -39,7 +39,7 @@ class CategoryController extends Controller
 
     public function edit($id){
         $n['category'] = Category::findOrFail($id);
-        return view('pages.library.category.edit',$n);
+        return view('pages.library.setup.category.edit',$n);
     }
 
     public function update(Request $req){
