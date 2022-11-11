@@ -377,7 +377,7 @@
         <a href="#" class="nav-link ">
             <i class="nav-icon fas fa-book"></i>
             <p>
-                Libray
+                Library
                 <i class="fas fa-angle-left right"></i>
             </p>
         </a>
@@ -426,7 +426,7 @@
                     <a href="{{route('library.student.index')}}"
                         class="nav-link {{ Request::is('library/student/*') ? 'active' : '' }}">
                        <i class="nav-icon far fa-circle second-nav-text"></i>
-                        <p>Register </p>
+                        <p>Register Student</p>
                     </a>
                 </li>
             @endif

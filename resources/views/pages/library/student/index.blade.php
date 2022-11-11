@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('title', 'Library Management - Register')
-
+@push('third_party_stylesheets')
+    <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
+@endpush
 @section('content')
 <div class="container-fluid">
     <div class="row justify-content-center">
@@ -9,7 +11,7 @@
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>Students</h4>
+                        <h4>Library Registered Students </h4>
                     </span>
                     <span class="float-right">
                         @if(Auth::user()->can('add library-student') || Auth::user()->role->id == 1)<a href="{{ route('library.student.create') }}" class="btn btn-info">Add new student</a>@endif
@@ -29,12 +31,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                                @forelse ( $students as $key=>$student)
+                                @foreach ( $students as $key=>$student)
                                    <tr>
                                     <td>{{$key+1}}</td>
                                     <td>{{$student->name}}</td>
                                     <td>{{$student->phone}}</td>
-                                    <td>{{$student->dob}}</td>
+                                    <td>{{date('d-m-Y',strtotime($student->dob))}}</td>
                                     <td>{{$student->created_user->name}}</td>
                                     <td>{{date('d-m-Y',strtotime($student->created_user->created_at))}}</td>
                                     <td>
@@ -50,11 +52,7 @@
                                         </div>
                                     </td>
                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan='5'><span>There are no categories</span></td>
-                                    </tr>
-                                @endforelse
+                                @endforeach
                         </tbody>
                     </table>
                 </div>

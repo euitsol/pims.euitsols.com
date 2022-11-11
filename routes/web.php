@@ -31,7 +31,6 @@ use App\Http\Controllers\student\StudentController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\setup\BuildingController;
 use App\Http\Controllers\ClassContentController;
-use App\Http\Controllers\setup\FloorController;
 use App\Http\Controllers\library\BookshelfController;
 use App\Http\Controllers\library\BookController;
 use App\Http\Controllers\library\CategoryController;

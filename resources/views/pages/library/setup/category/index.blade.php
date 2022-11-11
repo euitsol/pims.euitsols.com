@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('title', 'Library Management - Category')
-
+@push('third_party_stylesheets')
+    <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
+@endpush
 @section('content')
 <div class="container-fluid">
     <div class="row justify-content-center">
@@ -16,7 +18,7 @@
                     </span>
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped text-center">
+                    <table class="table table-striped text-center" id="table">
                         <thead>
                             <tr>
                                 <th>SL.</th>
@@ -27,7 +29,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                                @forelse ( $categories as $key=>$category)
+                                @foreach ( $categories as $key=>$category)
                                    <tr>
                                     <td>{{$key+1}}</td>
                                     <td>{{$category->name}}</td>
@@ -46,11 +48,7 @@
                                         </div>
                                     </td>
                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan='5'><span>There are no categories</span></td>
-                                    </tr>
-                                @endforelse
+                                @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -121,29 +119,30 @@
 @push('third_party_scripts')
     <script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script>
 @endpush
+
 @push('page_scripts')
     <script>
         $(document).ready(function() {
             $('#table').DataTable({
-                dom: 'Bfrtip'
-                , buttons: [{
-                        extend: 'pdfHtml5'
-                        , title: 'Books'
-                        , download: 'open'
-                        , orientation: 'potrait'
-                        , pagesize: 'LETTER'
-                        , exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5]
-                        }
+            dom: 'Bfrtip'
+            , buttons: [{
+                    extend: 'pdfHtml5'
+                    , title: 'Bookshelves'
+                    , download: 'open'
+                    , orientation: 'potrait'
+                    , pagesize: 'LETTER'
+                    , exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5]
                     }
-                    , {
-                        extend: 'print'
-                        , exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5]
-                        }
-                    }, 'pageLength'
-                ]
-            });
+                }
+                , {
+                    extend: 'print'
+                    , exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5]
+                    }
+                }, 'pageLength'
+            ]
+        });
             //view-modal
             $('.btnView').click( function(){
                 if($(this).data('id') != null || $(this).data('id') != ''){

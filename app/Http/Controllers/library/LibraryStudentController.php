@@ -30,14 +30,14 @@ class LibraryStudentController extends Controller
     public function store(Request $req){
         // dd($req->permanent_add);
         $this->validate($req,[
-            'name' => 'required|string',
+            'name' => 'required|string|max:255',
             'std_id' => 'integer|exists:student_infos,id',
             'dob' => 'required',
-            'phone' => 'required|numeric',//|unique:library_students,phone
-            'present_add' => 'required',
-            'permanent_add' => 'required',
-            'ec_name' => 'required',
-            'ec_phone' => 'required|numeric',
+            'phone' => 'required|string|digits:11',//|unique:library_students,phone
+            'present_add' => 'required|max:255',
+            'permanent_add' => 'required|max:255',
+            'ec_name' => 'nullable|max:255',
+            'ec_phone' => 'nullable|string|digits:11',
         ],[],[
             'name' => 'Student Name',
             'std_id' => 'Student ID',
@@ -72,14 +72,14 @@ class LibraryStudentController extends Controller
     public function update(Request $req){
         // dd($req->id);
         $this->validate($req,[
-            'name' => 'required|string',
+            'name' => 'required|string|max:255',
             // 'std_id' => 'integer|nullable|exists:student_infos,id',
             'dob' => 'required',
-            'phone' => "required|numeric",//|unique:library_students,phone,$req->id,id
-            'present_add' => 'required',
-            'permanent_add' => 'required',
-            'ec_name' => 'required',
-            'ec_phone' => 'required|numeric',
+            'phone' => "required|string|digits:11",//|unique:library_students,phone,$req->id,id
+            'present_add' => 'required|max:255',
+            'permanent_add' => 'required|max:255',
+            'ec_name' => 'nullable|max:255',
+            'ec_phone' => 'nullable|string|digits:11',
         ],[],[
             'name' => 'Student Name',
             // 'std_id' => 'Student ID',
