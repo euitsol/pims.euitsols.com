@@ -31,9 +31,9 @@ class StudentController extends Controller
         // dd($req->permanent_add);
         $this->validate($req,[
             'name' => 'required|string',
-            'std_id' => 'integer|exists:library_students,std_id',
-            'age' => 'required|integer',
-            'phone' => 'required|numeric|unique:library_students,phone',
+            'std_id' => 'integer|exists:student_infos,id',
+            'dob' => 'required',
+            'phone' => 'required|numeric',//|unique:library_students,phone
             'present_add' => 'required',
             'permanent_add' => 'required',
             'ec_name' => 'required',
@@ -41,7 +41,7 @@ class StudentController extends Controller
         ],[],[
             'name' => 'Student Name',
             'std_id' => 'Student ID',
-            'age' => 'Student Age',
+            'dob' => "Student's date of birth",
             'phone' =>"Student's Phone",
             'present_add' => 'Present Address',
             'permanent_add' => 'Permanent Address',
@@ -52,7 +52,7 @@ class StudentController extends Controller
         $insert = new LibraryStudent();
         $insert->std_id = $req->std_id;
         $insert->name = $req->name;
-        $insert->age = $req->age;
+        $insert->dob = $req->dob;
         $insert->phone = $req->phone;
         $insert->present_address = $req->present_add;
         $insert->permanent_address = $req->permanent_add;
@@ -65,21 +65,44 @@ class StudentController extends Controller
     }
 
     public function edit($id){
-        $n['category'] = LibraryStudent::findOrFail($id);
+        $n['student'] = LibraryStudent::findOrFail($id);
         return view('pages.library.student.edit',$n);
     }
 
     public function update(Request $req){
         // dd($req->id);
         $this->validate($req,[
-            'name' => "required|string|unique:categories,name,$req->id,id"
-        ],[],['name' => 'Category Name']);
+            'name' => 'required|string',
+            // 'std_id' => 'integer|nullable|exists:student_infos,id',
+            'dob' => 'required',
+            'phone' => "required|numeric",//|unique:library_students,phone,$req->id,id
+            'present_add' => 'required',
+            'permanent_add' => 'required',
+            'ec_name' => 'required',
+            'ec_phone' => 'required|numeric',
+        ],[],[
+            'name' => 'Student Name',
+            // 'std_id' => 'Student ID',
+            'dob' => "Student's date of birth",
+            'phone' =>"Student's Phone",
+            'present_add' => 'Present Address',
+            'permanent_add' => 'Permanent Address',
+            'ec_name' => 'Emergency Contact (Name)',
+            'ec_phone' => 'Emergency Contact (Phone)',
+        ]);
 
         $update = LibraryStudent::findOrFail($req->id);
+        $update->std_id = $req->std_id;
         $update->name = $req->name;
+        $update->dob = $req->dob;
+        $update->phone = $req->phone;
+        $update->present_address = $req->present_add;
+        $update->permanent_address = $req->permanent_add;
+        $update->ec_name = $req->ec_name;
+        $update->ec_phone = $req->ec_phone;
         $update->updated_by = Auth::user()->id;
         $update->save();
-        $this->message('success','Successfully category updated');
+        $this->message('success','Successfully student updated');
         return redirect()->route('library.student.index');
     }
 
@@ -95,8 +118,8 @@ class StudentController extends Controller
 
     public function show($id = null){
         if($id !=null){
-            $category =LibraryStudent::with(['created_user','updated_user','deleted_user'])->find($id);
-            return response()->json($category);
+            $student =LibraryStudent::with(['created_user','updated_user','deleted_user'])->find($id);
+            return response()->json($student);
         }
     }
 

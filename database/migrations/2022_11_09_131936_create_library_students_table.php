@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('std_id')->nullable();
             $table->string('name');
             $table->integer('phone');
-            $table->integer('age');
+            $table->string('dob');
             $table->text('present_address');
             $table->text('permanent_address');
             $table->string('ec_name');

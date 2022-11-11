@@ -452,9 +452,9 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::get('/create','create')->name('create');
             Route::post('/store','store')->name('store');
             Route::get('/edit/{id}','edit')->name('edit');
-            Route::get('/update','update')->name('update');
+            Route::post('/update','update')->name('update');
             Route::get('/show/{id}','show')->name('show');
-            Route::get('/destroy','destroy')->name('destroy');
+            Route::get('/destroy/{id}','destroy')->name('destroy');
         });
     });
 

@@ -361,7 +361,16 @@
         </a>
     </li>
 @endif
+<style>
+   .nav .nav-item a .second-nav-text{
+        margin-left: 15px;
 
+    }
+   .nav .nav-item a .third-nav-text{
+        margin-left: 30px;
+
+    }
+</style>
 {{-- LIbrary Mangement --}}
 @if (Auth::user()->hasAnyPermission(['view library']) || Auth::user()->role->id == 1)
     <li class="nav-item {{ Request::is('library/*') ? 'menu-open' : '' }}">
@@ -377,7 +386,7 @@
                 <li class="nav-item {{ Request::is('library/setup/*') ? 'menu-open' : '' }}">
                     <a href="#"
                         class="nav-link">
-                        <i class="nav-icon far fa-circle"></i>
+                        <i class="nav-icon far fa-circle second-nav-text"></i>
                         <p>Setup <i class="fas fa-angle-left right"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
@@ -385,7 +394,7 @@
                             <li class="nav-item">
                                 <a href="{{route('library.setup.category.index')}}"
                                     class="nav-link {{ Request::is('library/setup/category/*') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-minus"></i>
+                                    <i class="nav-icon fas fa-minus third-nav-text"></i>
                                     <p>Category</p>
                                 </a>
                             </li>
@@ -394,7 +403,7 @@
                             <li class="nav-item">
                                 <a href="{{route('library.setup.bookshelf.index')}}"
                                     class="nav-link {{ Request::is('library/setup/bookshelf/*') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-minus"></i>
+                                    <i class="nav-icon fas fa-minus third-nav-text"></i>
                                     <p>Bookshelf</p>
                                 </a>
                             </li>
@@ -403,7 +412,7 @@
                             <li class="nav-item">
                                 <a href="{{route('library.setup.book.index')}}"
                                     class="nav-link {{ Request::is('library/setup/books/*') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-minus"></i>
+                                    <i class="nav-icon fas fa-minus third-nav-text"></i>
                                     <p>Books</p>
                                 </a>
 
@@ -416,8 +425,8 @@
                 <li class="nav-item ">
                     <a href="{{route('library.student.index')}}"
                         class="nav-link {{ Request::is('library/student/*') ? 'active' : '' }}">
-                        <i class="nav-icon far fa-circle"></i>
-                        <p>Register <i class="fas fa-angle-left right"></i></p>
+                       <i class="nav-icon far fa-circle second-nav-text"></i>
+                        <p>Register </p>
                     </a>
                 </li>
             @endif
