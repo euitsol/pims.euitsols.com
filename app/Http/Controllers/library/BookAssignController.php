@@ -3,8 +3,14 @@
 namespace App\Http\Controllers\library;
 
 use App\Http\Controllers\Controller;
+use App\Models\Book;
 use App\Models\BookAssign;
+use App\Models\Category;
+use App\Models\LibraryStudent;
+use App\Models\studentInfo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BookAssignController extends Controller
 {
@@ -14,14 +20,17 @@ class BookAssignController extends Controller
     }
 
     public function index(){
-        $n['assigned_books'] = BookAssign::with(['created_user','updated_user','deleted_user'])->where('deleted_at',null)->latest()->get();
+        $n['assigned_books'] = BookAssign::with(['created_user','updated_user','deleted_user'])->where('deleted_by',null)->latest()->get();
         return view('pages.library.book_assign.index',$n);
     }
 
     public function create(){
-        // $n['students'] = AdmittedStdAssign::with(['studentInfo'])->latest()->get();
-        // return view('pages.library.book_assign.create',$n);
+        $n['students'] = LibraryStudent::where('deleted_by',null)->latest()->get();
+        $n['categories'] = Category::where('deleted_by',null)->latest()->get();
+        return view('pages.library.book_assign.create',$n);
     }
+
+
 
     public function store(Request $req){
         // dd($req->permanent_add);
@@ -114,14 +123,36 @@ class BookAssignController extends Controller
 
     public function show($id = null){
         if($id !=null){
-            $student =BookAssign::with(['created_user','updated_user','deleted_user'])->find($id);
+            $student =LibraryStudent::with(['created_user','updated_user','deleted_user'])->find($id);
             return response()->json($student);
         }
     }
+
+    public function info(Request $req){
+        if($req->id){
+         $student = LibraryStudent::find($req->id);
+         return response()->json($student);
+        }
+     }
+     public function book_info(Request $req){
+        if($req->id){
+         $books = Book::where('category_id',$req->id)->where('deleted_by',null)->get();
+         return response()->json($books);
+        }
+
+     //    return $req->id;
+     }
+
+     public function single_book_fetch(Request $req){
+         $book = Book::with(['bookshelf','category'])->Find($req->id);
+         return response()->json($book);
+     }
 
     public function residentialStdShow(Request $req){
         $student = studentInfo::Find($req->id);
         return response()->json($student);
     }
+
+
 
 }

@@ -159,7 +159,7 @@
             //Single student fetch. to implement this just use one id that is #select_div use for the parent of select student id and try to avoid #select_div's next element
             $('#select_div').find('select').change(function(){
                let student_infos_id = $(this).val();
-               if(std_id != ''){
+               if(student_infos_id != ''){
                 $.ajax({
                     type: "get",
                     url: "{{route('residentialStdShow')}}",
@@ -268,6 +268,9 @@
                         $(student_info).insertAfter("#select_div");
                     }
                 });
+               }else{
+                $('#select_div').nextAll().remove();
+                $('').insertAfter("#select_div");
                }
             });
 

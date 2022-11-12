@@ -461,6 +461,9 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
         Route::controller(BookAssignController::class)->prefix('book-assign')->name('book_assign.')->group(function(){
             Route::get('/index','index')->name('index');
             Route::get('/create','create')->name('create');
+            Route::get('/info','info')->name('info'); //studnet fetch according to student id
+            Route::get('/book-info','book_info')->name('book_info'); //Books fetch according to category
+            Route::get('/book-fetch','single_book_fetch')->name('single_book_fetch'); //Books fetch according to category
             Route::post('/store','store')->name('store');
             Route::get('/edit/{id}','edit')->name('edit');
             Route::post('/update','update')->name('update');
