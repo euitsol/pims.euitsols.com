@@ -22,9 +22,11 @@
                         <thead>
                             <tr>
                                 <th>SL.</th>
-                                <th>Name</th>
-                                <th>Phone</th>
-                                <th>Date of Birth</th>
+                                <th>Book's Name</th>
+                                <th>Category</th>
+                                <th>Bookshelf</th>
+                                <th>Student's name</th>
+                                <th>Student's phone</th>
                                 <th>Created By</th>
                                 <th>Created At</th>
                                 <th>Action</th>
@@ -34,8 +36,11 @@
                                 @foreach ( $assigned_books as $key=>$assigned_book)
                                    <tr>
                                     <td>{{$key+1}}</td>
-                                    <td>{{$assigned_book->name}}</td>
-                                    <td>{{$assigned_book->phone}}</td>
+                                    <td>{{$assigned_book->book->name}}</td>
+                                    <td>{{$assigned_book->book->category->name}}</td>
+                                    <td>{{$assigned_book->book->category->name}}</td>
+                                    <td>{{$assigned_book->student->name ?? 'no students'    }}</td>
+                                    <td>{{$assigned_book->student->phone ?? 'no students'}}</td>
                                     <td>{{date('d-m-Y',strtotime($assigned_book->dob))}}</td>
                                     <td>{{$assigned_book->created_user->name}}</td>
                                     <td>{{date('d-m-Y',strtotime($assigned_book->created_user->created_at))}}</td>
@@ -77,45 +82,33 @@
                         <table class="table table-borderless table-striped" >
                             <tbody id="view-tbody">
                                 <tr>
-                                    <td>Name</td>
+                                    <td>book's Name</td>
                                     <td>
                                         <span id="view-name"></span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Phone</td>
+                                    <td>Category</td>
                                     <td>
-                                        <span id="view-phone"></span>
+                                        <span id="view-cat"></span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Date of Birth</td>
+                                    <td>Bookshelf</td>
                                     <td>
-                                        <span id="view-dob"></span>
+                                        <span id="view-bookshelf"></span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Present Address</td>
+                                    <td>student's Name</td>
                                     <td>
-                                        <span id="view-present_add"></span>
+                                        <span id="view-std_name"></span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Permanent Address</td>
+                                    <td>student's Phone</td>
                                     <td>
-                                        <span id="view-permanent_add"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Emergency Contact(Name)</td>
-                                    <td>
-                                        <span id="view-ec_name"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Emergency Contact(Phone)</td>
-                                    <td>
-                                        <span id="view-ec_phone"></span>
+                                        <span id="view-std_phone"></span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -157,50 +150,27 @@
 
 @push('third_party_scripts')
     <script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 @endpush
 @push('page_scripts')
     <script>
         $(document).ready(function() {
-            $('.select2').select2();
-
-            $('#table').DataTable({
-                dom: 'Bfrtip'
-                , buttons: [{
-                        extend: 'pdfHtml5'
-                        , title: 'Students'
-                        , download: 'open'
-                        , orientation: 'potrait'
-                        , pagesize: 'LETTER'
-                        , exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5]
-                        }
-                    }
-                    , {
-                        extend: 'print'
-                        , exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5]
-                        }
-                    }, 'pageLength'
-                ]
-            });
 
              //view-modal
              $('.btnView').click( function(){
                 if($(this).data('id') != null || $(this).data('id') != ''){
                     let url = ("{{ route('library.book_assign.show', ['id']) }}");
                     let _url = url.replace('id', $(this).data('id'));
+                    console.log(_url);
                     $.ajax({
                         url: _url,
                         method: "GET",
                         success: function (response) {
-                            $('#view-name').html(response.name);
-                            $('#view-phone').html(response.phone);
-                            $('#view-dob').html(response.dob);
-                            $('#view-present_add').html(response.present_address);
-                            $('#view-permanent_add').html(response.permanent_address);
-                            $('#view-ec_name').html(response.ec_name);
-                            $('#view-ec_phone').html(response.ec_phone);
+                            // console.log(response);
+                            $('#view-name').html(response.book.name);
+                            $('#view-cat').html(response.book.category_id);
+                            $('#view-bookshelf').html(response.book.bookshelf_id);
+                            $('#view-std_name').html(response.student.name);
+                            $('#view-std_phone').html(response.student.phone);
                             $('#view-createdAt').html(response.created_at ? new Date(response.created_at) : '');
                             $('#view-createdBy').html(response.created_user ? response.created_user.name : 'system');
                             $('#view-updatedAt').html(response.updated_at ? new Date(response.updated_at) : '');
