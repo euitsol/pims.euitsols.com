@@ -17,12 +17,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('std_id')->nullable();
             $table->string('name');
-            $table->integer('phone');
+            $table->string('phone');
             $table->string('dob');
             $table->text('present_address');
             $table->text('permanent_address');
-            $table->string('ec_name');
-            $table->string('ec_phone');
+            $table->string('ec_name')->nullable();
+            $table->string('ec_phone')->nullable();
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();

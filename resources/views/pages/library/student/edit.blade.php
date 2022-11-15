@@ -53,14 +53,14 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label for="ec_name">Emergency contact (name)<span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" id="ec_name" name="ec_name" placeholder="Enter student's emergency contact (name)" value="{{$student->ec_name}}" required>
+                                        <label for="ec_name">Emergency contact (name)</label>
+                                        <input class="form-control" type="text" id="ec_name" name="ec_name" placeholder="Enter student's emergency contact (name)" value="{{$student->ec_name}}">
                                         @if($errors->has('ec_name')) <span class="text-danger">{{$errors->first('ec_name')}}</span> @endif
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label for="ec_phone">Emergency contact (phone)<span class="text-danger">*</span></label>
-                                        <input class="form-control" type="number" id="ec_phone" name="ec_phone" placeholder="Enter student's emergency contact (phone)" value="{{$student->ec_phone}}" required>
+                                        <label for="ec_phone">Emergency contact (phone)</label>
+                                        <input class="form-control" type="number" id="ec_phone" name="ec_phone" placeholder="Enter student's emergency contact (phone)" value="{{$student->ec_phone}}">
                                         @if($errors->has('ec_phone')) <span class="text-danger">{{$errors->first('ec_phone')}}</span> @endif
                                     </div>
 

@@ -3,7 +3,9 @@
 @extends('layouts.app')
 
 @section('title', 'Library Management-Bookshelf')
-
+@push('third_party_stylesheets')
+<link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
+@endpush
 @section('content')
 <div class="container-fluid">
     <div class="row justify-content-center">
@@ -18,7 +20,7 @@
                     </span>
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped text-center">
+                    <table class="table table-striped text-center" id="table">
                         <thead>
                             <tr>
                                 <th>SL.</th>
@@ -31,7 +33,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                                @forelse ( $bookshelves as $key=>$bookshelf)
+                                @foreach ( $bookshelves as $key=>$bookshelf)
                                    <tr>
                                     <td>{{$key+1}}</td>
                                     <td class="text-capitalize">{{$bookshelf->name}}</td>
@@ -51,11 +53,7 @@
                                         </div>
                                     </td>
                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan='7'><span>There are no bookshelves</span></td>
-                                    </tr>
-                                @endforelse
+                                @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -141,11 +139,12 @@
 @push('page_scripts')
 <script>
     $(document).ready(function() {
+        
         $('#table').DataTable({
             dom: 'Bfrtip'
             , buttons: [{
                     extend: 'pdfHtml5'
-                    , title: 'capacity'
+                    , title: 'Bookshelves'
                     , download: 'open'
                     , orientation: 'potrait'
                     , pagesize: 'LETTER'

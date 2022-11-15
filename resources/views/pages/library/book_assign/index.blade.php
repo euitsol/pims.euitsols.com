@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Library Management - Category')
+@section('title', 'Library Management - Book Assign')
 @push('third_party_stylesheets')
     <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
 @endpush
@@ -11,39 +11,48 @@
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>Category</h4>
+                        <h4>Book Assign </h4>
                     </span>
                     <span class="float-right">
-                        @if(Auth::user()->can('add library-setup-category') || Auth::user()->role->id == 1)<a href="{{ route('library.setup.category.create') }}" class="btn btn-info">Add new category</a>@endif
+                        @if(Auth::user()->can('add book-assign') || Auth::user()->role->id == 1)<a href="{{ route('library.book_assign.create') }}" class="btn btn-info">Assign a book</a>@endif
                     </span>
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped text-center" id="table">
+                    <table  class="table table-striped text-center" id="table">
                         <thead>
                             <tr>
                                 <th>SL.</th>
-                                <th>Name</th>
+                                <th>Book's Name</th>
+                                <th>Category</th>
+                                <th>Bookshelf</th>
+                                <th>Student's name</th>
+                                <th>Student's phone</th>
                                 <th>Created By</th>
                                 <th>Created At</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                                @foreach ( $categories as $key=>$category)
+                                @foreach ( $assigned_books as $key=>$assigned_book)
                                    <tr>
                                     <td>{{$key+1}}</td>
-                                    <td>{{$category->name}}</td>
-                                    <td>{{$category->created_user->name}}</td>
-                                    <td>{{date('d-m-Y',strtotime($category->created_user->created_at))}}</td>
+                                    <td>{{$assigned_book->book->name}}</td>
+                                    <td>{{$assigned_book->book->category->name}}</td>
+                                    <td>{{$assigned_book->book->category->name}}</td>
+                                    <td>{{$assigned_book->student->name ?? 'no students'    }}</td>
+                                    <td>{{$assigned_book->student->phone ?? 'no students'}}</td>
+                                    <td>{{date('d-m-Y',strtotime($assigned_book->dob))}}</td>
+                                    <td>{{$assigned_book->created_user->name}}</td>
+                                    <td>{{date('d-m-Y',strtotime($assigned_book->created_user->created_at))}}</td>
                                     <td>
                                         <div class="btn-group">
                                             <a href="javascript:void(0)" class="btn btn-info btnView"
-                                            data-id="{{ $category->id }}"><i class="fas fa-eye"></i></a>
-                                            @if(Auth::user()->can('edit category') || Auth::user()->role->id == 1)
-                                                <a href="{{ route('library.setup.category.edit', $category->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                            data-id="{{ $assigned_book->id }}"><i class="fas fa-eye"></i></a>
+                                            @if(Auth::user()->can('edit book-assign') || Auth::user()->role->id == 1)
+                                                <a href="{{ route('library.book_assign.edit', $assigned_book->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                             @endif
-                                            @if(Auth::user()->can('delete category') || Auth::user()->role->id == 1)
-                                                <a href="{{ route('library.setup.category.destroy', $category->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
+                                            @if(Auth::user()->can('delete book-assign') || Auth::user()->role->id == 1)
+                                                <a href="{{ route('library.book_assign.destroy', $assigned_book->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
                                             @endif
                                         </div>
                                     </td>
@@ -56,7 +65,6 @@
         </div>
     </div>
 </div>
-
 {{-- Modals --}}
 
 <div class="modal fade" id="view-modal">
@@ -71,15 +79,38 @@
             <div class="modal-body row">
                 <div class="col-md-10 m-auto">
                     <div class="table-responsive">
-                        <table class="table table-borderless table-striped">
+                        <table class="table table-borderless table-striped" >
                             <tbody id="view-tbody">
                                 <tr>
-                                    <td>Name</td>
+                                    <td>book's Name</td>
                                     <td>
                                         <span id="view-name"></span>
                                     </td>
                                 </tr>
-
+                                <tr>
+                                    <td>Category</td>
+                                    <td>
+                                        <span id="view-cat"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Bookshelf</td>
+                                    <td>
+                                        <span id="view-bookshelf"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>student's Name</td>
+                                    <td>
+                                        <span id="view-std_name"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>student's Phone</td>
+                                    <td>
+                                        <span id="view-std_phone"></span>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td>Created At</td>
                                     <td>
@@ -116,43 +147,30 @@
     </div>
 </div>
 @endsection
+
 @push('third_party_scripts')
     <script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script>
 @endpush
-
 @push('page_scripts')
     <script>
         $(document).ready(function() {
-            $('#table').DataTable({
-            dom: 'Bfrtip'
-            , buttons: [{
-                    extend: 'pdfHtml5'
-                    , title: 'Bookshelves'
-                    , download: 'open'
-                    , orientation: 'potrait'
-                    , pagesize: 'LETTER'
-                    , exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5]
-                    }
-                }
-                , {
-                    extend: 'print'
-                    , exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5]
-                    }
-                }, 'pageLength'
-            ]
-        });
-            //view-modal
-            $('.btnView').click( function(){
+
+             //view-modal
+             $('.btnView').click( function(){
                 if($(this).data('id') != null || $(this).data('id') != ''){
-                    let url = ("{{ route('library.setup.category.show', ['id']) }}");
+                    let url = ("{{ route('library.book_assign.show', ['id']) }}");
                     let _url = url.replace('id', $(this).data('id'));
+                    console.log(_url);
                     $.ajax({
                         url: _url,
                         method: "GET",
                         success: function (response) {
-                            $('#view-name').html(response.name);
+                            // console.log(response);
+                            $('#view-name').html(response.book.name);
+                            $('#view-cat').html(response.book.category_id);
+                            $('#view-bookshelf').html(response.book.bookshelf_id);
+                            $('#view-std_name').html(response.student.name);
+                            $('#view-std_phone').html(response.student.phone);
                             $('#view-createdAt').html(response.created_at ? new Date(response.created_at) : '');
                             $('#view-createdBy').html(response.created_user ? response.created_user.name : 'system');
                             $('#view-updatedAt').html(response.updated_at ? new Date(response.updated_at) : '');
@@ -164,6 +182,7 @@
                     alart('Something went wrong');
                 }
             });
+
         });
     </script>
 @endpush

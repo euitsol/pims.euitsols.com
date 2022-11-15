@@ -3,7 +3,7 @@
 @section('title', 'Library Management - Books')
 
 @push('third_party_stylesheets')
-    <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
+    <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')
@@ -20,7 +20,7 @@
                     </span>
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped text-center">
+                    <table class="table table-striped text-center" id="table">
                         <thead>
                             <tr>
                                 <th>SL.</th>
@@ -35,7 +35,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                                @forelse ( $books as $key=>$book)
+                                @foreach ( $books as $key=>$book)
                                    <tr>
                                     <td>{{$key+1}}</td>
                                     <td>{{$book->name}}</td>
@@ -58,11 +58,7 @@
                                         </div>
                                     </td>
                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan='9'><span>There are no books</span></td>
-                                    </tr>
-                                @endforelse
+                                @endforeach
                         </tbody>
                     </table>
                 </div>

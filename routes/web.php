@@ -31,7 +31,7 @@ use App\Http\Controllers\student\StudentController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\setup\BuildingController;
 use App\Http\Controllers\ClassContentController;
-use App\Http\Controllers\setup\FloorController;
+use App\Http\Controllers\library\BookAssignController;
 use App\Http\Controllers\library\BookshelfController;
 use App\Http\Controllers\library\BookController;
 use App\Http\Controllers\library\CategoryController;
@@ -450,6 +450,20 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
         Route::controller(LibraryStudentController::class)->prefix('student')->name('student.')->group(function(){
             Route::get('/index','index')->name('index');
             Route::get('/create','create')->name('create');
+            Route::post('/store','store')->name('store');
+            Route::get('/edit/{id}','edit')->name('edit');
+            Route::post('/update','update')->name('update');
+            Route::get('/show/{id}','show')->name('show');
+            Route::get('/destroy/{id}','destroy')->name('destroy');
+        });
+
+        //Book assign management
+        Route::controller(BookAssignController::class)->prefix('book-assign')->name('book_assign.')->group(function(){
+            Route::get('/index','index')->name('index');
+            Route::get('/create','create')->name('create');
+            Route::get('/info','info')->name('info'); //studnet fetch according to student id
+            Route::get('/book-info','book_info')->name('book_info'); //Books fetch according to category
+            Route::get('/book-fetch','single_book_fetch')->name('single_book_fetch'); //Books fetch according to category
             Route::post('/store','store')->name('store');
             Route::get('/edit/{id}','edit')->name('edit');
             Route::post('/update','update')->name('update');

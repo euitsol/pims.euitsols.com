@@ -3,7 +3,7 @@
 @section('title', 'Library Management - Add student')
 @push('third_party_stylesheets')
 <link rel="stylesheet" href="{{ asset('assets/css/Datepicker/datepicker.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 @endpush
 @push('page_css')
     <style>
@@ -62,14 +62,6 @@
                         <div class="tab-content tab-content-bg p-4 border border-top-0 shadow-sm rounded">
                             <div class="tab-pane active" id="student_div">
                                 <form action="{{route('library.student.store')}}" method="POST">
-                                    @if($errors->all())
-                                        <ul class="alert alert-danger">
-                                            @foreach ($errors->all() as $error)
-
-                                            <li>{{$error}}</li>
-                                            @endforeach
-                                        </ul>
-                                    @endif
                                     @csrf
                                     <div class="row mb-3" id="select_div">
                                             <div class="col-md-6 input-group m-auto">
@@ -96,7 +88,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="phone">Phone<span class="text-danger">*</span></label>
-                                            <input class="form-control" type="number" id="phone" name="phone" placeholder="Enter student's phone" required>
+                                            <input class="form-control" type="tel" id="phone" name="phone" placeholder="Enter student's phone" required>
                                             @if($errors->has('phone')) <span class="text-danger">{{$errors->first('phone')}}</span> @endif
                                         </div>
                                         <div class="col-md-4">
@@ -107,14 +99,14 @@
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
-                                            <label for="ec_name">Emergency contact (name)<span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text" id="ec_name" name="ec_name" placeholder="Enter student's emergency contact (name)" required>
+                                            <label for="ec_name">Emergency contact (name)</label>
+                                            <input class="form-control" type="text" id="ec_name" name="ec_name" placeholder="Enter student's emergency contact (name)">
                                             @if($errors->has('ec_name')) <span class="text-danger">{{$errors->first('ec_name')}}</span> @endif
                                         </div>
 
                                         <div class="col-md-6">
-                                            <label for="ec_phone">Emergency contact (phone)<span class="text-danger">*</span></label>
-                                            <input class="form-control" type="number" id="ec_phone" name="ec_phone" placeholder="Enter student's emergency contact (phone)" required>
+                                            <label for="ec_phone">Emergency contact (phone)</label>
+                                            <input class="form-control" type="tel" id="ec_phone" name="ec_phone" placeholder="Enter student's emergency contact (phone)">
                                             @if($errors->has('ec_phone')) <span class="text-danger">{{$errors->first('ec_phone')}}</span> @endif
                                         </div>
 
@@ -167,7 +159,7 @@
             //Single student fetch. to implement this just use one id that is #select_div use for the parent of select student id and try to avoid #select_div's next element
             $('#select_div').find('select').change(function(){
                let student_infos_id = $(this).val();
-               if(std_id != ''){
+               if(student_infos_id != ''){
                 $.ajax({
                     type: "get",
                     url: "{{route('residentialStdShow')}}",
@@ -188,7 +180,7 @@
                                                                 :
                                                             </td>
                                                             <td>
-                                                                <input type='text' class='border-0 bg-transparent' name='name' value=' ${response.name}' readonly>
+                                                                <input type='text' class='border-0 bg-transparent' name='name' value='${response.name}' readonly>
                                                             </td>
                                                             <td>
                                                                 Student ID
@@ -217,7 +209,7 @@
                                                                 :
                                                             </td>
                                                             <td>
-                                                                <input type='text' class='border-0 bg-transparent form-control''  name='dob' value='${response.dob}' readonly>
+                                                                <input type='text' class='border-0 bg-transparent' name='dob' value='${response.dob}' readonly>
                                                             </td>
                                                         </tr>
 
@@ -276,6 +268,9 @@
                         $(student_info).insertAfter("#select_div");
                     }
                 });
+               }else{
+                $('#select_div').nextAll().remove();
+                $('').insertAfter("#select_div");
                }
             });
 

@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Book extends Model
+class BookAssign extends Model
 {
     use HasFactory;
-
     public function created_user(){
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
@@ -19,13 +19,11 @@ class Book extends Model
         return $this->belongsTo(User::class, 'deleted_by', 'id');
     }
 
-    public function category(){
-
-        return $this->belongsTo(Category::class,'category_id');
+    public function student(){
+       return $this->BelongsTo(LibraryStudent::class,'std_id');
     }
-    public function bookshelf(){
 
-        return $this->belongsTo(Bookshelf::class,'bookshelf_id');
+    public function book(){
+       return $this->BelongsTo(Book::class,'book_id');
     }
-    
 }
