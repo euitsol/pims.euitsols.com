@@ -33,7 +33,7 @@ class BookAssignController extends Controller
 
 
     public function store(Request $req){
-        dd($req->all());
+        // dd($req->all());
         $this->validate($req,[
             'std_id' => 'integer|exists:student_infos,id',
             'book_id' => 'integer|exists:books,id',

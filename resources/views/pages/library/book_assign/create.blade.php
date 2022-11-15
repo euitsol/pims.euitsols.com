@@ -8,14 +8,18 @@
 
 @push('page_css')
 <style>
-    .book-select-card{
-    display: none;
-}
 .select2-container--default .select2-selection--multiple .select2-selection__choice__display{
     color: black;
 }
 caption {
     caption-side: top !important;
+}
+.plus-btn{
+    max-width: 50px;
+}
+.plus-btn{
+    bottom: 21.3%;
+    right: 2.5%;
 }
 </style>
 @endpush
@@ -41,11 +45,11 @@ caption {
                             <label for="std_id">Students<span class="text-danger">*</span></label>
                         </div>
                         <div class="col-md-6 text-left " >
-                            <select name="std_id" id="std_id" class="form-control select2" data-placeholder="Select students" multiple>
-                                {{-- <option value="" hidden>Select student</option> --}}
+                            <select name="std_id" id="std_id" class="form-control select2">
+                                <option value="" hidden>Select student</option>
                                 @foreach ($students as $student )
-                                    <option value="{{$student->id}}"> {{ $student->name .' - '. $student->phone }}</option>
-                                @endforeach
+                                <option value="{{$student->id}}"> {{ $student->name .' - '. $student->phone }}</option>
+                            @endforeach
                             </select>
                         </div>
                     </div>
@@ -60,20 +64,41 @@ caption {
                     <span class="float-right">
 
                 </div>
-                <div class="card-body" >
-                    <div class="row" id="select_cat_div">
-                        <div class="col-md-1 offset-md-2">
-                            <label for="cat_id">Categories<span class="text-danger">*</span></label>
-                        </div>
-                        <div class="col-md-6 mr-auto">
-                            <select name="cat_id" id="cat_id" class="form-control select2" data-placeholder="Select categories" multiple>
-                                <option value="" hidden>Select category</option>
-                                @foreach ($categories as $category )
-                                    <option value="{{$category->id}}"> {{ $category->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
+                <div class="card-body position-relative">
+                  <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Book</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody class="">
+                        <tr>
+                            <td>
+                                <select name="cat_id" class="form-control">
+                                    <option value="" hidden>Select category</option>
+                                    @foreach ($categories as $category )
+                                        <option value="{{$category->id}}"> {{ $category->name}}</option>
+                                    @endforeach
+                                </select>
+                            </td>
+                            <td>
+                                <select name="cat_id" class="form-control">
+                                    <option value="" hidden>Select category</option>
+                                    @foreach ($categories as $category )
+                                        <option value="{{$category->id}}"> {{ $category->name}}</option>
+                                    @endforeach
+                                </select>
+                            </td>
+                            <td>
+                               <input type="number" name="qty" class="form-control" placeholder="Enter quantity">
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                  </table>
+                  <button type="button" id="plus-btn" data-val='1' class="btn btn-success position-absolute plus-btn">+</button>
                 </div>
             </div>
         </form>
@@ -91,10 +116,12 @@ caption {
         $(document).ready(function() {
             $('.select2').select2();
 
+            $('#plus-btn').click(function(){
+
+         });
            //Single student fetch. to implement this just use one id that is #select_div use for the parent of select student id and try to avoid #select_div's next element
             $('#select_div').find('select').change(function(){
                let std_id = $(this).val();
-
                if(std_id != ''){
                 $.ajax({
                     type: "get",
@@ -102,18 +129,11 @@ caption {
                     data: {
                         'id' : std_id
                     },
-                    success: function (response) {
-                        console.log(response);
-
-
-
-                        $('#select_div').nextAll().remove();
-                        var student_info = ` <div class="row mt-3 p-3 justify-content-center" id='std_info'> `;
-                        $.each(response,function(index,val){
-                             student_info += `
-                                        <div class='col-md-6'>
-                                            <table class="table table-sm table-striped table-responsive caption-top">
-                                                <caption>${val.name}</caption>
+                    success: function (std_info) {
+                        let  student_info = `
+                                    <div class="row mt-3 p-3" id='std_info'>
+                                            <table class="table table-sm table-striped">
+                                                <caption>${std_info.name}</caption>
                                                 <tbody>
                                                         <tr>
                                                             <td>
@@ -123,7 +143,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${val.name}
+                                                                ${std_info.name}
                                                             </td>
                                                             <td>
                                                                 Student Type
@@ -132,7 +152,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${val.std_id ? 'Residential' : 'Non-residential'}
+                                                                ${std_info.std_id ? 'Residential' : 'Non-residential'}
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -143,7 +163,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${val.phone}
+                                                                ${std_info.phone}
                                                             </td>
                                                             <td>
                                                                 Student Date of Birth
@@ -152,7 +172,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${val.dob}
+                                                                ${std_info.dob}
                                                             </td>
                                                         </tr>
 
@@ -164,7 +184,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${val.present_address ?? ''}
+                                                                ${std_info.present_address ?? ''}
 
                                                             </td>
                                                             <td>
@@ -174,7 +194,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${val.permanent_address ?? ''}
+                                                                ${std_info.permanent_address ?? ''}
 
                                                             </td>
 
@@ -187,7 +207,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${val.ec_name ?? ''}
+                                                                ${std_info.ec_name ?? ''}
                                                             </td>
                                                             <td>
                                                                 Emergency Contact (Phone)
@@ -196,23 +216,19 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${val.ec_phone ?? ''}
+                                                                ${std_info.ec_phone ?? ''}
                                                             </td>
                                                         </tr>
                                                 </tbody>
                                             </table>
-                                        </div>
-                                       `;
-                        });
-                        student_info += `</div>`;
+
+                                    </div>`;
+                        $('#select_div').nextAll().remove();
                         $(student_info).insertAfter("#select_div");
-                        $('.book-select-card').css('display','block')
                     }
                 });
                }else{
                 $('#select_div').nextAll().remove();
-                $('.book-select-card').css('display','none')
-                $('.book-select-card').find('select').val('').trigger('change');
                 $('').insertAfter("#select_div");
                }
             });
