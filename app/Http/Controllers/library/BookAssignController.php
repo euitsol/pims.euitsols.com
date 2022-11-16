@@ -5,7 +5,8 @@ namespace App\Http\Controllers\library;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Category;
-use App\Models\BookAssign;
+use App\Models\AssignBook;
+use App\Models\AssignBookBkdn;
 use App\Models\LibraryStudent;
 use App\Models\studentInfo;
 use Carbon\Carbon;
@@ -20,7 +21,7 @@ class BookAssignController extends Controller
     }
 
     public function index(){
-        $n['assigned_books'] = BookAssign::with(['created_user','updated_user','deleted_user'])->where('deleted_by',null)->latest()->get();
+        $n['assigned_books'] = AssignBook::with(['created_user','updated_user','deleted_user'])->where('deleted_by',null)->latest()->get();
         return view('pages.library.book_assign.index',$n);
     }
 
@@ -35,24 +36,40 @@ class BookAssignController extends Controller
     public function store(Request $req){
         // dd($req->all());
         $this->validate($req,[
-            'std_id' => 'integer|exists:student_infos,id',
-            'book_id' => 'integer|exists:books,id',
+            'std_id' => 'required|integer|exists:student_infos,id',
+            'book.*.book_id' => 'required|integer|exists:books,id',
+            'return_date' => 'required',
         ],[],[
             'std_id' => 'Student ID',
-            'book_id' => 'Book ID',
+            'book.*.book_id' => 'Book ID',
         ]);
 
-        $insert = new BookAssign();
+        $insert = new AssignBook();
         $insert->std_id = $req->std_id;
-        $insert->book_id = $req->book_id;
+        $insert->assign_date = Carbon::now()->toDateTimeString();
+        $insert->return_date = $req->return_date;
+        $total_book = 0;
+        foreach($req->book as $key => $val){
+           $total_book += $val['qty'];
+        }
+        $insert->total_book = $total_book;
         $insert->created_by = Auth::user()->id;
         $insert->save();
+        $insert_bkdn = new AssignBookBkdn();
+        $insert_bkdn->assign_book_id = $insert->id;
+        foreach($req->book as $value){
+            $insert_bkdn->book_id = $value['book_id'];
+            $insert_bkdn->qty = $value['qty'];
+            $insert->created_by = Auth::user()->id;
+            $insert_bkdn->save();
+        }
+
         $this->message('success','Successfully book assigned');
         return redirect()->route('library.book_assign.index');
     }
 
     public function edit($id){
-        $n['student'] = BookAssign::findOrFail($id);
+        $n['student'] = AssignBook::findOrFail($id);
         return view('pages.library.book_assign.edit',$n);
     }
 
@@ -78,7 +95,7 @@ class BookAssignController extends Controller
             'ec_phone' => 'Emergency Contact (Phone)',
         ]);
 
-        $update = BookAssign::findOrFail($req->id);
+        $update = AssignBook::findOrFail($req->id);
         $update->std_id = $req->std_id;
         $update->name = $req->name;
         $update->dob = $req->dob;
@@ -95,7 +112,7 @@ class BookAssignController extends Controller
 
     public function destroy($id =null){
         if($id != null){
-            $delete = BookAssign::find($id);
+            $delete = AssignBook::find($id);
             $delete->deleted_at = Carbon::now()->toDateTimeString();
             $delete->deleted_by = Auth::user()->id;
             $delete->save();
@@ -105,7 +122,7 @@ class BookAssignController extends Controller
 
     public function show($id = null){
         if($id !=null){
-            $student =BookAssign::with(['student','book','created_user','updated_user','deleted_user'])->find($id);
+            $student =AssignBook::with(['student','book','created_user','updated_user','deleted_user'])->find($id);
             return response()->json($student);
         }
     }

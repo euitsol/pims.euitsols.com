@@ -4,6 +4,7 @@
 
 @push('third_party_stylesheets')
 <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{asset('assets/css/Datepicker/datepicker.min.css')}}">
 @endpush
 
 @push('page_css')
@@ -17,10 +18,7 @@ caption {
 .plus-btn{
     max-width: 50px;
 }
-.plus-btn{
-    bottom: 95px;
-    right: 2.5%;
-}
+
 .table th, .table td {
     border-top: none !important;
 }
@@ -36,7 +34,7 @@ caption {
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>Book assign</h4>
+                        <h4>Student selection</h4>
                     </span>
                     <span class="float-right">
                         @if(Auth::user()->can('add book-assign') || Auth::user()->role->id == 1)<a href="{{ route('library.book_assign.index') }}" class="btn btn-info">Back</a>@endif
@@ -48,12 +46,13 @@ caption {
                             <label for="std_id">Students<span class="text-danger">*</span></label>
                         </div>
                         <div class="col-md-6 text-left " >
-                            <select name="std_id" id="std_id" class="form-control select2">
+                            <select name="std_id" id="std_id" class="form-control">
                                 <option value="" hidden>Select student</option>
                                 @foreach ($students as $student )
                                 <option value="{{$student->id}}"> {{ $student->name .' - '. $student->phone }}</option>
                             @endforeach
                             </select>
+                            @if($errors->has('std_id')) <span class="text-danger">{{$errors->first('std_id')}}</span> @endif
                         </div>
                     </div>
                 </div>
@@ -65,9 +64,11 @@ caption {
                         <h4>Assign Book</h4>
                     </span>
                     <span class="float-right">
-
+                        <input type="text" id="date" name="return_date" class="date form-control" placeholder="Enter return date">
+                        @if($errors->has('return_date')) <span class="text-danger">{{$errors->first('return_date')}}</span> @endif
+                    </span>
                 </div>
-                <div class="card-body position-relative">
+                <div class="card-body">
                   <table class="table text-center">
                     <thead>
                         <tr>
@@ -81,7 +82,7 @@ caption {
                     <tbody id="tbody">
                         <tr>
                             <td>
-                                <select name="book[0][cat_id]" class="form-control" onchange='bookFetch(this,1)'>
+                                <select class="form-control cat-id select" onchange='bookFetch(this)'>
                                     <option value="" hidden>Select category</option>
                                     @foreach ($categories as $category )
                                         <option value="{{$category->id}}"> {{ $category->name}}</option>
@@ -89,9 +90,10 @@ caption {
                                 </select>
                             </td>
                             <td>
-                                <select name="book[0][book_id]" class="form-control" id="book1" onchange='bookChange(this)'>
+                                <select name="book[0][book_id]" class="form-control book-id" onchange='bookChange(this)'>
                                     <option value="" hidden>Select book</option>
                                 </select>
+                                @if($errors->has('book.*.book_id')) <span class="text-danger">{{$errors->first('book.*.book_id')}}</span> @endif
                             </td>
                             <td class="author-name">
                                 <span class='form-control'>
@@ -102,14 +104,17 @@ caption {
                                 </span>
                             </td>
                             <td>
-                               <input type="number" name="qty" class="form-control" placeholder="Enter quantity">
+                               <input type="number" name="book[0][qty]" class="form-control qty" min="1" max="" placeholder="Enter quantity" onkeyup="bookQty(this)">
+                               <span class="text-info"></span>
                             </td>
-                            <td></td>
+                            <td class="text-left" id="plus_minus_btn">
+                                <span class="btn btn-info plus-btn"   onclick='add(this)'>+</span>
+                                <span class="btn btn-sm btn-danger d-none minus-btn" onclick='remove(this)'>Remove</span>
+                            </td>
                         </tr>
                     </tbody>
                   </table>
-                  <button type="button" id="plus_btn" data-val='2' class="btn btn-success position-absolute plus-btn">+</button>
-                  <button class="btn btn-info w-100 mt-4">Save</button>
+                  <button class="btn btn-info w-100 mt-4">Assign</button>
                 </div>
             </div>
         </form>
@@ -119,14 +124,18 @@ caption {
 @endsection
 
 @push('third_party_scripts')
+    <script src="{{asset('assets/js/Datepicker/datepicker.min.js')}}"></script>
      {{-- Select2 --}}
      <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 @endpush
 @push('page_scripts')
     <script>
         $(document).ready(function() {
-            $('.select2').select2();
+            $('.date').datepicker({
+                autoclose:true,
+            });
 
+            $('select').select2();
 
            //Single student fetch. to implement this just use one id that is #select_div use for the parent of select student id and try to avoid #select_div's next element
             $('#select_div').find('select').change(function(){
@@ -142,7 +151,6 @@ caption {
                         let  student_info = `
                                     <div class="row mt-3 p-3" id='std_info'>
                                             <table class="table table-sm table-striped">
-                                                <caption>${std_info.name}</caption>
                                                 <tbody>
                                                         <tr>
                                                             <td>
@@ -243,43 +251,17 @@ caption {
             });
 
             //multiple book row add
-            $('#plus_btn').click(function(){
-                let click_num = Number($(this).attr('data-val'));
-                $(this).attr('data-val',click_num+1);
-                let tr = `
-                        <tr>
-                            <td>
-                                <select name="book[${click_num-1}][cat_id]" class="form-control" id='cat${click_num}' onchange='bookFetch(this,${click_num})'>
-                                    <option value="" hidden>Select category</option>
-                                    @foreach ($categories as $category )
-                                        <option value="{{$category->id}}"> {{ $category->name}}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <select name="book[${click_num-1}][book_id]" class="form-control" id='book${click_num}' onchange='bookChange(this)'>
-                                    <option value="" hidden>Select book</option>
-                                </select>
-                            </td>
-                            <td class="author-name">
-                                <span class='form-control'>
-                                </span>
-                            </td>
-                            <td class="bookshelf">
-                                <span class='form-control'>
-                                </span>
-                            </td>
-                            <td>
-                               <input type="number" name="book[${click_num-2}][qty]" class="form-control" placeholder="Enter quantity">
-                            </td>
-                            <td></td>
-                        </tr>`;
-                        $('#tbody').append(tr);
+            $('.plus-btn').each(function(index){
+
+                $(this).click(function(){
+
+                });
             });
 
         });
 
-        function bookFetch(This,click_num){
+        function bookFetch(This){
+            let index_no = $('.cat-id').index(This);
             let cat_id = $(This).val();
             $.ajax({
                     type: 'get',
@@ -293,10 +275,9 @@ caption {
                             $.each(books,function(key,book){
                                 option += '<option value="'+book.id+'">'+book.name+'</option>';
                             });
+                        $('.book-id').eq(index_no).html(option);
 
-                        $('#book'+click_num).html(option);
-                        // $(append_book).insertAfter($('#select_cat_div'));
-                        $('.select3').select2();
+
                     }
 
                 })
@@ -304,7 +285,7 @@ caption {
 
         function bookChange(This){
            let book_id = $(This).val();
-
+           let index_no = $('.boo-id').index(This);
             if(book_id != ''){
                 $.ajax({
                     type: 'get',
@@ -313,15 +294,85 @@ caption {
                         'id':book_id,
                     },
                     success:function(response){
-
+                        console.log(response.qty);
                         let author_name = `${response.author_name ?? 'finding fail'}`;
                         let bookshelf = `${response.bookshelf.name ?? 'finding fail'}`;
                         $(This).parent().next('td.author-name').children('span').html(author_name);
                         $(This).parent().nextAll('td.bookshelf').children('span').html(bookshelf);
+                        $('.qty').eq(index_no).attr('max',response.qty);
+                        $('.qty').eq(index_no).next('span').html('Remaingin books: <span id="text-qty">'+response.qty+'</span>');
 
                     }
                 })
             }
+
+        }
+      function add(This){
+            let click_num = Number($('.plus-btn').index(This))+1;
+                let tr = `
+                        <tr>
+                            <td>
+                                <select class="form-control cat-id select" onchange='bookFetch(this)'>
+                                    <option value="" hidden>Select category</option>
+                                    @foreach ($categories as $category )
+                                        <option value="{{$category->id}}"> {{ $category->name}}</option>
+                                    @endforeach
+                                </select>
+                            </td>
+                            <td>
+                                <select name="book[${click_num}][book_id]" class="form-control book-id" id='book${click_num}' onchange='bookChange(this)'>
+                                    <option value="" hidden>Select book</option>
+                                </select>
+                            </td>
+                            <td class="author-name">
+                                <span class='form-control'>
+                                </span>
+                            </td>
+                            <td class="bookshelf">
+                                <span class='form-control'>
+                                </span>
+                            </td>
+                            <td>
+                               <input type="number" name="book[${click_num}][qty]" class="form-control qty" min="1" max=""  placeholder="Enter quantity" onkeyup="bookQty(this)">
+                            </td>
+                            <td class="text-left" id="plus_minus_btn">
+                                <span class="btn  btn-info plus-btn" onclick='add(this)'>+</span>
+                                <span class="btn btn-sm btn-danger d-none minus-btn" onclick='remove(this)'>Remove</span>
+                            </td>
+                        </tr>`;
+                $('#tbody').append(tr);
+                $(This).next('span.minus-btn').removeClass('d-none');
+                $(This).addClass('d-none');
+                $('select').select2();
+        }
+        function remove(This){
+            let index_no  = $('.minus-btn').index(This);
+            $('.book-id').eq(index_no).attr('disabled',true);
+            $('.cat-id').eq(index_no).attr('disabled',true);
+            $('.book-id').eq(index_no).parent().parent().addClass('d-none');
+        }
+       function bookQty(This){
+            let remaining_book = Number($(This).next().find('#text-qty').html());
+            console.log(remaining_book);
+
+            let val = Number($(This).val());
+
+            let final_book = remaining_book-val;
+            $(This).next('span').remove();
+            if(final_book >0){
+                $(`<span class='text-info'>Remaingin books: <span id="text-qty">${final_book}</span></span>`).insertAfter($(This).next());
+
+                $(This).next('span').find('#text-qty').html(final_book);
+            }
+            else if(final_book == 0){
+                $(This).next('span').remove();
+                $(`<span class='text-info'>All books are delivered</span>`).insertAfter($(This).next());
+            }
+            else{
+                $(This).next().remove();
+                $(`<span class='text-danger'>You can't add negetive value</span>`).insertAfter($(This).next());
+            }
+
 
         }
     </script>

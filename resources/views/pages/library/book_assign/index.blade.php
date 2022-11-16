@@ -36,9 +36,9 @@
                                 @foreach ( $assigned_books as $key=>$assigned_book)
                                    <tr>
                                     <td>{{$key+1}}</td>
-                                    <td>{{$assigned_book->book->name}}</td>
+                                    {{-- <td>{{$assigned_book->book->name}}</td>
                                     <td>{{$assigned_book->book->category->name}}</td>
-                                    <td>{{$assigned_book->book->category->name}}</td>
+                                    <td>{{$assigned_book->book->category->name}}</td> --}}
                                     <td>{{$assigned_book->student->name ?? 'no students'    }}</td>
                                     <td>{{$assigned_book->student->phone ?? 'no students'}}</td>
                                     <td>{{date('d-m-Y',strtotime($assigned_book->dob))}}</td>

@@ -435,7 +435,7 @@
                     <a href="{{route('library.book_assign.index')}}"
                         class="nav-link {{ Request::is('library/book-assign/*') ? 'active' : '' }}">
                        <i class="nav-icon far fa-circle second-nav-text"></i>
-                        <p>Book Assign</p>
+                        <p>Assign Books</p>
                     </a>
                 </li>
             @endif
