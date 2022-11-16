@@ -18,8 +18,11 @@ caption {
     max-width: 50px;
 }
 .plus-btn{
-    bottom: 21.3%;
+    bottom: 95px;
     right: 2.5%;
+}
+.table th, .table td {
+    border-top: none !important;
 }
 </style>
 @endpush
@@ -65,18 +68,20 @@ caption {
 
                 </div>
                 <div class="card-body position-relative">
-                  <table class="table">
+                  <table class="table text-center">
                     <thead>
                         <tr>
                             <th>Category</th>
                             <th>Book</th>
+                            <th>Author Name</th>
+                            <th>Bookshelf</th>
                             <th>Quantity</th>
                         </tr>
                     </thead>
-                    <tbody class="">
+                    <tbody id="tbody">
                         <tr>
                             <td>
-                                <select name="cat_id" class="form-control">
+                                <select name="book[0][cat_id]" class="form-control" onchange='bookFetch(this,1)'>
                                     <option value="" hidden>Select category</option>
                                     @foreach ($categories as $category )
                                         <option value="{{$category->id}}"> {{ $category->name}}</option>
@@ -84,12 +89,17 @@ caption {
                                 </select>
                             </td>
                             <td>
-                                <select name="cat_id" class="form-control">
-                                    <option value="" hidden>Select category</option>
-                                    @foreach ($categories as $category )
-                                        <option value="{{$category->id}}"> {{ $category->name}}</option>
-                                    @endforeach
+                                <select name="book[0][book_id]" class="form-control" id="book1" onchange='bookChange(this)'>
+                                    <option value="" hidden>Select book</option>
                                 </select>
+                            </td>
+                            <td class="author-name">
+                                <span class='form-control'>
+                                </span>
+                            </td>
+                            <td class="bookshelf">
+                                <span class='form-control'>
+                                </span>
                             </td>
                             <td>
                                <input type="number" name="qty" class="form-control" placeholder="Enter quantity">
@@ -98,7 +108,8 @@ caption {
                         </tr>
                     </tbody>
                   </table>
-                  <button type="button" id="plus-btn" data-val='1' class="btn btn-success position-absolute plus-btn">+</button>
+                  <button type="button" id="plus_btn" data-val='2' class="btn btn-success position-absolute plus-btn">+</button>
+                  <button class="btn btn-info w-100 mt-4">Save</button>
                 </div>
             </div>
         </form>
@@ -116,9 +127,7 @@ caption {
         $(document).ready(function() {
             $('.select2').select2();
 
-            $('#plus-btn').click(function(){
 
-         });
            //Single student fetch. to implement this just use one id that is #select_div use for the parent of select student id and try to avoid #select_div's next element
             $('#select_div').find('select').change(function(){
                let std_id = $(this).val();
@@ -233,9 +242,46 @@ caption {
                }
             });
 
-            $('#select_cat_div').find('select').on('change',function(){
-                let cat_id = $(this).val();
-                $.ajax({
+            //multiple book row add
+            $('#plus_btn').click(function(){
+                let click_num = Number($(this).attr('data-val'));
+                $(this).attr('data-val',click_num+1);
+                let tr = `
+                        <tr>
+                            <td>
+                                <select name="book[${click_num-1}][cat_id]" class="form-control" id='cat${click_num}' onchange='bookFetch(this,${click_num})'>
+                                    <option value="" hidden>Select category</option>
+                                    @foreach ($categories as $category )
+                                        <option value="{{$category->id}}"> {{ $category->name}}</option>
+                                    @endforeach
+                                </select>
+                            </td>
+                            <td>
+                                <select name="book[${click_num-1}][book_id]" class="form-control" id='book${click_num}' onchange='bookChange(this)'>
+                                    <option value="" hidden>Select book</option>
+                                </select>
+                            </td>
+                            <td class="author-name">
+                                <span class='form-control'>
+                                </span>
+                            </td>
+                            <td class="bookshelf">
+                                <span class='form-control'>
+                                </span>
+                            </td>
+                            <td>
+                               <input type="number" name="book[${click_num-2}][qty]" class="form-control" placeholder="Enter quantity">
+                            </td>
+                            <td></td>
+                        </tr>`;
+                        $('#tbody').append(tr);
+            });
+
+        });
+
+        function bookFetch(This,click_num){
+            let cat_id = $(This).val();
+            $.ajax({
                     type: 'get',
                     url: "{{route('library.book_assign.book_info')}}",
                     data:{
@@ -243,31 +289,18 @@ caption {
                     },
                     success:function(books){
 
-                            var option = '';
+                            var option = "<option val='' hidden>Select book</option>";
                             $.each(books,function(key,book){
                                 option += '<option value="'+book.id+'">'+book.name+'</option>';
                             });
-                            // console.log(option);
-                        let append_book =   `
-                                            <div class='row mt-3' id="select_book_div">
-                                                <div class="col-md-1 offset-md-2">
-                                                    <label for="book_id">Books<span class="text-danger">*</span></label>
-                                                </div>
-                                                <div class="col-md-6 mr-auto">
-                                                    <select name="book_id" id="book_id" class="form-control select3" data-placeholder="Select books" onchange='bookChange(this)' multiple>
-                                                        ${option}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            `;
-                        $('#select_cat_div').nextAll().remove();
-                        $(append_book).insertAfter($('#select_cat_div'));
+
+                        $('#book'+click_num).html(option);
+                        // $(append_book).insertAfter($('#select_cat_div'));
                         $('.select3').select2();
                     }
 
                 })
-            });
-        });
+        }
 
         function bookChange(This){
            let book_id = $(This).val();
@@ -279,75 +312,15 @@ caption {
                     data:{
                         'id':book_id,
                     },
-                    success:function(books){
-                        var book_info = `<div class="row p-4 justify-content-center" id='std_info'> `;
+                    success:function(response){
 
-                        $.each(books,function(index,val){
-                            book_info += `
-                                                <div class='col-md-4'>
-                                                    <table class="table table-sm table-striped table-responsive caption-top">
-                                                        <caption>${val.name}</caption>
-                                                        <tbody>
-                                                                <tr>
-                                                                    <td>
-                                                                        Book's name
-                                                                    </td>
-                                                                    <td>
-                                                                        :
-                                                                    </td>
-                                                                    <td>
-                                                                        ${val.name}
-                                                                    </td>
-                                                                    <td>
-                                                                        Book Type
-                                                                    </td>
-                                                                    <td>
-                                                                        :
-                                                                    </td>
-                                                                    <td>
-                                                                        ${val.author_name ? 'Residential' : 'Non-residential'}
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                    Category Name
-                                                                    </td>
-                                                                    <td>
-                                                                        :
-                                                                    </td>
-                                                                    <td>
-                                                                        ${val.category.name}
-                                                                    </td>
-                                                                    <td>
-                                                                        Bookshelf Name
-                                                                    </td>
-                                                                    <td>
-                                                                        :
-                                                                    </td>
-                                                                    <td>
-                                                                        ${val.bookshelf.name}
-                                                                    </td>
-                                                                </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-
-                                            `;
-                        });
-                        book_info += ` </div>
-                                             <div class="row">
-                                            <div class="col-md-12 m-auto  mt-5">
-                                                <button type='submit' class='btn btn-info w-100' onclick = 'submit()'>Save</button>
-                                            </div>
-                                        </div>`;
-
-                        $(This).parent().parent().nextAll().remove();
-                        $(book_info).insertAfter($(This).parent().parent());
+                        let author_name = `${response.author_name ?? 'finding fail'}`;
+                        let bookshelf = `${response.bookshelf.name ?? 'finding fail'}`;
+                        $(This).parent().next('td.author-name').children('span').html(author_name);
+                        $(This).parent().nextAll('td.bookshelf').children('span').html(bookshelf);
 
                     }
                 })
-            }else{
-                $(This).parent().parent().nextAll().remove();
             }
 
         }

@@ -120,7 +120,7 @@ class BookAssignController extends Controller
      }
      public function book_info(Request $req){
         if($req->id){
-         $books = Book::whereIn('category_id',$req->id)->where('deleted_by',null)->OrderBy('name')->get();
+         $books = Book::where('category_id',$req->id)->where('deleted_by',null)->OrderBy('name')->get();
          return response()->json($books);
         }
 
