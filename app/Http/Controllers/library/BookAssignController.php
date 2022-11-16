@@ -33,7 +33,7 @@ class BookAssignController extends Controller
 
 
     public function store(Request $req){
-        dd($req->all());
+        // dd($req->all());
         $this->validate($req,[
             'std_id' => 'integer|exists:student_infos,id',
             'book_id' => 'integer|exists:books,id',
@@ -120,7 +120,7 @@ class BookAssignController extends Controller
      }
      public function book_info(Request $req){
         if($req->id){
-         $books = Book::whereIn('category_id',$req->id)->where('deleted_by',null)->OrderBy('name')->get();
+         $books = Book::where('category_id',$req->id)->where('deleted_by',null)->OrderBy('name')->get();
          return response()->json($books);
         }
 
