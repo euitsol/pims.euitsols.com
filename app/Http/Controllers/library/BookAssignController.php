@@ -21,7 +21,7 @@ class BookAssignController extends Controller
     }
 
     public function index(){
-        $n['assigned_books'] = AssignBook::with(['created_user','updated_user','deleted_user'])->where('deleted_by',null)->latest()->get();
+        $n['assigned_books'] = AssignBook::with(['bkdn','created_user','updated_user','deleted_user','student'])->where('deleted_by',null)->latest()->get();
         return view('pages.library.book_assign.index',$n);
     }
 
@@ -55,13 +55,19 @@ class BookAssignController extends Controller
         $insert->total_book = $total_book;
         $insert->created_by = Auth::user()->id;
         $insert->save();
-        $insert_bkdn = new AssignBookBkdn();
-        $insert_bkdn->assign_book_id = $insert->id;
+
         foreach($req->book as $value){
+            $insert_bkdn = new AssignBookBkdn();
+            $insert_bkdn->assign_book_id = $insert->id;
             $insert_bkdn->book_id = $value['book_id'];
             $insert_bkdn->qty = $value['qty'];
             $insert->created_by = Auth::user()->id;
             $insert_bkdn->save();
+
+            //update books quantity
+            $update_qty = Book::find($value['book_id']);
+            $update_qty->qty = $update_qty->qty - $value['qty'];
+            $update_qty->save();
         }
 
         $this->message('success','Successfully book assigned');
@@ -69,44 +75,54 @@ class BookAssignController extends Controller
     }
 
     public function edit($id){
-        $n['student'] = AssignBook::findOrFail($id);
+        $n['assign_book'] = AssignBook::with(['student','bkdn','bkdn.book','bkdn.book.category','bkdn.book.bookshelf','created_user','updated_user','deleted_user'])->find($id);
+        $n['students'] = LibraryStudent::where('deleted_by',null)->OrderBy('name')->get();
+        $n['categories'] = Category::where('deleted_by',null)->OrderBy('name')->get();
+        $n['books'] = Book::where('deleted_by',null)->OrderBy('name')->get();
         return view('pages.library.book_assign.edit',$n);
     }
 
     public function update(Request $req){
         // dd($req->id);
         $this->validate($req,[
-            'name' => 'required|string|max:255',
-            // 'std_id' => 'integer|nullable|exists:student_infos,id',
-            'dob' => 'required',
-            'phone' => "required|string|digits:11",//|unique:library_students,phone,$req->id,id
-            'present_add' => 'required|max:255',
-            'permanent_add' => 'required|max:255',
-            'ec_name' => 'nullable|max:255',
-            'ec_phone' => 'nullable|string|digits:11',
+            'std_id' => 'required|integer|exists:student_infos,id',
+            'book.*.book_id' => 'required|integer|exists:books,id',
+            'assig_book_id' => 'exists:assign_books,id',
+            'return_date' => 'required',
         ],[],[
-            'name' => 'Student Name',
-            // 'std_id' => 'Student ID',
-            'dob' => "Student's date of birth",
-            'phone' =>"Student's Phone",
-            'present_add' => 'Present Address',
-            'permanent_add' => 'Permanent Address',
-            'ec_name' => 'Emergency Contact (Name)',
-            'ec_phone' => 'Emergency Contact (Phone)',
+            'std_id' => 'Student ID',
+            'book.*.book_id' => 'Book ID',
         ]);
 
-        $update = AssignBook::findOrFail($req->id);
-        $update->std_id = $req->std_id;
-        $update->name = $req->name;
-        $update->dob = $req->dob;
-        $update->phone = $req->phone;
-        $update->present_address = $req->present_add;
-        $update->permanent_address = $req->permanent_add;
-        $update->ec_name = $req->ec_name;
-        $update->ec_phone = $req->ec_phone;
-        $update->updated_by = Auth::user()->id;
-        $update->save();
-        $this->message('success','Successfully student updated');
+        $insert = AssignBook::find($req->assig_book_id);
+        $insert->std_id = $req->std_id;
+        $insert->assign_date = Carbon::now()->toDateTimeString();
+        $insert->return_date = $req->return_date;
+        $total_book = 0;
+        foreach($req->book as $key => $val){
+           $total_book += $val['qty'];
+        }
+        $insert->total_book = $total_book;
+        $insert->updated_by = Auth::user()->id;
+        $insert->save();
+
+       $delete = AssignBookBkdn::where('assign_book_id',$req->assig_book_id)->delete();
+
+        foreach($req->book as $value){
+            $insert_bkdn = new AssignBookBkdn();
+            $insert_bkdn->assign_book_id = $insert->id;
+            $insert_bkdn->book_id = $value['book_id'];
+            $insert_bkdn->qty = $value['qty'];
+            $insert->updated_by = Auth::user()->id;
+            $insert_bkdn->save();
+
+            //update books quantity
+            $update_qty = Book::find($value['book_id']);
+            $update_qty->qty = $update_qty->qty - $value['qty'];
+            $update_qty->save();
+        }
+
+        $this->message('success','Successfully updated');
         return redirect()->route('library.book_assign.index');
     }
 
@@ -122,7 +138,7 @@ class BookAssignController extends Controller
 
     public function show($id = null){
         if($id !=null){
-            $student =AssignBook::with(['student','book','created_user','updated_user','deleted_user'])->find($id);
+            $student =AssignBook::with(['student','bkdn','bkdn.book','bkdn.book.category','bkdn.book.bookshelf','created_user','updated_user','deleted_user'])->find($id);
             return response()->json($student);
         }
     }

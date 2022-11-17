@@ -22,8 +22,7 @@ class AssignBook extends Model
     public function student(){
        return $this->BelongsTo(LibraryStudent::class,'std_id');
     }
-
-    public function book(){
-       return $this->BelongsTo(Book::class,'book_id');
+    public function bkdn(){
+        return $this->hasMany(AssignBookBkdn::class,'assign_book_id');
     }
 }

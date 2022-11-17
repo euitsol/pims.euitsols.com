@@ -46,7 +46,7 @@ caption {
                             <label for="std_id">Students<span class="text-danger">*</span></label>
                         </div>
                         <div class="col-md-6 text-left " >
-                            <select name="std_id" id="std_id" class="form-control">
+                            <select name="std_id" id="std_id" class="form-control" required>
                                 <option value="" hidden>Select student</option>
                                 @foreach ($students as $student )
                                 <option value="{{$student->id}}"> {{ $student->name .' - '. $student->phone }}</option>
@@ -64,7 +64,7 @@ caption {
                         <h4>Assign Book</h4>
                     </span>
                     <span class="float-right">
-                        <input type="text" id="date" name="return_date" class="date form-control" placeholder="Enter return date">
+                        <input type="text" id="date" name="return_date" class="date form-control" placeholder="Enter return date" autocomplete="off" required>
                         @if($errors->has('return_date')) <span class="text-danger">{{$errors->first('return_date')}}</span> @endif
                     </span>
                 </div>
@@ -82,7 +82,7 @@ caption {
                     <tbody id="tbody">
                         <tr>
                             <td>
-                                <select class="form-control cat-id select" onchange='bookFetch(this)'>
+                                <select class="form-control cat-id select" onchange='bookFetch(this)' required>
                                     <option value="" hidden>Select category</option>
                                     @foreach ($categories as $category )
                                         <option value="{{$category->id}}"> {{ $category->name}}</option>
@@ -90,10 +90,10 @@ caption {
                                 </select>
                             </td>
                             <td>
-                                <select name="book[0][book_id]" class="form-control book-id" onchange='bookChange(this)'>
+                                <select name="book[0][book_id]" class="form-control book-id" onchange='bookChange(this)' required>
                                     <option value="" hidden>Select book</option>
                                 </select>
-                                @if($errors->has('book.*.book_id')) <span class="text-danger">{{$errors->first('book.*.book_id')}}</span> @endif
+
                             </td>
                             <td class="author-name">
                                 <span class='form-control'>
@@ -104,8 +104,8 @@ caption {
                                 </span>
                             </td>
                             <td>
-                               <input type="number" name="book[0][qty]" class="form-control qty" min="1" max="" placeholder="Enter quantity" onkeyup="bookQty(this)">
-                               <span class="text-info"></span>
+                               <input type="number" name="book[0][qty]" class="form-control qty text-center" min="1" max="" value="1" placeholder="Enter quantity" onkeyup="bookQty(this)">
+                               <span></span>
                             </td>
                             <td class="text-left" id="plus_minus_btn">
                                 <span class="btn btn-info plus-btn"   onclick='add(this)'>+</span>
@@ -114,7 +114,7 @@ caption {
                         </tr>
                     </tbody>
                   </table>
-                  <button class="btn btn-info w-100 mt-4">Assign</button>
+                  <button type="button" class="btn btn-info w-100 mt-4" id="assign_btn">Assign</button>
                 </div>
             </div>
         </form>
@@ -136,7 +136,6 @@ caption {
             });
 
             $('select').select2();
-
            //Single student fetch. to implement this just use one id that is #select_div use for the parent of select student id and try to avoid #select_div's next element
             $('#select_div').find('select').change(function(){
                let std_id = $(this).val();
@@ -258,6 +257,12 @@ caption {
                 });
             });
 
+            $('#assign_btn').click(function(){
+                if($(this).attr('type') == 'button'){
+                   toastr.error("Please, select all input field");
+                 }
+            });
+
         });
 
         function bookFetch(This){
@@ -285,7 +290,7 @@ caption {
 
         function bookChange(This){
            let book_id = $(This).val();
-           let index_no = $('.boo-id').index(This);
+           let index_no = $('.book-id').index(This);
             if(book_id != ''){
                 $.ajax({
                     type: 'get',
@@ -300,8 +305,14 @@ caption {
                         $(This).parent().next('td.author-name').children('span').html(author_name);
                         $(This).parent().nextAll('td.bookshelf').children('span').html(bookshelf);
                         $('.qty').eq(index_no).attr('max',response.qty);
-                        $('.qty').eq(index_no).next('span').html('Remaingin books: <span id="text-qty">'+response.qty+'</span>');
+                        $('.qty').eq(index_no).next('span').html('<span class="text-info">Remaingin books: </span><span id="text-qty">'+(response.qty-1)+'</span>');
 
+                        $('#assign_btn').attr('type','submit');
+                        $('.book-id').each(function(index){
+                            if($(this).val() == ''){
+                                $('#assign_btn').attr('type','button');
+                            }
+                        });
                     }
                 })
             }
@@ -333,7 +344,8 @@ caption {
                                 </span>
                             </td>
                             <td>
-                               <input type="number" name="book[${click_num}][qty]" class="form-control qty" min="1" max=""  placeholder="Enter quantity" onkeyup="bookQty(this)">
+                               <input type="number" name="book[${click_num}][qty]" class="form-control qty" min="1" max="" value="1"  placeholder="Enter quantity" onkeyup="bookQty(this)">
+                               <span></span>
                             </td>
                             <td class="text-left" id="plus_minus_btn">
                                 <span class="btn  btn-info plus-btn" onclick='add(this)'>+</span>
@@ -344,33 +356,32 @@ caption {
                 $(This).next('span.minus-btn').removeClass('d-none');
                 $(This).addClass('d-none');
                 $('select').select2();
+                $('#assign_btn').attr('type','button');
         }
+
         function remove(This){
             let index_no  = $('.minus-btn').index(This);
             $('.book-id').eq(index_no).attr('disabled',true);
             $('.cat-id').eq(index_no).attr('disabled',true);
+            $('.qty').eq(index_no).attr('disabled',true);
             $('.book-id').eq(index_no).parent().parent().addClass('d-none');
         }
+
        function bookQty(This){
-            let remaining_book = Number($(This).next().find('#text-qty').html());
+            let remaining_book = Number($(This).attr('max'));
             console.log(remaining_book);
 
-            let val = Number($(This).val());
+            let qty = Number($(This).val());
 
-            let final_book = remaining_book-val;
-            $(This).next('span').remove();
+            let final_book = remaining_book-qty;
             if(final_book >0){
-                $(`<span class='text-info'>Remaingin books: <span id="text-qty">${final_book}</span></span>`).insertAfter($(This).next());
-
-                $(This).next('span').find('#text-qty').html(final_book);
+                $(This).next('span').html('<span class="text-info">Remaingin books: </span><span id="text-qty">'+final_book+'</span>');
             }
             else if(final_book == 0){
-                $(This).next('span').remove();
-                $(`<span class='text-info'>All books are delivered</span>`).insertAfter($(This).next());
+                $(This).next('span').html(`<span class='text-info'>There are no books</span>`);
             }
             else{
-                $(This).next().remove();
-                $(`<span class='text-danger'>You can't add negetive value</span>`).insertAfter($(This).next());
+                $(This).next('span').html(`<span class='text-danger'>You can't add books more then reserve</span>`);
             }
 
 

@@ -22,11 +22,12 @@
                         <thead>
                             <tr>
                                 <th>SL.</th>
-                                <th>Book's Name</th>
-                                <th>Category</th>
-                                <th>Bookshelf</th>
                                 <th>Student's name</th>
                                 <th>Student's phone</th>
+                                <th>Book's Name</th>
+                                <th>Total books</th>
+                                <th>Assign date</th>
+                                <th>Return date</th>
                                 <th>Created By</th>
                                 <th>Created At</th>
                                 <th>Action</th>
@@ -36,12 +37,17 @@
                                 @foreach ( $assigned_books as $key=>$assigned_book)
                                    <tr>
                                     <td>{{$key+1}}</td>
-                                    {{-- <td>{{$assigned_book->book->name}}</td>
-                                    <td>{{$assigned_book->book->category->name}}</td>
-                                    <td>{{$assigned_book->book->category->name}}</td> --}}
-                                    <td>{{$assigned_book->student->name ?? 'no students'    }}</td>
-                                    <td>{{$assigned_book->student->phone ?? 'no students'}}</td>
-                                    <td>{{date('d-m-Y',strtotime($assigned_book->dob))}}</td>
+                                    <td>{{$assigned_book->student->name ?? ''  }}</td>
+                                    <td>{{$assigned_book->student->phone ?? '' }}</td>
+                                    <td>
+                                        @foreach ( $assigned_book->bkdn as $key => $bkdn)
+                                            @if ($key != 0) {{'|'}} @endif
+                                            {{ $bkdn->book->name}}
+                                        @endforeach
+                                    </td>
+                                   <td>{{$assigned_book->total_book}}</td>
+                                    <td>{{ date('d-m-Y',strtotime($assigned_book->assign_date))}}</td>
+                                    <td>{{date('d-m-Y',strtotime($assigned_book->return_date))}}</td>
                                     <td>{{$assigned_book->created_user->name}}</td>
                                     <td>{{date('d-m-Y',strtotime($assigned_book->created_user->created_at))}}</td>
                                     <td>
@@ -82,6 +88,24 @@
                         <table class="table table-borderless table-striped" >
                             <tbody id="view-tbody">
                                 <tr>
+                                    <td>student's Name</td>
+                                    <td>
+                                        <span id="view-std_name"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>student's Phone</td>
+                                    <td>
+                                        <span id="view-std_phone"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Total book</td>
+                                    <td>
+                                        <span id="view-total-book"></span>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td>book's Name</td>
                                     <td>
                                         <span id="view-name"></span>
@@ -100,17 +124,18 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>student's Name</td>
+                                    <td>Assigned date</td>
                                     <td>
-                                        <span id="view-std_name"></span>
+                                        <span id="view-assign_date"></span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>student's Phone</td>
+                                    <td>Return date</td>
                                     <td>
-                                        <span id="view-std_phone"></span>
+                                        <span id="view-return_date"></span>
                                     </td>
                                 </tr>
+
                                 <tr>
                                     <td>Created At</td>
                                     <td>
@@ -165,12 +190,29 @@
                         url: _url,
                         method: "GET",
                         success: function (response) {
-                            // console.log(response);
-                            $('#view-name').html(response.book.name);
-                            $('#view-cat').html(response.book.category_id);
-                            $('#view-bookshelf').html(response.book.bookshelf_id);
+                            console.log(response);
                             $('#view-std_name').html(response.student.name);
                             $('#view-std_phone').html(response.student.phone);
+                            $('#view-total-book').html(response.total_book);
+
+                            let book_name = '';
+                            let category_name = '';
+                            let bookshelf_name = '';
+                            $.each(response.bkdn,function(index,val){
+                                if(index != 0){
+                                    book_name += ', ';
+                                    category_name += ', ';
+                                    bookshelf_name += ', ';
+                                }
+                                book_name += val.book.name;
+                                category_name += val.book.category.name;
+                                bookshelf_name += val.book.bookshelf.name;
+                            });
+                            $('#view-name').html(book_name);
+                            $('#view-cat').html(category_name);
+                            $('#view-bookshelf').html(bookshelf_name);
+                            $('#view-assign_date').html(response.assign_date);
+                            $('#view-return_date').html(response.return_date);
                             $('#view-createdAt').html(response.created_at ? new Date(response.created_at) : '');
                             $('#view-createdBy').html(response.created_user ? response.created_user.name : 'system');
                             $('#view-updatedAt').html(response.updated_at ? new Date(response.updated_at) : '');
