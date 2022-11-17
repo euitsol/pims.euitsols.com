@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Library Management - Book Assign')
+@section('title', 'Library Management - Assign books')
 @push('third_party_stylesheets')
     <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
 @endpush
@@ -11,10 +11,10 @@
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>Book Assign </h4>
+                        <h4>Assign books</h4>
                     </span>
                     <span class="float-right">
-                        @if(Auth::user()->can('add book-assign') || Auth::user()->role->id == 1)<a href="{{ route('library.book_assign.create') }}" class="btn btn-info">Assign a book</a>@endif
+                        @if(Auth::user()->can('add book-assign') || Auth::user()->role->id == 1)<a href="{{ route('library.book_assign.create') }}" class="btn btn-info">Assign books</a>@endif
                     </span>
                 </div>
                 <div class="card-body">
@@ -25,7 +25,7 @@
                                 <th>Student's name</th>
                                 <th>Student's phone</th>
                                 <th>Book's Name</th>
-                                <th>Total books</th>
+                                <th>Total book</th>
                                 <th>Assign date</th>
                                 <th>Return date</th>
                                 <th>Created By</th>
@@ -112,13 +112,13 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Category</td>
+                                    <td>Categories</td>
                                     <td>
                                         <span id="view-cat"></span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Bookshelf</td>
+                                    <td>Bookshelves</td>
                                     <td>
                                         <span id="view-bookshelf"></span>
                                     </td>
@@ -179,6 +179,26 @@
 @push('page_scripts')
     <script>
         $(document).ready(function() {
+            $('#table').DataTable({
+                dom: 'Bfrtip'
+                , buttons: [{
+                        extend: 'pdfHtml5'
+                        , title: 'Assign books'
+                        , download: 'open'
+                        , orientation: 'potrait'
+                        , pagesize: 'LETTER'
+                        , exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5,6,7]
+                        }
+                    }
+                    , {
+                        extend: 'print'
+                        , exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5,6,7]
+                        }
+                    }, 'pageLength'
+                ]
+            });
 
              //view-modal
              $('.btnView').click( function(){

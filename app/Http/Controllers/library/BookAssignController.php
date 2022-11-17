@@ -75,10 +75,12 @@ class BookAssignController extends Controller
     }
 
     public function edit($id){
+        
         $n['assign_book'] = AssignBook::with(['student','bkdn','bkdn.book','bkdn.book.category','bkdn.book.bookshelf','created_user','updated_user','deleted_user'])->find($id);
         $n['students'] = LibraryStudent::where('deleted_by',null)->OrderBy('name')->get();
         $n['categories'] = Category::where('deleted_by',null)->OrderBy('name')->get();
         $n['books'] = Book::where('deleted_by',null)->OrderBy('name')->get();
+
         return view('pages.library.book_assign.edit',$n);
     }
 

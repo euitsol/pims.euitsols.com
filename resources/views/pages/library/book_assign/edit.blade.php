@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Library Management - Book Assign')
+@section('title', 'Library Management - Edit Book Assign')
 
 @push('third_party_stylesheets')
 <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
@@ -48,7 +48,7 @@
                                 <tbody>
                                         <tr>
                                             <td>
-                                                Student's name
+                                                Student's Name
                                             </td>
                                             <td>
                                                 :
@@ -68,7 +68,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                Student Phone
+                                                Student's Phone
                                             </td>
                                             <td>
                                                 :
@@ -77,7 +77,7 @@
                                                 {{$assign_book->student->phone}}
                                             </td>
                                             <td>
-                                                Student Date of Birth
+                                                 Date of Birth
                                             </td>
                                             <td>
                                                 :
@@ -99,7 +99,7 @@
 
                                             </td>
                                             <td>
-                                                Parmanent Address
+                                                Permanent Address
                                             </td>
                                             <td>
                                                 :
@@ -157,7 +157,7 @@
                                 <tr>
                                     <th>Category</th>
                                     <th>Book</th>
-                                    <th>Author Name</th>
+                                    <th>Author's Name</th>
                                     <th>Bookshelf</th>
                                     <th>Quantity</th>
                                 </tr>
@@ -169,7 +169,7 @@
                                 @foreach ($assign_book->bkdn as $key => $bkdn )
                                     <tr>
                                         <td>
-                                            <select class="form-control cat-id select" onchange='bookFetch(this)' required>
+                                            <select class="form-control cat-id" onchange='bookFetch(this)' required>
                                                 <option value="" hidden>Select category</option>
                                                 @foreach ($categories as $category )
                                                     <option value="{{$category->id}}" @if($category->id == $bkdn->book->category_id) selected @endif> {{ $category->name}}</option>
@@ -404,6 +404,20 @@
         function bookChange(This){
            let book_id = $(This).val();
            let index_no = $('.book-id').index(This);
+           //duplicate validation
+           let check = 0;
+            $('.book-id').each(function(index){
+                if(book_id == $(this).val()){
+                    check++;
+                }
+            });
+            $(This).nextAll('p').remove();
+            if(check>1){
+                $('<p class="text-danger">This book already you have been taken </p>').insertAfter($(This).next());
+                $('#assign_btn').attr('type','button');
+                return false;
+            }
+
             if(book_id != ''){
                 $.ajax({
                     type: 'get',
@@ -480,6 +494,10 @@
             $('.cat-id').eq(index_no).attr('disabled',true);
             $('.qty').eq(index_no).attr('disabled',true);
             $('.book-id').eq(index_no).parent().parent().addClass('d-none');
+            $('.book-id').eq(index_no).removeClass('book-id');
+            $('.cat-id').eq(index_no).removeClass('cat-id');
+            $('.qty').eq(index_no).removeClass('qty');
+            $(This).removeClass('minus-btn');
         }
         function bookQty(This){
             let remaining_book = Number($(This).attr('max'));

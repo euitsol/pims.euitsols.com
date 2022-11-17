@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Library Management - Book Assign')
+@section('title', 'Library Management - Assign Books')
 
 @push('third_party_stylesheets')
 <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
@@ -74,7 +74,7 @@ caption {
                         <tr>
                             <th>Category</th>
                             <th>Book</th>
-                            <th>Author Name</th>
+                            <th>Author's Name</th>
                             <th>Bookshelf</th>
                             <th>Quantity</th>
                         </tr>
@@ -153,7 +153,7 @@ caption {
                                                 <tbody>
                                                         <tr>
                                                             <td>
-                                                                Student's name
+                                                                Student's Name
                                                             </td>
                                                             <td>
                                                                 :
@@ -173,7 +173,7 @@ caption {
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                Student Phone
+                                                                Student's Phone
                                                             </td>
                                                             <td>
                                                                 :
@@ -182,7 +182,7 @@ caption {
                                                                 ${std_info.phone}
                                                             </td>
                                                             <td>
-                                                                Student Date of Birth
+                                                                Date of Birth
                                                             </td>
                                                             <td>
                                                                 :
@@ -204,7 +204,7 @@ caption {
 
                                                             </td>
                                                             <td>
-                                                                Parmanent Address
+                                                                Permanent Address
                                                             </td>
                                                             <td>
                                                                 :
@@ -249,20 +249,11 @@ caption {
                }
             });
 
-            //multiple book row add
-            $('.plus-btn').each(function(index){
-
-                $(this).click(function(){
-
-                });
-            });
-
             $('#assign_btn').click(function(){
                 if($(this).attr('type') == 'button'){
                    toastr.error("Please, select all input field");
                  }
             });
-
         });
 
         function bookFetch(This){
@@ -291,6 +282,21 @@ caption {
         function bookChange(This){
            let book_id = $(This).val();
            let index_no = $('.book-id').index(This);
+
+           //duplicate validation
+           let check = 0;
+            $('.book-id').each(function(index){
+                if(book_id == $(this).val()){
+                    check++;
+                }
+            });
+            $(This).nextAll('p').remove();
+            if(check>1){
+                $('<p class="text-danger">This book already you have been taken </p>').insertAfter($(This).next());
+                $('#assign_btn').attr('type','button');
+                return false;
+            }
+
             if(book_id != ''){
                 $.ajax({
                     type: 'get',
@@ -299,7 +305,6 @@ caption {
                         'id':book_id,
                     },
                     success:function(response){
-                        console.log(response.qty);
                         let author_name = `${response.author_name ?? 'finding fail'}`;
                         let bookshelf = `${response.bookshelf.name ?? 'finding fail'}`;
                         $(This).parent().next('td.author-name').children('span').html(author_name);
@@ -361,15 +366,20 @@ caption {
 
         function remove(This){
             let index_no  = $('.minus-btn').index(This);
+            console.log(index_no);
+
             $('.book-id').eq(index_no).attr('disabled',true);
             $('.cat-id').eq(index_no).attr('disabled',true);
             $('.qty').eq(index_no).attr('disabled',true);
             $('.book-id').eq(index_no).parent().parent().addClass('d-none');
+            $('.book-id').eq(index_no).removeClass('book-id');
+            $('.cat-id').eq(index_no).removeClass('cat-id');
+            $('.qty').eq(index_no).removeClass('qty');
+            $(This).removeClass('minus-btn');
         }
 
        function bookQty(This){
             let remaining_book = Number($(This).attr('max'));
-            console.log(remaining_book);
 
             let qty = Number($(This).val());
 
