@@ -430,12 +430,21 @@
                     </a>
                 </li>
             @endif
-            @if (Auth::user()->can('view library-book-assign') || Auth::user()->role->id == 1)
+            @if (Auth::user()->can('view assign-books') || Auth::user()->role->id == 1)
                 <li class="nav-item ">
                     <a href="{{route('library.book_assign.index')}}"
-                        class="nav-link {{ Request::is('library/book-assign/*') ? 'active' : '' }}">
+                        class="nav-link {{ Request::is('library/assign-books/*') ? 'active' : '' }}">
                        <i class="nav-icon far fa-circle second-nav-text"></i>
                         <p>Assign Books</p>
+                    </a>
+                </li>
+            @endif
+            @if (Auth::user()->can('view return-book') || Auth::user()->role->id == 1)
+                <li class="nav-item ">
+                    <a href="{{route('library.return_book.create')}}"
+                        class="nav-link {{ Request::is('library/return-books/*') ? 'active' : '' }}">
+                       <i class="nav-icon far fa-circle second-nav-text"></i>
+                        <p>Return books</p>
                     </a>
                 </li>
             @endif

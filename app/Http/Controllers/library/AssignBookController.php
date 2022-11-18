@@ -13,7 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class BookAssignController extends Controller
+class AssignBookController extends Controller
 {
     public function __construct()
     {
@@ -75,7 +75,7 @@ class BookAssignController extends Controller
     }
 
     public function edit($id){
-        
+
         $n['assign_book'] = AssignBook::with(['student','bkdn','bkdn.book','bkdn.book.category','bkdn.book.bookshelf','created_user','updated_user','deleted_user'])->find($id);
         $n['students'] = LibraryStudent::where('deleted_by',null)->OrderBy('name')->get();
         $n['categories'] = Category::where('deleted_by',null)->OrderBy('name')->get();
