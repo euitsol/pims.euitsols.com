@@ -104,7 +104,7 @@ caption {
                                 </span>
                             </td>
                             <td>
-                               <input type="number" name="book[0][qty]" class="form-control qty text-center" min="1" max="" value="1" placeholder="Enter quantity" onkeyup="bookQty(this)">
+                               <input type="number" name="book[0][qty]" class="form-control qty text-center" min="1" max="" value="1" placeholder="Enter quantity" onchange="bookQty(this)">
                                <span></span>
                             </td>
                             <td class="text-left" id="plus_minus_btn">
@@ -349,7 +349,7 @@ caption {
                                 </span>
                             </td>
                             <td>
-                               <input type="number" name="book[${click_num}][qty]" class="form-control qty" min="1" max="" value="1"  placeholder="Enter quantity" onkeyup="bookQty(this)">
+                               <input type="number" name="book[${click_num}][qty]" class="form-control qty qty${click_num}" min="1" max="" value="1"  placeholder="Enter quantity">
                                <span></span>
                             </td>
                             <td class="text-left" id="plus_minus_btn">
@@ -362,6 +362,9 @@ caption {
                 $(This).addClass('d-none');
                 $('select').select2();
                 $('#assign_btn').attr('type','button');
+                $('.qty'+click_num).on('change keyup',function(){
+                    bookQty(this);
+                });
         }
 
         function remove(This){
