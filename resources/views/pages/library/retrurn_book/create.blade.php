@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Library Management - Assign Books')
+@section('title', 'Library Management - Returning Books')
 
 @push('third_party_stylesheets')
 <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
@@ -36,9 +36,6 @@ caption {
                     <span class="float-left">
                         <h4>Student selection</h4>
                     </span>
-                    <span class="float-right">
-                        @if(Auth::user()->can('add book-assign') || Auth::user()->role->id == 1)<a href="{{ route('library.book_assign.index') }}" class="btn btn-info">Back</a>@endif
-                    </span>
                 </div>
                 <div class="card-body" >
                     <div class="row" id="select_div">
@@ -61,12 +58,9 @@ caption {
             <div class="card" id="book_info">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>Assign Book</h4>
+                        <h4>Assigned Book</h4>
                     </span>
-                    <span class="float-right">
-                        <input type="text" id="date" name="return_date" class="date form-control" placeholder="Enter return date" autocomplete="off" required>
-                        @if($errors->has('return_date')) <span class="text-danger">{{$errors->first('return_date')}}</span> @endif
-                    </span>
+
                 </div>
                 <div class="card-body">
                   <table class="table text-center table-striped">
@@ -76,15 +70,16 @@ caption {
                             <th>Book's name</th>
                             <th>Category</th>
                             <th>Bookshelf</th>
+                            <th>Total book</th>
                             <th>Assigning date</th>
                             <th>Return date</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="tbody">
-
+                        
                     </tbody>
                   </table>
-                  <button type="button" class="btn btn-info w-100 mt-4" id="assign_btn">Assign</button>
                 </div>
             </div>
         </form>
@@ -219,22 +214,21 @@ caption {
                     url: "{{route('library.return_book.info')}}",
                     data:{'id':std_id,},
                     success:function(response){
-                        console.log(response)
 
                         $.each(response,function(index,val){
-
                             let book_names = '';
                             let bookshelf = '';
                             let category = '';
+                            let total_book = '';
                             $.each(val.bkdn,function(key,bkdn){
 
                                 var separetor = '';
                                 if(key != 0){ separetor = ', '}
-                                 book_names +=`${bkdn.book.name}`;
-                                 bookshelf +=`${bkdn.book.bookshelf.name}`;
-                                 category +=`${bkdn.book.category.name}`;
+                                total_book += bkdn.qty;
+                                 book_names += separetor+`${bkdn.book.name}`;
+                                 bookshelf +=  separetor+`${bkdn.book.bookshelf.name}`;
+                                 category +=   separetor+`${bkdn.book.category.name}`;
                             });
-                            console.log(book_names);
                             let  book_info = `  <tr>
                                                     <td>
                                                         ${index+1}
@@ -249,28 +243,32 @@ caption {
                                                         ${bookshelf}
                                                     </td>
                                                     <td>
+                                                        ${total_book}
+                                                    </td>
+                                                    <td>
                                                         ${val.assign_date}
                                                     </td>
                                                     <td>
                                                         ${val.return_date}
                                                     </td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <a href="javascript:void(0)" class="btn btn-info btnView"
+                                                            data-id="${val.id}"><i class="fas fa-eye"></i></a>
+                                                            <a href="javascript:void(0)" class="btn btn-success btnView"
+                                                            data-id="${val.id}" title='Return the books'><i class="fas fa-arrow-right"></i></a>
+                                                        </div>
+                                                    </td>
                                                 </tr>`;
                             $('#book_info').find('#tbody').append(book_info);
-
                         });
                     }
-                })
+                });
 
                }else{
                 $('#select_div').nextAll().remove();
                 $('').insertAfter("#select_div");
                }
-            });
-
-            $('#assign_btn').click(function(){
-                if($(this).attr('type') == 'button'){
-                   toastr.error("Please, select all input field");
-                 }
             });
         });
 

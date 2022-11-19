@@ -36,9 +36,6 @@ caption {
                     <span class="float-left">
                         <h4>Student selection</h4>
                     </span>
-                    <span class="float-right">
-                        @if(Auth::user()->can('add book-assign') || Auth::user()->role->id == 1)<a href="{{ route('library.book_assign.index') }}" class="btn btn-info">Back</a>@endif
-                    </span>
                 </div>
                 <div class="card-body" >
                     <div class="row" id="select_div">

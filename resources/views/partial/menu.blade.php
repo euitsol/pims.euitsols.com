@@ -432,7 +432,7 @@
             @endif
             @if (Auth::user()->can('view assign-books') || Auth::user()->role->id == 1)
                 <li class="nav-item ">
-                    <a href="{{route('library.book_assign.index')}}"
+                    <a href="{{route('library.book_assign.create')}}"
                         class="nav-link {{ Request::is('library/assign-books/*') ? 'active' : '' }}">
                        <i class="nav-icon far fa-circle second-nav-text"></i>
                         <p>Assign Books</p>
