@@ -71,8 +71,8 @@
         </div>
     </div>
 </div>
-{{-- Modals --}}
 
+{{-- Modals --}}
 <div class="modal fade" id="view-modal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

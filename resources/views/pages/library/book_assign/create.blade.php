@@ -60,10 +60,6 @@ caption {
                     <span class="float-left">
                         <h4>Assign Book</h4>
                     </span>
-                    <span class="float-right">
-                        <input type="text" id="date" name="return_date" class="date form-control" placeholder="Enter return date" autocomplete="off" required>
-                        @if($errors->has('return_date')) <span class="text-danger">{{$errors->first('return_date')}}</span> @endif
-                    </span>
                 </div>
                 <div class="card-body">
                   <table class="table text-center">
@@ -87,7 +83,7 @@ caption {
                                 </select>
                             </td>
                             <td>
-                                <select name="book[0][book_id]" class="form-control book-id" onchange='bookChange(this)' required>
+                                <select name="book[0][book_id]" class="form-control book-id book" required>
                                     <option value="" hidden>Select book</option>
                                 </select>
 
@@ -104,6 +100,10 @@ caption {
                                <input type="number" name="book[0][qty]" class="form-control qty text-center" min="1" max="" value="1" placeholder="Enter quantity" onchange="bookQty(this)">
                                <span></span>
                             </td>
+                            <td>
+                                <input type="text" name="book[0][return_date]" class="date form-control" placeholder="Enter return date" autocomplete="off" required>
+                            </td>
+
                             <td class="text-left" id="plus_minus_btn">
                                 <span class="btn btn-info plus-btn"   onclick='add(this)'>+</span>
                                 <span class="btn btn-sm btn-danger d-none minus-btn" onclick='remove(this)'>Remove</span>
@@ -128,11 +128,21 @@ caption {
 @push('page_scripts')
     <script>
         $(document).ready(function() {
+
             $('.date').datepicker({
                 autoclose:true,
             });
 
             $('select').select2();
+
+            $('.date').on('click change keyup',function(){
+                    check();
+            });
+            $('.book').on('change',function(){
+                check();
+                bookChange(this)
+            });
+
            //Single student fetch. to implement this just use one id that is #select_div use for the parent of select student id and try to avoid #select_div's next element
             $('#select_div').find('select').change(function(){
                let std_id = $(this).val();
@@ -269,8 +279,6 @@ caption {
                                 option += '<option value="'+book.id+'">'+book.name+'</option>';
                             });
                         $('.book-id').eq(index_no).html(option);
-
-
                     }
 
                 })
@@ -308,13 +316,6 @@ caption {
                         $(This).parent().nextAll('td.bookshelf').children('span').html(bookshelf);
                         $('.qty').eq(index_no).attr('max',response.qty);
                         $('.qty').eq(index_no).next('span').html('<span class="text-info">Remaingin books: </span><span id="text-qty">'+(response.qty-1)+'</span>');
-
-                        $('#assign_btn').attr('type','submit');
-                        $('.book-id').each(function(index){
-                            if($(this).val() == ''){
-                                $('#assign_btn').attr('type','button');
-                            }
-                        });
                     }
                 })
             }
@@ -333,7 +334,7 @@ caption {
                                 </select>
                             </td>
                             <td>
-                                <select name="book[${click_num}][book_id]" class="form-control book-id" id='book${click_num}' onchange='bookChange(this)'>
+                                <select name="book[${click_num}][book_id]" class="form-control book-id book${click_num}" id='book${click_num}'>
                                     <option value="" hidden>Select book</option>
                                 </select>
                             </td>
@@ -349,18 +350,35 @@ caption {
                                <input type="number" name="book[${click_num}][qty]" class="form-control qty qty${click_num}" min="1" max="" value="1"  placeholder="Enter quantity">
                                <span></span>
                             </td>
+                            <td>
+                                <input type="text" name="book[${click_num}][return_date]" class="date date${click_num} form-control" placeholder="Enter return date" autocomplete="off" required>
+                            </td>
                             <td class="text-left" id="plus_minus_btn">
                                 <span class="btn  btn-info plus-btn" onclick='add(this)'>+</span>
                                 <span class="btn btn-sm btn-danger d-none minus-btn" onclick='remove(this)'>Remove</span>
                             </td>
                         </tr>`;
+
                 $('#tbody').append(tr);
+
+                $('.date'+click_num).datepicker({
+                    autoclose:true,
+                });
+
                 $(This).next('span.minus-btn').removeClass('d-none');
                 $(This).addClass('d-none');
                 $('select').select2();
                 $('#assign_btn').attr('type','button');
                 $('.qty'+click_num).on('change keyup',function(){
                     bookQty(this);
+                });
+
+                $('.date'+click_num).on('click change keyup',function(){
+                    check();
+                });
+                $('.book'+click_num).on('change',function(){
+                    check();
+                    bookChange(this)
                 });
         }
 
@@ -371,6 +389,7 @@ caption {
             $('.book-id').eq(index_no).attr('disabled',true);
             $('.cat-id').eq(index_no).attr('disabled',true);
             $('.qty').eq(index_no).attr('disabled',true);
+            $('.date').eq(index_no).attr('disabled',true);
             $('.book-id').eq(index_no).parent().parent().addClass('d-none');
             $('.book-id').eq(index_no).removeClass('book-id');
             $('.cat-id').eq(index_no).removeClass('cat-id');
@@ -395,6 +414,29 @@ caption {
             }
 
 
+        }
+
+        function check(){
+            let date_check = 0;
+            let book_check = 0;
+            $('.date').each(function(){
+                if(!$(this).val()){
+                    date_check++;
+                }
+            });
+
+            $('.book-id').each(function(){
+                if(!$(this).val()){
+                    book_check++;
+                }
+            });
+
+            if(!date_check && !book_check){
+                $('#assign_btn').attr('type','sumbit');
+                console.log('checked');
+            }else{
+                console.log('uncheked');
+            }
         }
     </script>
 @endpush

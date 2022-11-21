@@ -42,11 +42,12 @@ caption {
                         <div class="col-md-1 offset-md-2">
                             <label for="std_id">Students<span class="text-danger">*</span></label>
                         </div>
+                        {{-- @dd(old('std_id')) --}}
                         <div class="col-md-6 text-left " >
                             <select name="std_id" id="std_id" class="form-control" required>
                                 <option value="" hidden>Select student</option>
                                 @foreach ($students as $student )
-                                <option value="{{$student->id}}"> {{ $student->name .' - '. $student->phone }}</option>
+                                <option value="{{$student->id}}" > {{ $student->name .' - '. $student->phone }}</option>
                             @endforeach
                             </select>
                             @if($errors->has('std_id')) <span class="text-danger">{{$errors->first('std_id')}}</span> @endif
@@ -71,13 +72,13 @@ caption {
                             <th>Category</th>
                             <th>Bookshelf</th>
                             <th>Total book</th>
-                            <th>Assigning date</th>
+                            <th>Assigned date</th>
                             <th>Return date</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="tbody">
-                        
+
                     </tbody>
                   </table>
                 </div>
@@ -86,6 +87,107 @@ caption {
         </div>
     </div>
 </div>
+
+{{-- Modals --}}
+<div class="modal fade" id="view-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">View Details <span id="view-header"></span></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body row">
+                <div class="col-md-10 m-auto">
+                    <div class="table-responsive">
+                        <table class="table table-borderless table-striped" >
+                            <tbody id="view-tbody">
+                                <tr>
+                                    <td>student's Name</td>
+                                    <td>
+                                        <span id="view-std_name"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>student's Phone</td>
+                                    <td>
+                                        <span id="view-std_phone"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Total book</td>
+                                    <td>
+                                        <span id="view-total-book"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>book's Name</td>
+                                    <td>
+                                        <span id="view-name"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Categories</td>
+                                    <td>
+                                        <span id="view-cat"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Bookshelves</td>
+                                    <td>
+                                        <span id="view-bookshelf"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Assigned date</td>
+                                    <td>
+                                        <span id="view-assign_date"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Return date</td>
+                                    <td>
+                                        <span id="view-return_date"></span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Created At</td>
+                                    <td>
+                                        <span id="view-createdAt"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Created By</td>
+                                    <td>
+                                        <span id="view-createdBy"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Updated At</td>
+                                    <td>
+                                        <span id="view-updatedAt"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Updated By</td>
+                                    <td>
+                                        <span id="view-updatedBy"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('third_party_scripts')
@@ -104,7 +206,11 @@ caption {
            //Single student fetch. to implement this just use one id that is #select_div use for the parent of select student id and try to avoid #select_div's next element
             $('#select_div').find('select').change(function(){
                let std_id = $(this).val();
-               if(std_id != ''){
+               stdChange(std_id);
+            });
+
+            function stdChange(std_id){
+                if(std_id != ''){
                 $.ajax({
                     type: "get",
                     url: "{{route('library.book_assign.info')}}",
@@ -214,36 +320,24 @@ caption {
                     url: "{{route('library.return_book.info')}}",
                     data:{'id':std_id,},
                     success:function(response){
-
+                        $('#book_info').find('#tbody').children().remove();
                         $.each(response,function(index,val){
-                            let book_names = '';
-                            let bookshelf = '';
-                            let category = '';
-                            let total_book = '';
-                            $.each(val.bkdn,function(key,bkdn){
-
-                                var separetor = '';
-                                if(key != 0){ separetor = ', '}
-                                total_book += bkdn.qty;
-                                 book_names += separetor+`${bkdn.book.name}`;
-                                 bookshelf +=  separetor+`${bkdn.book.bookshelf.name}`;
-                                 category +=   separetor+`${bkdn.book.category.name}`;
-                            });
-                            let  book_info = `  <tr>
+                                 let  book_info = `
+                                                <tr>
                                                     <td>
                                                         ${index+1}
                                                     </td>
                                                     <td>
-                                                        ${book_names}
+                                                        ${val.book.name}
                                                     </td>
                                                     <td>
-                                                        ${category}
+                                                        ${val.book.category.name}
                                                     </td>
                                                     <td>
-                                                        ${bookshelf}
+                                                        ${val.book.bookshelf.name}
                                                     </td>
                                                     <td>
-                                                        ${total_book}
+                                                        ${val.qty}
                                                     </td>
                                                     <td>
                                                         ${val.assign_date}
@@ -253,14 +347,21 @@ caption {
                                                     </td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            <a href="javascript:void(0)" class="btn btn-info btnView"
-                                                            data-id="${val.id}"><i class="fas fa-eye"></i></a>
-                                                            <a href="javascript:void(0)" class="btn btn-success btnView"
+                                                            <a href="javascript:void(0)" class="btn btn-info btnView${val.id}"
+                                                            data-id="${val.id}" ><i class="fas fa-eye"></i></a>
+                                                            <a href="javascript:void(0)" class="btn btn-success return-btn${val.id}"
                                                             data-id="${val.id}" title='Return the books'><i class="fas fa-arrow-right"></i></a>
                                                         </div>
                                                     </td>
                                                 </tr>`;
-                            $('#book_info').find('#tbody').append(book_info);
+                                $('#book_info').find('#tbody').append(book_info);
+
+                                $('.btnView'+val.id).on('click',function(){
+                                    btnView(this);
+                                });
+                                $('.return-btn'+val.id).on('click',function(){
+                                    returnBook(this);
+                                });
                         });
                     }
                 });
@@ -269,6 +370,99 @@ caption {
                 $('#select_div').nextAll().remove();
                 $('').insertAfter("#select_div");
                }
+            }
+            function returnBook(This){
+                let book_assign_id = $(This).data('id');
+                console.log(book_assign_id);
+                let url = "{{route('library.return_book.return',['id'])}}"
+                url = url.replace('id',book_assign_id);
+                $.ajax({
+                    type: 'get',
+                    url: url,
+                    success:function(response){
+                        if(response==1){
+                            toastr.success('Book successfully returned')
+                        }else{
+                            toastr.error("Something went wrong")
+                        }
+                            let std_id = $('#select_div').find('select').val();
+                            stdChange(std_id);
+                    }
+                });
+            }
+
+            function btnView(This){
+                if($(This).data('id') != null || $(This).data('id') != ''){
+                    let url = ("{{ route('library.return_book.show', ['id']) }}");
+                    let _url = url.replace('id', $(This).data('id'));
+                    $.ajax({
+                        url: _url,
+                        method: "GET",
+                        success: function (response) {
+                            // console.log(response);
+                            $('#view-std_name').html(response.student.name);
+                            $('#view-std_phone').html(response.student.phone);
+                            $('#view-total-book').html(response.qty);
+                            $('#view-name').html(response.book.name);
+                            $('#view-cat').html(response.book.category.name);
+                            $('#view-bookshelf').html(response.book.bookshelf.name);
+                            $('#view-assign_date').html(response.assign_date);
+                            $('#view-return_date').html(response.return_date);
+                            $('#view-createdAt').html(response.created_at ? new Date(response.created_at) : '');
+                            $('#view-createdBy').html(response.created_user ? response.created_user.name : 'system');
+                            $('#view-updatedAt').html(response.updated_at ? new Date(response.updated_at) : '');
+                            $('#view-updatedBy').html(response.updated_user ? response.updated_user.name: '');
+                            $('#view-modal').modal('show');
+                        }
+                    });
+                }else{
+                    alart('Something went wrong');
+                }
+                }
+             //view-modal
+             $('.btnView').click( function(){
+
+                if($(this).data('id') != null || $(this).data('id') != ''){
+                    let url = ("{{ route('library.book_assign.show', ['id']) }}");
+                    let _url = url.replace('id', $(this).data('id'));
+                    // console.log(_url);
+                    $.ajax({
+                        url: _url,
+                        method: "GET",
+                        success: function (response) {
+                            // console.log(response);
+                            $('#view-std_name').html(response.student.name);
+                            $('#view-std_phone').html(response.student.phone);
+                            $('#view-total-book').html(response.total_book);
+
+                            let book_name = '';
+                            let category_name = '';
+                            let bookshelf_name = '';
+                            $.each(response.bkdn,function(index,val){
+                                if(index != 0){
+                                    book_name += ', ';
+                                    category_name += ', ';
+                                    bookshelf_name += ', ';
+                                }
+                                book_name += val.book.name;
+                                category_name += val.book.category.name;
+                                bookshelf_name += val.book.bookshelf.name;
+                            });
+                            $('#view-name').html(book_name);
+                            $('#view-cat').html(category_name);
+                            $('#view-bookshelf').html(bookshelf_name);
+                            $('#view-assign_date').html(response.assign_date);
+                            $('#view-return_date').html(response.return_date);
+                            $('#view-createdAt').html(response.created_at ? new Date(response.created_at) : '');
+                            $('#view-createdBy').html(response.created_user ? response.created_user.name : 'system');
+                            $('#view-updatedAt').html(response.updated_at ? new Date(response.updated_at) : '');
+                            $('#view-updatedBy').html(response.updated_user ? response.updated_user.name: '');
+                            $('#view-modal').modal('show');
+                        }
+                    });
+                }else{
+                    alart('Something went wrong');
+                }
             });
         });
 

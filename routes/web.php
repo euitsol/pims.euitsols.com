@@ -475,6 +475,8 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
         Route::controller(RerurnBookController::class)->prefix('return-books')->name('return_book.')->group(function(){
             Route::get('/create','create')->name('create');
             Route::get('/info','info')->name('info');
+            Route::get('/show/{id}','show')->name('show');
+            Route::get('/return/{id}','return')->name('return');
         });
     });
 

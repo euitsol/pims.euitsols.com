@@ -38,40 +38,31 @@ class AssignBookController extends Controller
         $this->validate($req,[
             'std_id' => 'required|integer|exists:student_infos,id',
             'book.*.book_id' => 'required|integer|exists:books,id',
-            'return_date' => 'required',
+            'book.*.return_date' => 'required|date',
         ],[],[
             'std_id' => 'Student ID',
             'book.*.book_id' => 'Book ID',
         ]);
 
-        $insert = new AssignBook();
-        $insert->std_id = $req->std_id;
-        $insert->assign_date = Carbon::now()->toDateTimeString();
-        $insert->return_date = $req->return_date;
-        $total_book = 0;
-        foreach($req->book as $key => $val){
-           $total_book += $val['qty'];
-        }
-        $insert->total_book = $total_book;
-        $insert->created_by = Auth::user()->id;
-        $insert->save();
 
-        foreach($req->book as $value){
-            $insert_bkdn = new AssignBookBkdn();
-            $insert_bkdn->assign_book_id = $insert->id;
-            $insert_bkdn->book_id = $value['book_id'];
-            $insert_bkdn->qty = $value['qty'];
+        foreach($req->book as $key => $val){
+            $insert = new AssignBook();
+            $insert->std_id = $req->std_id;
+            $insert->book_id = $val['book_id'];
+            $insert->assign_date = Carbon::now()->toDateTimeString();
+            $insert->return_date =$val['return_date'];
+            $insert->qty = $val['qty'];
             $insert->created_by = Auth::user()->id;
-            $insert_bkdn->save();
+            $insert->save();
 
             //update books quantity
-            $update_qty = Book::find($value['book_id']);
-            $update_qty->qty = $update_qty->qty - $value['qty'];
+            $update_qty = Book::find($val['book_id']);
+            $update_qty->qty = $update_qty->qty - $val['qty'];
             $update_qty->save();
         }
 
         $this->message('success','Successfully book assigned');
-        return redirect()->route('library.book_assign.index');
+        return redirect()->back();
     }
 
     public function edit($id){

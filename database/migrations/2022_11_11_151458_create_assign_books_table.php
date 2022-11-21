@@ -16,10 +16,11 @@ return new class extends Migration
         Schema::create('assign_books', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('std_id');
-            $table->integer('total_book');
+            $table->unsignedBigInteger('book_id');
+            $table->integer('qty');
             $table->timestamp('assign_date');
             $table->string('return_date');
-            $table->string('status');
+            $table->enum('status',[0,1,-1])->default(0);
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
@@ -28,7 +29,7 @@ return new class extends Migration
         });
         Schema::table('assign_books', function (Blueprint $table) {
             $table->foreign('std_id', 'assign_books_std')->references('id')->on('library_students')->onDelete('cascade')->onUpdate('cascade');
-            // $table->foreign('book_id', 'assign_books_book')->references('id')->on('books')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('book_id', 'assign_book_bkdns_book')->references('id')->on('books')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('created_by', 'assign_books_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('deleted_by', 'assign_books_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('updated_by', 'assign_books_updated')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
