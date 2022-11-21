@@ -349,7 +349,7 @@ caption {
                                                         <div class="btn-group">
                                                             <a href="javascript:void(0)" class="btn btn-info btnView${val.id}"
                                                             data-id="${val.id}" ><i class="fas fa-eye"></i></a>
-                                                            <a href="javascript:void(0)" class="btn btn-success return-btn${val.id}"
+                                                            <a href="javascript:void(0)" class="btn btn-success update-btn${val.id}"
                                                             data-id="${val.id}" title='Return the books'><i class="fas fa-arrow-right"></i></a>
                                                         </div>
                                                     </td>
@@ -359,8 +359,8 @@ caption {
                                 $('.btnView'+val.id).on('click',function(){
                                     btnView(this);
                                 });
-                                $('.return-btn'+val.id).on('click',function(){
-                                    returnBook(this);
+                                $('.update-btn'+val.id).on('click',function(){
+                                    updateBook(this);
                                 });
                         });
                     }
@@ -371,10 +371,10 @@ caption {
                 $('').insertAfter("#select_div");
                }
             }
-            function returnBook(This){
+            function updateBook(This){
                 let book_assign_id = $(This).data('id');
                 console.log(book_assign_id);
-                let url = "{{route('library.return_book.return',['id'])}}"
+                let url = "{{route('library.return_book.update',['id'])}}"
                 url = url.replace('id',book_assign_id);
                 $.ajax({
                     type: 'get',

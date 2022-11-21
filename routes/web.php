@@ -36,6 +36,7 @@ use App\Http\Controllers\library\RerurnBookController;
 use App\Http\Controllers\library\BookshelfController;
 use App\Http\Controllers\library\BookController;
 use App\Http\Controllers\library\CategoryController;
+use App\Http\Controllers\library\LibraryReportController;
 use App\Http\Controllers\library\LibraryStudentController;
 use App\Http\Controllers\setup\RoutineController;
 
@@ -471,12 +472,16 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::get('/show/{id}','show')->name('show');
             Route::get('/destroy/{id}','destroy')->name('destroy');
         });
-        //Book assign management
+        //Book return management
         Route::controller(RerurnBookController::class)->prefix('return-books')->name('return_book.')->group(function(){
             Route::get('/create','create')->name('create');
             Route::get('/info','info')->name('info');
             Route::get('/show/{id}','show')->name('show');
-            Route::get('/return/{id}','return')->name('return');
+            Route::get('/update/{id}','update')->name('update');
+        });
+        //Library report management
+        Route::controller(LibraryReportController::class)->prefix('report')->name('report.')->group(function(){
+            Route::get('/index/{date}','index')->name('index');
         });
     });
 

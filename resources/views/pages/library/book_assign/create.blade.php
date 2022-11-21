@@ -140,7 +140,7 @@ caption {
             });
             $('.book').on('change',function(){
                 check();
-                bookChange(this)
+                bookChange(this);
             });
 
            //Single student fetch. to implement this just use one id that is #select_div use for the parent of select student id and try to avoid #select_div's next element
@@ -347,7 +347,7 @@ caption {
                                 </span>
                             </td>
                             <td>
-                               <input type="number" name="book[${click_num}][qty]" class="form-control qty qty${click_num}" min="1" max="" value="1"  placeholder="Enter quantity">
+                               <input type="number" name="book[${click_num}][qty]" class="form-control text-center qty qty${click_num}" min="1" max="" value="1"  placeholder="Enter quantity">
                                <span></span>
                             </td>
                             <td>

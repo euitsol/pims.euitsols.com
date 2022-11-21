@@ -18,8 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger('std_id');
             $table->unsignedBigInteger('book_id');
             $table->integer('qty');
-            $table->timestamp('assign_date');
-            $table->string('return_date');
+            $table->date('assign_date');
+            $table->date('return_date');
+            $table->date('returned_date')->nullable();
             $table->enum('status',[0,1,-1])->default(0);
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();

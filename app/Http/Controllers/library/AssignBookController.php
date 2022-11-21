@@ -46,11 +46,14 @@ class AssignBookController extends Controller
 
 
         foreach($req->book as $key => $val){
+            $date_array = explode('/',$val['return_date']);
+            $date = $date_array[2].'-'.$date_array[0].'-'.$date_array[1];
+            // dd($date);
             $insert = new AssignBook();
             $insert->std_id = $req->std_id;
             $insert->book_id = $val['book_id'];
-            $insert->assign_date = Carbon::now()->toDateTimeString();
-            $insert->return_date =$val['return_date'];
+            $insert->assign_date = date('Y-m-d');
+            $insert->return_date =$date;
             $insert->qty = $val['qty'];
             $insert->created_by = Auth::user()->id;
             $insert->save();

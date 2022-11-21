@@ -39,9 +39,10 @@ class RerurnBookController extends Controller
                                             ->get());
     }
 
-    public function return($id){
+    public function update($id){
        $update = AssignBook::findOrFail($id);
        $update->status = '1';
+       $update->returned_date =date('Y-m-d');
 
        $book_update = Book::find($update->book_id);
        $book_update->qty = $book_update->qty + $update->qty;
