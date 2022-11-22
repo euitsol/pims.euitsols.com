@@ -41,9 +41,12 @@ class RerurnBookController extends Controller
 
     public function update($id){
        $update = AssignBook::findOrFail($id);
-       $update->status = '1';
+       if($update->return_date >=  date('Y-m-d')){
+           $update->status = '1';
+       }else{
+        $update->status = '-1';
+       }
        $update->returned_date =date('Y-m-d');
-
        $book_update = Book::find($update->book_id);
        $book_update->qty = $book_update->qty + $update->qty;
        $book_update->save();

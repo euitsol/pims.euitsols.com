@@ -17,7 +17,6 @@ class SemesterAssignAdmitStd extends Controller
 {
     public function create($id){
         $this->check_access('add admitted_std_accept');
-
         $n['page_name'] = 'Semester Assign for Admitted Student';
         $n['db_data']= studentInfo::where('deleted_by','=',null)->where('id','=',$id)->first();
         $n['session']= Session::where('deleted_by','=',null)->latest()->get();

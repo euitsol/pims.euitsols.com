@@ -479,10 +479,20 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::get('/show/{id}','show')->name('show');
             Route::get('/update/{id}','update')->name('update');
         });
+
         //Library report management
-        Route::controller(LibraryReportController::class)->prefix('report')->name('report.')->group(function(){
-            Route::get('/index/{date}','index')->name('index');
-        });
+        // Route::prefix('report')->name('report.')->group(function(){
+
+            //daily report
+            Route::controller(LibraryReportController::class)->prefix('report')->name('report.')->group(function(){
+                Route::get('/daily/{date}','dailyReport')->name('daily');
+                Route::get('/all','allReport')->name('all');
+                Route::post('/all','allReport')->name('all');
+            });
+
+
+        // });
+
     });
 
 });

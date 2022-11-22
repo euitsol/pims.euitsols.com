@@ -27,8 +27,7 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-10 col-lg-12">
-            <form action="{{route('library.book_assign.store')}}" method="POST">
-                @csrf
+
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">
@@ -51,7 +50,7 @@
             <div class="card" id="book_info">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>Report</h4>
+                        <h4>Daily report</h4>
                     </span>
 
                 </div>
@@ -59,19 +58,20 @@
                     {{-- <div class="nav"> --}}
                         <ul class="nav nav-tabs">
                             <li class="nav-item border border-bottom-0">
-                                <a class="nav-link active " data-toggle="tab" href="#assign">Assign</a>
+                                <a class="nav-link active " data-toggle="tab" href="#assign">Assigned books</a>
                             </li>
                             <li class="nav-item border ml-1 border-bottom-0">
-                                <a href="#returned" class="nav-link " data-toggle="tab">Returned</a>
+                                <a href="#returned" class="nav-link " data-toggle="tab">Returned books</a>
                             </li>
                             <li class="nav-item border ml-1 border-bottom-0">
-                                <a href="#return" class="nav-link" data-toggle="tab">will Return</a>
+                                <a href="#return" class="nav-link" data-toggle="tab">Delay</a>
                             </li>
                         </ul>
                     {{-- </div> --}}
                     <div class="tab-content p-4 border border-top-0 shadow-sm">
                         <div class="tab-pane active" id="assign">
                             <table class="table text-center border border-1 table-striped">
+                                <caption class="caption text-center">Assigned books</caption>
                                 <thead>
                                     <tr>
                                         <th>S.L</th>
@@ -129,6 +129,7 @@
                         </div>
                         <div class="tab-pane" id="returned">
                             <table class="table text-center border border-1 table-striped">
+                                <caption class="caption text-center">Returned books</caption>
                                 <thead>
                                     <tr>
                                         <th>S.L</th>
@@ -186,6 +187,7 @@
                         </div>
                         <div class="tab-pane" id="return">
                             <table class="table text-center border border-1 table-striped">
+                                <caption class="caption text-center">Delay</caption>
                                 <thead>
                                     <tr>
                                         <th>S.L</th>
@@ -199,40 +201,23 @@
                                         <th>Return date</th>
                                         <th>Created By</th>
                                         <th>Created At</th>
-                                        {{-- <th>Action</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody id="tbody">
 
-                                        @forelse ($return_info as $key => $n)
+                                        @forelse ($delay as $key => $n)
                                         <tr>
                                             <td>{{$key+1}}</td>
-                                    <td>{{$n->student->name ?? ''  }}</td>
-                                    <td>{{$n->student->phone ?? ''  }}</td>
-                                    <td>{{$n->book->name ?? '' }}</td>
-                                    <td>{{$n->book->category->name ?? '' }}</td>
-                                    <td>{{$n->book->bookshelf->name ?? '' }}</td>
-                                    <td>{{$n->qty ?? '' }}</td>
-                                    {{-- <td>
-
-                                    </td>
-                                   <td>{{$n->total_book}}</td> --}}
-                                    <td>{{ date('d-m-Y',strtotime($n->assign_date))}}</td>
-                                    <td>{{date('d-m-Y',strtotime($n->return_date))}}</td>
-                                    <td>{{$n->created_user->name}}</td>
-                                    <td>{{date('d-m-Y',strtotime($n->created_user->created_at))}}</td>
-                                    {{-- <td>
-                                        <div class="btn-group">
-                                            <a href="javascript:void(0)" class="btn btn-info btnView"
-                                            data-id="{{ $n->id }}"><i class="fas fa-eye"></i></a>
-                                            @if(Auth::user()->can('edit book-assign') || Auth::user()->role->id == 1)
-                                                <a href="{{ route('library.book_assign.edit', $n->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
-                                            @endif
-                                            @if(Auth::user()->can('delete book-assign') || Auth::user()->role->id == 1)
-                                                <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
-                                            @endif
-                                        </div>
-                                    </td> --}}
+                                            <td>{{$n->student->name ?? ''  }}</td>
+                                            <td>{{$n->student->phone ?? ''  }}</td>
+                                            <td>{{$n->book->name ?? '' }}</td>
+                                            <td>{{$n->book->category->name ?? '' }}</td>
+                                            <td>{{$n->book->bookshelf->name ?? '' }}</td>
+                                            <td>{{$n->qty ?? '' }}</td>
+                                            <td>{{ date('d-m-Y',strtotime($n->assign_date))}}</td>
+                                            <td>{{date('d-m-Y',strtotime($n->return_date))}}</td>
+                                            <td>{{$n->created_user->name}}</td>
+                                            <td>{{date('d-m-Y',strtotime($n->created_user->created_at))}}</td>
                                         </tr>
                                         @empty
 
@@ -244,7 +229,6 @@
                     </div>
                 </div>
             </div>
-        </form>
         </div>
     </div>
 </div>
@@ -266,7 +250,7 @@
             });
 
             $('#date').on('change',function(){
-                let url = "{{route('library.report.index',['date'])}}";
+                let url = "{{route('library.report.daily',['date'])}}";
                 url = url.replace('date',$(this).val());
                 window.location = url;
             });

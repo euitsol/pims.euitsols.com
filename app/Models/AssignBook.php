@@ -25,4 +25,13 @@ class AssignBook extends Model
     public function book(){
         return $this->belongsTo(Book::class,'book_id');
     }
+    public function status(){
+        if($this->status == '0'){
+            return "Assigned";
+        }elseif($this->status == '1'){
+            return "Returned";
+        }else{
+            return 'Delay';
+        }
+    }
 }
