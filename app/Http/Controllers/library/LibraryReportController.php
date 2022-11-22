@@ -53,10 +53,8 @@ class LibraryReportController extends Controller
                                     $delay->where('created_by',$n['user_id']);
                                 }
         $n['delay_info_all'] = $delay->get();
-
         $n['users'] = User::where('deleted_by',null)->get();
-
-
+        
         return view('pages.library.report.all',$n);
     }
 }

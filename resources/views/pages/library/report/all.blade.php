@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Library Management - All report')
+@section('title', 'Library Management - All Report')
 
 @push('third_party_stylesheets')
     <link rel="stylesheet" href="{{ asset('assets/css/Datepicker/datepicker.min.css') }}">
@@ -22,10 +22,11 @@
         .nav-tabs li .active {
             background: white !important;
         }
+
         caption {
-    padding-top: 0rem !important;
-    caption-side: top !important;
-}
+            padding-top: 0rem !important;
+            caption-side: top !important;
+        }
     </style>
 @endpush
 
@@ -63,20 +64,20 @@
                                     <div class="col-md-1 offset-md-2">
                                         <label for="user">Users</label>
                                     </div>
-                                    {{-- @dd(old('std_id')) --}}
+
                                     <div class="col-md-6 text-left mt-2">
                                         <select name="user_id" id="user" class="form-control">
                                             <option value=""hidden>All</option>
                                             @foreach ($users as $user)
-                                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                                <option value="{{ $user->id }}" @if(old('user_id') == $user->id) selected @endif>{{ $user->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="row  mt-2">
-                                   <div class="col-md-3 text-center m-auto">
-                                    <button class="btn btn-info w-100">Search</button>
-                                   </div>
+                                    <div class="col-md-3 text-center m-auto">
+                                        <button class="btn btn-info w-100">Search</button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -85,7 +86,7 @@
                     <div class="card" id="book_info">
                         <div class="card-header">
                             <span class="float-left">
-                                <h4>Daily report</h4>
+                                <h4>Report</h4>
                             </span>
 
                         </div>
