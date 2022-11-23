@@ -14,6 +14,7 @@ class LibraryReportController extends Controller
         $n['assigned_info'] = AssignBook::where('deleted_by',null)
                                         ->where('assign_date',$date)
                                         ->where('status','0')
+                                        ->where('return_date','>', Carbon::now())
                                         ->get();
 
         $n['returned_info'] = AssignBook::where('deleted_by',null)
@@ -38,10 +39,13 @@ class LibraryReportController extends Controller
         $n['user_id'] = $req->user_id;
 
         $assigned = AssignBook::where('deleted_by',null)
-                                ->whereBetween('assign_date',[$n['str_date'],$n['end_date']])->where('status','0');
-                                if($n['user_id']){
-                                    $assigned->where('created_by',$n['user_id']);
-                                }
+                                ->whereBetween('assign_date',[$n['str_date'],$n['end_date']])
+                                ->where('status','0')
+                                ->where('return_date','>', Carbon::now());
+        
+        if($n['user_id']){
+            $assigned->where('created_by',$n['user_id']);
+        }
         $n['assigned_info_all'] =  $assigned->get();
 
          $returned= AssignBook::where('deleted_by',null)
