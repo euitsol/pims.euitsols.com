@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('departments_id');
             $table->string('name');
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
@@ -23,6 +24,7 @@ return new class extends Migration
             $table->unsignedBigInteger('deleted_by')->nullable();
         });
         Schema::table('categories', function (Blueprint $table) {
+            $table->foreign('departments_id', 'categories_departments')->references('id')->on('departments')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('created_by', 'categories_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('deleted_by', 'categories_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('updated_by', 'categories_updated')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
