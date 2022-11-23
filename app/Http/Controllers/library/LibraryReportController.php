@@ -50,7 +50,6 @@ class LibraryReportController extends Controller
 
        $delay  = AssignBook::where('deleted_by',null)
                                ->whereBetween('return_date',[$n['str_date'],$n['end_date']])
-                               ->where('status','-1')
                                ->where('status','0')
                                ->where('return_date','<', Carbon::now());
        if($n['user_id']){
