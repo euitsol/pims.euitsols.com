@@ -48,7 +48,7 @@ class LibraryReportController extends Controller
         $n['returned_info_all'] = $returned->get();
 
        $delay  = AssignBook::where('deleted_by',null)
-                               ->whereBetween('return_date',[$n['str_date'],$n['end_date']]);
+                               ->whereBetween('return_date',[$n['str_date'],$n['end_date']])->where('status','-1')->where('status','0');
                                if($n['user_id']){
                                     $delay->where('created_by',$n['user_id']);
                                 }
