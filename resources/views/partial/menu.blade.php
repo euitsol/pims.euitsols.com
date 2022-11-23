@@ -430,13 +430,47 @@
                     </a>
                 </li>
             @endif
-            @if (Auth::user()->can('view library-book-assign') || Auth::user()->role->id == 1)
+            @if (Auth::user()->can('view assign-books') || Auth::user()->role->id == 1)
                 <li class="nav-item ">
-                    <a href="{{route('library.book_assign.index')}}"
-                        class="nav-link {{ Request::is('library/book-assign/*') ? 'active' : '' }}">
+                    <a href="{{route('library.book_assign.create')}}"
+                        class="nav-link {{ Request::is('library/assign-books/*') ? 'active' : '' }}">
                        <i class="nav-icon far fa-circle second-nav-text"></i>
-                        <p>Book Assign</p>
+                        <p>Assign Books</p>
                     </a>
+                </li>
+            @endif
+            @if (Auth::user()->can('view return-book') || Auth::user()->role->id == 1)
+                <li class="nav-item ">
+                    <a href="{{route('library.return_book.create')}}"
+                        class="nav-link {{ Request::is('library/return-books/*') ? 'active' : '' }}">
+                       <i class="nav-icon far fa-circle second-nav-text"></i>
+                        <p>Return books</p>
+                    </a>
+                </li>
+            @endif
+            @if (Auth::user()->can('view library-report') || Auth::user()->role->id == 1)
+                <li class="nav-item {{Request::is('library/report/*') ? 'menu-open' : ''}}">
+                    <a href="#"
+                        class="nav-link">
+                       <i class="nav-icon far fa-circle second-nav-text"></i>
+                        <p>Report <i class="fas fa-angle-left right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @if (Auth::user()->can('view daily') || Auth::user()->role->id == 1)
+                            <li class="nav-item ">
+                                <a href="{{route('library.report.daily',[date('Y-m-d')])}}" class="nav-link {{Request::is('library/report/daily/*') ? 'active' : ''}}">
+                                <i class="nav-icon fas fa-minus third-nav-text"></i>
+                                <p>Daily report</p></a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->can('view daily') || Auth::user()->role->id == 1)
+                            <li class="nav-item ">
+                                <a href="{{route('library.report.all',[date('Y-m-d')])}}" class="nav-link {{Request::is('library/report/all/*') ? 'active' : ''}}">
+                                <i class="nav-icon fas fa-minus third-nav-text"></i>
+                                <p>All report</p></a>
+                            </li>
+                        @endif
+                    </ul>
                 </li>
             @endif
         </ul>

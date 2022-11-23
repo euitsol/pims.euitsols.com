@@ -31,10 +31,12 @@ use App\Http\Controllers\student\StudentController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\setup\BuildingController;
 use App\Http\Controllers\ClassContentController;
-use App\Http\Controllers\library\BookAssignController;
+use App\Http\Controllers\library\AssignBookController;
+use App\Http\Controllers\library\RerurnBookController;
 use App\Http\Controllers\library\BookshelfController;
 use App\Http\Controllers\library\BookController;
 use App\Http\Controllers\library\CategoryController;
+use App\Http\Controllers\library\LibraryReportController;
 use App\Http\Controllers\library\LibraryStudentController;
 use App\Http\Controllers\setup\RoutineController;
 
@@ -458,7 +460,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
         });
 
         //Book assign management
-        Route::controller(BookAssignController::class)->prefix('book-assign')->name('book_assign.')->group(function(){
+        Route::controller(AssignBookController::class)->prefix('assign-books')->name('book_assign.')->group(function(){
             Route::get('/index','index')->name('index');
             Route::get('/create','create')->name('create');
             Route::get('/info','info')->name('info'); //studnet fetch according to student id
@@ -470,6 +472,27 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::get('/show/{id}','show')->name('show');
             Route::get('/destroy/{id}','destroy')->name('destroy');
         });
+        //Book return management
+        Route::controller(RerurnBookController::class)->prefix('return-books')->name('return_book.')->group(function(){
+            Route::get('/create','create')->name('create');
+            Route::get('/info','info')->name('info');
+            Route::get('/show/{id}','show')->name('show');
+            Route::get('/update/{id}','update')->name('update');
+        });
+
+        //Library report management
+        // Route::prefix('report')->name('report.')->group(function(){
+
+            //daily report
+            Route::controller(LibraryReportController::class)->prefix('report')->name('report.')->group(function(){
+                Route::get('/daily/{date}','dailyReport')->name('daily');
+                Route::get('/all','allReport')->name('all');
+                Route::post('/all','allReport')->name('all');
+            });
+
+
+        // });
+
     });
 
 });
