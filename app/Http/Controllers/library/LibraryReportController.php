@@ -42,7 +42,7 @@ class LibraryReportController extends Controller
         $n['assigned_info_all'] =  $assigned->get();
 
          $returned= AssignBook::where('deleted_by',null)
-                               ->whereBetween('returned_date',[$n['str_date'],$n['end_date']])->where('status','1');
+                               ->whereBetween('returned_date',[$n['str_date'],$n['end_date']])->where('status','1')->where('status','-1');
                                if($n['user_id']){
                                 $returned->where('created_by',$n['user_id']);
                             }
