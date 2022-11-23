@@ -22,6 +22,22 @@
                             <form action="{{ route('library.setup.category.update') }}" method="POST" class="form-horizontal">
                             @csrf
                             <input type="hidden" name="id" value="{{$category->id}}">
+
+                            <div class="form-group row">
+                                <label class="col-sm-3" for="department_id">Department name<span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <select name="department_id" id="department_id" class="form-control">
+                                        <option value="" hidden>Select department</option>
+                                        @foreach ($departments as $department )
+                                            <option value="{{$department->id}}" @if($department->id == $category->departments_id) selected @endif>{{$department->department_name}}</option>
+                                        @endforeach
+                                    </select>
+                                    @if ($errors->has('department_id'))
+                                        <span class="text-danger">{{ $errors->first('department_id') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="name">Category Name<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">

@@ -74,6 +74,12 @@
                         <table class="table table-borderless table-striped">
                             <tbody id="view-tbody">
                                 <tr>
+                                    <td>Department Name</td>
+                                    <td>
+                                        <span id="view-department-name"></span>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td>Name</td>
                                     <td>
                                         <span id="view-name"></span>
@@ -152,6 +158,7 @@
                         url: _url,
                         method: "GET",
                         success: function (response) {
+                            $('#view-department-name').html(response.department.department_name);
                             $('#view-name').html(response.name);
                             $('#view-createdAt').html(response.created_at ? new Date(response.created_at) : '');
                             $('#view-createdBy').html(response.created_user ? response.created_user.name : 'system');
