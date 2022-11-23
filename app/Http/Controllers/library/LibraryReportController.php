@@ -24,7 +24,7 @@ class LibraryReportController extends Controller
         $n['delay'] = AssignBook::where('deleted_by',null)
                                         ->where('return_date',$date)
                                         ->where('status','0')
-                                        ->where('returned_date',$date)
+                                        ->where('return_date',$date)
                                         ->get();
         $n['date'] = $date;
         // dd($n['delay']);
