@@ -36,7 +36,7 @@ class AssignBookController extends Controller
     public function store(Request $req){
         // dd($req->all());
         $this->validate($req,[
-            'std_id' => 'required|integer|exists:student_infos,id',
+            'std_id' => 'required|integer|exists:library_students,id',
             'book.*.book_id' => 'required|integer|exists:books,id',
             'book.*.return_date' => 'required|date',
         ],[],[
@@ -81,7 +81,7 @@ class AssignBookController extends Controller
     public function update(Request $req){
         // dd($req->id);
         $this->validate($req,[
-            'std_id' => 'required|integer|exists:student_infos,id',
+            'std_id' => 'required|integer|exists:library_students,id',
             'book.*.book_id' => 'required|integer|exists:books,id',
             'assig_book_id' => 'exists:assign_books,id',
             'return_date' => 'required',
