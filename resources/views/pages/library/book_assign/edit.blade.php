@@ -163,48 +163,43 @@
                                 </tr>
                             </thead>
                             <tbody id="tbody">
-                                @php
-                                    $count = count($assign_book->bkdn);
-                                @endphp
-                                @foreach ($assign_book->bkdn as $key => $bkdn )
                                     <tr>
                                         <td>
                                             <select class="form-control cat-id" onchange='bookFetch(this)' required>
                                                 <option value="" hidden>Select category</option>
                                                 @foreach ($categories as $category )
-                                                    <option value="{{$category->id}}" @if($category->id == $bkdn->book->category_id) selected @endif> {{ $category->name}}</option>
+                                                    <option value="{{$category->id}}" @if($category->id == $assign_book->book->category_id) selected @endif> {{ $category->name}}</option>
                                                 @endforeach
                                             </select>
                                         </td>
                                         <td>
-                                            <select name="book[{{$key}}][book_id]" class="form-control book-id" onchange='bookChange(this)' required>
+                                            <select name="book[0][book_id]" class="form-control book-id" onchange='bookChange(this)' required>
                                                 <option value="" hidden>Select book</option>
                                                 @foreach ($books as $book )
-                                                <option value="{{$book->id}}" @if($book->id == $bkdn->book_id) selected @endif> {{ $book->name}}</option>
+                                                <option value="{{$book->id}}" @if($book->id == $assign_book->book_id) selected @endif> {{ $book->name}}</option>
                                             @endforeach
                                             </select>
 
                                         </td>
                                         <td class="author-name">
                                             <span class='form-control'>
-                                                {{$bkdn->book->author_name}}
+                                                {{$assign_book->book->author_name}}
                                             </span>
                                         </td>
                                         <td class="bookshelf">
                                             <span class='form-control'>
-                                                {{$bkdn->book->bookshelf->name}}
+                                                {{$assign_book->book->bookshelf->name}}
                                             </span>
                                         </td>
                                         <td>
-                                        <input type="number" name="book[{{$key}}][qty]" class="form-control qty text-center" min="1" max="{{$bkdn->book->qty}}" value="{{$bkdn->qty}}" placeholder="Enter quantity" onkeyup="bookQty(this)">
-                                        <span><span class="text-info">Remaing books: </span><span>{{$bkdn->book->qty - $bkdn->qty}}</span></span>
+                                        <input type="number" name="book[0][qty]" class="form-control qty text-center" min="1" max="{{$assign_book->book->qty}}" value="{{$assign_book->qty}}" placeholder="Enter quantity" onkeyup="bookQty(this)">
+                                        <span><span class="text-info">Remaing books: </span><span>{{$assign_book->book->qty - $assign_book->qty}}</span></span>
                                         </td>
                                         <td class="text-left" id="plus_minus_btn">
-                                            <span class="btn btn-info plus-btn {{ $key != $count-1 ? 'd-none' : ''}}" onclick='add(this)'>+</span>
-                                            <span class="btn btn-sm btn-danger minus-btn {{ $key == $count-1 ? 'd-none' : ''}}" onclick='remove(this)'>Remove</span>
+                                            <span class="btn btn-info plus-btn " onclick='add(this)'>+</span>
+                                            <span class="btn btn-danger minus-btn d-none" onclick='remove(this)'>-</span>
                                         </td>
                                     </tr>
-                                @endforeach
                             </tbody>
                         </table>
                         <button type="submit" class="btn btn-info w-100 mt-4" id="assign_btn">Update</button>
@@ -477,7 +472,7 @@
                             </td>
                             <td class="text-left" id="plus_minus_btn">
                                 <span class="btn  btn-info plus-btn" onclick='add(this)'>+</span>
-                                <span class="btn btn-sm btn-danger d-none minus-btn" onclick='remove(this)'>Remove</span>
+                                <span class="btn btn-danger d-none minus-btn" onclick='remove(this)'>Remove</span>
                             </td>
                         </tr>`;
 

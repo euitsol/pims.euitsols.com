@@ -7,6 +7,7 @@ use App\Models\Book;
 use App\Models\Category;
 use App\Models\AssignBook;
 use App\Models\AssignBookBkdn;
+use App\Models\Department;
 use App\Models\LibraryStudent;
 use App\Models\studentInfo;
 use Carbon\Carbon;
@@ -28,6 +29,7 @@ class AssignBookController extends Controller
     public function create(){
         $n['students'] = LibraryStudent::where('deleted_by',null)->OrderBy('name')->get();
         $n['categories'] = Category::where('deleted_by',null)->OrderBy('name')->get();
+        $n['departments'] = Department::where('deleted_by',null)->OrderBy('department_name')->get();
         return view('pages.library.book_assign.create',$n);
     }
 
@@ -70,7 +72,7 @@ class AssignBookController extends Controller
 
     public function edit($id){
 
-        $n['assign_book'] = AssignBook::with(['student','bkdn','bkdn.book','bkdn.book.category','bkdn.book.bookshelf','created_user','updated_user','deleted_user'])->find($id);
+        $n['assign_book'] = AssignBook::with(['student','book','book.category','book.bookshelf','book.category.department','created_user','updated_user','deleted_user'])->find($id);
         $n['students'] = LibraryStudent::where('deleted_by',null)->OrderBy('name')->get();
         $n['categories'] = Category::where('deleted_by',null)->OrderBy('name')->get();
         $n['books'] = Book::where('deleted_by',null)->OrderBy('name')->get();
@@ -134,7 +136,7 @@ class AssignBookController extends Controller
 
     public function show($id = null){
         if($id !=null){
-            $student =AssignBook::with(['student','bkdn','bkdn.book','bkdn.book.category','bkdn.book.bookshelf','created_user','updated_user','deleted_user'])->find($id);
+            $student =AssignBook::with(['student','book','book.category','book.bookshelf','book.category.department','created_user','updated_user','deleted_user'])->find($id);
             return response()->json($student);
         }
     }
@@ -164,6 +166,11 @@ class AssignBookController extends Controller
     public function residentialStdShow(Request $req){
         $student = studentInfo::Find($req->id);
         return response()->json($student);
+    }
+
+
+    public function categoryFetch($id){
+        return response()->json(Category::where('departments_id',$id)->get());
     }
 
 
