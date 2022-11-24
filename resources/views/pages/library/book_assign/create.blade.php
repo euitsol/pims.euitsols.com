@@ -76,7 +76,7 @@ caption {
                     <tbody id="tbody">
                         <tr>
                             <td>
-                                <select class="form-control department_id0 select" required>
+                                <select class="form-control department_id0 select">
                                     <option value="" hidden>Select Department</option>
                                     @foreach ($departments as $department )
                                         <option value="{{$department->id}}"> {{ $department->short_name}}</option>
@@ -89,7 +89,7 @@ caption {
                                 </select>
                             </td>
                             <td>
-                                <select name="book[0][book_id]" class="form-control book-id book" required>
+                                <select name="book[0][book_id]" class="form-control book-id book-id0" required>
                                     <option value="" hidden>Select book</option>
                                 </select>
 
@@ -103,16 +103,16 @@ caption {
                                 </span>
                             </td>
                             <td>
-                               <input type="number" name="book[0][qty]" class="form-control qty text-center" min="1" max="" value="1" placeholder="Enter quantity" onchange="bookQty(this)">
+                               <input type="number" name="book[0][qty]" class="form-control qty0 text-center" min="1" max="" value="1" placeholder="Enter quantity" onchange="bookQty(this)">
                                <span></span>
                             </td>
                             <td>
-                                <input type="text" name="book[0][return_date]" class="date form-control" placeholder="Enter return date" autocomplete="off" required>
+                                <input type="text" name="book[0][return_date]" class="date date0 form-control" placeholder="Enter return date" autocomplete="off" required>
                             </td>
 
                             <td class="text-left" id="plus_minus_btn">
-                                <span class="btn btn-info plus-btn0">+</span>
-                                <span class="btn btn-sm btn-danger d-none minus-btn0">Remove</span>
+                                <span class="btn btn-info plus-btn0" data-id="0"><i class="fas fa-plus"></i></span>
+                                <span class="btn btn-sm btn-danger d-none minus-btn0"> <i class='fas fa-minus'></i></span>
                             </td>
                         </tr>
                     </tbody>
@@ -161,15 +161,26 @@ caption {
                     bookFetch(this,click_num);
             });
 
+            $('.book-id0').on('change',function(){
+                    check();
+                    let click_num = 0;
+                    bookChange(this,click_num);
+            });
+
             $('.date').on('click change keyup',function(){
                     check();
             });
+
             $('.book').on('change',function(){
                 check();
                 bookChange(this);
             });
 
-           //Single student fetch. to implement this just use one id that is #select_div use for the parent of select student id and try to avoid #select_div's next element
+            $('.qty0').on('change keyup',function(){
+
+                bookQty(this);
+            });
+
             $('#select_div').find('select').change(function(){
                let std_id = $(this).val();
                if(std_id != ''){
@@ -270,7 +281,6 @@ caption {
                                                         </tr>
                                                 </tbody>
                                             </table>
-
                                     </div>`;
                         $('#select_div').nextAll().remove();
                         $(student_info).insertAfter("#select_div");
@@ -291,48 +301,12 @@ caption {
 
 
 
-        function bookChange(This,click_num){
-           let book_id = $(This).val();
-
-           //duplicate validation
-           let check = 0;
-            $('.book-id').each(function(index){
-                if(book_id == $(this).val()){
-                    check++;
-                }
-            });
-            $(This).nextAll('p').remove();
-            if(check>1){
-                $('<p class="text-danger">This book already you have been taken </p>').insertAfter($(This).next());
-                $('#assign_btn').attr('type','button');
-                return false;
-            }
-
-            if(book_id != ''){
-                $.ajax({
-                    type: 'get',
-                    url: "{{route('library.book_assign.single_book_fetch')}}",
-                    data:{
-                        'id':book_id,
-                    },
-                    success:function(response){
-                        let author_name = `${response.author_name ?? 'finding fail'}`;
-                        let bookshelf = `${response.bookshelf.name ?? 'finding fail'}`;
-                        $(This).parent().next('td.author-name').children('span').html(author_name);
-                        $(This).parent().nextAll('td.bookshelf').children('span').html(bookshelf);
-                        $('.qty').eq(click_num).attr('max',response.qty);
-                        $('.qty').eq(click_num).next('span').html('<span class="text-info">Remaingin books: </span><span id="text-qty">'+(response.qty-1)+'</span>');
-                    }
-                })
-            }
-
-        }
-      function add(This,click_num){
-
+        function add(This,click_num){
+                click_num = click_num+1;
                 let tr = `
                         <tr>
                             <td>
-                                <select class="form-control department_id${click_num}" required>
+                                <select class="form-control department_id${click_num}">
                                     <option value="" hidden>Select Department</option>
                                     @foreach ($departments as $department )
                                         <option value="{{$department->id}}"> {{ $department->short_name}}</option>
@@ -347,7 +321,7 @@ caption {
                                 </select>
                             </td>
                             <td>
-                                <select name="book[${click_num}][book_id]" class="form-control book-id book${click_num}" id='book${click_num}'>
+                                <select name="book[${click_num}][book_id]" class="form-control book-id book-id${click_num}" id='book${click_num}'>
                                     <option value="" hidden>Select book</option>
                                 </select>
                             </td>
@@ -360,15 +334,15 @@ caption {
                                 </span>
                             </td>
                             <td>
-                               <input type="number" name="book[${click_num}][qty]" class="form-control text-center qty qty${click_num}" min="1" max="" value="1"  placeholder="Enter quantity">
+                               <input type="number" name="book[${click_num}][qty]" class="form-control text-center qty${click_num}" min="1" max="" value="1"  placeholder="Enter quantity">
                                <span></span>
                             </td>
                             <td>
                                 <input type="text" name="book[${click_num}][return_date]" class="date date${click_num} form-control" placeholder="Enter return date" autocomplete="off" required>
                             </td>
                             <td class="text-left" id="plus_minus_btn">
-                                <span class="btn  btn-info plus-btn${click_num}">+</span>
-                                <span class="btn btn-sm btn-danger d-none minus-btn${click_num}">Remove</span>
+                                <span class="btn  btn-info plus-btn${click_num}"><i class='fas fa-plus'></i></span>
+                                <span class="btn btn-sm btn-danger d-none minus-btn${click_num}"> <i class='fas fa-minus'></i></span>
                             </td>
                         </tr>`;
 
@@ -378,7 +352,7 @@ caption {
                     autoclose:true,
                 });
 
-                $(This).next('span.minus-btn'+click_num).removeClass('d-none');
+                $(This).next('span').removeClass('d-none');
                 $(This).addClass('d-none');
                 $('select').select2();
                 $('#assign_btn').attr('type','button');
@@ -387,6 +361,12 @@ caption {
                 $('.plus-btn'+click_num).on('click',function(){
                     add(this,click_num);
                 });
+
+                //minus button
+                $('.minus-btn'+click_num).on('click',function(){
+                    remove(this,click_num);
+                });
+
                 $('.qty'+click_num).on('change keyup',function(){
                     bookQty(this);
                 });
@@ -394,9 +374,10 @@ caption {
                 $('.date'+click_num).on('click change keyup',function(){
                     check();
                 });
-                $('.book'+click_num).on('change',function(){
+
+                $('.book-id'+click_num).on('change',function(){
                     check();
-                    bookChange(this)
+                    bookChange(this,click_num);
                 });
 
                 $('.department_id'+click_num).on('change',function(){
@@ -411,26 +392,57 @@ caption {
                     remove(this,click_num);
                 });
 
-                // $('.minus-btn'+click_num).on('click',function(){
-                //     remove(this,click_num);
-                // });
+
         }
 
         function remove(This,click_num){
-            // console.log(click_num);
-            $('.book-id').eq(click_num).attr('disabled',true);
-            $('.cat-id').eq(click_num).attr('disabled',true);
-            $('.qty').eq(click_num).attr('disabled',true);
-            $('.date').eq(click_num).attr('disabled',true);
-            $('.book-id').eq(click_num).parent().parent().addClass('d-none');
-            // $('.book-id').eq(click_num).removeClass('book-id');
-            // $('.cat-id').eq(click_num).removeClass('cat-id');
-            // $('.qty').eq(click_num).removeClass('qty');
-            // $('.date').eq(click_num).removeClass('date');
-            // $(This).removeClass('minus-btn');
+            $('.book-id'+click_num).prop('disabled',true);
+            $('.cat-id'+click_num).prop('disabled',true);
+            $('.qty'+click_num).prop('disabled',true);
+            $('.date'+click_num).prop('disabled',true);
+            $('.book-id'+click_num).parent().parent().addClass('d-none');
+            $('.book-id'+click_num).removeClass('book-id');
+            $('.date'+click_num).removeClass('date');
         }
 
-       function bookQty(This){
+        function bookChange(This,click_num){
+           let book_id = $(This).val();
+
+            //duplicate validation
+               let check = 0;
+                $('.book-id').each(function(index){
+                    if(book_id == $(this).val()){
+                        check++;
+                    }
+                });
+                $(This).nextAll('p').remove();
+                if(check>1){
+                    $('<p class="text-danger">This book already you have been taken </p>').insertAfter($(This).next());
+                    $('#assign_btn').attr('type','button');
+                    return false;
+            }
+
+            if(book_id != ''){
+                $.ajax({
+                    type: 'get',
+                    url: "{{route('library.book_assign.single_book_fetch')}}",
+                    data:{
+                        'id':book_id,
+                    },
+                    success:function(response){
+                        let author_name = `${response.author_name ?? 'finding fail'}`;
+                        let bookshelf = `${response.bookshelf.name ?? 'finding fail'}`;
+                        $(This).parent().next('td.author-name').children('span').html(author_name);
+                        $(This).parent().nextAll('td.bookshelf').children('span').html(bookshelf);
+                        $('.qty'+click_num).attr('max',response.qty);
+                        $('.qty'+click_num).next('span').html('<span class="text-info">Remaingin books: </span><span id="text-qty">'+(response.qty-1)+'</span>');
+                    }
+                })
+            }
+
+        }
+
+        function bookQty(This){
             let remaining_book = Number($(This).attr('max'));
 
             let qty = Number($(This).val());
@@ -496,7 +508,7 @@ caption {
                 }else{
                     $('select.cat-id'+click_num).html('<option value="" hidden> Select department</option>');
                 }
-            }
+        }
 
         function bookFetch(This,click_num){
 
@@ -513,10 +525,10 @@ caption {
                             $.each(books,function(key,book){
                                 option += '<option value="'+book.id+'">'+book.name+'</option>';
                             });
-                        $('.book-id').eq(click_num).html(option);
+                        $('.book-id'+click_num).html(option);
                     }
 
-                })
+                });
         }
     </script>
 @endpush
