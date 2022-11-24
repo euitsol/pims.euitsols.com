@@ -28,6 +28,7 @@
                                 <th>Author's Name</th>
                                 <th>Quantity</th>
                                 <th>Category</th>
+                                <th>Department</th>
                                 <th>Bookshelves</th>
                                 <th>Created By</th>
                                 <th>Created At</th>
@@ -42,6 +43,7 @@
                                     <td>{{$book->author_name}}</td>
                                     <td>{{$book->qty}}</td>
                                     <td>{{$book->category->name}}</td>
+                                    <td>{{$book->category->department->short_name}}</td>
                                     <td>{{$book->bookshelf->name}}</td>
                                     <td>{{$book->created_user->name}}</td>
                                     <td>{{date('d-m-Y',strtotime($book->created_user->created_at))}}</td>
@@ -106,6 +108,12 @@
                                     <td>Category</td>
                                     <td>
                                         <span id="view-category"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Department's name</td>
+                                    <td>
+                                        <span id="view-department"></span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -193,6 +201,7 @@
                             $('#view-author_name').html(response.author_name);
                             $('#view-qty').html(response.qty);
                             $('#view-category').html(response.category.name);
+                            $('#view-department').html(response.category.department.department_name);
                             $('#view-bookshelf').html(response.bookshelf.name);
                             $('#view-createdAt').html(response.created_at ? new Date(response.created_at) : '');
                             $('#view-createdBy').html(response.created_user ? response.created_user.name : 'system');

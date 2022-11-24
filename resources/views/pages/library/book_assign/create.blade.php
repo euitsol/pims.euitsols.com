@@ -71,6 +71,7 @@ caption {
                             <th>Author's Name</th>
                             <th>Bookshelf</th>
                             <th>Quantity</th>
+                            <th>Return Date</th>
                         </tr>
                     </thead>
                     <tbody id="tbody">
@@ -171,10 +172,10 @@ caption {
                     check();
             });
 
-            $('.book').on('change',function(){
-                check();
-                bookChange(this);
-            });
+            // $('.book').on('change',function(){
+            //     check();
+            //     bookChange(this);
+            // });
 
             $('.qty0').on('change keyup',function(){
 
@@ -292,11 +293,11 @@ caption {
                }
             });
 
-            $('#assign_btn').click(function(){
-                if($(this).attr('type') == 'button'){
-                   toastr.error("Please, select all input field");
-                 }
-            });
+            // $('#assign_btn').click(function(){
+            //     if($(this).attr('type') == 'button'){
+            //        toastr.error("Please, select all input field");
+            //      }
+            // });
         });
 
 

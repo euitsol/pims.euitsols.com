@@ -227,6 +227,7 @@
             </div>
         </div>
     </div>
+
 {{-- Modals --}}
 <div class="modal fade" id="view-modal">
     <div class="modal-dialog modal-lg">
@@ -268,6 +269,13 @@
                                 </tr>
 
                                 <tr>
+                                    <td>Department's Name</td>
+                                    <td>
+                                        <span id="view-department"></span>
+                                    </td>
+                                </tr>
+
+                                <tr>
                                     <td>Bookshelf</td>
                                     <td>
                                         <span id="view-bookshelf"></span>
@@ -298,7 +306,7 @@
                                 <tr>
                                     <td>Returned date</td>
                                     <td>
-                                        <span id="view-return-date"></span>
+                                        <span id="view-returned-date"></span>
                                     </td>
                                 </tr>
 
@@ -381,6 +389,7 @@
                             $('#view-std-phone').html(response.student.phone);
                             $('#view-name').html(response.book.name);
                             $('#view-cat').html(response.book.category.name);
+                            $('#view-department').html(response.book.category.department.department_name);
                             $('#view-bookshelf').html(response.book.bookshelf.name);
                             $('#view-qty').html(response.qty);
                             $('#view-assign-date').html(response.assign_date);
