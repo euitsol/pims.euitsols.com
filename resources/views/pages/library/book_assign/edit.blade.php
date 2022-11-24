@@ -37,6 +37,11 @@ caption {
                     <span class="float-left">
                         <h4>Student selection</h4>
                     </span>
+                    <span class="float-right">
+                        @if (Auth::user()->can('edit library report') || Auth::user()->role->id == 1)
+                        <a href="{{ route('attendance.class',1) }}" class="btn btn-info">Back</a>
+                    @endif
+                    </span>
                 </div>
                 <div class="card-body" >
                     <div class="row" id="select_div">
@@ -203,7 +208,7 @@ caption {
                                 </span>
                             </td>
                             <td>
-                               <input type="number" name="qty" class="form-control qty0 text-center" min="1" max="{{$assign_book->book->qty + $assign_book->qty}}" value="{{$assign_book->qty}}" placeholder="Enter quantity" onchange="bookQty(this)">
+                               <input type="number" name="qty" class="form-control qty0 text-center" min="1" max="{{$assign_book->book->qty +    $assign_book->qty}}" value="{{$assign_book->qty}}" placeholder="Enter quantity" onchange="bookQty(this)">
                                <span></span>
                             </td>
                             <td>
@@ -241,15 +246,6 @@ caption {
                 categoryFetch(this,click_num);
             });
 
-            // $('.plus-btn0').on('click',function(){
-            //     let click_num = 0;
-            //         add(this,click_num);
-            // });
-
-            // $('.minus-btn0').on('click',function(){
-            //     let click_num = 0;
-            //         remove(this,click_num);
-            // });
 
             $('.cat-id0').on('change',function(){
                 let click_num = 0;
@@ -257,19 +253,9 @@ caption {
             });
 
             $('.book-id0').on('change',function(){
-                    // check();
                     let click_num = 0;
                     bookChange(this,click_num);
             });
-
-            // $('.date').on('click change keyup',function(){
-            //         check();
-            // });
-
-            // $('.book').on('change',function(){
-            //     // check();
-            //     bookChange(this);
-            // });
 
             $('.qty0').on('change keyup',function(){
 
@@ -387,118 +373,8 @@ caption {
                }
             });
 
-            // $('#assign_btn').click(function(){
-            //     if($(this).attr('type') == 'button'){
-            //        toastr.error("Please, select all input field");
-            //      }
-            // });
+
         });
-
-
-
-        // function add(This,click_num){
-        //         click_num = click_num+1;
-        //         let tr = `
-        //                 <tr>
-        //                     <td>
-        //                         <select class="form-control department_id${click_num}">
-        //                             <option value="" hidden>Select Department</option>
-        //                             @foreach ($departments as $department )
-        //                                 <option value="{{$department->id}}"> {{ $department->short_name}}</option>
-        //                             @endforeach
-        //                         </select>
-        //                     </td>
-
-        //                     <td>
-        //                         <select class="form-control cat-id${click_num}">
-        //                             <option value="" hidden>Select category</option>
-
-        //                         </select>
-        //                     </td>
-        //                     <td>
-        //                         <select name="book[${click_num}][book_id]" class="form-control book-id book-id${click_num}" id='book${click_num}'>
-        //                             <option value="" hidden>Select book</option>
-        //                         </select>
-        //                     </td>
-        //                     <td class="author-name">
-        //                         <span class='form-control'>
-        //                         </span>
-        //                     </td>
-        //                     <td class="bookshelf">
-        //                         <span class='form-control'>
-        //                         </span>
-        //                     </td>
-        //                     <td>
-        //                        <input type="number" name="book[${click_num}][qty]" class="form-control text-center qty${click_num}" min="1" max="" value="1"  placeholder="Enter quantity">
-        //                        <span></span>
-        //                     </td>
-        //                     <td>
-        //                         <input type="text" name="book[${click_num}][return_date]" class="date date${click_num} form-control" placeholder="Enter return date" autocomplete="off" required>
-        //                     </td>
-        //                     <td class="text-left" id="plus_minus_btn">
-        //                         <span class="btn  btn-info plus-btn${click_num}"><i class='fas fa-plus'></i></span>
-        //                         <span class="btn btn-sm btn-danger d-none minus-btn${click_num}"> <i class='fas fa-minus'></i></span>
-        //                     </td>
-        //                 </tr>`;
-
-        //         $('#tbody').append(tr);
-
-        //         $('.date'+click_num).datepicker({
-        //             autoclose:true,
-        //         });
-
-        //         $(This).next('span').removeClass('d-none');
-        //         $(This).addClass('d-none');
-        //         $('select').select2();
-        //         $('#assign_btn').attr('type','button');
-
-        //         //plus button
-        //         $('.plus-btn'+click_num).on('click',function(){
-        //             add(this,click_num);
-        //         });
-
-        //         //minus button
-        //         $('.minus-btn'+click_num).on('click',function(){
-        //             remove(this,click_num);
-        //         });
-
-        //         $('.qty'+click_num).on('change keyup',function(){
-        //             bookQty(this);
-        //         });
-
-        //         $('.date'+click_num).on('click change keyup',function(){
-        //             check();
-        //         });
-
-        //         $('.book-id'+click_num).on('change',function(){
-        //             check();
-        //             bookChange(this,click_num);
-        //         });
-
-        //         $('.department_id'+click_num).on('change',function(){
-        //             categoryFetch(this,click_num);
-        //         });
-
-        //         $('.cat-id'+click_num).on('change',function(){
-        //             bookFetch(this,click_num);
-        //         });
-
-        //         $('.minus-btn'+click_num).on('click',function(){
-        //             remove(this,click_num);
-        //         });
-
-
-        // }
-
-        // function remove(This,click_num){
-        //     $('.book-id'+click_num).prop('disabled',true);
-        //     $('.cat-id'+click_num).prop('disabled',true);
-        //     $('.qty'+click_num).prop('disabled',true);
-        //     $('.date'+click_num).prop('disabled',true);
-        //     $('.book-id'+click_num).parent().parent().addClass('d-none');
-        //     $('.book-id'+click_num).removeClass('book-id');
-        //     $('.date'+click_num).removeClass('date');
-        // }
 
         function bookChange(This,click_num){
            let book_id = $(This).val();
@@ -555,29 +431,6 @@ caption {
 
 
         }
-
-        // function check(){
-        //     let date_check = 0;
-        //     let book_check = 0;
-        //     $('.date').each(function(){
-        //         if(!$(this).val()){
-        //             date_check++;
-        //         }
-        //     });
-
-        //     $('.book-id').each(function(){
-        //         if(!$(this).val()){
-        //             book_check++;
-        //         }
-        //     });
-
-        //     if(!date_check && !book_check){
-        //         $('#assign_btn').attr('type','sumbit');
-        //         console.log('checked');
-        //     }else{
-        //         console.log('uncheked');
-        //     }
-        // }
 
         function categoryFetch(This,click_num){
                 let department_id = $(This).val();

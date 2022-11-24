@@ -109,10 +109,10 @@
                                                         <a href="javascript:void(0)" class="btn btn-info btnView"
                                                         data-id="{{ $n->id }}"><i class="fas fa-eye"></i></a>
                                                         @if (Auth::user()->can('edit book-assign') || Auth::user()->role->id == 1)
-                                                            <a href="{{ route('library.book_assign.edit', $n->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                                            <a href="{{ route('library.book_assign.edit', $n->id) }}" class="btn btn-dark btnEdit" target="_blank"><i class="fas fa-edit"></i></a>
                                                         @endif
                                                         @if (Auth::user()->can('delete book-assign') || Auth::user()->role->id == 1)
-                                                            <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
+                                                            <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete" ><i class="fas fa-trash"></i></a>
                                                         @endif
                                                     </div>
                                                 </td>
@@ -158,7 +158,7 @@
                                                         <a href="javascript:void(0)" class="btn btn-info btnView"
                                                         data-id="{{ $n->id }}"><i class="fas fa-eye"></i></a>
                                                         @if (Auth::user()->can('edit book-assign') || Auth::user()->role->id == 1)
-                                                            <a href="{{ route('library.book_assign.edit', $n->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                                            <a href="{{ route('library.book_assign.edit', $n->id) }}" class="btn btn-dark btnEdit" target="_blank"><i class="fas fa-edit"></i></a>
                                                         @endif
                                                         @if (Auth::user()->can('delete book-assign') || Auth::user()->role->id == 1)
                                                             <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
@@ -207,10 +207,10 @@
                                                         <a href="javascript:void(0)" class="btn btn-info btnView"
                                                         data-id="{{ $n->id }}"><i class="fas fa-eye"></i></a>
                                                         @if (Auth::user()->can('edit book-assign') || Auth::user()->role->id == 1)
-                                                            <a href="{{ route('library.book_assign.edit', $n->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                                            <a href="{{ route('library.book_assign.edit', $n->id) }}" class="btn btn-dark btnEdit" target="_blank"><i class="fas fa-edit"></i></a>
                                                         @endif
                                                         @if (Auth::user()->can('delete book-assign') || Auth::user()->role->id == 1)
-                                                            <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
+                                                            <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete" ><i class="fas fa-trash"></i></a>
                                                         @endif
                                                     </div>
                                                 </td>

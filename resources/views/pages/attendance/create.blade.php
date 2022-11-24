@@ -70,6 +70,9 @@
                                     <p><i class="fas fa-arrow-circle-down"></i> <span>Group:</span>
                                         {{ $minfo->group->name }}
                                     </p>
+                                    <p><i class="fas fa-arrow-circle-down"></i> <span>Total student:</span>
+                                        {{ $minfo->totalStudent() }}
+                                    </p>
                                     <p><i class="fas fa-arrow-circle-down"></i> <span>Teacher:</span>
                                         {{ $minfo->teacher->name }}
                                     </p>

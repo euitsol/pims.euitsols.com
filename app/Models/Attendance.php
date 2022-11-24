@@ -91,4 +91,13 @@ class Attendance extends Model
             return false;
         }
     }
+
+    public function totalStudent(){
+        $students = AdmittedStdAssign::where('deleted_by',null)->get();
+        if($students){
+            return count($students);
+        }else{
+            return 0;
+        }
+    }
 }
