@@ -119,6 +119,9 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
     // Student fetch according to student id
     Route::get('/residential-student/show',[LibraryStudentController::class,'residentialStdShow'])->name('residentialStdShow');
 
+    // Category fetch according to department in library
+    Route::get('library/category-fetch/{id}',[AssignBookController::class,'categoryFetch'])->name('library.category_fetch');
+
     //End All Common Ajax here
 
 
@@ -471,6 +474,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::post('/update','update')->name('update');
             Route::get('/show/{id}','show')->name('show');
             Route::get('/destroy/{id}','destroy')->name('destroy');
+
         });
         //Book return management
         Route::controller(RerurnBookController::class)->prefix('return-books')->name('return_book.')->group(function(){
@@ -481,18 +485,13 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
         });
 
         //Library report management
-        // Route::prefix('report')->name('report.')->group(function(){
-
+        
             //daily report
             Route::controller(LibraryReportController::class)->prefix('report')->name('report.')->group(function(){
                 Route::get('/daily/{date}','dailyReport')->name('daily');
                 Route::get('/all','allReport')->name('all');
                 Route::post('/all','allReport')->name('all');
             });
-
-
-        // });
-
     });
 
 });

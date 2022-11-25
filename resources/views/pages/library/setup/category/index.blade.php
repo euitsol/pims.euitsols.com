@@ -22,6 +22,7 @@
                         <thead>
                             <tr>
                                 <th>SL.</th>
+                                <th>Department Name</th>
                                 <th>Name</th>
                                 <th>Created By</th>
                                 <th>Created At</th>
@@ -32,6 +33,7 @@
                                 @foreach ( $categories as $key=>$category)
                                    <tr>
                                     <td>{{$key+1}}</td>
+                                    <td>{{$category->department->department_name}}</td>
                                     <td>{{$category->name}}</td>
                                     <td>{{$category->created_user->name}}</td>
                                     <td>{{date('d-m-Y',strtotime($category->created_user->created_at))}}</td>
@@ -58,7 +60,6 @@
 </div>
 
 {{-- Modals --}}
-
 <div class="modal fade" id="view-modal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

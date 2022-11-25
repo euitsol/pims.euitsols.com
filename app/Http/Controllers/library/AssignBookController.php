@@ -7,6 +7,7 @@ use App\Models\Book;
 use App\Models\Category;
 use App\Models\AssignBook;
 use App\Models\AssignBookBkdn;
+use App\Models\Department;
 use App\Models\LibraryStudent;
 use App\Models\studentInfo;
 use Carbon\Carbon;
@@ -28,6 +29,7 @@ class AssignBookController extends Controller
     public function create(){
         $n['students'] = LibraryStudent::where('deleted_by',null)->OrderBy('name')->get();
         $n['categories'] = Category::where('deleted_by',null)->OrderBy('name')->get();
+        $n['departments'] = Department::where('deleted_by',null)->OrderBy('department_name')->get();
         return view('pages.library.book_assign.create',$n);
     }
 
@@ -70,8 +72,11 @@ class AssignBookController extends Controller
 
     public function edit($id){
 
-        $n['assign_book'] = AssignBook::with(['student','bkdn','bkdn.book','bkdn.book.category','bkdn.book.bookshelf','created_user','updated_user','deleted_user'])->find($id);
+        $n['assign_book'] = AssignBook::with(['student','book','book.category','book.bookshelf','book.category.department','created_user','updated_user','deleted_user'])->find($id);
         $n['students'] = LibraryStudent::where('deleted_by',null)->OrderBy('name')->get();
+        $n['categories'] = Category::where('deleted_by',null)->OrderBy('name')->get();
+        $n['books'] = Book::where('deleted_by',null)->OrderBy('name')->get();
+        $n['departments'] = Department::where('deleted_by',null)->OrderBy('department_name')->get();
         $n['categories'] = Category::where('deleted_by',null)->OrderBy('name')->get();
         $n['books'] = Book::where('deleted_by',null)->OrderBy('name')->get();
 
@@ -83,43 +88,29 @@ class AssignBookController extends Controller
         $this->validate($req,[
             'std_id' => 'required|integer|exists:library_students,id',
             'book.*.book_id' => 'required|integer|exists:books,id',
-            'assig_book_id' => 'exists:assign_books,id',
             'return_date' => 'required',
         ],[],[
             'std_id' => 'Student ID',
             'book.*.book_id' => 'Book ID',
         ]);
 
-        $insert = AssignBook::find($req->assig_book_id);
-        $insert->std_id = $req->std_id;
-        $insert->assign_date = Carbon::now()->toDateTimeString();
-        $insert->return_date = $req->return_date;
-        $total_book = 0;
-        foreach($req->book as $key => $val){
-           $total_book += $val['qty'];
-        }
-        $insert->total_book = $total_book;
-        $insert->updated_by = Auth::user()->id;
-        $insert->save();
+        $update = AssignBook::findOrFail($req->id);
+        $update->std_id = $req->std_id;
+        $update->book_id = $req->book_id;
 
-       $delete = AssignBookBkdn::where('assign_book_id',$req->assig_book_id)->delete();
+        // Update book qty
+        $book_update = Book::findOrFail($req->book_id);
+        $book_update->qty = $book_update->qty +$update->qty - $req->qty;
+        $book_update->save();
 
-        foreach($req->book as $value){
-            $insert_bkdn = new AssignBookBkdn();
-            $insert_bkdn->assign_book_id = $insert->id;
-            $insert_bkdn->book_id = $value['book_id'];
-            $insert_bkdn->qty = $value['qty'];
-            $insert->updated_by = Auth::user()->id;
-            $insert_bkdn->save();
-
-            //update books quantity
-            $update_qty = Book::find($value['book_id']);
-            $update_qty->qty = $update_qty->qty - $value['qty'];
-            $update_qty->save();
-        }
+        // Update assign book table
+        $update->qty = $req->qty;
+        $update->return_date = $req->return_date;
+        $update->updated_by = Auth::user()->id;
+        $update->save();
 
         $this->message('success','Successfully updated');
-        return redirect()->route('library.book_assign.index');
+        return redirect()->back();
     }
 
     public function destroy($id =null){
@@ -134,7 +125,7 @@ class AssignBookController extends Controller
 
     public function show($id = null){
         if($id !=null){
-            $student =AssignBook::with(['student','bkdn','bkdn.book','bkdn.book.category','bkdn.book.bookshelf','created_user','updated_user','deleted_user'])->find($id);
+            $student =AssignBook::with(['student','book','book.category','book.bookshelf','book.category.department','created_user','updated_user','deleted_user'])->find($id);
             return response()->json($student);
         }
     }
@@ -164,6 +155,11 @@ class AssignBookController extends Controller
     public function residentialStdShow(Request $req){
         $student = studentInfo::Find($req->id);
         return response()->json($student);
+    }
+
+
+    public function categoryFetch($id){
+        return response()->json(Category::where('departments_id',$id)->get());
     }
 
 

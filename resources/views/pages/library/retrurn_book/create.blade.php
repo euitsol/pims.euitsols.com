@@ -69,6 +69,7 @@ caption {
                         <tr>
                             <th>S.L</th>
                             <th>Book's name</th>
+                            <th>Department name</th>
                             <th>Category</th>
                             <th>Bookshelf</th>
                             <th>Total book</th>
@@ -125,6 +126,12 @@ caption {
                                     <td>book's Name</td>
                                     <td>
                                         <span id="view-name"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Department Name</td>
+                                    <td>
+                                        <span id="view-department-name"></span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -322,6 +329,7 @@ caption {
                     success:function(response){
                         $('#book_info').find('#tbody').children().remove();
                         $.each(response,function(index,val){
+                            console.log(val);
                                  let  book_info = `
                                                 <tr>
                                                     <td>
@@ -329,6 +337,9 @@ caption {
                                                     </td>
                                                     <td>
                                                         ${val.book.name}
+                                                    </td>
+                                                    <td>
+                                                        ${val.book.category.department.short_name}
                                                     </td>
                                                     <td>
                                                         ${val.book.category.name}
@@ -404,6 +415,7 @@ caption {
                             $('#view-std_phone').html(response.student.phone);
                             $('#view-total-book').html(response.qty);
                             $('#view-name').html(response.book.name);
+                            $('#view-name').html(response.book.category.department.department_name);
                             $('#view-cat').html(response.book.category.name);
                             $('#view-bookshelf').html(response.book.bookshelf.name);
                             $('#view-assign_date').html(response.assign_date);

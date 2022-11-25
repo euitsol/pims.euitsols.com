@@ -41,7 +41,7 @@ class LibraryReportController extends Controller
                                 ->whereBetween('assign_date',[$n['str_date'],$n['end_date']])
                                 ->where('status','0')
                                 ->where('return_date','>', Carbon::now());
-        
+
         if($n['user_id']){
             $assigned->where('created_by',$n['user_id']);
         }
@@ -63,7 +63,10 @@ class LibraryReportController extends Controller
         }
         $n['delay_info_all'] = $delay->get();
         $n['users'] = User::where('deleted_by',null)->get();
-        
+
         return view('pages.library.report.all',$n);
     }
+
+
+   
 }

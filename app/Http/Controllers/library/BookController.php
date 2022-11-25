@@ -102,7 +102,7 @@ class BookController extends Controller
 
     public function show($id=null){
         if($id != null){
-            $book = Book::with(['created_user','updated_user','deleted_user','created_user','category','bookshelf'])->find($id);
+            $book = Book::with(['created_user','updated_user','deleted_user','created_user','category','bookshelf','category.department'])->find($id);
             return response()->json($book);
         }
     }
