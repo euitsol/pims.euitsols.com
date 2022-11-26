@@ -112,7 +112,7 @@
                                                             <a href="{{ route('library.book_assign.edit', $n->id) }}" class="btn btn-dark btnEdit" target="_blank"><i class="fas fa-edit"></i></a>
                                                         @endif
                                                         @if (Auth::user()->can('delete book-assign') || Auth::user()->role->id == 1)
-                                                            <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete" ><i class="fas fa-trash"></i></a>
+                                                            <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete" onclick="confirm('Are you sure??')"><i class="fas fa-trash"></i></a>
                                                         @endif
                                                     </div>
                                                 </td>
@@ -161,7 +161,7 @@
                                                             <a href="{{ route('library.book_assign.edit', $n->id) }}" class="btn btn-dark btnEdit" target="_blank"><i class="fas fa-edit"></i></a>
                                                         @endif
                                                         @if (Auth::user()->can('delete book-assign') || Auth::user()->role->id == 1)
-                                                            <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
+                                                            <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete" onclick="confirm('Are you sure??')"><i class="fas fa-trash"></i></a>
                                                         @endif
                                                     </div>
                                                 </td>
@@ -210,7 +210,7 @@
                                                             <a href="{{ route('library.book_assign.edit', $n->id) }}" class="btn btn-dark btnEdit" target="_blank"><i class="fas fa-edit"></i></a>
                                                         @endif
                                                         @if (Auth::user()->can('delete book-assign') || Auth::user()->role->id == 1)
-                                                            <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete" ><i class="fas fa-trash"></i></a>
+                                                            <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete" onclick="confirm('Are you sure??')"><i class="fas fa-trash"></i></a>
                                                         @endif
                                                     </div>
                                                 </td>

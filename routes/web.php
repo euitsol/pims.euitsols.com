@@ -429,6 +429,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
                 Route::get('/show/{id}','show')->name('show');//route = library.setup.category.show
             });
 
+            //bookshelf
             Route::controller(BookshelfController::class)->prefix('bookshelf')->name('bookshelf.')->group(function(){
                 Route::get('/index','index')->name('index'); //route = library.setup.bookshelf.index
                 Route::get('/create','create')->name('create');//route = library.setup.bookshelf.create
@@ -438,6 +439,8 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
                 Route::get('/destroy/{id}','destroy')->name('destroy');//route = library.setup.bookshelf.destroy
                 Route::get('/show/{id}','show')->name('show');//route = library.setup.bookshelf.show
             });
+
+            //book
             Route::controller(BookController::class)->prefix('books')->name('book.')->group(function(){
                 Route::get('/index','index')->name('index'); //route = library.setup.book.index
                 Route::get('/create','create')->name('create');//route = library.setup.book.create
@@ -446,6 +449,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
                 Route::post('/update','update')->name('update');//route = library.setup.book.update
                 Route::get('/destroy/{id}','destroy')->name('destroy');//route = library.setup.book.destroy
                 Route::get('/show/{id}','show')->name('show');//route = library.setup.book.show
+                Route::get('/qty_check','qtyCheck')->name('qty_check');//route = library.setup.book.qty_check
 
             });
         });
@@ -485,7 +489,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
         });
 
         //Library report management
-        
+
             //daily report
             Route::controller(LibraryReportController::class)->prefix('report')->name('report.')->group(function(){
                 Route::get('/daily/{date}','dailyReport')->name('daily');

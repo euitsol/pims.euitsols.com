@@ -133,9 +133,12 @@ class AssignBookController extends Controller
     //student information show in create page by ajax on change
     public function info(Request $req){
         if($req->id){
-
-         $student = LibraryStudent::find($req->id);
-         return response()->json($student);
+         $n['student'] = LibraryStudent::with('assignBook')->find($req->id);
+         $n['taken_books'] = AssignBook::with(['student','book','book.category','book.bookshelf','book.category.department','created_user','updated_user','deleted_user'])
+                                        ->where('std_id',$n['student']->id)
+                                        ->where('status','0')
+                                        ->get();
+         return response()->json($n);
         }
      }
      public function book_info(Request $req){
@@ -143,8 +146,6 @@ class AssignBookController extends Controller
          $books = Book::where('category_id',$req->id)->where('deleted_by',null)->OrderBy('name')->get();
          return response()->json($books);
         }
-
-     //    return $req->id;
      }
 
      public function single_book_fetch(Request $req){

@@ -17,4 +17,8 @@ class LibraryStudent extends Model
     public function deleted_user(){
         return $this->belongsTo(User::class, 'deleted_by', 'id');
     }
+
+    public function assignBook(){
+        return $this->hasMany(AssignBook::class,'std_id');
+    }
 }

@@ -62,14 +62,14 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-1 offset-md-2">
-                                        <label for="user">Users</label>
+                                        <label for="user">Department</label>
                                     </div>
 
                                     <div class="col-md-6 text-left mt-2">
-                                        <select name="user_id" id="user" class="form-control">
+                                        <select name="department_id" id="department_id" class="form-control">
                                             <option value=""hidden>All</option>
-                                            @foreach ($users as $user)
-                                                <option value="{{ $user->id }}" @if(old('user_id') == $user->id) selected @endif>{{ $user->name }}</option>
+                                            @foreach ($departments as $department)
+                                                <option value="{{ $department->id }}" @if(old('department_id') == $department->id) selected @endif>{{ $department->department_name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -146,7 +146,7 @@
                                                                     <a href="{{ route('library.book_assign.edit', $n->id) }}" class="btn btn-dark btnEdit" target="_blank"><i class="fas fa-edit"></i></a>
                                                                 @endif
                                                                 @if (Auth::user()->can('delete book-assign') || Auth::user()->role->id == 1)
-                                                                    <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete" ><i class="fas fa-trash"></i></a>
+                                                                    <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete" onclick="confirm('Are you sure??')"><i class="fas fa-trash"></i></a>
                                                                 @endif
                                                             </div>
                                                         </td>
@@ -201,7 +201,7 @@
                                                                     <a href="{{ route('library.book_assign.edit', $n->id) }}" class="btn btn-dark btnEdit" target="_blank"><i class="fas fa-edit"></i></a>
                                                                 @endif
                                                                 @if (Auth::user()->can('delete book-assign') || Auth::user()->role->id == 1)
-                                                                    <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete" ><i class="fas fa-trash"></i></a>
+                                                                    <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete" onclick="confirm('Are you sure??')"><i class="fas fa-trash"></i></a>
                                                                 @endif
                                                             </div>
                                                         </td>
@@ -254,7 +254,7 @@
                                                                     <a href="{{ route('library.book_assign.edit', $n->id) }}" class="btn btn-dark btnEdit" target="_blank"><i class="fas fa-edit"></i></a>
                                                                 @endif
                                                                 @if (Auth::user()->can('delete book-assign') || Auth::user()->role->id == 1)
-                                                                    <a href="{{ route('library.book_assign.destroy', $n->id) }}" target="_blank" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
+                                                                    <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete" onclick="confirm('Are you sure??')"><i class="fas fa-trash"></i></a>
                                                                 @endif
                                                             </div>
                                                         </td>

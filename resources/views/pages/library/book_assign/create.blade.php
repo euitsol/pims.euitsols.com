@@ -203,9 +203,48 @@ caption {
                         'id' : std_id
                     },
                     success: function (std_info) {
-                        let  student_info = `
-                                    <div class="row mt-3 p-3" id='std_info'>
+                        let taken_books = `<div class="row table-responsive" id='std_info'>
                                             <table class="table table-sm table-striped">
+                                                <caption class='text-center'>Taken books information</caption>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Book's name</th>
+                                                        <th>Author name</th>
+                                                        <th>Quantity</th>
+                                                        <th>Assign date</th>
+                                                        <th>Return date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>`;
+                        $.each(std_info.taken_books,function(index,val){
+                            console.log(val);
+                            taken_books += ` <tr>
+                                                <td>
+                                                    ${val.book.name}
+                                                </td>
+                                                <td>
+                                                    ${val.book.author_name }
+                                                </td>
+                                                <td>
+                                                    ${val.qty}
+                                                </td>
+
+                                                <td>
+                                                    ${val.assign_date}
+                                                </td>
+                                                <td>
+                                                    ${val.return_date ?? ''}
+                                                </td>
+                                            </tr>`;
+                        });
+                        taken_books += `    </tbody>
+                                        </table>
+                                    </div>`;
+
+                        let  student_info = `
+                                    <div class="row table-responsive mt-3 p-3" id='std_info'>
+                                            <table class="table table-sm table-striped">
+                                                <caption class='text-center'>Student information</caption>
                                                 <tbody>
                                                         <tr>
                                                             <td>
@@ -215,7 +254,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.name}
+                                                                ${std_info.student.name}
                                                             </td>
                                                             <td>
                                                                 Student Type
@@ -224,7 +263,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.std_id ? 'Residential' : 'Non-residential'}
+                                                                ${std_info.student.std_id ? 'Residential' : 'Non-residential'}
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -235,7 +274,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.phone}
+                                                                ${std_info.student.phone}
                                                             </td>
                                                             <td>
                                                                 Date of Birth
@@ -244,7 +283,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.dob}
+                                                                ${std_info.student.dob}
                                                             </td>
                                                         </tr>
 
@@ -256,7 +295,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.present_address ?? ''}
+                                                                ${std_info.student.present_address ?? ''}
 
                                                             </td>
                                                             <td>
@@ -266,7 +305,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.permanent_address ?? ''}
+                                                                ${std_info.student.permanent_address ?? ''}
 
                                                             </td>
 
@@ -279,7 +318,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.ec_name ?? ''}
+                                                                ${std_info.student.ec_name ?? ''}
                                                             </td>
                                                             <td>
                                                                 Emergency Contact (Phone)
@@ -288,12 +327,14 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.ec_phone ?? ''}
+                                                                ${std_info.student.ec_phone ?? ''}
                                                             </td>
                                                         </tr>
                                                 </tbody>
                                             </table>
-                                    </div>`;
+                                    </div>
+
+                                    ${taken_books}`;
                         $('#select_div').nextAll().remove();
                         $(student_info).insertAfter("#select_div");
                     }

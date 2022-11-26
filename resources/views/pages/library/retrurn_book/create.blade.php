@@ -383,6 +383,7 @@ caption {
                }
             }
             function updateBook(This){
+                alert('Are you sure??');
                 let book_assign_id = $(This).data('id');
                 console.log(book_assign_id);
                 let url = "{{route('library.return_book.update',['id'])}}"

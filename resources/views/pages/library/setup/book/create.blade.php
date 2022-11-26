@@ -5,7 +5,13 @@
 @push('third_party_stylesheets')
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 @endpush
-
+@push('page_css')
+<style>
+    .qty-text{
+        display: inherit;
+    }
+</style>
+@endpush
 @section('content')
 <div class="container-fluid">
     <div class="row justify-content-center">
@@ -36,7 +42,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="author_name">Author's Name<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
-                                        <input class="form-control" type="text" name="author_name" id="author_name" value="{{ old('author_name') }}" placeholder="Enter Author's name" required>
+                                        <input class="form-control" type="text" name="author_name" id="author_name" value="{{ old('author_name') }}"  placeholder="Enter Author's name" required>
                                         @if ($errors->has('author_name'))
                                             <span class="text-danger">{{ $errors->first('author_name') }}</span>
                                         @endif
@@ -46,6 +52,7 @@
                                     <label class="col-sm-3" for="qty">Quantity<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
                                         <input class="form-control" type="number" name="qty" id="qty" value="{{ old('qty') }}" placeholder="Enter quantity" required>
+                                        <span class="text-danger ml-1 qty-text"></span>
                                         @if ($errors->has('qty'))
                                             <span class="text-danger">{{ $errors->first('qty') }}</span>
                                         @endif
@@ -85,7 +92,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="create"></label>
                                     <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-primary w-100">Create</button>
+                                        <button type="button" id="submit_btn" class="btn btn-primary w-100">Create</button>
                                     </div>
                                 </div>
 
@@ -108,6 +115,31 @@
     <script>
         $(document).ready(function() {
             $('.select2').select2();
+
+            $('#bookshelf_id').on('change',function(){
+                let id = $(this).val();
+                let book_qty = $('#qty').val();
+                let url = "{{ route('library.setup.book.qty_check')}}"
+                $('#qty').next('span').html('');
+                if(book_qty){
+                    $.ajax({
+                    type: 'get',
+                    url: url,
+                    data:{'id':id,'book_qty': book_qty},
+                    success: function(response){
+                        console.log(response);
+                        $('#submit_btn').attr('type','submit');
+                       if(response){
+                           $('#qty').next('span').html('Book quantity more than bookshelf capacity');
+                           $('#submit_btn').attr('type','button');
+                       }
+                    }
+                });
+                }else{
+                    console.log('Please fill up qantity')
+                    $('#qty').next('span').html('Please, fill up quantity');
+                }
+            });
         });
     </script>
 @endpush

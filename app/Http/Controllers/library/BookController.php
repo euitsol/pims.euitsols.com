@@ -42,7 +42,10 @@ class BookController extends Controller
             'category_id' => 'Category',
             'bookshelf_id' => 'Books Name',
         ]);
-
+        $bookshelf_qty = Bookshelf::findOrFail($req->bookshelf_id);
+        if($req->qty > $bookshelf_qty->capacity){
+            return back()->with('error','Book quantity is more than bookshelf capacity');
+        }
         $insert = new Book();
         $insert->name = $req->name;
         $insert->author_name = $req->author_name;
@@ -104,6 +107,14 @@ class BookController extends Controller
         if($id != null){
             $book = Book::with(['created_user','updated_user','deleted_user','created_user','category','bookshelf','category.department'])->find($id);
             return response()->json($book);
+        }
+    }
+
+    public function qtyCheck(Request $req){
+        $bookshelf_qty = Bookshelf::find($req->id);
+        if($req->book_qty > $bookshelf_qty->capacity){
+
+            return $req->book_qty.' - '.$bookshelf_qty->capacity;
         }
     }
 
