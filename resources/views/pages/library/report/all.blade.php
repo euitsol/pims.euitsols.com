@@ -110,6 +110,7 @@
                                         <table class="table text-center border border-1 table-striped">
                                             <caption class="caption text-center">Assigned books</caption>
                                             <thead>
+
                                                 <tr>
                                                     <th>S.L</th>
                                                     <th>Student's name</th>
@@ -127,6 +128,7 @@
 
                                                 @forelse ($assigned_info_all as $key => $n)
                                                     <tr>
+                                                        @dd($n)
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $n->student->name ?? '' }}</td>
                                                         <td>{{ $n->book->name ?? '' }}</td>
@@ -134,9 +136,9 @@
                                                         <td>{{ $n->qty ?? '' }}</td>
                                                         <td>{{ date('d-m-Y', strtotime($n->assign_date)) }}</td>
                                                         <td>{{ date('d-m-Y', strtotime($n->return_date)) }}</td>
-                                                        <td>{{ $n->status() }}</td>
-                                                        <td>{{ $n->created_user->name }}</td>
-                                                        <td>{{ date('d-m-Y', strtotime($n->created_user->created_at)) }}
+                                                        {{-- <td>{{ $n->status() }}</td> --}}
+                                                        <td>{{ $n->created_by }}</td>
+                                                        <td>{{ date('d-m-Y', strtotime($n->created_at)) }}
                                                         </td>
                                                         <td>
                                                             <div class="btn-group">
@@ -189,9 +191,9 @@
                                                         <td>{{ date('d-m-Y', strtotime($n->assign_date)) }}</td>
                                                         <td>{{ date('d-m-Y', strtotime($n->return_date)) }}</td>
                                                         <td>{{ date('d-m-Y', strtotime($n->returned_date)) }}</td>
-                                                        <td>{{ $n->status() }}</td>
-                                                        <td>{{ $n->created_user->name }}</td>
-                                                        <td>{{ date('d-m-Y', strtotime($n->created_user->created_at)) }}
+                                                        {{-- <td>{{ $n->status() }}</td> --}}
+                                                        <td>{{ $n->created_by }}</td>
+                                                        <td>{{ date('d-m-Y', strtotime($n->created_at)) }}
                                                         </td>
                                                         <td>
                                                             <div class="btn-group">
@@ -242,9 +244,9 @@
                                                         <td>{{ $n->qty ?? '' }}</td>
                                                         <td>{{ date('d-m-Y', strtotime($n->assign_date)) }}</td>
                                                         <td>{{ date('d-m-Y', strtotime($n->return_date)) }}</td>
-                                                        <td>{{ $n->status() }}</td>
-                                                        <td>{{ $n->created_user->name }}</td>
-                                                        <td>{{ date('d-m-Y', strtotime($n->created_user->created_at)) }}
+                                                        {{-- <td>{{ $n->status() }}</td> --}}
+                                                        <td>{{ $n->created_by }}</td>
+                                                        <td>{{ date('d-m-Y', strtotime($n->created_at)) }}
                                                         </td>
                                                         <td>
                                                             <div class="btn-group">

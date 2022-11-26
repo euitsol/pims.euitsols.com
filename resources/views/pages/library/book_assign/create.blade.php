@@ -203,7 +203,8 @@ caption {
                         'id' : std_id
                     },
                     success: function (std_info) {
-                        let taken_books = `<div class="row table-responsive" id='std_info'>
+                        let taken_books = `<div class='card-body'>
+                                            <div class="row table-responsive" id='std_info'>
                                             <table class="table table-sm table-striped">
                                                 <caption class='text-center'>Taken books information</caption>
                                                 <thead>
