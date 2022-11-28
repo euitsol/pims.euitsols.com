@@ -4,8 +4,6 @@ namespace App\Http\Controllers\library;
 
 use App\Http\Controllers\Controller;
 use App\Models\AssignBook;
-use App\Models\Book;
-use App\Models\Category;
 use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -40,60 +38,57 @@ class LibraryReportController extends Controller
         $n['str_date'] = $req->str_date;
         $n['end_date'] = $req->end_date;
         $n['department_id'] = $req->department_id;
-        $category = Category::where('departments_id',$req->department_id)
-                            ->where('deleted_by',null)
-                            ->first();
-        if(isset($category->id)){
-            $book = Book::where('category_id',$category->id)
-                            ->where('deleted_by',null)
-                            ->first();
-        }
-
 
         $a = DB::table('assign_books as a')
                 ->join('books as b','b.id','=','a.book_id')
+                ->join('library_students as s','s.id','=','a.std_id')
                 ->join('categories as c','b.category_id','=','c.id')
                 ->join('departments as d','c.departments_id','=','d.id')
+                ->join('bookshelves as e','e.id','=','b.bookshelf_id')
                 ->where('a.deleted_by',null)
                 ->whereBetween('a.assign_date',[$n['str_date'],$n['end_date']])
-                ->where('a.status','0')
-                ->where('a.return_date','>', Carbon::now());
-                // dd($a);
+                ->select('a.*','b.name as book_name',"c.name as category_name",'d.department_name as department_name','s.name as student_name','s.phone','e.name as bookshelf_name');
+
                 if($req->department_id){
                     $a = $a->where('d.id',$req->department_id);
                 }
-           $n['assigned_info_all'] = $a->get();
-        //    dd($n);
+                if($req->user_id){
+                    $a = $a->where('a.created_by',$req->user_id);
+                }
 
-        // dd($assign_books);
-        // $assigned = AssignBook::with(['book.category.department'])->where('deleted_by',null)
-        //                         ->whereBetween('assign_date',[$n['str_date'],$n['end_date']])
-        //                         ->where('status','0')
-        //                         ->where('return_date','>', Carbon::now())
-        //                         ->where('book.category.department.id',1);
+        $d  = clone $a;
+        $r  = clone $a;
 
-        // if(isset($book->id)){
-        //     $assigned->where('book_id',$book->id);
-        // }
+        $n['assigned_info_all'] = $a->where('a.status','0')
+                                ->where('a.return_date','>', Carbon::now())
+                                ->get();
 
-        // $n['assigned_info_all'] =  $assigned->get();
+        $n['delay_info_all'] = $d->where('a.status','0')
+                                ->where('a.return_date','<', Carbon::now())
+                                ->get();
 
-         $returned= AssignBook::where('deleted_by',null)
-                               ->whereBetween('returned_date',[$n['str_date'],$n['end_date']])->where('status','!=','0');
-                               if(isset($book->id)){
-                                $returned->where('book_id',$book->id);
-                            }
-        $n['returned_info_all'] = $returned->get();
+        $n['returned_info_all'] = $r->where('status','!=','0')
+                                ->get();
 
-       $delay  = AssignBook::where('deleted_by',null)
-                               ->whereBetween('return_date',[$n['str_date'],$n['end_date']])
-                               ->where('status','0')
-                               ->where('return_date','<', Carbon::now());
-       if(isset($book->id)){
-          $delay->where('book_id',$book->id);
-        }
-        $n['delay_info_all'] = $delay->get();
+
+
+    //      $returned= AssignBook::where('deleted_by',null)
+    //                            ->whereBetween('returned_date',[$n['str_date'],$n['end_date']])->where('status','!=','0');
+    //                            if(isset($book->id)){
+    //                             $returned->where('book_id',$book->id);
+    //                         }
+    //     $n['returned_info_all'] = $returned->get();
+
+    //    $delay  = AssignBook::where('deleted_by',null)
+    //                            ->whereBetween('return_date',[$n['str_date'],$n['end_date']])
+    //                            ->where('status','0')
+    //                            ->where('return_date','<', Carbon::now());
+    //    if(isset($book->id)){
+    //       $delay->where('book_id',$book->id);
+    //     }
+    //     $n['delay_info_all'] = $delay->get();
         $n['departments'] = Department::where('deleted_by',null)->get();
+        $n['users'] = User::where('deleted_by',null)->get();
 
         return view('pages.library.report.all',$n);
     }

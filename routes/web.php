@@ -37,7 +37,7 @@ use App\Http\Controllers\library\BookshelfController;
 use App\Http\Controllers\library\BookController;
 use App\Http\Controllers\library\CategoryController;
 use App\Http\Controllers\library\LibraryReportController;
-use App\Http\Controllers\library\LibraryStudentController;
+use App\Http\Controllers\library\LibraryMemberController;
 use App\Http\Controllers\setup\RoutineController;
 
 /*
@@ -117,7 +117,10 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
     Route::get('/teacher-fetch', [AttendanceController::class, 'teacherFetch'])->name('teacher_fetch.ajax');
 
     // Student fetch according to student id
-    Route::get('/residential-student/show',[LibraryStudentController::class,'residentialStdShow'])->name('residentialStdShow');
+    Route::get('/residential-student/fetch',[LibraryMemberController::class,'residentialStdFetch'])->name('residential.std.fetch');
+
+    // Student fetch according to student id
+    Route::get('/residential-teacher/fetch',[LibraryMemberController::class,'rdtTeacherFetch'])->name('residential.teacher.fetch');
 
     // Category fetch according to department in library
     Route::get('library/category-fetch/{id}',[AssignBookController::class,'categoryFetch'])->name('library.category_fetch');
@@ -455,8 +458,8 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
         });
         //End setup
 
-        //Student managment for library
-        Route::controller(LibraryStudentController::class)->prefix('student')->name('student.')->group(function(){
+        //Members managment for library
+        Route::controller(LibraryMemberController::class)->prefix('member')->name('member.')->group(function(){
             Route::get('/index','index')->name('index');
             Route::get('/create','create')->name('create');
             Route::post('/store','store')->name('store');
@@ -464,6 +467,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::post('/update','update')->name('update');
             Route::get('/show/{id}','show')->name('show');
             Route::get('/destroy/{id}','destroy')->name('destroy');
+            Route::get('/id-check','idCheck')->name('id_check');
         });
 
         //Book assign management
@@ -478,6 +482,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::post('/update','update')->name('update');
             Route::get('/show/{id}','show')->name('show');
             Route::get('/destroy/{id}','destroy')->name('destroy');
+            Route::get('/transection','transection')->name('transection');
 
         });
         //Book return management

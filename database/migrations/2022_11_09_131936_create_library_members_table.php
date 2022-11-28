@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('library_students', function (Blueprint $table) {
+        Schema::create('library_members', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('std_id')->nullable();
+            $table->unsignedBigInteger('teacher_id')->nullable();
+            $table->string('member_id');
             $table->string('name');
             $table->string('phone');
             $table->string('dob');
@@ -29,11 +31,12 @@ return new class extends Migration
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();
         });
-        Schema::table('library_students', function (Blueprint $table) {
-            $table->foreign('std_id', 'library_students_std')->references('id')->on('student_infos')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('created_by', 'library_students_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('deleted_by', 'library_students_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('updated_by', 'library_students_updated')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+        Schema::table('library_members', function (Blueprint $table) {
+            $table->foreign('std_id', 'library_members_std')->references('id')->on('student_infos')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('teacher_id', 'library_members_teacher')->references('id')->on('teachers')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('created_by', 'library_members_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('deleted_by', 'library_members_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('updated_by', 'library_members_updated')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -44,6 +47,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('library_students');
+        Schema::dropIfExists('library_members');
     }
 };

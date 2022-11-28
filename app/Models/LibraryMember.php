@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LibraryStudent extends Model
+class LibraryMember extends Model
 {
     use HasFactory;
     public function created_user(){

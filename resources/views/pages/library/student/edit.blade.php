@@ -16,13 +16,13 @@
                         <h4>Edit student</h4>
                     </span>
                     <span class="float-right">
-                        @if(Auth::user()->can('library-student view') || Auth::user()->role->id == 1)<a href="{{ route('library.student.index') }}" class="btn btn-info">Back</a>@endif
+                        @if(Auth::user()->can('library-student view') || Auth::user()->role->id == 1)<a href="{{ route('library.member.index') }}" class="btn btn-info">Back</a>@endif
                     </span>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-10 m-auto">
-                            <form action="{{ route('library.student.update') }}" method="POST" class="form-horizontal">
+                            <form action="{{ route('library.member.update') }}" method="POST" class="form-horizontal">
                             @csrf
                             <input type="hidden" name="id" value="{{$student->id}}">
                                 {{-- <div class="form-group row">
@@ -79,7 +79,6 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    {{-- <label class="col-sm-3" for="create"></label> --}}
                                     <div class="col-sm-12">
                                         <button type="submit" class="btn btn-primary w-100">Update</button>
                                     </div>

@@ -59,7 +59,7 @@ caption {
             <div class="card" id="book_info">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>Assigned Book</h4>
+                        <h4>Return Book</h4>
                     </span>
 
                 </div>
@@ -209,6 +209,7 @@ caption {
                 autoclose:true,
             });
 
+
             $('select').select2();
            //Single student fetch. to implement this just use one id that is #select_div use for the parent of select student id and try to avoid #select_div's next element
             $('#select_div').find('select').change(function(){
@@ -237,7 +238,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.name}
+                                                                ${std_info.student.name}
                                                             </td>
                                                             <td>
                                                                 Student Type
@@ -246,7 +247,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.std_id ? 'Residential' : 'Non-residential'}
+                                                                ${std_info.student.std_id ? 'Residential' : 'Non-residential'}
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -257,7 +258,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.phone}
+                                                                ${std_info.student.phone}
                                                             </td>
                                                             <td>
                                                                 Date of Birth
@@ -266,7 +267,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.dob}
+                                                                ${std_info.student.dob}
                                                             </td>
                                                         </tr>
 
@@ -278,7 +279,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.present_address ?? ''}
+                                                                ${std_info.student.present_address ?? ''}
 
                                                             </td>
                                                             <td>
@@ -288,7 +289,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.permanent_address ?? ''}
+                                                                ${std_info.student.permanent_address ?? ''}
 
                                                             </td>
 
@@ -301,7 +302,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.ec_name ?? ''}
+                                                                ${std_info.student.ec_name ?? ''}
                                                             </td>
                                                             <td>
                                                                 Emergency Contact (Phone)
@@ -310,7 +311,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.ec_phone ?? ''}
+                                                                ${std_info.student.ec_phone ?? ''}
                                                             </td>
                                                         </tr>
                                                 </tbody>
@@ -322,14 +323,19 @@ caption {
                     }
                 });
 
+
+
                 $.ajax({
                     type:'get',
                     url: "{{route('library.return_book.info')}}",
                     data:{'id':std_id,},
                     success:function(response){
+                        let date = new Date();
+                        let today_date  = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+                        console.log(today_date)
+                            var t_date = Date.parse(today_date);
                         $('#book_info').find('#tbody').children().remove();
                         $.each(response,function(index,val){
-                            console.log(val);
                                  let  book_info = `
                                                 <tr>
                                                     <td>
@@ -360,7 +366,7 @@ caption {
                                                         <div class="btn-group">
                                                             <a href="javascript:void(0)" class="btn btn-info btnView${val.id}"
                                                             data-id="${val.id}" ><i class="fas fa-eye"></i></a>
-                                                            <a href="javascript:void(0)" class="btn btn-success update-btn${val.id}"
+                                                            <a href="javascript:void(0)" class="btn ${t_date > Date.parse(val.return_date) ? 'btn-danger' : 'btn-success'} update-btn${val.id}"
                                                             data-id="${val.id}" title='Return the books'><i class="fas fa-arrow-right"></i></a>
                                                         </div>
                                                     </td>

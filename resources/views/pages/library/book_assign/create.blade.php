@@ -19,6 +19,21 @@ caption {
     border-top: none !important;
 }
 
+.nav-tabs li {
+            border-radius: 10px !important;
+        }
+
+        .nav-tabs li .nav-link {
+            background: #0c9fce !important;
+            color: white;
+            border-radius: 7px 7px 0px 0px;
+
+        }
+
+        .nav-tabs li .active {
+            background: white !important;
+        }
+
 </style>
 @endpush
 
@@ -49,6 +64,86 @@ caption {
                             @if($errors->has('std_id')) <span class="text-danger">{{$errors->first('std_id')}}</span> @endif
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="float-left">
+                        <h4>Previous assigned books</h4>
+                    </span>
+                </div>
+                <div class="card-body" >
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item border border-bottom-0"  data-toggle="tab">
+                            <a href="#assigned" class="nav-link active" data-toggle="tab">Assigned</a>
+                        </li>
+                        <li class="nav-item border border-bottom-0"  data-toggle="tab">
+                            <a href="#returned" class="nav-link" data-toggle="tab">Returned</a>
+                        </li>
+                        <li class="nav-item border border-bottom-0"  data-toggle="tab">
+                            <a href="#dew" class="nav-link" data-toggle="tab">Dew</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content p-4 border border-top-0">
+                        <div class="tab-pane active" id="assigned">
+                            <div class="table-responsive">
+                                <table class="table table-sm table-striped">
+                                    <caption class='text-center'>Assigned books information</caption>
+                                    <thead>
+                                        <tr>
+                                            <th>Book's name</th>
+                                            <th>Author name</th>
+                                            <th>Quantity</th>
+                                            <th>Assign date</th>
+                                            <th>Return date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="returned">
+                            <div class="table-responsive">
+                                <table class="table table-sm table-striped">
+                                    <caption class='text-center'>Returned books information</caption>
+                                    <thead>
+                                        <tr>
+                                            <th>Book's name</th>
+                                            <th>Author name</th>
+                                            <th>Quantity</th>
+                                            <th>Assign date</th>
+                                            <th>Return date</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="dew">
+                            <div class="table-responsive">
+                                <table class="table table-sm table-striped">
+                                    <caption class='text-center'>Dew books information</caption>
+                                    <thead>
+                                        <tr>
+                                            <th>Book's name</th>
+                                            <th>Author name</th>
+                                            <th>Quantity</th>
+                                            <th>Assign date</th>
+                                            <th>Return date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -203,44 +298,7 @@ caption {
                         'id' : std_id
                     },
                     success: function (std_info) {
-                        let taken_books = `<div class='card-body'>
-                                            <div class="row table-responsive" id='std_info'>
-                                            <table class="table table-sm table-striped">
-                                                <caption class='text-center'>Taken books information</caption>
-                                                <thead>
-                                                    <tr>
-                                                        <th>Book's name</th>
-                                                        <th>Author name</th>
-                                                        <th>Quantity</th>
-                                                        <th>Assign date</th>
-                                                        <th>Return date</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>`;
-                        $.each(std_info.taken_books,function(index,val){
-                            console.log(val);
-                            taken_books += ` <tr>
-                                                <td>
-                                                    ${val.book.name}
-                                                </td>
-                                                <td>
-                                                    ${val.book.author_name }
-                                                </td>
-                                                <td>
-                                                    ${val.qty}
-                                                </td>
 
-                                                <td>
-                                                    ${val.assign_date}
-                                                </td>
-                                                <td>
-                                                    ${val.return_date ?? ''}
-                                                </td>
-                                            </tr>`;
-                        });
-                        taken_books += `    </tbody>
-                                        </table>
-                                    </div>`;
 
                         let  student_info = `
                                     <div class="row table-responsive mt-3 p-3" id='std_info'>
@@ -333,13 +391,61 @@ caption {
                                                         </tr>
                                                 </tbody>
                                             </table>
-                                    </div>
-
-                                    ${taken_books}`;
+                                    </div>`;
                         $('#select_div').nextAll().remove();
                         $(student_info).insertAfter("#select_div");
                     }
                 });
+
+                $.ajax({
+                    type: 'get',
+                    url:"{{route('library.book_assign.transection')}}",
+                    data:{'id':std_id},
+                    success:function(response){
+                        // console.log(response)
+                        let assigned = '';
+                        let returned = '';
+                        let dew = '';
+
+                        $.each(response.assigned,function(index,val){
+                            assigned += `
+                                <tr>
+                                    <td> ${val.book.name}</td>
+                                    <td> ${val.book.author_name}</td>
+                                    <td> ${val.qty}</td>
+                                    <td> ${val.assign_date}</td>
+                                    <td> ${val.return_date}</td>
+                                </tr>
+                            `;
+                        });
+                        $.each(response.returned,function(index,val){
+                            returned += `
+                                <tr>
+                                    <td> ${val.book.name}</td>
+                                    <td> ${val.book.author_name}</td>
+                                    <td> ${val.qty}</td>
+                                    <td> ${val.assign_date}</td>
+                                    <td> ${val.return_date}</td>
+                                    <td> ${val.return_date> val.returned_date ? 'Timely returned' : 'Delay returned'}</td>
+                                </tr>
+                            `;
+                        });
+                        $.each(response.dew,function(index,val){
+                            dew += `
+                                <tr>
+                                    <td> ${val.book.name}</td>
+                                    <td> ${val.book.author_name}</td>
+                                    <td> ${val.qty}</td>
+                                    <td> ${val.assign_date}</td>
+                                    <td> ${val.return_date}</td>
+                                </tr>
+                            `;
+                        });
+                    $('#assigned').find('tbody').html(assigned);
+                    $('#returned').find('tbody').html(returned);
+                    $('#dew').find('tbody').html(dew);
+                    }
+                })
                }else{
                 $('#select_div').nextAll().remove();
                 $('').insertAfter("#select_div");

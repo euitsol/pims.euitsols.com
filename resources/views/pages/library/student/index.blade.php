@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Library Management - Register')
+@section('title', 'Library Management - Register Members')
 @push('third_party_stylesheets')
     <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
 @endpush
@@ -11,10 +11,10 @@
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>Library Registered Students </h4>
+                        <h4>Library Registered Members </h4>
                     </span>
                     <span class="float-right">
-                        @if(Auth::user()->can('add library-student') || Auth::user()->role->id == 1)<a href="{{ route('library.student.create') }}" class="btn btn-info">Add new student</a>@endif
+                        @if(Auth::user()->can('add library-student') || Auth::user()->role->id == 1)<a href="{{ route('library.member.create') }}" class="btn btn-info">Add new member</a>@endif
                     </span>
                 </div>
                 <div class="card-body">
@@ -44,10 +44,10 @@
                                             <a href="javascript:void(0)" class="btn btn-info btnView"
                                             data-id="{{ $student->id }}"><i class="fas fa-eye"></i></a>
                                             @if(Auth::user()->can('edit library-student') || Auth::user()->role->id == 1)
-                                                <a href="{{ route('library.student.edit', $student->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                                <a href="{{ route('library.member.edit', $student->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                             @endif
                                             @if(Auth::user()->can('delete library-student') || Auth::user()->role->id == 1)
-                                                <a href="{{ route('library.student.destroy', $student->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
+                                                <a href="{{ route('library.member.destroy', $student->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
                                             @endif
                                         </div>
                                     </td>
@@ -188,7 +188,7 @@
              //view-modal
              $('.btnView').click( function(){
                 if($(this).data('id') != null || $(this).data('id') != ''){
-                    let url = ("{{ route('library.student.show', ['id']) }}");
+                    let url = ("{{ route('library.member.show', ['id']) }}");
                     let _url = url.replace('id', $(this).data('id'));
                     $.ajax({
                         url: _url,
