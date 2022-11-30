@@ -54,7 +54,7 @@ class BookController extends Controller
         $insert->bookshelf_id = $req->bookshelf_id;
         $insert->created_by = Auth::user()->id;
         $insert->save();
-        $this->message('success',"Successfully book - $req->name is added");
+        $this->message('success',"Book added successfully");
         return redirect()->route('library.setup.book.index');
     }
 
@@ -89,7 +89,7 @@ class BookController extends Controller
         // $update->bookshelf_id = $req->bookshelf_id;
         $update->updated_by = Auth::user()->id;
         $update->save();
-        $this->message('success',"Successfully book - $req->name updated");
+        $this->message('success',"Book updated successfully");
         return redirect()->route('library.setup.book.index');
     }
 
@@ -99,7 +99,7 @@ class BookController extends Controller
             $delete->deleted_at = Carbon::now()->toDateTimeString();
             $delete->deleted_by = Auth::user()->id;
             $delete->save();
-            return back()->with('success',"Successfully book - $delete->name deleted");
+            return back()->with('success',"Book deleted successfully");
         }
     }
 

@@ -65,7 +65,7 @@ class AssignBookController extends Controller
             $update_qty->save();
         }
 
-        $this->message('success','Successfully book assigned');
+        $this->message('success','Book assigned successfully');
         return redirect()->back();
     }
 
@@ -108,7 +108,7 @@ class AssignBookController extends Controller
         $update->updated_by = Auth::user()->id;
         $update->save();
 
-        $this->message('success','Successfully updated');
+        $this->message('success','Assigned book updated successfully');
         return redirect()->back();
     }
 
@@ -118,7 +118,7 @@ class AssignBookController extends Controller
             $delete->deleted_at = Carbon::now()->toDateTimeString();
             $delete->deleted_by = Auth::user()->id;
             $delete->save();
-            return back()->with('success','Successfully deleted');
+            return back()->with('success','Assigned book deleted successfully');
         }
     }
 

@@ -110,7 +110,7 @@ class LibraryMemberController extends Controller
         $update->ec_phone = $req->ec_phone;
         $update->updated_by = Auth::user()->id;
         $update->save();
-        $this->message('success','Successfully student updated');
+        $this->message('success','Member updated successfully');
         return redirect()->route('library.student.index');
     }
 
@@ -120,7 +120,7 @@ class LibraryMemberController extends Controller
             $delete->deleted_at = Carbon::now()->toDateTimeString();
             $delete->deleted_by = Auth::user()->id;
             $delete->save();
-            return back()->with('success','Successfully deleted');
+            return back()->with('success','Member deleted successfully');
         }
     }
 

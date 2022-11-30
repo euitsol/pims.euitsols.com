@@ -41,7 +41,7 @@ class LibraryReportController extends Controller
 
         $a = DB::table('assign_books as a')
                 ->join('books as b','b.id','=','a.book_id')
-                ->join('library_students as s','s.id','=','a.std_id')
+                ->join('library_members as s','s.id','=','a.std_id')
                 ->join('categories as c','b.category_id','=','c.id')
                 ->join('departments as d','c.departments_id','=','d.id')
                 ->join('bookshelves as e','e.id','=','b.bookshelf_id')
@@ -70,23 +70,6 @@ class LibraryReportController extends Controller
         $n['returned_info_all'] = $r->where('status','!=','0')
                                 ->get();
 
-
-
-    //      $returned= AssignBook::where('deleted_by',null)
-    //                            ->whereBetween('returned_date',[$n['str_date'],$n['end_date']])->where('status','!=','0');
-    //                            if(isset($book->id)){
-    //                             $returned->where('book_id',$book->id);
-    //                         }
-    //     $n['returned_info_all'] = $returned->get();
-
-    //    $delay  = AssignBook::where('deleted_by',null)
-    //                            ->whereBetween('return_date',[$n['str_date'],$n['end_date']])
-    //                            ->where('status','0')
-    //                            ->where('return_date','<', Carbon::now());
-    //    if(isset($book->id)){
-    //       $delay->where('book_id',$book->id);
-    //     }
-    //     $n['delay_info_all'] = $delay->get();
         $n['departments'] = Department::where('deleted_by',null)->get();
         $n['users'] = User::where('deleted_by',null)->get();
 

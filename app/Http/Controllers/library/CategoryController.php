@@ -36,7 +36,7 @@ class CategoryController extends Controller
         $insert->name = $req->name;
         $insert->created_by = Auth::user()->id;
         $insert->save();
-        $this->message('success','Successfully category created');
+        $this->message('success','Category added successfully');
         return redirect()->route('library.setup.category.index');
     }
 
@@ -58,7 +58,7 @@ class CategoryController extends Controller
         $update->name = $req->name;
         $update->updated_by = Auth::user()->id;
         $update->save();
-        $this->message('success','Successfully category updated');
+        $this->message('success','Category updated successfully');
         return redirect()->route('library.setup.category.index');
     }
 
@@ -68,7 +68,7 @@ class CategoryController extends Controller
             $delete->deleted_at = Carbon::now()->toDateTimeString();
             $delete->deleted_by = Auth::user()->id;
             $delete->save();
-            return back()->with('success','Successfully deleted');
+            return back()->with('success','Category deleted successfully');
         }
     }
 

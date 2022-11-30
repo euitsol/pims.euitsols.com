@@ -23,16 +23,23 @@ caption {
             border-radius: 10px !important;
         }
 
-        .nav-tabs li .nav-link {
-            background: #0c9fce !important;
-            color: white;
-            border-radius: 7px 7px 0px 0px;
+.nav-tabs li .nav-link {
+    background: #0c9fce !important;
+    color: white;
+    border-radius: 7px 7px 0px 0px;
 
-        }
+}
 
-        .nav-tabs li .active {
-            background: white !important;
-        }
+.nav-tabs li .active {
+    background: white !important;
+}
+.badge{
+    top: 0px;
+    right: 0px;
+}
+.nav-item a{
+    padding-right: 22px
+}
 
 </style>
 @endpush
@@ -76,13 +83,13 @@ caption {
                 <div class="card-body" >
                     <ul class="nav nav-tabs">
                         <li class="nav-item border border-bottom-0"  data-toggle="tab">
-                            <a href="#assigned" class="nav-link active" data-toggle="tab">Assigned</a>
+                            <a href="#assigned" class="nav-link active assigned position-relative" data-toggle="tab">Assigned  <span class="badge badge-warning position-absolute">0</span></a>
                         </li>
                         <li class="nav-item border border-bottom-0"  data-toggle="tab">
-                            <a href="#returned" class="nav-link" data-toggle="tab">Returned</a>
+                            <a href="#returned" class="nav-link returned position-relative" data-toggle="tab">Returned <span class="badge badge-warning position-absolute">0</span></a>
                         </li>
                         <li class="nav-item border border-bottom-0"  data-toggle="tab">
-                            <a href="#dew" class="nav-link" data-toggle="tab">Dew</a>
+                            <a href="#dew" class="nav-link dew position-relative" data-toggle="tab">Dew <span class="badge badge-warning position-absolute">0</span></a>
                         </li>
                     </ul>
 
@@ -278,10 +285,7 @@ caption {
                     check();
             });
 
-            // $('.book').on('change',function(){
-            //     check();
-            //     bookChange(this);
-            // });
+
 
             $('.qty0').on('change keyup',function(){
 
@@ -444,6 +448,9 @@ caption {
                     $('#assigned').find('tbody').html(assigned);
                     $('#returned').find('tbody').html(returned);
                     $('#dew').find('tbody').html(dew);
+                    $('.assigned').find('.badge').html(response.assigned.length)
+                    $('.returned').find('.badge').html(response.returned.length)
+                    $('.dew').find('.badge').html(response.dew.length)
                     }
                 })
                }else{
@@ -452,8 +459,6 @@ caption {
                }
             });
         });
-
-
 
         function add(This){
             let click_num = Number($(This).attr('id'))+1;
@@ -545,7 +550,7 @@ caption {
 
         function remove(This,click_num){
            if( $('.book-id').length<2){
-                toastr.warning('You can not remove all')
+                toastr.error('You have to keep at least one')
                 return false;
            }
             $('.book-id'+click_num).prop('disabled',true);

@@ -51,4 +51,8 @@ class RerurnBookController extends Controller
        }
 
     }
+
+    public function payment(Request $req){
+            echo 'Payment'.$req->id;
+    }
 }

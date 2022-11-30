@@ -491,6 +491,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::get('/info','info')->name('info');
             Route::get('/show/{id}','show')->name('show');
             Route::get('/update/{id}','update')->name('update');
+            Route::get('/payment','payment')->name('payment');
         });
 
         //Library report management
