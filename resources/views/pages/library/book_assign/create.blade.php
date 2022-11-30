@@ -19,6 +19,28 @@ caption {
     border-top: none !important;
 }
 
+.nav-tabs li {
+            border-radius: 10px !important;
+        }
+
+.nav-tabs li .nav-link {
+    background: #0c9fce !important;
+    color: white;
+    border-radius: 7px 7px 0px 0px;
+
+}
+
+.nav-tabs li .active {
+    background: white !important;
+}
+.badge{
+    top: 0px;
+    right: 0px;
+}
+.nav-item a{
+    padding-right: 22px
+}
+
 </style>
 @endpush
 
@@ -49,6 +71,86 @@ caption {
                             @if($errors->has('std_id')) <span class="text-danger">{{$errors->first('std_id')}}</span> @endif
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="float-left">
+                        <h4>Previous assigned books</h4>
+                    </span>
+                </div>
+                <div class="card-body" >
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item border border-bottom-0"  data-toggle="tab">
+                            <a href="#assigned" class="nav-link active assigned position-relative" data-toggle="tab">Assigned  <span class="badge badge-warning position-absolute">0</span></a>
+                        </li>
+                        <li class="nav-item border border-bottom-0"  data-toggle="tab">
+                            <a href="#returned" class="nav-link returned position-relative" data-toggle="tab">Returned <span class="badge badge-warning position-absolute">0</span></a>
+                        </li>
+                        <li class="nav-item border border-bottom-0"  data-toggle="tab">
+                            <a href="#dew" class="nav-link dew position-relative" data-toggle="tab">Dew <span class="badge badge-warning position-absolute">0</span></a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content p-4 border border-top-0">
+                        <div class="tab-pane active" id="assigned">
+                            <div class="table-responsive">
+                                <table class="table table-sm table-striped">
+                                    <caption class='text-center'>Assigned books information</caption>
+                                    <thead>
+                                        <tr>
+                                            <th>Book's name</th>
+                                            <th>Author name</th>
+                                            <th>Quantity</th>
+                                            <th>Assign date</th>
+                                            <th>Return date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="returned">
+                            <div class="table-responsive">
+                                <table class="table table-sm table-striped">
+                                    <caption class='text-center'>Returned books information</caption>
+                                    <thead>
+                                        <tr>
+                                            <th>Book's name</th>
+                                            <th>Author name</th>
+                                            <th>Quantity</th>
+                                            <th>Assign date</th>
+                                            <th>Return date</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="dew">
+                            <div class="table-responsive">
+                                <table class="table table-sm table-striped">
+                                    <caption class='text-center'>Dew books information</caption>
+                                    <thead>
+                                        <tr>
+                                            <th>Book's name</th>
+                                            <th>Author name</th>
+                                            <th>Quantity</th>
+                                            <th>Assign date</th>
+                                            <th>Return date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -183,10 +285,7 @@ caption {
                     check();
             });
 
-            // $('.book').on('change',function(){
-            //     check();
-            //     bookChange(this);
-            // });
+
 
             $('.qty0').on('change keyup',function(){
 
@@ -203,9 +302,12 @@ caption {
                         'id' : std_id
                     },
                     success: function (std_info) {
+
+
                         let  student_info = `
-                                    <div class="row mt-3 p-3" id='std_info'>
+                                    <div class="row table-responsive mt-3 p-3" id='std_info'>
                                             <table class="table table-sm table-striped">
+                                                <caption class='text-center'>Student information</caption>
                                                 <tbody>
                                                         <tr>
                                                             <td>
@@ -215,7 +317,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.name}
+                                                                ${std_info.student.name}
                                                             </td>
                                                             <td>
                                                                 Student Type
@@ -224,7 +326,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.std_id ? 'Residential' : 'Non-residential'}
+                                                                ${std_info.student.std_id ? 'Residential' : 'Non-residential'}
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -235,7 +337,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.phone}
+                                                                ${std_info.student.phone}
                                                             </td>
                                                             <td>
                                                                 Date of Birth
@@ -244,7 +346,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.dob}
+                                                                ${std_info.student.dob}
                                                             </td>
                                                         </tr>
 
@@ -256,7 +358,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.present_address ?? ''}
+                                                                ${std_info.student.present_address ?? ''}
 
                                                             </td>
                                                             <td>
@@ -266,7 +368,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.permanent_address ?? ''}
+                                                                ${std_info.student.permanent_address ?? ''}
 
                                                             </td>
 
@@ -279,7 +381,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.ec_name ?? ''}
+                                                                ${std_info.student.ec_name ?? ''}
                                                             </td>
                                                             <td>
                                                                 Emergency Contact (Phone)
@@ -288,7 +390,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.ec_phone ?? ''}
+                                                                ${std_info.student.ec_phone ?? ''}
                                                             </td>
                                                         </tr>
                                                 </tbody>
@@ -298,14 +400,65 @@ caption {
                         $(student_info).insertAfter("#select_div");
                     }
                 });
+
+                $.ajax({
+                    type: 'get',
+                    url:"{{route('library.book_assign.transection')}}",
+                    data:{'id':std_id},
+                    success:function(response){
+                        // console.log(response)
+                        let assigned = '';
+                        let returned = '';
+                        let dew = '';
+
+                        $.each(response.assigned,function(index,val){
+                            assigned += `
+                                <tr>
+                                    <td> ${val.book.name}</td>
+                                    <td> ${val.book.author_name}</td>
+                                    <td> ${val.qty}</td>
+                                    <td> ${val.assign_date}</td>
+                                    <td> ${val.return_date}</td>
+                                </tr>
+                            `;
+                        });
+                        $.each(response.returned,function(index,val){
+                            returned += `
+                                <tr>
+                                    <td> ${val.book.name}</td>
+                                    <td> ${val.book.author_name}</td>
+                                    <td> ${val.qty}</td>
+                                    <td> ${val.assign_date}</td>
+                                    <td> ${val.return_date}</td>
+                                    <td> ${val.return_date> val.returned_date ? 'Timely returned' : 'Delay returned'}</td>
+                                </tr>
+                            `;
+                        });
+                        $.each(response.dew,function(index,val){
+                            dew += `
+                                <tr>
+                                    <td> ${val.book.name}</td>
+                                    <td> ${val.book.author_name}</td>
+                                    <td> ${val.qty}</td>
+                                    <td> ${val.assign_date}</td>
+                                    <td> ${val.return_date}</td>
+                                </tr>
+                            `;
+                        });
+                    $('#assigned').find('tbody').html(assigned);
+                    $('#returned').find('tbody').html(returned);
+                    $('#dew').find('tbody').html(dew);
+                    $('.assigned').find('.badge').html(response.assigned.length)
+                    $('.returned').find('.badge').html(response.returned.length)
+                    $('.dew').find('.badge').html(response.dew.length)
+                    }
+                })
                }else{
                 $('#select_div').nextAll().remove();
                 $('').insertAfter("#select_div");
                }
             });
         });
-
-
 
         function add(This){
             let click_num = Number($(This).attr('id'))+1;
@@ -397,7 +550,7 @@ caption {
 
         function remove(This,click_num){
            if( $('.book-id').length<2){
-                toastr.warning('You can not remove all')
+                toastr.error('You have to keep at least one')
                 return false;
            }
             $('.book-id'+click_num).prop('disabled',true);

@@ -361,6 +361,7 @@
         </a>
     </li>
 @endif
+
 <style>
    .nav .nav-item a .second-nav-text{
         margin-left: 15px;
@@ -421,12 +422,12 @@
                     </ul>
                 </li>
             @endif
-            @if (Auth::user()->can('view library-student') || Auth::user()->role->id == 1)
+            @if (Auth::user()->can('view library-member') || Auth::user()->role->id == 1)
                 <li class="nav-item ">
-                    <a href="{{route('library.student.index')}}"
-                        class="nav-link {{ Request::is('library/student/*') ? 'active' : '' }}">
+                    <a href="{{route('library.member.index')}}"
+                        class="nav-link {{ Request::is('library/member/*') ? 'active' : '' }}">
                        <i class="nav-icon far fa-circle second-nav-text"></i>
-                        <p>Register Student</p>
+                        <p>Register Member</p>
                     </a>
                 </li>
             @endif
@@ -465,7 +466,7 @@
                         @endif
                         @if (Auth::user()->can('view daily') || Auth::user()->role->id == 1)
                             <li class="nav-item ">
-                                <a href="{{route('library.report.all',[date('Y-m-d')])}}" class="nav-link {{Request::is('library/report/all/*') ? 'active' : ''}}">
+                                <a href="{{route('library.report.all')}}" class="nav-link {{Request::is('library/report/all/*') ? 'active' : ''}}">
                                 <i class="nav-icon fas fa-minus third-nav-text"></i>
                                 <p>All report</p></a>
                             </li>
@@ -476,4 +477,6 @@
         </ul>
     </li>
 @endif
+
+
 

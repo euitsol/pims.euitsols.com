@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AssignBook;
 use App\Models\Book;
 use App\Models\Category;
-use App\Models\LibraryStudent;
+use App\Models\LibraryMember;
 use Illuminate\Http\Request;
 
 class RerurnBookController extends Controller
@@ -16,7 +16,7 @@ class RerurnBookController extends Controller
         return $this->middleware('auth');
     }
     public function create(){
-        $n['students'] = LibraryStudent::where('deleted_by',null)->OrderBy('name')->get();
+        $n['students'] = LibraryMember::where('deleted_by',null)->OrderBy('name')->get();
         $n['categories'] = Category::where('deleted_by',null)->OrderBy('name')->get();
         return view('pages.library.retrurn_book.create',$n);
     }
@@ -50,5 +50,9 @@ class RerurnBookController extends Controller
         return 0;
        }
 
+    }
+
+    public function payment(Request $req){
+            echo 'Payment'.$req->id;
     }
 }

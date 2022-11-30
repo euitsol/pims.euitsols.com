@@ -120,8 +120,7 @@
                                                         <td> {{ 'Class ' . $i }}</td>
                                                         <td>{{ $minfo->getDate($i)->date ?? '' }}</td>
                                                         <td class="text-center">
-                                                            <span
-                                                                class="btn btn-sm @if (isset($minfo->getDate($i)->date)) btn-info @else btn-warning @endif">{{ $minfo->countStd($minfo->semester->id) ?? '' }}/{{ $minfo->countPresentStd($i) ?? '' }}</span>
+                                                            <span class="btn btn-sm @if (isset($minfo->getDate($i)->date)) btn-info @else btn-warning @endif">{{ $minfo->countStd($minfo->semester->id) ?? '' }}/{{ $minfo->countPresentStd($i) ?? '' }}</span>
                                                             <a class="btn btn-sm btn-success" title="Click for attendance"
                                                                 href="{{ route('attendance.create', [$minfo->id, $i]) }}"><i
                                                                     class="fas fa-arrow-right text-white"></i></a>
@@ -169,12 +168,7 @@
                                                         <td> {{ 'Class ' . $i }}</td>
                                                         <td>{{ $minfo->getDate($i)->date ?? '' }}</td>
                                                         <td class="text-center">
-                                                            @if ($minfo->classContentCheck($i))
-                                                                <a href="{{ route('class_content.index', [$minfo->id, $i]) }}"
-                                                                    class="btn btn-sm btn-info"
-                                                                    title="View of class Content"><i
-                                                                        class="fas fa-info"></i></a>
-                                                            @endif
+                                                           
                                                             <span
                                                                 class="btn btn-sm @if (isset($minfo->getDate($i)->date)) btn-info @else btn-warning @endif">{{ $minfo->countStd($minfo->semester->id) ?? '' }}/{{ $minfo->countPresentStd($i) ?? '' }}</span>
 

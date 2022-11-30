@@ -6,9 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Category;
 use App\Models\AssignBook;
-use App\Models\AssignBookBkdn;
 use App\Models\Department;
-use App\Models\LibraryStudent;
+use App\Models\LibraryMember;
 use App\Models\studentInfo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -27,7 +26,7 @@ class AssignBookController extends Controller
     }
 
     public function create(){
-        $n['students'] = LibraryStudent::where('deleted_by',null)->OrderBy('name')->get();
+        $n['students'] = LibraryMember::where('deleted_by',null)->OrderBy('name')->get();
         $n['categories'] = Category::where('deleted_by',null)->OrderBy('name')->get();
         $n['departments'] = Department::where('deleted_by',null)->OrderBy('department_name')->get();
         return view('pages.library.book_assign.create',$n);
@@ -38,7 +37,7 @@ class AssignBookController extends Controller
     public function store(Request $req){
         // dd($req->all());
         $this->validate($req,[
-            'std_id' => 'required|integer|exists:library_students,id',
+            'std_id' => 'required|integer|exists:library_members,id',
             'book.*.book_id' => 'required|integer|exists:books,id',
             'book.*.return_date' => 'required|date',
         ],[],[
@@ -66,14 +65,14 @@ class AssignBookController extends Controller
             $update_qty->save();
         }
 
-        $this->message('success','Successfully book assigned');
+        $this->message('success','Book assigned successfully');
         return redirect()->back();
     }
 
     public function edit($id){
 
         $n['assign_book'] = AssignBook::with(['student','book','book.category','book.bookshelf','book.category.department','created_user','updated_user','deleted_user'])->find($id);
-        $n['students'] = LibraryStudent::where('deleted_by',null)->OrderBy('name')->get();
+        $n['students'] = LibraryMember::where('deleted_by',null)->OrderBy('name')->get();
         $n['categories'] = Category::where('deleted_by',null)->OrderBy('name')->get();
         $n['books'] = Book::where('deleted_by',null)->OrderBy('name')->get();
         $n['departments'] = Department::where('deleted_by',null)->OrderBy('department_name')->get();
@@ -109,7 +108,7 @@ class AssignBookController extends Controller
         $update->updated_by = Auth::user()->id;
         $update->save();
 
-        $this->message('success','Successfully updated');
+        $this->message('success','Assigned book updated successfully');
         return redirect()->back();
     }
 
@@ -119,7 +118,7 @@ class AssignBookController extends Controller
             $delete->deleted_at = Carbon::now()->toDateTimeString();
             $delete->deleted_by = Auth::user()->id;
             $delete->save();
-            return back()->with('success','Successfully deleted');
+            return back()->with('success','Assigned book deleted successfully');
         }
     }
 
@@ -133,9 +132,9 @@ class AssignBookController extends Controller
     //student information show in create page by ajax on change
     public function info(Request $req){
         if($req->id){
+         $n['student'] = LibraryMember::with('assignBook')->find($req->id);
 
-         $student = LibraryStudent::find($req->id);
-         return response()->json($student);
+         return response()->json($n);
         }
      }
      public function book_info(Request $req){
@@ -143,8 +142,6 @@ class AssignBookController extends Controller
          $books = Book::where('category_id',$req->id)->where('deleted_by',null)->OrderBy('name')->get();
          return response()->json($books);
         }
-
-     //    return $req->id;
      }
 
      public function single_book_fetch(Request $req){
@@ -162,6 +159,25 @@ class AssignBookController extends Controller
         return response()->json(Category::where('departments_id',$id)->get());
     }
 
+public function transection(Request $req){
+    $a = AssignBook::with(['student','book','book.category','book.bookshelf','book.category.department','created_user','updated_user','deleted_user'])
+                    ->where('deleted_by',null)
+                    ->where('std_id',$req->id);
+    $d = clone $a;
+    $r = clone $a;
 
+    $n['assigned'] = $a->where('status','0')
+                        ->where('return_date','>', Carbon::now())
+                        ->get();
+
+    $n['dew'] = $d->where('status','0')
+                    ->where('return_date','<', Carbon::now())
+                    ->get();
+
+    $n['returned'] = $r->where('status','!=','0')
+                        ->get();
+
+    return response()->json($n);
+}
 
 }

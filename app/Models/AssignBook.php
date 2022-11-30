@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AssignBook extends Model
 {
@@ -20,7 +19,7 @@ class AssignBook extends Model
     }
 
     public function student(){
-       return $this->BelongsTo(LibraryStudent::class,'std_id');
+       return $this->BelongsTo(LibraryMember::class,'std_id');
     }
     public function book(){
         return $this->belongsTo(Book::class,'book_id');

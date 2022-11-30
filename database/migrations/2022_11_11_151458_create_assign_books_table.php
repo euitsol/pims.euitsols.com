@@ -29,7 +29,7 @@ return new class extends Migration
             $table->unsignedBigInteger('deleted_by')->nullable();
         });
         Schema::table('assign_books', function (Blueprint $table) {
-            $table->foreign('std_id', 'assign_books_std')->references('id')->on('library_students')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('std_id', 'assign_books_std')->references('id')->on('library_members')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('book_id', 'assign_book_bkdns_book')->references('id')->on('books')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('created_by', 'assign_books_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('deleted_by', 'assign_books_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');

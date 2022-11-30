@@ -62,11 +62,23 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-1 offset-md-2">
-                                        <label for="user">Users</label>
+                                        <label for="user">Department</label>
                                     </div>
-
                                     <div class="col-md-6 text-left mt-2">
-                                        <select name="user_id" id="user" class="form-control">
+                                        <select name="department_id" id="department_id" class="form-control">
+                                            <option value=""hidden>All</option>
+                                            @foreach ($departments as $department)
+                                                <option value="{{ $department->id }}" @if(old('department_id') == $department->id) selected @endif>{{ $department->department_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-1 offset-md-2">
+                                        <label for="user">User</label>
+                                    </div>
+                                    <div class="col-md-6 text-left mt-2">
+                                        <select name="user_id" id="user_id" class="form-control">
                                             <option value=""hidden>All</option>
                                             @foreach ($users as $user)
                                                 <option value="{{ $user->id }}" @if(old('user_id') == $user->id) selected @endif>{{ $user->name }}</option>
@@ -94,16 +106,15 @@
                             {{-- <div class="nav"> --}}
                             <ul class="nav nav-tabs">
                                 <li class="nav-item border border-bottom-0">
-                                    <a class="nav-link active " data-toggle="tab" href="#assign">Assigned books</a>
+                                    <a class="nav-link active" data-toggle="tab" href="#assign">Assigned books</a>
                                 </li>
                                 <li class="nav-item border ml-1 border-bottom-0">
-                                    <a href="#returned" class="nav-link " data-toggle="tab">Returned books</a>
+                                    <a href="#returned" class="nav-link " data-toggle="tab">Returned</a>
                                 </li>
                                 <li class="nav-item border ml-1 border-bottom-0">
                                     <a href="#return" class="nav-link" data-toggle="tab">Delay</a>
                                 </li>
                             </ul>
-                            {{-- </div> --}}
                             <div class="tab-content p-4 border border-top-0 shadow-sm">
                                 <div class="tab-pane active" id="assign">
                                     <div class="table-responsive">
@@ -121,22 +132,24 @@
                                                     <th>Status</th>
                                                     <th>Created By</th>
                                                     <th>Created At</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="tbody">
 
                                                 @forelse ($assigned_info_all as $key => $n)
                                                     <tr>
+                                                        {{-- @dd($n) --}}
                                                         <td>{{ $key + 1 }}</td>
-                                                        <td>{{ $n->student->name ?? '' }}</td>
-                                                        <td>{{ $n->book->name ?? '' }}</td>
-                                                        <td>{{ $n->book->bookshelf->name ?? '' }}</td>
+                                                        <td>{{ $n->student_name ?? '' }}</td>
+                                                        <td>{{ $n->book_name ?? '' }}</td>
+                                                        <td>{{ $n->bookshelf_name ?? '' }}</td>
                                                         <td>{{ $n->qty ?? '' }}</td>
                                                         <td>{{ date('d-m-Y', strtotime($n->assign_date)) }}</td>
                                                         <td>{{ date('d-m-Y', strtotime($n->return_date)) }}</td>
-                                                        <td>{{ $n->status() }}</td>
-                                                        <td>{{ $n->created_user->name }}</td>
-                                                        <td>{{ date('d-m-Y', strtotime($n->created_user->created_at)) }}
+                                                        <td>{{ $n->status }}</td>
+                                                        <td>{{ $n->created_by }}</td>
+                                                        <td>{{ date('d-m-Y', strtotime($n->created_at)) }}
                                                         </td>
                                                         <td>
                                                             <div class="btn-group">
@@ -146,7 +159,7 @@
                                                                     <a href="{{ route('library.book_assign.edit', $n->id) }}" class="btn btn-dark btnEdit" target="_blank"><i class="fas fa-edit"></i></a>
                                                                 @endif
                                                                 @if (Auth::user()->can('delete book-assign') || Auth::user()->role->id == 1)
-                                                                    <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete" ><i class="fas fa-trash"></i></a>
+                                                                    <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete" onclick="confirm('Are you sure??')"><i class="fas fa-trash"></i></a>
                                                                 @endif
                                                             </div>
                                                         </td>
@@ -175,6 +188,7 @@
                                                     <th>Status</th>
                                                     <th>Created By</th>
                                                     <th>Created At</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="tbody">
@@ -182,16 +196,16 @@
                                                 @forelse ($returned_info_all as $key => $n)
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
-                                                        <td>{{ $n->student->name ?? '' }}</td>
-                                                        <td>{{ $n->book->name ?? '' }}</td>
-                                                        <td>{{ $n->book->bookshelf->name ?? '' }}</td>
+                                                        <td>{{ $n->student_name ?? '' }}</td>
+                                                        <td>{{ $n->book_name ?? '' }}</td>
+                                                        <td>{{ $n->bookshelf_name ?? '' }}</td>
                                                         <td>{{ $n->qty ?? '' }}</td>
                                                         <td>{{ date('d-m-Y', strtotime($n->assign_date)) }}</td>
                                                         <td>{{ date('d-m-Y', strtotime($n->return_date)) }}</td>
                                                         <td>{{ date('d-m-Y', strtotime($n->returned_date)) }}</td>
-                                                        <td>{{ $n->status() }}</td>
-                                                        <td>{{ $n->created_user->name }}</td>
-                                                        <td>{{ date('d-m-Y', strtotime($n->created_user->created_at)) }}
+                                                        <td>{{ $n->status}}</td>
+                                                        <td>{{ $n->created_by }}</td>
+                                                        <td>{{ date('d-m-Y', strtotime($n->created_at)) }}
                                                         </td>
                                                         <td>
                                                             <div class="btn-group">
@@ -201,7 +215,7 @@
                                                                     <a href="{{ route('library.book_assign.edit', $n->id) }}" class="btn btn-dark btnEdit" target="_blank"><i class="fas fa-edit"></i></a>
                                                                 @endif
                                                                 @if (Auth::user()->can('delete book-assign') || Auth::user()->role->id == 1)
-                                                                    <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete" ><i class="fas fa-trash"></i></a>
+                                                                    <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete" onclick="confirm('Are you sure??')"><i class="fas fa-trash"></i></a>
                                                                 @endif
                                                             </div>
                                                         </td>
@@ -229,6 +243,7 @@
                                                     <th>Status</th>
                                                     <th>Created By</th>
                                                     <th>Created At</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="tbody">
@@ -236,15 +251,15 @@
                                                 @forelse ($delay_info_all as $key => $n)
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
-                                                        <td>{{ $n->student->name ?? '' }}</td>
-                                                        <td>{{ $n->book->name ?? '' }}</td>
-                                                        <td>{{ $n->book->bookshelf->name ?? '' }}</td>
+                                                        <td>{{ $n->student_name ?? '' }}</td>
+                                                        <td>{{ $n->book_name ?? '' }}</td>
+                                                        <td>{{ $n->bookshelf_name ?? '' }}</td>
                                                         <td>{{ $n->qty ?? '' }}</td>
                                                         <td>{{ date('d-m-Y', strtotime($n->assign_date)) }}</td>
                                                         <td>{{ date('d-m-Y', strtotime($n->return_date)) }}</td>
-                                                        <td>{{ $n->status() }}</td>
-                                                        <td>{{ $n->created_user->name }}</td>
-                                                        <td>{{ date('d-m-Y', strtotime($n->created_user->created_at)) }}
+                                                        <td>{{ $n->status }}</td>
+                                                        <td>{{ $n->created_by }}</td>
+                                                        <td>{{ date('d-m-Y', strtotime($n->created_at)) }}
                                                         </td>
                                                         <td>
                                                             <div class="btn-group">
@@ -254,7 +269,7 @@
                                                                     <a href="{{ route('library.book_assign.edit', $n->id) }}" class="btn btn-dark btnEdit" target="_blank"><i class="fas fa-edit"></i></a>
                                                                 @endif
                                                                 @if (Auth::user()->can('delete book-assign') || Auth::user()->role->id == 1)
-                                                                    <a href="{{ route('library.book_assign.destroy', $n->id) }}" target="_blank" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
+                                                                    <a href="{{ route('library.book_assign.destroy', $n->id) }}" class="btn btn-danger btnDelete" onclick="confirm('Are you sure??')"><i class="fas fa-trash"></i></a>
                                                                 @endif
                                                             </div>
                                                         </td>

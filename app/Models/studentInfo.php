@@ -37,7 +37,7 @@ class studentInfo extends Model
 
     public function stdCheck(){
 
-        if(LibraryStudent::where('std_id',$this->id)->where("deleted_at",null)->first() == null){
+        if(LibraryMember::where('std_id',$this->id)->where("deleted_at",null)->first() == null){
             return false;
         }else{
             return true;

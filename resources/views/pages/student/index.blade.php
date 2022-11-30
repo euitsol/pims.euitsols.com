@@ -41,21 +41,6 @@
                             </div>
                         </div>
 
-                        {{-- <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="department_id">Department</label>
-                                <select name="department_id" class="form-control" id="department_id">
-                                    <option value="" hidden>Select Department</option>
-                                    @foreach ($department as $n)
-                                        <option value="{{ $n->id }}" @if(old('department_id') ==$n->id) selected @endif >{{ $n->department_name }}</option>
-                                    @endforeach
-                                </select>
-                                @if ($errors->has('department_id'))
-                                    <span class="text-danger">{{ $errors->first('department_id') }}</span>
-                                @endif
-                            </div>
-                        </div> --}}
-
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="group_id">Group</label>
@@ -111,7 +96,7 @@
 
                                     <tr>
                                        <td>{{ $key + 1 }}</td>
-                                       <td>{{ $value1->session->start.'-'.$value1->session->start }}</td>
+                                       <td>{{ $value1->session->start.'-'.$value1->session->end }}</td>
                                        <td>{{ $value1->studentInfo->department->department_name}}</td>
                                        <td>{{ $value1->group->name }}</td>
                                        <td>{{ $value1->shift->name }}</td>

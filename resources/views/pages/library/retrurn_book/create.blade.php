@@ -59,7 +59,7 @@ caption {
             <div class="card" id="book_info">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>Assigned Book</h4>
+                        <h4>Return Book</h4>
                     </span>
 
                 </div>
@@ -75,6 +75,7 @@ caption {
                             <th>Total book</th>
                             <th>Assigned date</th>
                             <th>Return date</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -209,6 +210,7 @@ caption {
                 autoclose:true,
             });
 
+
             $('select').select2();
            //Single student fetch. to implement this just use one id that is #select_div use for the parent of select student id and try to avoid #select_div's next element
             $('#select_div').find('select').change(function(){
@@ -237,7 +239,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.name}
+                                                                ${std_info.student.name}
                                                             </td>
                                                             <td>
                                                                 Student Type
@@ -246,7 +248,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.std_id ? 'Residential' : 'Non-residential'}
+                                                                ${std_info.student.std_id ? 'Residential' : 'Non-residential'}
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -257,7 +259,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.phone}
+                                                                ${std_info.student.phone}
                                                             </td>
                                                             <td>
                                                                 Date of Birth
@@ -266,7 +268,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.dob}
+                                                                ${std_info.student.dob}
                                                             </td>
                                                         </tr>
 
@@ -278,7 +280,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.present_address ?? ''}
+                                                                ${std_info.student.present_address ?? ''}
 
                                                             </td>
                                                             <td>
@@ -288,7 +290,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.permanent_address ?? ''}
+                                                                ${std_info.student.permanent_address ?? ''}
 
                                                             </td>
 
@@ -301,7 +303,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.ec_name ?? ''}
+                                                                ${std_info.student.ec_name ?? ''}
                                                             </td>
                                                             <td>
                                                                 Emergency Contact (Phone)
@@ -310,7 +312,7 @@ caption {
                                                                 :
                                                             </td>
                                                             <td>
-                                                                ${std_info.ec_phone ?? ''}
+                                                                ${std_info.student.ec_phone ?? ''}
                                                             </td>
                                                         </tr>
                                                 </tbody>
@@ -322,14 +324,36 @@ caption {
                     }
                 });
 
+
+
                 $.ajax({
                     type:'get',
                     url: "{{route('library.return_book.info')}}",
                     data:{'id':std_id,},
                     success:function(response){
+                        let date = new Date();
+                        let today_date  = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+                        console.log(today_date)
+                            var t_date = Date.parse(today_date);
                         $('#book_info').find('#tbody').children().remove();
                         $.each(response,function(index,val){
-                            console.log(val);
+
+                            let assign_btn = '';
+                            let title = '';
+                            let btn_class = '';
+                            let status = '';
+                            if(t_date > Date.parse(val.return_date)){
+                               assign_btn = "{{route('library.return_book.payment')}}?id="+ val.id
+                               title = 'Pay fee';
+                               btn_class = 'btn-danger';
+                               status = 'Fee aplicable';
+                            }else{
+                                assign_btn = "javascript:void(0)"
+                               title = 'Return the books';
+                               btn_class = 'btn-success update-btn'+val.id;
+                               status = 'Fee not aplicable';
+                            }
+
                                  let  book_info = `
                                                 <tr>
                                                     <td>
@@ -357,11 +381,14 @@ caption {
                                                         ${val.return_date}
                                                     </td>
                                                     <td>
+                                                        ${status}
+                                                    </td>
+                                                    <td>
                                                         <div class="btn-group">
                                                             <a href="javascript:void(0)" class="btn btn-info btnView${val.id}"
                                                             data-id="${val.id}" ><i class="fas fa-eye"></i></a>
-                                                            <a href="javascript:void(0)" class="btn btn-success update-btn${val.id}"
-                                                            data-id="${val.id}" title='Return the books'><i class="fas fa-arrow-right"></i></a>
+                                                            <a href="${assign_btn}" class="btn ${btn_class}"
+                                                            data-id="${val.id}" title='${title}'><i class="fas fa-arrow-right"></i></a>
                                                         </div>
                                                     </td>
                                                 </tr>`;
@@ -383,6 +410,8 @@ caption {
                }
             }
             function updateBook(This){
+
+                alert('Are you sure??');
                 let book_assign_id = $(This).data('id');
                 console.log(book_assign_id);
                 let url = "{{route('library.return_book.update',['id'])}}"
@@ -392,7 +421,7 @@ caption {
                     url: url,
                     success:function(response){
                         if(response==1){
-                            toastr.success('Book successfully returned')
+                            toastr.success('Book returned successfully')
                         }else{
                             toastr.error("Something went wrong")
                         }
@@ -402,6 +431,7 @@ caption {
                 });
             }
 
+            //view-modal
             function btnView(This){
                 if($(This).data('id') != null || $(This).data('id') != ''){
                     let url = ("{{ route('library.return_book.show', ['id']) }}");
@@ -430,52 +460,9 @@ caption {
                 }else{
                     alart('Something went wrong');
                 }
-                }
-             //view-modal
-             $('.btnView').click( function(){
+            }
 
-                if($(this).data('id') != null || $(this).data('id') != ''){
-                    let url = ("{{ route('library.book_assign.show', ['id']) }}");
-                    let _url = url.replace('id', $(this).data('id'));
-                    // console.log(_url);
-                    $.ajax({
-                        url: _url,
-                        method: "GET",
-                        success: function (response) {
-                            // console.log(response);
-                            $('#view-std_name').html(response.student.name);
-                            $('#view-std_phone').html(response.student.phone);
-                            $('#view-total-book').html(response.total_book);
 
-                            let book_name = '';
-                            let category_name = '';
-                            let bookshelf_name = '';
-                            $.each(response.bkdn,function(index,val){
-                                if(index != 0){
-                                    book_name += ', ';
-                                    category_name += ', ';
-                                    bookshelf_name += ', ';
-                                }
-                                book_name += val.book.name;
-                                category_name += val.book.category.name;
-                                bookshelf_name += val.book.bookshelf.name;
-                            });
-                            $('#view-name').html(book_name);
-                            $('#view-cat').html(category_name);
-                            $('#view-bookshelf').html(bookshelf_name);
-                            $('#view-assign_date').html(response.assign_date);
-                            $('#view-return_date').html(response.return_date);
-                            $('#view-createdAt').html(response.created_at ? new Date(response.created_at) : '');
-                            $('#view-createdBy').html(response.created_user ? response.created_user.name : 'system');
-                            $('#view-updatedAt').html(response.updated_at ? new Date(response.updated_at) : '');
-                            $('#view-updatedBy').html(response.updated_user ? response.updated_user.name: '');
-                            $('#view-modal').modal('show');
-                        }
-                    });
-                }else{
-                    alart('Something went wrong');
-                }
-            });
         });
 
     </script>
