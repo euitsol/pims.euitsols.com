@@ -478,11 +478,11 @@
     </li>
 @endif
 
-@if (Auth::user()->hasAnyPermission(['view library']) || Auth::user()->role->id == 1)
+@if (Auth::user()->hasAnyPermission(['view asset']) || Auth::user()->role->id == 1)
     <li class="nav-item {{Request::is('asset/*') ? 'menu-open' : ''}}">
         <a href="" class="nav-link">
             <i class="nav-icon fas fa-database"></i>
-            <p>Storage <i class="fas fa-angle-left right"></i></p>
+            <p>Asset <i class="fas fa-angle-left right"></i></p>
         </a>
         <ul class="nav nav-treeview">
             <li class="nav-item {{Request::is('asset/*') ? 'menu-open' : ''}}">
