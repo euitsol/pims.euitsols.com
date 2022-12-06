@@ -22,6 +22,7 @@
                         <thead>
                             <tr>
                                 <th>SL.</th>
+                                <th>Logo</th>
                                 <th>Name</th>
                                 <th>Status</th>
                                 <th>Created By</th>
@@ -33,6 +34,7 @@
                                 @foreach ( $brands as $key=>$brand)
                                    <tr>
                                     <td>{{$key+1}}</td>
+                                    <td><img src="{{$brand->getFirstMediaUrl('asset-brand-img', 'thumb')}}" width="120px" alt="{{$brand->name}}"></td>
                                     <td>{{$brand->name}}</td>
                                     <td>{{$brand->status}}</td>
                                     <td>{{$brand->created_user->name}}</td>
