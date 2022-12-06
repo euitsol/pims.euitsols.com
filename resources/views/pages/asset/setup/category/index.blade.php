@@ -22,6 +22,7 @@
                         <thead>
                             <tr>
                                 <th>SL.</th>
+                                <th>Logo</th>
                                 <th>Name</th>
                                 <th>Status</th>
                                 <th>Created By</th>
@@ -33,6 +34,7 @@
                                 @foreach ( $categories as $key=>$category)
                                    <tr>
                                     <td>{{$key+1}}</td>
+                                    <td><img src="{{$category->getFirstMediaUrl('asset-category-img', 'thumb')}}" width="120px" alt="{{$category->name}}"></td>
                                     <td>{{$category->name}}</td>
                                     <td>{{$category->status}}</td>
                                     <td>{{$category->created_user->name}}</td>

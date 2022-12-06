@@ -30,10 +30,14 @@ class AssetCategoryController extends Controller
         ],[],['name' => 'Category Name']);
         $insert = new AssetCategory();
         $insert->name = $req->name;
-        $insert->img = 'img';
         $insert->status = 1;
         $insert->created_by = Auth::user()->id;
         $insert->save();
+
+        if($req->hasFile('img') && $req->file('img')->isValid()){
+            $insert->addMediaFromRequest('img')->toMediaCollection('asset-category-img');
+        }
+
         $this->message('success','Category added successfully');
         return redirect()->route('asset.setup.category.index');
     }

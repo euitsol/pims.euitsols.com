@@ -512,9 +512,9 @@
                 </ul>
             </li>
 
-            <li class="nav-item {{Request::is('asset/store-product/*') ? 'menu-open' : ''}}">
+            {{-- <li class="nav-item {{Request::is('asset/store-product/*') ? 'menu-open' : ''}}">
                 <a href="{{route('')}}" class="nav-link"></a>
-            </li>
+            </li> --}}
         </ul>
     </li>
 
