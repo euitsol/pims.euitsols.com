@@ -24,6 +24,7 @@ jobs:
     - run: npm install
     - run: npm run production
     - run: composer update --no-scripts
+    - run: php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider"
 
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
