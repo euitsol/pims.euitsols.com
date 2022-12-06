@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\asset\AssetBrandController;
+use App\Http\Controllers\asset\AssetCategoryController;
+use App\Http\Controllers\asset\AssetUnitController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
@@ -502,6 +505,48 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
                 Route::get('/all','allReport')->name('all');
                 Route::post('/all','allReport')->name('all');
             });
+    });
+
+    //Asset Management
+    Route::prefix('asset')->name('asset.')->group(function(){
+
+        //setup
+        Route::prefix('setup')->name('setup.')->group(function(){
+
+            //Category
+            Route::controller(AssetCategoryController::class)->prefix('category')->name('category.')->group(function(){
+                Route::get('/index','index')->name('index'); //asset.setup.category.index
+                Route::get('/create','create')->name('create');
+                Route::post('/store','store')->name('store');
+                Route::get('/edit/{id}','edit')->name('edit');
+                Route::post('/update','update')->name('update');
+                Route::get('/show/{id}','show')->name('show');
+                Route::get('/destroy/{id}','destroy')->name('destroy');
+            });
+
+            //Brand
+            Route::controller(AssetBrandController::class)->prefix('brand')->name('brand.')->group(function(){
+                Route::get('/index','index')->name('index'); //asset.setup.brand.index
+                Route::get('/create','create')->name('create');
+                Route::post('/store','store')->name('store');
+                Route::get('/edit/{id}','edit')->name('edit');
+                Route::post('/update','update')->name('update');
+                Route::get('/show/{id}','show')->name('show');
+                Route::get('/destroy/{id}','destroy')->name('destroy');
+            });
+
+            //Unit
+            Route::controller(AssetUnitController::class)->prefix('unit')->name('unit.')->group(function(){
+                Route::get('/index','index')->name('index'); //asset.setup.unit.index
+                Route::get('/create','create')->name('create');
+                Route::post('/store','store')->name('store');
+                Route::get('/edit/{id}','edit')->name('edit');
+                Route::post('/update','update')->name('update');
+                Route::get('/show/{id}','show')->name('show');
+                Route::get('/destroy/{id}','destroy')->name('destroy');
+            });
+
+        });
     });
 
 });

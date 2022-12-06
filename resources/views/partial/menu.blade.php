@@ -478,5 +478,46 @@
     </li>
 @endif
 
+@if (Auth::user()->hasAnyPermission(['view asset']) || Auth::user()->role->id == 1)
+    <li class="nav-item {{Request::is('asset/*') ? 'menu-open' : ''}}">
+        <a href="" class="nav-link">
+            <i class="nav-icon fas fa-database"></i>
+            <p>Asset <i class="fas fa-angle-left right"></i></p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item {{Request::is('asset/*') ? 'menu-open' : ''}}">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon far fa-circle second-nav-text"> </i>
+                    <p>Setup <i class="fas fa-angle-left right"></i></p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{route('asset.setup.category.index')}}" class="nav-link {{Request::is('asset/setup/category/*') ? 'active' : ''}}">
+                            <i class="fas fa-minus third-nav-text"></i>
+                            <p>Category</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('asset.setup.brand.index')}}" class="nav-link {{Request::is('asset/setup/brand/*') ? 'active' : ''}}">
+                            <i class="fas fa-minus third-nav-text"></i>
+                            <p>Brand</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('asset.setup.unit.index')}}" class="nav-link {{Request::is('asset/setup/unit/*') ? 'active' : ''}}">
+                            <i class="fas fa-minus third-nav-text"></i>
+                            <p>Unit</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
+            <li class="nav-item {{Request::is('asset/store-product/*') ? 'menu-open' : ''}}">
+                <a href="{{route('')}}" class="nav-link"></a>
+            </li>
+        </ul>
+    </li>
+
+
+@endif
 
