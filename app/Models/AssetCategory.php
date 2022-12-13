@@ -18,4 +18,7 @@ class AssetCategory extends Model
     public function deleted_user(){
         return $this->belongsTo(User::class, 'deleted_by', 'id');
     }
+    public function baseUnit(){
+        return $this->belongsTo(AssetBaseUnit::class, 'base_unit_id', 'id');
+    }
 }

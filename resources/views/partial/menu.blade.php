@@ -519,8 +519,11 @@
                 </ul>
             </li>
 
-            <li class="nav-item {{Request::is('asset/add-product/*') ? 'menu-open' : ''}}">
-                <a href="{{route('asset.product.index')}}" class="nav-link"> Add Product</a>
+            <li class="nav-item">
+                <a href="{{route('asset.product.index')}}" class="nav-link {{Request::is('asset/product/*') ? 'active' : ''}}">
+                    <i class="nav-icon fas fa-cart-plus"></i>
+                     Add Product
+                    </a>
             </li>
         </ul>
     </li>

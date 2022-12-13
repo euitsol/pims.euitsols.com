@@ -163,11 +163,9 @@
             @if ($errors->has('class_content'))
                 toastr.error("Please, enter class content");
             @endif
-
             @if ($errors->has('student.*.id'))
                 toastr.error("There is no student");
             @endif
-
         });
     </script>
 @endpush
