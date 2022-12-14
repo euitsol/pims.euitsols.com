@@ -492,11 +492,18 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
+                        <a href="{{route('asset.setup.brand.index')}}" class="nav-link {{Request::is('asset/setup/brand/*') ? 'active' : ''}}">
+                            <i class="fas fa-minus third-nav-text"></i>
+                            <p>Brand</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{route('asset.setup.category.index')}}" class="nav-link {{Request::is('asset/setup/category/*') ? 'active' : ''}}">
                             <i class="fas fa-minus third-nav-text"></i>
                             <p>Category</p>
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <a href="{{route('asset.setup.subcategory.index')}}" class="nav-link {{Request::is('asset/setup/subcategory/*') ? 'active' : ''}}">
                             <i class="fas fa-minus third-nav-text"></i>
@@ -504,11 +511,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{route('asset.setup.brand.index')}}" class="nav-link {{Request::is('asset/setup/brand/*') ? 'active' : ''}}">
+                        <a href="{{route('asset.setup.section.index')}}" class="nav-link {{Request::is('asset/setup/section/*') ? 'active' : ''}}">
                             <i class="fas fa-minus third-nav-text"></i>
-                            <p>Brand</p>
+                            <p>Section</p>
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <a href="{{route('asset.setup.unit.index')}}" class="nav-link {{Request::is('asset/setup/unit/*') ? 'active' : ''}}">
                             <i class="fas fa-minus third-nav-text"></i>
