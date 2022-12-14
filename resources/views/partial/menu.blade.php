@@ -516,6 +516,12 @@
                             <p>Section</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{route('asset.setup.subsection.index')}}" class="nav-link {{Request::is('asset/setup/subsection/*') ? 'active' : ''}}">
+                            <i class="fas fa-minus third-nav-text"></i>
+                            <p>Subsection</p>
+                        </a>
+                    </li>
 
                     <li class="nav-item">
                         <a href="{{route('asset.setup.unit.index')}}" class="nav-link {{Request::is('asset/setup/unit/*') ? 'active' : ''}}">

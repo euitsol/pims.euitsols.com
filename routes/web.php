@@ -6,6 +6,7 @@ use App\Http\Controllers\asset\AssetUnitController;
 use App\Http\Controllers\asset\ProductController;
 use App\Http\Controllers\asset\SectionController;
 use App\Http\Controllers\asset\SubcategoryController;
+use App\Http\Controllers\asset\SubsectionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
@@ -539,6 +540,16 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             //Section
             Route::controller(SectionController::class)->prefix('section')->name('section.')->group(function(){
                 Route::get('/index','index')->name('index'); //asset.setup.section.index
+                Route::get('/create','create')->name('create');
+                Route::post('/store','store')->name('store');
+                Route::get('/edit/{id}','edit')->name('edit');
+                Route::post('/update','update')->name('update');
+                Route::get('/show/{id}','show')->name('show');
+                Route::get('/destroy/{id}','destroy')->name('destroy');
+            });
+            //Subsection
+            Route::controller(SubsectionController::class)->prefix('subsection')->name('subsection.')->group(function(){
+                Route::get('/index','index')->name('index'); //asset.setup.subsection.index
                 Route::get('/create','create')->name('create');
                 Route::post('/store','store')->name('store');
                 Route::get('/edit/{id}','edit')->name('edit');
