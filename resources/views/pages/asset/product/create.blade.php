@@ -48,8 +48,8 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="unit_id">Unit<span class="text-danger">*</span></label>
-                                                <select name="unit_id" id="unit_id" class="form-control">
-                                                    <option value="hidden">Select unit</option>
+                                                <select name="unit_id" id="unit_id" class="form-control" required>
+                                                    <option value=''>Select unit</option>
                                                     @foreach ($units as $unit)
                                                         <option value="{{ $unit->id }}" @if($unit->id == old('unit_id')) selected @endif>{{ $unit->name }}</option>
                                                     @endforeach
@@ -60,8 +60,8 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="brand_id">Brand<span class="text-danger">*</span></label>
-                                                <select name="brand_id" id="brand_id" class="form-control">
-                                                    <option value="hidden">Select brand</option>
+                                                <select name="brand_id" id="brand_id" class="form-control" required>
+                                                    <option value=''>Select brand</option>
                                                     @foreach ($brands as $brand)
                                                         <option value="{{ $brand->id }}" @if($brand->id == old('brand_id')) selected @endif>{{ $brand->name }}</option>
                                                     @endforeach
@@ -72,8 +72,8 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="cat_id">Category<span class="text-danger">*</span></label>
-                                                <select name="cat_id" id="cat_id" class="form-control">
-                                                    <option value="hidden">Select Category</option>
+                                                <select name="cat_id" id="cat_id" class="form-control" required>
+                                                    <option value=''>Select Category</option>
                                                     @foreach ($categories as $category)
                                                         <option value="{{ $category->id }}" @if($category->id == old('cat_id')) selected @endif>{{ $category->name }}</option>
                                                     @endforeach
@@ -85,8 +85,8 @@
                                             <div class="form-group">
                                                 <label for="subcat_id">Subcategory<span class="text-danger">*</span></label>
 
-                                                <select name="subcat_id" id="subcat_id" class="form-control">
-                                                    <option value="hidden">Select subcategory</option>
+                                                <select name="subcat_id" id="subcat_id" class="form-control" required>
+                                                    <option value=''>Select subcategory</option>
                                                     {{-- @foreach ($subcategories as $subcategory)
                                                     <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
                                                 @endforeach --}}
@@ -109,8 +109,7 @@
 
                                         <div class="col-md-8">
                                             <div class="form-group">
-                                                <label for="description">Description<span
-                                                        class="text-danger">*</span></label>
+                                                <label for="description">Description</label>
                                                 <textarea name="description" id="description" cols="30" rows="5" class="form-control"></textarea>
                                                 @if ($errors->has('description'))
                                                     <span class="text-danger">{{ $errors->first('description') }}</span>
@@ -118,14 +117,26 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="img">Image<span class="text-danger">*</span></label>
-                                                <input class="form-control" type="file" name="img" id="img"
-                                                    value="{{ old('img') }}">
-                                                @if ($errors->has('img'))
-                                                    <span class="text-danger">{{ $errors->first('img') }}</span>
-                                                @endif
+                                        <div class="col-md-4 pl-3 mt-3">
+                                            <div class="row ">
+                                                <div class="form-group w-100">
+                                                    <label for="img">Image</label>
+                                                    <input class="form-control" type="file" name="img" id="img"
+                                                        value="{{ old('img') }}">
+                                                    @if ($errors->has('img'))
+                                                        <span class="text-danger">{{ $errors->first('img') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="row ">
+                                                <div class="form-group w-100">
+                                                    <label for="warranty">Warranty</label>
+                                                    <input class="form-control" type="number"min="0" step="0.1" name="warranty" id="warranty" placeholder="Enter warranty year"
+                                                        value="{{ old('warranty') }}">
+                                                    @if ($errors->has('warranty'))
+                                                        <span class="text-danger">{{ $errors->first('warranty') }}</span>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
 
@@ -145,8 +156,8 @@
                                     <div class="form-group">
                                         <label for="department_id">Department<span class="text-danger">*</span></label>
                                         <select name="department_id" id="department_id" class="form-control">
-                                            <option value="hidden">Select Department</option>
-                                            <option value="">All</option>
+                                            <option value=''>Select Department</option>
+                                            <option value="">All Department</option>
                                             @foreach ($departments as $department)
                                                 <option value="{{ $department->id }}" @if($department->id == old('department_id')) selected @endif>{{ $department->department_name }}
                                                 </option>
@@ -264,7 +275,7 @@
                     url: '{{route("asset.product.subcat.fetch")}}',
                     data:{id : cat_id},
                     success:function(response){
-                        let option = "<option value='hidden'>Select subcategory</option>";
+                        let option = "<option value=''>Select subcategory</option>";
                         if(response){
                             $.each(response,function(index,item){
                                 option += `<option value='${item.id}' ${item.id == subcat_id ? 'selected' : '' }>${item.name}</option>`;

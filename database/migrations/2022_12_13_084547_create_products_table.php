@@ -22,6 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('department_id')->nullable();
             $table->string('name');
             $table->longText('description')->nullable();
+            $table->longText('warranty')->nullable();
             $table->integer('qty');
             $table->integer('total_price');
             $table->string('img')->nullable();

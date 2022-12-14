@@ -40,6 +40,7 @@ class ProductController extends Controller
             'subcat_id' => 'required|exists:subcategories,id',
             'brand_id' => 'required|exists:asset_brands,id',
             'department_id' => 'nullable|exists:departments,id',
+            'warranty' => 'nullable',
             'unit_id' => 'required|exists:asset_units,id',
             'name' => 'required|string',
             'qty' => 'required|integer',
@@ -62,6 +63,7 @@ class ProductController extends Controller
         $insert->name = $req->name;
         $insert->qty = $req->qty;
         $insert->description = $req->description;
+        $insert->warranty = $req->warranty;
         $insert->total_price = $req->total_price;
         $insert->created_by = Auth::user()->id;
         $insert->save();

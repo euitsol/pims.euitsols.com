@@ -121,6 +121,12 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td>Warranty</td>
+                                    <td>
+                                        <span id="view-warranty"></span>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td>Unit</td>
                                     <td>
                                         <span id="view-unit"></span>
@@ -223,6 +229,7 @@
                             $('#view-per-unit-price').html(response.total_price/response.qty);
                             $('#view-total-price').html(response.total_price);
                             $('#view-product-des').html(response.description);
+                            $('#view-warranty').html(response.warranty+' years');
                             $('#view-unit').html(response.unit.name);
                             $('#view-brand').html(response.brand.name);
                             $('#view-cat-name').html(response.category.name);
