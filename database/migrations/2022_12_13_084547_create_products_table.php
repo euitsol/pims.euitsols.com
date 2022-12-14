@@ -19,9 +19,9 @@ return new class extends Migration
             $table->unsignedBigInteger('subcat_id');
             $table->unsignedBigInteger('brand_id');
             $table->unsignedBigInteger('unit_id');
-            $table->unsignedBigInteger('department_id');
+            $table->unsignedBigInteger('department_id')->nullable();
             $table->string('name');
-            $table->longText('description');
+            $table->longText('description')->nullable();
             $table->integer('qty');
             $table->integer('total_price');
             $table->string('img')->nullable();

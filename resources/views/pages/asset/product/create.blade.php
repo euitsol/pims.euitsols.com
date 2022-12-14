@@ -27,17 +27,8 @@
             <div class="col-md-10 col-lg-12">
                 <form action="{{ route('asset.product.store') }}" method="POST" class="form-horizontal">
                     @csrf
+                    {{-- Product details  --}}
                     <div class="card">
-                        {{-- <div class="card-header">
-                            <span class="float-left">
-                                <h4>Add new product</h4>
-                            </span>
-                            <span class="float-right">
-                                @if (Auth::user()->can('product view') || Auth::user()->role->id == 1)
-                                    <a href="{{ route('asset.product.index') }}" class="btn btn-info">Back</a>
-                                @endif
-                            </span>
-                        </div> --}}
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-11 m-auto">
@@ -145,6 +136,7 @@
                         </div>
                     </div>
 
+                    {{-- Department name  --}}
                     <div class="card">
                         @csrf
                         <div class="card-body">
@@ -154,19 +146,22 @@
                                         <label for="department_id">Department<span class="text-danger">*</span></label>
                                         <select name="department_id" id="department_id" class="form-control">
                                             <option value="hidden">Select Department</option>
+                                            <option value="">All</option>
                                             @foreach ($departments as $department)
                                                 <option value="{{ $department->id }}" @if($department->id == old('department_id')) selected @endif>{{ $department->department_name }}
                                                 </option>
                                             @endforeach
                                         </select>
-                                    @if ($errors->has('total_price'))
-                                        <span class="text-danger">{{ $errors->first('total_price') }}</span>
+                                    @if ($errors->has('department_id'))
+                                        <span class="text-danger">{{ $errors->first('department_id') }}</span>
                                     @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    {{-- Product price details  --}}
                     <div class="card">
                         @csrf
                         <div class="card-body">
@@ -223,53 +218,30 @@
     <script>
         $(document).ready(function(){
             $('select').select2();
-        ClassicEditor.create(document.querySelector('textarea'));
-            console.log("I am old value : {{ old('cat_id') }}");
-            console.log("I root value :" +$('#cat_id').val());
+            ClassicEditor.create(document.querySelector('textarea'));
+            // console.log("I am old value : {{ old('cat_id') }}");
+            // console.log("I root value :" +$('#cat_id').val());
 
-        //Subcategory fetch according to category
-        let cat_id = {{ old('cat_id') }};
+            //Subcategory fetch according to category id
+            $('#cat_id').on('click change',function(){
+                get_ajax.apply(this);
+            });
+            get_ajax.apply($('#cat_id'));
 
-        let subcat_fetch = (selector) =>{
-            
-        }
-        $('#cat_id').on('click change load',function(){
-             cat_id = $(this).val();
-            if(tru_cat_id){
-                    $.ajax({
-                    type: "get",
-                    url: '{{route("asset.product.subcat.fetch")}}',
-                    data:{id:tru_cat_id},
-                    success:function(response){
-                        let option = "<option value='hidden'>Select subcategory</option>";
 
-                        if(response){
-                            $.each(response,function(index,item){
-                                option += `<option value='${item.id}'>${item.name}</option>`;
-                            });
-                            $('#subcat_id').html(option);
-                        }else{
-                            $('#subcat_id').html(option);
-                        }
-                    }
-                });
-            }
-        });
+            //per unit price calculate from total price
+            $('#total_price,#qty').on('click keyup change',function(){
+                let total_price = Number($('#total_price').val());
+                let qty = Number($('#qty').val());
 
-        //per unit price calculate from total price
-        $('#total_price,#qty').on('click keyup change',function(){
+                if(total_price>0 && qty>0){
+                    let unt_price = Number.parseFloat(total_price/qty).toFixed(2);
+                    $('#per_unit_price').val(unt_price);
+                }else{
 
-            let total_price = Number($('#total_price').val());
-            let qty = Number($('#qty').val());
+                }
 
-            if(total_price>0 && qty>0){
-                let unt_price = Math.round(total_price/qty);
-                $('#per_unit_price').val(unt_price);
-            }else{
-
-            }
-
-        });
+            });
 
             let old_total_price = Number($('#total_price').val());
             let old_qty = Number($('#qty').val());
@@ -278,6 +250,33 @@
                 let unt_price = Math.round(old_total_price/old_qty);
                 $('#per_unit_price').val(unt_price);
             }
-        })
+        });
+
+        //funtion
+
+        function get_ajax(){
+
+            let cat_id = $(this).val();
+            let subcat_id = '{{old('subcat_id')}}';
+            if(cat_id){
+                $.ajax({
+                    type: "get",
+                    url: '{{route("asset.product.subcat.fetch")}}',
+                    data:{id : cat_id},
+                    success:function(response){
+                        let option = "<option value='hidden'>Select subcategory</option>";
+                        if(response){
+                            $.each(response,function(index,item){
+                                option += `<option value='${item.id}' ${item.id == subcat_id ? 'selected' : '' }>${item.name}</option>`;
+                            });
+                            $('#subcat_id').html(option);
+                        }else{
+                            $('#subcat_id').html(option);
+                        }
+                }
+            });
+            }
+
+        }
     </script>
 @endpush

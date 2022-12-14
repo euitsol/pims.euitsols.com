@@ -28,7 +28,7 @@
                                 <th>Unit </th>
                                 <th>Brand </th>
                                 <th>Category </th>
-                                <th>Department Name</th>
+                                <th>Department</th>
                                 <th>Created By</th>
                                 <th>Created At</th>
                                 <th>Action</th>
@@ -44,7 +44,7 @@
                                     <td>{{$product->unit->name}}</td>
                                     <td>{{$product->brand->name}}</td>
                                     <td>{{$product->category->name}}</td>
-                                    <td>{{$product->department->name}}</td>
+                                    <td>{{$product->department->department_name ?? 'All Department'}}</td>
                                     <td>{{$product->created_user->name}}</td>
                                     <td>{{date('d-m-Y',strtotime($product->created_user->created_at))}}</td>
                                     <td>
@@ -220,14 +220,14 @@
                             $('#view-img').html(response.img);
                             $('#view-product-name').html(response.name);
                             $('#view-qty').html(response.qty);
-                            $('#view-per-unit-price').html(response.per_unit_price);
+                            $('#view-per-unit-price').html(response.total_price/response.qty);
                             $('#view-total-price').html(response.total_price);
                             $('#view-product-des').html(response.description);
                             $('#view-unit').html(response.unit.name);
                             $('#view-brand').html(response.brand.name);
                             $('#view-cat-name').html(response.category.name);
-                            $('#view-subcat-name').html(response.subcat.name);
-                            $('#view-department-name').html(response.departmetn.name);
+                            $('#view-subcat-name').html(response.subcategory.name);
+                            $('#view-department-name').html(response.department ? response.department.department_name : 'All Department');
                             $('#view-status').html(response.status);
                             $('#view-createdAt').html(response.created_at ? new Date(response.created_at) : '');
                             $('#view-createdBy').html(response.created_user ? response.created_user.name : 'system');

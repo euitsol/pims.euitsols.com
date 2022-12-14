@@ -567,7 +567,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::post('/store','store')->name('store');
             Route::get('/edit/{id}','edit')->name('edit');
             Route::post('/update','update')->name('update');
-            Route::get('/show','show')->name('show');
+            Route::get('/show/{id}','show')->name('show');
             Route::get('/destroy/{id}','destroy')->name('destroy');
             Route::get('/subcategory/fetch','subcatFetch')->name('subcat.fetch');
         });

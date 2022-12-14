@@ -39,11 +39,10 @@ class ProductController extends Controller
             'cat_id' => 'required|exists:asset_categories,id',
             'subcat_id' => 'required|exists:subcategories,id',
             'brand_id' => 'required|exists:asset_brands,id',
-            'department_id' => 'required|exists:departments,id',
+            'department_id' => 'nullable|exists:departments,id',
             'unit_id' => 'required|exists:asset_units,id',
             'name' => 'required|string',
             'qty' => 'required|integer',
-            'description' => 'string',
             'total_price' => 'integer',
         ],[],[
             'cat_id' => 'Category Name',
@@ -80,16 +79,14 @@ class ProductController extends Controller
     }
 
     public function update(Request $req){
-        // dd($req->id);
         $this->validate($req,[
             'cat_id' => 'required|exists:asset_categories,id',
             'subcat_id' => 'required|exists:subcategories,id',
             'brand_id' => 'required|exists:asset_brands,id',
-            'department_id' => 'required|exists:departments,id',
+            'department_id' => 'nullable|exists:departments,id',
             'unit_id' => 'required|exists:asset_units,id',
             'name' => 'required|string',
             'qty' => 'required|integer',
-            'description' => 'string',
             'total_price' => 'integer',
         ],[],[
             'cat_id' => 'Category Name',
