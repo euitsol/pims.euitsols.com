@@ -24,8 +24,8 @@
                                 <th>SL.</th>
                                 <th>Product Name</th>
                                 <th>Quantity</th>
-                                <th>Total Price </th>
                                 <th>Unit </th>
+                                <th>Total Price </th>
                                 <th>Brand </th>
                                 <th>Category </th>
                                 <th>Department</th>
@@ -40,8 +40,8 @@
                                     <td>{{$key+1}}</td>
                                     <td>{{$product->name}}</td>
                                     <td>{{$product->qty}}</td>
-                                    <td>{{$product->total_price}}</td>
                                     <td>{{$product->unit->name}}</td>
+                                    <td>{{$product->total_price}}</td>
                                     <td>{{$product->brand->name}}</td>
                                     <td>{{$product->category->name}}</td>
                                     <td>{{$product->department->department_name ?? 'All Department'}}</td>
@@ -57,6 +57,8 @@
                                             @if(Auth::user()->can('delete product') || Auth::user()->role->id == 1)
                                                 <a href="{{ route('asset.product.destroy', $product->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
                                             @endif
+                                            <a href="{{ route('asset.product.add.more', $product->id) }}" class="btn btn-info"
+                                            data-id="{{ $product->id }}"><i class="fas fa-plus"></i></a>
                                         </div>
                                     </td>
                                    </tr>

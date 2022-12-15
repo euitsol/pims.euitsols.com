@@ -138,5 +138,12 @@ class ProductController extends Controller
             return response()->json($subcategory);
         }
     }
+
+    public function moreProduct($id = null){
+        if($id){
+            $n['product'] = Product::find($id);
+            return view('pages.asset.product.add-more',$n);
+        }
+    }
 }
 

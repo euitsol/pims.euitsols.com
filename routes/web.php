@@ -604,6 +604,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::get('/show/{id}','show')->name('show');
             Route::get('/destroy/{id}','destroy')->name('destroy');
             Route::get('/subcategory/fetch','subcatFetch')->name('subcat.fetch');
+            Route::get('/add/more/{id}','moreProduct')->name('add.more');
         });
     });
 
