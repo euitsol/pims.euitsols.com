@@ -7,6 +7,7 @@ use App\Http\Controllers\asset\ProductController;
 use App\Http\Controllers\asset\SectionController;
 use App\Http\Controllers\asset\SubcategoryController;
 use App\Http\Controllers\asset\SubsectionController;
+use App\Http\Controllers\asset\SupplierController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
@@ -547,9 +548,20 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
                 Route::get('/show/{id}','show')->name('show');
                 Route::get('/destroy/{id}','destroy')->name('destroy');
             });
-            //Subsection
-            Route::controller(SubsectionController::class)->prefix('subsection')->name('subsection.')->group(function(){
+            //Sub-section
+            Route::controller(SubsectionController::class)->prefix('sub-section')->name('subsection.')->group(function(){
                 Route::get('/index','index')->name('index'); //asset.setup.subsection.index
+                Route::get('/create','create')->name('create');
+                Route::post('/store','store')->name('store');
+                Route::get('/edit/{id}','edit')->name('edit');
+                Route::post('/update','update')->name('update');
+                Route::get('/show/{id}','show')->name('show');
+                Route::get('/destroy/{id}','destroy')->name('destroy');
+            });
+
+            //Supplier
+            Route::controller(SupplierController::class)->prefix('supplier')->name('supplier.')->group(function(){
+                Route::get('/index','index')->name('index'); //asset.setup.supplier.index
                 Route::get('/create','create')->name('create');
                 Route::post('/store','store')->name('store');
                 Route::get('/edit/{id}','edit')->name('edit');

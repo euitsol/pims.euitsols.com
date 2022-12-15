@@ -503,13 +503,6 @@
                             <p>Category</p>
                         </a>
                     </li>
-
-                    <li class="nav-item">
-                        <a href="{{route('asset.setup.subcategory.index')}}" class="nav-link {{Request::is('asset/setup/subcategory/*') ? 'active' : ''}}">
-                            <i class="fas fa-minus third-nav-text"></i>
-                            <p>Subcategory</p>
-                        </a>
-                    </li>
                     <li class="nav-item">
                         <a href="{{route('asset.setup.section.index')}}" class="nav-link {{Request::is('asset/setup/section/*') ? 'active' : ''}}">
                             <i class="fas fa-minus third-nav-text"></i>
@@ -517,9 +510,22 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{route('asset.setup.subsection.index')}}" class="nav-link {{Request::is('asset/setup/subsection/*') ? 'active' : ''}}">
+                        <a href="{{route('asset.setup.subcategory.index')}}" class="nav-link {{Request::is('asset/setup/subcategory/*') ? 'active' : ''}}">
                             <i class="fas fa-minus third-nav-text"></i>
-                            <p>Subsection</p>
+                            <p>Subcategory</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{route('asset.setup.subsection.index')}}" class="nav-link {{Request::is('asset/setup/sub-section/*') ? 'active' : ''}}">
+                            <i class="fas fa-minus third-nav-text"></i>
+                            <p>Sub-section</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('asset.setup.supplier.index')}}" class="nav-link {{Request::is('asset/setup/supplier/*') ? 'active' : ''}}">
+                            <i class="fas fa-minus third-nav-text"></i>
+                            <p>Supplier</p>
                         </a>
                     </li>
 

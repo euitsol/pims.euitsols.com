@@ -212,7 +212,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <button type="submit" class="btn btn-primary w-100">Create</button>
+                        <button type="submit" class="btn btn-primary w-100">Add</button>
                     </div>
                 </form>
             </div>

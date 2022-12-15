@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Asset Management - Edit Subsection')
+@section('title', 'Asset Management - Edit Sub-section')
 
 @push('third_party_stylesheets')
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
@@ -16,7 +16,7 @@
                             <h4>Edit {{ $subsection->name }}</h4>
                         </span>
                         <span class="float-right">
-                            @if (Auth::user()->can('subsection view') || Auth::user()->role->id == 1)
+                            @if (Auth::user()->can('sub-section view') || Auth::user()->role->id == 1)
                                 <a href="{{ route('asset.setup.subsection.index') }}" class="btn btn-info">Back</a>
                             @endif
                         </span>
@@ -34,7 +34,7 @@
                                                 class="text-danger">*</span></label>
                                         <div class="col-sm-9">
                                             <select name="section_id" id="section_id" class="form-control" required>
-                                                <option value="">Select Subsection</option>
+                                                <option value="">Select Sub-section</option>
                                                 @foreach ($sections as $section)
                                                     <option value="{{ $section->id }}"
                                                         @if ($section->id == $subsection->section_id) selected @endif>
@@ -45,11 +45,11 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-3" for="name">Subsection Name<span
+                                        <label class="col-sm-3" for="name">Sub-section Name<span
                                                 class="text-danger">*</span></label>
                                         <div class="col-sm-9">
                                             <input class="form-control" type="text" name="name" id="name"
-                                                placeholder="Enter subsection name" value="{{ $subsection->name }}" required>
+                                                placeholder="Enter sub-section name" value="{{ $subsection->name }}" required>
                                             @if ($errors->has('name'))
                                                 <span class="text-danger">{{ $errors->first('name') }}</span>
                                             @endif
@@ -61,7 +61,7 @@
                                                 class="text-danger">*</span></label>
                                         <div class="col-sm-9">
                                             <input class="form-control" type="text" name="short_name" id="short_name"
-                                            value="{{ $subsection->short_name }}" placeholder="Enter subsection short name"
+                                            value="{{ $subsection->short_name }}" placeholder="Enter sub-section short name"
                                                 required>
                                             @if ($errors->has('short_name'))
                                                 <span class="text-danger">{{ $errors->first('short_name') }}</span>

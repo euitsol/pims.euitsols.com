@@ -31,14 +31,14 @@ class SubsectionController extends Controller
             'section_id' => 'required|exists:sections,id',
             'name' => 'required|string|unique:subsections,name',
             'short_name' => "nullable|string",
-        ],[],['name' => 'Subsection Name','section_id' =>'Section Name','short_name' => "Subsection's Short Name"]);
+        ],[],['name' => 'Sub-section Name','section_id' =>'Section Name','short_name' => "Sub-section's Short Name"]);
         $insert = new Subsection();
         $insert->section_id = $req->section_id;
         $insert->name = $req->name;
         $insert->short_name = $req->short_name;
         $insert->created_by = Auth::user()->id;
         $insert->save();
-        $this->message('success','Subsection added successfully');
+        $this->message('success','Sub-section added successfully');
         return redirect()->route('asset.setup.subsection.index');
     }
 
@@ -54,7 +54,7 @@ class SubsectionController extends Controller
             'section_id' => 'required|exists:sections,id',
             'name' => "required|string|unique:subsections,name,$req->id,id",
             'short_name' => "nullable|string",
-        ],[],['name' => 'Subsection Name','section_id' => 'Section Name','short_name' => "Subsection's Short Name"]);
+        ],[],['name' => 'Sub-section Name','section_id' => 'Section Name','short_name' => "Sub-section's Short Name"]);
 
         $update = subsection::findOrFail($req->id);
         $update->section_id = $req->section_id;
@@ -62,7 +62,7 @@ class SubsectionController extends Controller
         $update->short_name = $req->short_name;
         $update->updated_by = Auth::user()->id;
         $update->save();
-        $this->message('success','Subsection updated successfully');
+        $this->message('success','Sub-section updated successfully');
         return redirect()->route('asset.setup.subsection.index');
     }
 
@@ -72,7 +72,7 @@ class SubsectionController extends Controller
             $delete->deleted_at = Carbon::now()->toDateTimeString();
             $delete->deleted_by = Auth::user()->id;
             $delete->save();
-            return back()->with('success','Subsection deleted successfully');
+            return back()->with('success','Sub-section deleted successfully');
         }
     }
 

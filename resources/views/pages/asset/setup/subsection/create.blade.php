@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Asset Management - Add Subsection')
+@section('title', 'Asset Management - Add Sub-section')
 
 @push('third_party_stylesheets')
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
@@ -13,10 +13,10 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="float-left">
-                            <h4>Add new subsection</h4>
+                            <h4>Add new sub-section</h4>
                         </span>
                         <span class="float-right">
-                            @if (Auth::user()->can('subsection view') || Auth::user()->role->id == 1)
+                            @if (Auth::user()->can('sub-section view') || Auth::user()->role->id == 1)
                                 <a href="{{ route('asset.setup.subsection.index') }}" class="btn btn-info">Back</a>
                             @endif
                         </span>
@@ -41,11 +41,11 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-sm-3" for="name">Subsection Name<span
+                                        <label class="col-sm-3" for="name">Sub-section Name<span
                                                 class="text-danger">*</span></label>
                                         <div class="col-sm-9">
                                             <input class="form-control" type="text" name="name" id="name"
-                                                value="{{ old('name') }}" placeholder="Enter subsection name" required>
+                                                value="{{ old('name') }}" placeholder="Enter sub-section name" required>
                                             @if ($errors->has('name'))
                                                 <span class="text-danger">{{ $errors->first('name') }}</span>
                                             @endif
@@ -56,7 +56,7 @@
                                                 class="text-danger">*</span></label>
                                         <div class="col-sm-9">
                                             <input class="form-control" type="text" name="short_name" id="short_name"
-                                                value="{{ old('short_name') }}" placeholder="Enter subsection short name" required>
+                                                value="{{ old('short_name') }}" placeholder="Enter sub-section short name" required>
                                             @if ($errors->has('short_name'))
                                                 <span class="text-danger">{{ $errors->first('short_name') }}</span>
                                             @endif

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Asset Management - Sub-section')
+@section('title', 'Asset Management - Supplier')
 @push('third_party_stylesheets')
     <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
 @endpush
@@ -11,10 +11,10 @@
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>Sub-section</h4>
+                        <h4>Supplier</h4>
                     </span>
                     <span class="float-right">
-                        @if(Auth::user()->can('add sub-section') || Auth::user()->role->id == 1)<a href="{{ route('asset.setup.subsection.create') }}" class="btn btn-info">Add new sub-section</a>@endif
+                        @if(Auth::user()->can('add asset-supplier') || Auth::user()->role->id == 1)<a href="{{ route('asset.setup.supplier.create') }}" class="btn btn-info">Add new supplier</a>@endif
                     </span>
                 </div>
                 <div class="card-body">
@@ -22,34 +22,36 @@
                         <thead>
                             <tr>
                                 <th>SL.</th>
-                                <th>Department Name</th>
-                                <th>Section Name</th>
-                                <th>Sub-section Name</th>
-                                <th>Short Name</th>
+                                <th>Shop Name</th>
+                                <th>Owner Name</th>
+                                <th>Phone</th>
+                                <th>Adress</th>
+                                <th>Details</th>
                                 <th>Created By</th>
                                 <th>Created At</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                                @foreach ( $subsections as $key=>$subsection)
+                                @foreach ( $suppliers as $key=>$supplier)
                                    <tr>
                                     <td>{{$key+1}}</td>
-                                    <td>{{$subsection->section->department->department_name}}</td>
-                                    <td>{{$subsection->section->name}}</td>
-                                    <td>{{$subsection->name}}</td>
-                                    <td>{{$subsection->short_name}}</td>
-                                    <td>{{$subsection->created_user->name}}</td>
-                                    <td>{{date('d-m-Y',strtotime($subsection->created_user->created_at))}}</td>
+                                    <td>{{$supplier->shop_name}}</td>
+                                    <td>{{$supplier->owner_name}}</td>
+                                    <td>{{$supplier->phone}}</td>
+                                    <td>{!! $supplier->address !!}</td>
+                                    <td>{!! $supplier->details ?? '' !!}</td>
+                                    <td>{{$supplier->created_user->name}}</td>
+                                    <td>{{date('d-m-Y',strtotime($supplier->created_user->created_at))}}</td>
                                     <td>
                                         <div class="btn-group">
                                             <a href="javascript:void(0)" class="btn btn-info btnView"
-                                            data-id="{{ $subsection->id }}"><i class="fas fa-eye"></i></a>
-                                            @if(Auth::user()->can('edit sub-section') || Auth::user()->role->id == 1)
-                                                <a href="{{ route('asset.setup.subsection.edit', $subsection->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                            data-id="{{ $supplier->id }}"><i class="fas fa-eye"></i></a>
+                                            @if(Auth::user()->can('edit supplier') || Auth::user()->role->id == 1)
+                                                <a href="{{ route('asset.setup.supplier.edit', $supplier->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                             @endif
-                                            @if(Auth::user()->can('delete sub-section') || Auth::user()->role->id == 1)
-                                                <a href="{{ route('asset.setup.subsection.destroy', $subsection->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
+                                            @if(Auth::user()->can('delete supplier') || Auth::user()->role->id == 1)
+                                                <a href="{{ route('asset.setup.supplier.destroy', $supplier->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
                                             @endif
                                         </div>
                                     </td>
@@ -79,21 +81,33 @@
                         <table class="table table-borderless table-striped">
                             <tbody id="view-tbody">
                                 <tr>
-                                    <td>Section Name</td>
+                                    <td>Shop Name</td>
                                     <td>
-                                        <span id="view-section"></span>
+                                        <span id="view-shop_name"></span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Sub-section Name</td>
+                                    <td>Owner Name</td>
                                     <td>
-                                        <span id="view-name"></span>
+                                        <span id="view-owner_name"></span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Short Name</td>
+                                    <td>Phone</td>
                                     <td>
-                                        <span id="view-short-name"></span>
+                                        <span id="view-phone"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Address</td>
+                                    <td>
+                                        <span id="view-address"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Details</td>
+                                    <td>
+                                        <span id="view-details"></span>
                                     </td>
                                 </tr>
 
@@ -144,7 +158,7 @@
             dom: 'Bfrtip'
             , buttons: [{
                     extend: 'pdfHtml5'
-                    , title: 'Sub-section'
+                    , title: 'Suppliers'
                     , download: 'open'
                     , orientation: 'potrait'
                     , pagesize: 'LETTER'
@@ -163,17 +177,17 @@
             //view-modal
             $('.btnView').click( function(){
                 if($(this).data('id') != null || $(this).data('id') != ''){
-                    let url = ("{{ route('asset.setup.subsection.show', ['id']) }}");
+                    let url = ("{{ route('asset.setup.supplier.show', ['id']) }}");
                     let _url = url.replace('id', $(this).data('id'));
                     $.ajax({
                         url: _url,
                         method: "GET",
                         success: function (response) {
-                            $('#view-img').html(response.img);
-                            $('#view-section').html(response.section.name);
-                            $('#view-name').html(response.name);
-                            $('#view-short-name').html(response.short_name);
-                            $('#view-status').html(response.status);
+                            $('#view-shop_name').html(response.shop_name);
+                            $('#view-owner_name').html(response.owner_name);
+                            $('#view-phone').html(response.phone);
+                            $('#view-address').html(response.address);
+                            $('#view-details').html(response.details);
                             $('#view-createdAt').html(response.created_at ? new Date(response.created_at) : '');
                             $('#view-createdBy').html(response.created_user ? response.created_user.name : 'system');
                             $('#view-updatedAt').html(response.updated_at ? new Date(response.updated_at) : '');
