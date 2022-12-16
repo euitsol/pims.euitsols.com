@@ -61,7 +61,7 @@ class DistrictController extends Controller
         $this->check_access('add district');
         $this->validate($request, [
             'name' => 'required|unique:districts,name|string|max:255',
-            'division_name' => 'required||exists:divisions,id',
+            'division_name' => 'required|exists:divisions,id',
         ]);
 
         $district = new District;

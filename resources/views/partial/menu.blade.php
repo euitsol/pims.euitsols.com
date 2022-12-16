@@ -216,6 +216,15 @@
                     </a>
                 </li>
             @endif
+
+                <li class="nav-item">
+                    <a href="{{ route('examtypes.index') }}"
+                        class="nav-link {{ Request::is('setup/exam-type/*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-minus"></i>
+                        <p>Exam Type</p>
+                    </a>
+                </li>
+
             @if (Auth::user()->can('view group') || Auth::user()->role->id == 1)
                 <li class="nav-item">
                     <a href="{{ route('group.index') }}"

@@ -42,6 +42,7 @@ use App\Http\Controllers\library\CategoryController;
 use App\Http\Controllers\library\LibraryReportController;
 use App\Http\Controllers\library\LibraryMemberController;
 use App\Http\Controllers\setup\RoutineController;
+use App\Http\Controllers\setup\ExamTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -387,6 +388,18 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::get('/show/{id}', 'show')->name('show');
             Route::get('/name-check', 'nameCheck')->name('name_check');
         });
+
+        //Exam Types
+        Route::controller(ExamTypeController::class)->prefix('exam-type')->name('examtypes.')->group( function () {
+            Route::get('/view', 'index')->name('index');
+            Route::get('/add', 'create')->name('create');
+            Route::post('/add-store', 'store')->name('store');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::post('/edit-store', 'update')->name('update');
+            Route::get('/delete/{id}', 'destroy')->name('destroy');
+            Route::get('/show/{id}', 'show')->name('show');
+        });
+
     });
 
     // Teacher Module
