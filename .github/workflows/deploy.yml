@@ -36,5 +36,4 @@ jobs:
             cd www/pims.euitsols.com
             git reset --hard
             git pull
-            composer update --no-scripts
 
