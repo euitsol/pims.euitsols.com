@@ -23,7 +23,6 @@ jobs:
     - run: chmod -R a+x node_modules
     - run: npm install
     - run: composer update --no-scripts
-    - run: php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations"
 
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
