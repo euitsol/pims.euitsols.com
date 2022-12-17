@@ -3,20 +3,15 @@
 namespace App\Http\Controllers\asset;
 
 use App\Http\Controllers\Controller;
-use App\Models\AssetBrand;
-use App\Models\AssetCategory;
-use App\Models\AssetUnit;
-use App\Models\Category;
+use App\Models\AssignProduct;
 use App\Models\Department;
 use App\Models\MoreProduct;
 use App\Models\Product;
-use App\Models\Subcategory;
-use App\Models\Supplier;
-use Carbon\Carbon;
+use App\Models\Section;
+use App\Models\Subsection;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class ProductController extends Controller
+class AssignProductController extends Controller
 {
     public function __construct()
     {
@@ -26,7 +21,10 @@ class ProductController extends Controller
     public function index()
     {
         $n['products'] = Product::where('deleted_at', null)->latest()->get();
-        return view('pages.asset.product.index', $n);
+        $n['departments'] = Department::where('deleted_at', null)->latest()->get();
+        $n['sections'] = Section::where('deleted_at', null)->latest()->get();
+        $n['subsections'] = Subsection::where('deleted_at', null)->latest()->get();
+        return view('pages.asset.assign-product.index', $n);
     }
 
     public function create()
@@ -193,7 +191,7 @@ class ProductController extends Controller
         $insert->total_price = $req->total_price;
         $insert->created_by = Auth::user()->id;
         $insert->save();
-        
+
         //update products table
         $update = Product::find($req->product_id);
         $update->qty =  $update->qty + $req->qty;
@@ -202,5 +200,10 @@ class ProductController extends Controller
 
         $this->message('success', 'Product added successfully');
         return redirect()->route('asset.product.index');
+    }
+
+    public function productFetch(Request $req){
+        $product = Product::where('department_id',$req->department_id)->get();
+        return response()->json($product);
     }
 }

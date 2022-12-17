@@ -3,6 +3,7 @@
 use App\Http\Controllers\asset\AssetBrandController;
 use App\Http\Controllers\asset\AssetCategoryController;
 use App\Http\Controllers\asset\AssetUnitController;
+use App\Http\Controllers\asset\AssignProductController;
 use App\Http\Controllers\asset\ProductController;
 use App\Http\Controllers\asset\SectionController;
 use App\Http\Controllers\asset\SubcategoryController;
@@ -132,6 +133,9 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
 
     // Category fetch according to department in library
     Route::get('library/category-fetch/{id}',[AssignBookController::class,'categoryFetch'])->name('library.category_fetch');
+
+    // Product fetch according to department in Assign Product
+    Route::get('asset/product-fetch',[AssignProductController::class,'productFetch'])->name('asset.product_fetch.ajax');
 
     //End All Common Ajax here
 
@@ -605,6 +609,20 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::get('/destroy/{id}','destroy')->name('destroy');
             Route::get('/subcategory/fetch','subcatFetch')->name('subcat.fetch');
             Route::get('/add/more/{id}','moreProduct')->name('add.more');
+            Route::post('/add/more-store','moreProductStore')->name('add.more.store');
+        });
+        //Assign Product
+        Route::controller(AssignProductController::class)->prefix('assign-product')->name('assign.product.')->group(function(){
+            Route::get('/index','index')->name('index'); //asset.assign.product.index
+            Route::get('/create','create')->name('create');
+            Route::post('/store','store')->name('store');
+            Route::get('/edit/{id}','edit')->name('edit');
+            Route::post('/update','update')->name('update');
+            Route::get('/show/{id}','show')->name('show');
+            Route::get('/destroy/{id}','destroy')->name('destroy');
+            Route::get('/subcategory/fetch','subcatFetch')->name('subcat.fetch');
+            Route::get('/add/more/{id}','moreProduct')->name('add.more');
+            Route::post('/add/more-store','moreProductStore')->name('add.more.store');
         });
     });
 

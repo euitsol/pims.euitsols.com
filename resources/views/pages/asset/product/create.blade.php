@@ -5,6 +5,13 @@
 @push('third_party_stylesheets')
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 @endpush
+@push('page_css')
+    <style>
+        .ck-editor__editable{
+            height: 174px;
+    }
+    </style>
+@endpush
 
 @section('content')
     <div class="container-fluid">
@@ -27,7 +34,7 @@
             <div class="col-md-10 col-lg-12">
                 <form action="{{ route('asset.product.store') }}" method="POST" class="form-horizontal">
                     @csrf
-                    {{-- Product details  --}}
+                    {{--All product details Product details  --}}
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
@@ -45,6 +52,21 @@
                                             </div>
                                         </div>
 
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="qty">Quantity<span class="text-danger">*</span></label>
+
+                                                <input class="form-control qty" type="number" name="qty" id="qty" min="0"
+                                                    value="{{ old('qty') }}" placeholder="Enter product's quantity"
+                                                    required>
+                                                @if ($errors->has('qty'))
+                                                    <span class="text-danger">{{ $errors->first('qty') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="unit_id">Unit<span class="text-danger">*</span></label>
@@ -52,18 +74,6 @@
                                                     <option value=''>Select unit</option>
                                                     @foreach ($units as $unit)
                                                         <option value="{{ $unit->id }}" @if($unit->id == old('unit_id')) selected @endif>{{ $unit->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="brand_id">Brand<span class="text-danger">*</span></label>
-                                                <select name="brand_id" id="brand_id" class="form-control" required>
-                                                    <option value=''>Select brand</option>
-                                                    @foreach ($brands as $brand)
-                                                        <option value="{{ $brand->id }}" @if($brand->id == old('brand_id')) selected @endif>{{ $brand->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -84,40 +94,35 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="subcat_id">Subcategory<span class="text-danger">*</span></label>
-
                                                 <select name="subcat_id" id="subcat_id" class="form-control" required>
                                                     <option value=''>Select subcategory</option>
-                                                    {{-- @foreach ($subcategories as $subcategory)
-                                                    <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
-                                                @endforeach --}}
                                                 </select>
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="qty">Quantity<span class="text-danger">*</span></label>
-
-                                                <input class="form-control qty" type="number" name="qty" id="qty" min="0"
-                                                    value="{{ old('qty') }}" placeholder="Enter product's quantity"
-                                                    required>
-                                                @if ($errors->has('qty'))
-                                                    <span class="text-danger">{{ $errors->first('qty') }}</span>
-                                                @endif
+                                                <label for="brand_id">Brand<span class="text-danger">*</span></label>
+                                                <select name="brand_id" id="brand_id" class="form-control" required>
+                                                    <option value=''>Select brand</option>
+                                                    @foreach ($brands as $brand)
+                                                        <option value="{{ $brand->id }}" @if($brand->id == old('brand_id')) selected @endif>{{ $brand->name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
 
                                         <div class="col-md-8">
                                             <div class="form-group">
                                                 <label for="description">Description</label>
-                                                <textarea name="description" id="description" cols="30" rows="5" class="form-control"></textarea>
+                                                <textarea name="description" id="description" cols="30" rows="9" class="form-control"></textarea>
                                                 @if ($errors->has('description'))
                                                     <span class="text-danger">{{ $errors->first('description') }}</span>
                                                 @endif
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4 pl-3 mt-3">
+                                        <div class="col-md-4 pl-3">
                                             <div class="row ">
                                                 <div class="form-group w-100">
                                                     <label for="img">Image</label>
@@ -138,6 +143,22 @@
                                                     @endif
                                                 </div>
                                             </div>
+                                            <div class="row ">
+                                                <div class="form-group w-100">
+                                                    <label for="supplier_id">Supplier</label>
+                                                    <select name="supplier_id" id="supplier_id">
+                                                        <option value="">Select Supplier</option>
+                                                        @foreach ($suppliers as $supplier )
+                                                            <option value="{{$supplier->id}}">{{$supplier->shop_name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    {{-- <input class="form-control" type="number"min="0" step="0.1" name="supplier_id" id="supplier_id" placeholder="Enter supplier_id year"
+                                                        value="{{ old('supplier_id') }}"> --}}
+                                                    @if ($errors->has('supplier_id'))
+                                                        <span class="text-danger">{{ $errors->first('supplier_id') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </div>
 
                                     </div>
@@ -149,7 +170,6 @@
 
                     {{-- Department name  --}}
                     <div class="card">
-                        @csrf
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-11 m-auto">

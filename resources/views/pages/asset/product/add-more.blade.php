@@ -9,67 +9,110 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-
-
-
             <div class="col-md-10 col-lg-12">
-                <form action="{{ route('asset.product.store') }}" method="POST" class="form-horizontal">
-                    @csrf
-                    {{-- Product details  --}}
-                    <div class="row">
-                        <div class="col-md-3 mr-auto">
-                            <span>Total info show</span>
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-sm">
+                {{-- Product details  --}}
+                @if($errors)
+                    @foreach ($errors->all() as $error)
+                        <li>{{$error}}</li>
+                    @endforeach
+                @endif
+                <div class="row">
+                    <div class="col-md-3 mr-auto">
+                        <span>Total info show</span>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-sm">
+                                        <tbody>
+                                            <tr>
+                                                <th>Department</th>
+                                                <td>{{ $product->department->department_name ?? 'All Department' }}
+                                                </td>
+                                            </tr>
 
-                                            <tbody>
-                                                <tr>
-                                                    <th>Product Name</th>
-                                                    <td>{{ $product->name }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Quantity</th>
-                                                    <td>{{ $product->qty }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Unit</th>
-                                                    <td>{{ $product->unit->name }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Total Price</th>
-                                                    <td>{{ $product->total_price }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Brand</th>
-                                                    <td>{{ $product->brand->name }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Category</th>
-                                                    <td>{{ $product->category->name }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Department</th>
-                                                    <td>{{ $product->department->department_name ?? 'All Department' }}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                            <tr>
+                                                <th>Category</th>
+                                                <td>{{ $product->category->name }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <th>Sub-category</th>
+                                                <td>{{ $product->subcategory->name }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <th>Brand</th>
+                                                <td>{{ $product->brand->name }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <th>Total Quantity</th>
+                                                <td>{{ $product->qty }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <th>Unit</th>
+                                                <td>{{ $product->unit->name }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <th>Total Price</th>
+                                                <td>{{ $product->total_price }}</td>
+                                            </tr>
+                                            {{-- <tr>
+                                                <th>Product Name</th>
+                                                <td>{{ $product->name }}</td>
+                                            </tr> --}}
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-md-8">
-
-                        </div>
-
                     </div>
 
-                    <form action="">
-                        @csrf
-                        <div class="row w-100 mb-2">
+                    <div class="col-md-8">
+                        <span>Details</span>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Product Name</th>
+                                                <th>Quantity</th>
+                                                <th>Warranty</th>
+                                                <th>Total Price</th>
+                                                <th>Supplier</th>
+                                                <th>Stored at</th>
+                                                <th>Stored by</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($more_products as $more_product)
+                                                <tr>
+                                                    <td>{{ $more_product->product->name }}</td>
+                                                    <td>{{ $more_product->quantity }}</td>
+                                                    <td>{{ $more_product->warranty }}</td>
+                                                    <td>{{ $more_product->total_price }}</td>
+                                                    <td>{{ $more_product->supplier->shop_name }}</td>
+                                                    <td>{{ date('d-m-Y', strtotime($more_product->created_at)) }}</td>
+                                                    <td>{{ $more_product->created_user->name }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <form action="{{ route('asset.product.add.more.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <div class="card">
+                        <div class="card-header">
                             <div class="col-md-12">
                                 <span class="float-left ml-2">
                                     <h4>Add more product</h4>
@@ -82,84 +125,89 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-11 m-auto justify-content-center">
-                                        <div class="row">
-                                            <div class="col-md-10">
-                                                <div class="form-group">
-                                                    <label for="qty">Quantity<span class="text-danger">*</span></label>
-                                                    <input class="form-control qty" type="number" name="qty"
-                                                        id="qty" min="0" value="{{ old('qty') }}"
-                                                        placeholder="Enter product's quantity" required>
-                                                    @if ($errors->has('qty'))
-                                                        <span class="text-danger">{{ $errors->first('qty') }}</span>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <div class="form-group">
-                                                    <label for="warranty">Warranty</label>
-                                                    <input class="form-control" type="number"min="0" step="0.1"
-                                                        name="warranty" id="warranty" placeholder="Enter warranty year"
-                                                        value="{{ old('warranty') }}">
-                                                    @if ($errors->has('warranty'))
-                                                        <span class="text-danger">{{ $errors->first('warranty') }}</span>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <div class="form-group">
-                                                    <label for="total_price">Total Price<span
-                                                            class="text-danger">*</span></label>
-                                                    <input class="form-control total-price" type="number" min="0"
-                                                        name="total_price" id="total_price"
-                                                        value="{{ old('total_price') }}"
-                                                        placeholder="Enter product's total price" required>
-                                                    @if ($errors->has('total_price'))
-                                                        <span
-                                                            class="text-danger">{{ $errors->first('total_price') }}</span>
-                                                    @endif
-                                                </div>
-                                            </div>
 
-                                            <div class="col-md-10">
-                                                <div class="form-group">
-                                                    <label for="per_unit_price">Price(per unit)<span
-                                                            class="text-danger">*</span></label>
-                                                    <input class="form-control" type="text" name="per_unit_price"
-                                                        id="per_unit_price" value="{{ old('per_unit_price') }}"
-                                                        placeholder="Per unit price" readonly>
-                                                    @if ($errors->has('per_unit_price'))
-                                                        <span
-                                                            class="text-danger">{{ $errors->first('per_unit_price') }}</span>
-                                                    @endif
-                                                </div>
-                                            </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-11 m-auto justify-content-center">
+                                    <div class="row">
 
-                                            <div class="col-md-10">
-                                                <div class="form-group">
-                                                    <label for="supplier">Supplier<span class="text-danger">*</span></label>
-                                                    <select name="supplier" class="form-control" id="supplier">
-                                                        <option value="">Select Supplier</option>
-                                                    </select>
-                                                    @if ($errors->has('supplier'))
-                                                        <span class="text-danger">{{ $errors->first('supplier') }}</span>
-                                                    @endif
-                                                </div>
+                                        <div class="col-md-10">
+                                            <div class="form-group">
+                                                <label for="qty">Quantity<span class="text-danger">*</span></label>
+                                                <input class="form-control qty" type="number" name="qty" id="qty"
+                                                    min="0" value="{{ old('qty') }}"
+                                                    placeholder="Enter product's quantity" required>
+                                                @if ($errors->has('qty'))
+                                                    <span class="text-danger">{{ $errors->first('qty') }}</span>
+                                                @endif
                                             </div>
                                         </div>
+
+                                        <div class="col-md-10">
+                                            <div class="form-group">
+                                                <label for="warranty">Warranty</label>
+                                                <input class="form-control" type="number"min="0" step="0.1"
+                                                    name="warranty" id="warranty" placeholder="Enter warranty year"
+                                                    value="{{ old('warranty') }}" required>
+                                                @if ($errors->has('warranty'))
+                                                    <span class="text-danger">{{ $errors->first('warranty') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-10">
+                                            <div class="form-group">
+                                                <label for="total_price">Total Price<span
+                                                        class="text-danger">*</span></label>
+                                                <input class="form-control total-price" type="number" min="0"
+                                                    name="total_price" id="total_price" value="{{ old('total_price') }}"
+                                                    placeholder="Enter product's total price" required>
+                                                @if ($errors->has('total_price'))
+                                                    <span class="text-danger">{{ $errors->first('total_price') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-10">
+                                            <div class="form-group">
+                                                <label for="per_unit_price">Price(per unit)<span
+                                                        class="text-danger">*</span></label>
+                                                <input class="form-control" type="text" name="per_unit_price"
+                                                    id="per_unit_price" value="{{ old('per_unit_price') }}"
+                                                    placeholder="Per unit price" readonly>
+                                                @if ($errors->has('per_unit_price'))
+                                                    <span class="text-danger">{{ $errors->first('per_unit_price') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-10">
+                                            <div class="form-group">
+                                                <label for="supplier_id">Supplier<span class="text-danger">*</span></label>
+                                                <select name="supplier_id" class="form-control" id="supplier_id">
+                                                    <option value="">Select Supplier</option>
+                                                    @foreach ($suppliers as $supplier)
+                                                        <option value="{{ $supplier->id }}">{{ $supplier->shop_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                @if ($errors->has('supplier_id'))
+                                                    <span class="text-danger">{{ $errors->first('supplier_id') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="col-md-12">
-                            <button class="btn btn-primary w-100">Add</button>
-                        </div>
+                    <div class="col-md-12">
+                        <button class="btn btn-primary w-100">Add</button>
+                    </div>
 
-                    </form>
+                </form>
             </div>
         </div>
     </div>
