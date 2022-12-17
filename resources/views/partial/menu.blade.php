@@ -530,3 +530,25 @@
 
 @endif
 
+    <li class="nav-item {{Request::is('exam-management/*') ? 'menu-open' : ''}}">
+        <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-users"></i>
+            <p>
+                Exam Management
+                <i class="fas fa-angle-left right"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+
+                <li class="nav-item">
+                    <a href="{{ route('em.create.index') }}" class="nav-link {{ Request::is('exam-management/create-exam/*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-minus"></i>
+                        <p>Create Exam</p>
+                    </a>
+                </li>
+
+        </ul>
+    </li>
+
+
+

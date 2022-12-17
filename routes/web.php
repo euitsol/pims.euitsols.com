@@ -43,6 +43,7 @@ use App\Http\Controllers\library\LibraryReportController;
 use App\Http\Controllers\library\LibraryMemberController;
 use App\Http\Controllers\setup\RoutineController;
 use App\Http\Controllers\setup\ExamTypeController;
+use App\Http\Controllers\ExamManagementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -560,6 +561,24 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             });
 
         });
+    });
+
+
+    //Exam Management
+    Route::prefix('exam-management')->name('em.')->group(function(){
+
+        //Create Exam
+        Route::controller(ExamManagementController::class)->prefix('create-exam')->name('create.')->group(function(){
+            Route::get('/index','index')->name('index');
+            Route::post('/search','search')->name('search');
+            Route::get('/show/{id}','show')->name('show');
+            Route::get('/add/{id}','add')->name('add');
+            Route::post('/store','store')->name('store');
+            Route::get('/edit/{id}','edit')->name('edit');
+            Route::post('/update','update')->name('update');
+            Route::get('/destroy/{id}','destroy')->name('destroy');
+        });
+
     });
 
 });
