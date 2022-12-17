@@ -547,7 +547,7 @@
             </li>
             <li class="nav-item">
                 <a href="{{route('asset.assign.product.index')}}" class="nav-link {{Request::is('asset/assign-product/*') ? 'active' : ''}}">
-                    <i class="nav-icon fas fa-cart-plus"></i>
+                    <i class="fas fa-people-arrows"></i>
                         Assign Product
                     </a>
             </li>
