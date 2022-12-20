@@ -128,8 +128,13 @@
                                         <div class="row">
                                             <div class="form-group w-100">
                                                 <label for="warranty">Warranty</label>
-                                                <input class="form-control" type="number" min="0" step="0.1" name="warranty" id="warranty"  placeholder="Enter warranty year"
+                                                <div class="input-group">
+                                                    <input class="form-control" type="number" min="0" step="0.1" name="warranty" id="warranty"  placeholder="Enter warranty year"
                                                     value="{{ $product->warranty }}">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">Year</span>
+                                                    </div>
+                                                </div>
                                                 @if ($errors->has('warranty'))
                                                     <span class="text-danger">{{ $errors->first('warranty') }}</span>
                                                 @endif
@@ -175,7 +180,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="total_price">Total Price<span
+                                            <label for="total_price">Total Price    (tk)<span
                                                     class="text-danger">*</span></label>
                                             <input class="form-control" type="number" min="0" name="total_price"
                                                 id="total_price" value="{{ $product->total_price }}"

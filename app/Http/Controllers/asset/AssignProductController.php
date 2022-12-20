@@ -20,14 +20,24 @@ class AssignProductController extends Controller
 
     public function index()
     {
-        $n['products'] = Product::where('deleted_at', null)->latest()->get();
+        // $model = "Section";
+        // $product = call_user_func(array('\\App\\Models\\'.$model,  "with"),['created_user']);
+        // $product = $product->get();
+        // $arr = ['department_id' => 1];
+        // foreach($arr as $key => $val){
+        //     $product = $product->where($key,$val);
+        // }
+        // $product = $product->where('deleted_by',null);
+        // dd($product);
         $n['departments'] = Department::where('deleted_at', null)->latest()->get();
         $n['sections'] = Section::where('deleted_at', null)->latest()->get();
         $n['subsections'] = Subsection::where('deleted_at', null)->latest()->get();
+        $n['categories'] = Subsection::where('deleted_at', null)->latest()->get();
+        $n['subcategories'] = Subsection::where('deleted_at', null)->latest()->get();
         return view('pages.asset.assign-product.index', $n);
     }
 
-    public function create()
+    public function create(Request $req)
     {
         $n['categories'] = AssetCategory::where('deleted_at', null)->latest()->get();
         $n['brands'] = AssetBrand::where('deleted_at', null)->latest()->get();
@@ -203,7 +213,15 @@ class AssignProductController extends Controller
     }
 
     public function productFetch(Request $req){
-        $product = Product::where('department_id',$req->department_id)->get();
+
+        $product = call_user_func(array('\\App\\Models\\'.$req->model,  "with"),$req->with_arr);
+        $product = $product->get();
+        $product = $product->where('deleted_by',null);
+
+        foreach($req->arr as $key => $val){
+            $val = (int)$val;
+            $product = $product->where($key,$val);
+        }
         return response()->json($product);
     }
 }

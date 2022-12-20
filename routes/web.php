@@ -614,7 +614,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
         //Assign Product
         Route::controller(AssignProductController::class)->prefix('assign-product')->name('assign.product.')->group(function(){
             Route::get('/index','index')->name('index'); //asset.assign.product.index
-            Route::get('/create','create')->name('create');
+            Route::post('/create','create')->name('create');
             Route::post('/store','store')->name('store');
             Route::get('/edit/{id}','edit')->name('edit');
             Route::post('/update','update')->name('update');

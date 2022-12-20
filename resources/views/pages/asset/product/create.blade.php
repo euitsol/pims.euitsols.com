@@ -136,8 +136,13 @@
                                             <div class="row ">
                                                 <div class="form-group w-100">
                                                     <label for="warranty">Warranty</label>
+                                                   <div class="input-group">
                                                     <input class="form-control" type="number"min="0" step="0.1" name="warranty" id="warranty" placeholder="Enter warranty year"
-                                                        value="{{ old('warranty') }}">
+                                                    value="{{ old('warranty') }}">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">Year</span>
+                                                      </div>
+                                                   </div>
                                                     @if ($errors->has('warranty'))
                                                         <span class="text-danger">{{ $errors->first('warranty') }}</span>
                                                     @endif
@@ -152,8 +157,6 @@
                                                             <option value="{{$supplier->id}}">{{$supplier->shop_name}}</option>
                                                         @endforeach
                                                     </select>
-                                                    {{-- <input class="form-control" type="number"min="0" step="0.1" name="supplier_id" id="supplier_id" placeholder="Enter supplier_id year"
-                                                        value="{{ old('supplier_id') }}"> --}}
                                                     @if ($errors->has('supplier_id'))
                                                         <span class="text-danger">{{ $errors->first('supplier_id') }}</span>
                                                     @endif
@@ -201,7 +204,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="total_price">Total Price<span
+                                                <label for="total_price">Total Price (tk)<span
                                                         class="text-danger">*</span></label>
                                                 <input class="form-control total-price" type="number" min="0" name="total_price"
                                                     id="total_price" value="{{ old('total_price') }}"

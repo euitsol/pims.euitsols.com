@@ -41,7 +41,7 @@
                                     <td>{{$product->name}}</td>
                                     <td>{{$product->qty}}</td>
                                     <td>{{$product->unit->name}}</td>
-                                    <td>{{$product->total_price}}</td>
+                                    <td>{{ number_format($product->total_price,2) }} tk</td>
                                     <td>{{$product->brand->name}}</td>
                                     <td>{{$product->category->name}}</td>
                                     <td>{{$product->department->department_name ?? 'All Department'}}</td>

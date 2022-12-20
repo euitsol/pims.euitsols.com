@@ -11,9 +11,9 @@
         <div class="row">
             <div class="col-md-10 col-lg-12">
                 {{-- Product details  --}}
-                @if($errors)
+                @if ($errors)
                     @foreach ($errors->all() as $error)
-                        <li>{{$error}}</li>
+                        <li>{{ $error }}</li>
                     @endforeach
                 @endif
                 <div class="row">
@@ -57,7 +57,7 @@
 
                                             <tr>
                                                 <th>Total Price</th>
-                                                <td>{{ $product->total_price }}</td>
+                                                <td>{{number_format($product->total_price, 2)}} tk</td>
                                             </tr>
                                             {{-- <tr>
                                                 <th>Product Name</th>
@@ -93,7 +93,7 @@
                                                     <td>{{ $more_product->product->name }}</td>
                                                     <td>{{ $more_product->quantity }}</td>
                                                     <td>{{ $more_product->warranty }}</td>
-                                                    <td>{{ $more_product->total_price }}</td>
+                                                    <td>{{ number_format($more_product->total_price, 2) }} tk</td>
                                                     <td>{{ $more_product->supplier->shop_name }}</td>
                                                     <td>{{ date('d-m-Y', strtotime($more_product->created_at)) }}</td>
                                                     <td>{{ $more_product->created_user->name }}</td>
@@ -146,9 +146,14 @@
                                         <div class="col-md-10">
                                             <div class="form-group">
                                                 <label for="warranty">Warranty</label>
-                                                <input class="form-control" type="number"min="0" step="0.1"
-                                                    name="warranty" id="warranty" placeholder="Enter warranty year"
-                                                    value="{{ old('warranty') }}" required>
+                                                <div class="input-group">
+                                                    <input class="form-control" type="number"min="0" step="0.1"
+                                                        name="warranty" id="warranty" placeholder="Enter warranty year"
+                                                        value="{{ old('warranty') }}" required>
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">Year</span>
+                                                    </div>
+                                                </div>
                                                 @if ($errors->has('warranty'))
                                                     <span class="text-danger">{{ $errors->first('warranty') }}</span>
                                                 @endif
@@ -157,7 +162,7 @@
 
                                         <div class="col-md-10">
                                             <div class="form-group">
-                                                <label for="total_price">Total Price<span
+                                                <label for="total_price">Total Price (tk)<span
                                                         class="text-danger">*</span></label>
                                                 <input class="form-control total-price" type="number" min="0"
                                                     name="total_price" id="total_price" value="{{ old('total_price') }}"
