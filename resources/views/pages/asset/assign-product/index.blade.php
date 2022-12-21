@@ -17,7 +17,7 @@
                         </span>
                     </div>
                     <div class="card-body">
-                        <form action="" >
+                        <form action="">
                             @csrf
                             <input type="hidden" name="semester_id" value="">
                             <div class="row">
@@ -105,13 +105,12 @@
                                 <table class="table text-center">
                                     <thead>
                                         <tr>
-                                            <th>Department</th>
                                             <th>Category</th>
-                                            <th>Book</th>
-                                            <th>Author's Name</th>
-                                            <th>Bookshelf</th>
+                                            <th>Sub-category</th>
+                                            <th>Product</th>
+                                            <th>Supplier</th>
+                                            <th>Available Product</th>
                                             <th>Quantity</th>
-                                            <th>Return Date</th>
                                             <th class="text-left">
                                                 <span class="btn btn-info plus-btn" id="0">
                                                     <i class="fas fa-plus"></i>
@@ -122,59 +121,47 @@
                                     <tbody id="tbody">
                                         <tr>
                                             <td>
-                                                <select class="form-control department_id0 select select2-hidden-accessible"
-                                                    data-select2-id="select2-data-3-bkyt" tabindex="-1" aria-hidden="true">
-                                                    <option value="" hidden=""
-                                                        data-select2-id="select2-data-5-fceg">Select Department</option>
-                                                    <option value="1"> C.S.E</option>
+                                                <select class="form-control cat-id0" required tabindex="-1" id="cat_id">
+                                                    <option value="" hidden>Select category</option>
+                                                    @foreach ($categories as $category)
+                                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                    @endforeach
                                                 </select>
                                             </td>
 
                                             <td>
-                                                <select class="form-control cat-id0 select2-hidden-accessible"
-                                                    required="" data-select2-id="select2-data-6-13jn" tabindex="-1"
-                                                    aria-hidden="true">
-                                                    <option value="" hidden=""
-                                                        data-select2-id="select2-data-8-nw7d">Select category</option>
+                                                <select class="form-control department_id0 select" tabindex="-1"
+                                                    id="subcat_id">
+                                                    <option value="">Select SubCategory</option>
                                                 </select>
                                             </td>
 
                                             <td>
-                                                <select name="book[0][book_id]"
-                                                    class="form-control book-id book-id0 select2-hidden-accessible"
-                                                    required="" data-select2-id="select2-data-9-rlqw" tabindex="-1"
-                                                    aria-hidden="true">
-                                                    <option value="" hidden=""
-                                                        data-select2-id="select2-data-11-9ubs">Select book</option>
+                                                <select name="book[0][book_id]"class="form-control book-id book-id0"
+                                                    required tabindex="-1" id="product_id">
+                                                    <option value="" hidden>Select Product</option>
                                                 </select>
                                             </td>
 
-                                            <td class="author-name">
-                                                <span class="form-control">
-                                                </span>
+                                            <td>
+                                                <select name="book[0][book_id]" class="form-control book-id book-id0"
+                                                    required tabindex="-1" id="supplier_id">
+                                                    <option value="" hidden>Select Suppelier</option>
+                                                </select>
                                             </td>
-
-                                            <td class="bookshelf">
-                                                <span class="form-control">
-                                                </span>
+                                            <td class="available-qty">
+                                                <input type="number" class="form-control text-center" id="available_qty" readonly>
                                             </td>
-
                                             <td>
                                                 <input type="number" name="book[0][qty]"
                                                     class="form-control qty0 text-center" min="1" max=""
-                                                    value="1" placeholder="Enter quantity" onchange="bookQty(this)">
+                                                    value="1" placeholder="Enter quantity" id="qty">
                                                 <span></span>
                                             </td>
-
-                                            <td>
-                                                <input type="text" name="book[0][return_date]"
-                                                    class="date date0 form-control" placeholder="Enter return date"
-                                                    autocomplete="off" required="">
-                                            </td>
-
                                             <td class="text-left" id="plus_minus_btn">
-                                                <span class="btn btn-sm btn-danger minus-btn0"> <i
-                                                        class="fas fa-minus"></i></span>
+                                                <span class="btn btn-sm btn-danger minus-btn0">
+                                                    <i class="fas fa-minus"></i>
+                                                </span>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -203,25 +190,64 @@
 
             //Section fetch according to Department
             $("#department_id").change(function() {
-                productFetch("section_id",'Section',['department_id'],['created_user','updated_user','deleted_user','department']);
+                ajaxDataFetch(['department_id'],'Section', "section_id", ['created_user', 'updated_user',
+                    'deleted_user', 'department'
+                ]);
             });
-            productFetch("section_id",'Section',['department_id'],['created_user','updated_user','deleted_user','department'],"{{ old('section_id') }}");
-             //End Section fetch according to Department
+            ajaxDataFetch(['department_id'], 'Section', "section_id", ['created_user', 'updated_user', 'deleted_user',
+                'department'
+            ], "{{ old('section_id') }}");
+            //End Section fetch according to Department
 
-            //Sub-section fetch according to Suction
+
+            //Sub-section fetch according to Section
             $("#section_id").change(function() {
-                productFetch("subsection_id",'Subsection',['section_id'],['created_user','updated_user','deleted_user','section']);
+                ajaxDataFetch(['section_id'], 'Subsection', "subsection_id", ['created_user', 'updated_user',
+                    'deleted_user', 'section'
+                ]);
             });
-            productFetch("subsection_id",'Subsection',['section_id'],['created_user','updated_user','deleted_user','section'],"{{ old('subsection_id') }}");
-             //End Sub-section fetch according to Section
+            ajaxDataFetch(['section_id'], 'Subsection', "subsection_id", ['created_user', 'updated_user',
+                'deleted_user', 'section'
+            ], "{{ old('subsection_id') }}");
+            //End Sub-section fetch according to Section
+
+
+
+            //Sub-category fetch according to Category
+            $("#cat_id").change(function() {
+                ajaxDataFetch(['cat_id'], 'Subcategory', "subcat_id", ['created_user', 'updated_user',
+                    'deleted_user', 'category'
+                ]);
+            });
+
+
+
+            //product fetch according to sub-category
+            $("#subcat_id").change(function() {
+                ajaxDataFetch(['subcat_id'], 'Product', "product_id", ['created_user', 'updated_user','deleted_user', 'subcategory']);
+            });
+
+            //Supplier fetch according to Product
+            $("#product_id").change(function(element) {
+                console.log($(this));
+                ajaxDataFetch(['product_id'],'MoreProduct', "supplier_id", ['created_user', 'updated_user',
+                    'deleted_user', 'supplier'
+                ],function(response){
+                    let count = 0;
+                    $.each(response,function(key,item){
+                        count += Number(item.quantity);
+                    })
+                    $('#available_qty').val(count)
+                },null,null,'supplier',null,'shop_name');
+            });
         });
 
 
-        //Product fetch according to  department
-        function productFetch(append_element,model,selectors,with_arr,old_value=null) {
+        //Ajax Data fetch according to  department
+        function ajaxDataFetch(collect_data_arr, model, append_element, with_arr,returnFunc=null, stop, old_value = null, belongs_to, has_many = null, coloum='name') {
             let data_arr = {};
-            for(selector in selectors){
-                data_arr[selectors[selector]] = $('#'+selectors[selector]).val();
+            for (selector in collect_data_arr) {
+                data_arr[collect_data_arr[selector]] = $('#' + collect_data_arr[selector]).val();
             }
             $.ajax({
                 url: "{{ route('asset.product_fetch.ajax') }}",
@@ -230,17 +256,40 @@
                 data: {
                     'arr': data_arr,
                     'model': model,
-                    'with_arr':with_arr,
+                    'with_arr': with_arr,
                 },
                 success: function(response) {
-                    console.log(response);
                     var option = "<option value='' hidden>Select...</option>";
-                    $.each(response, function(index, value) {
-                        option += `
-                        <option value="${value.id}" ${old_value == value.id ? 'selected' : ''}>${value.name}</option>
-                        `;
-                    });
-                    $('#'+append_element).html(option);
+                   if(returnFunc){
+                    returnFunc(response)
+                   }
+                   if(stop != 'stop'){
+                        $.each(response, function(index, value) {
+                            if (value[has_many]) {
+                                $.each(value[has_many], function(has_index, has_value) {
+                                    if (has_value[belongs_to]) {
+                                        option += `<option value="${has_value[belongs_to].id}" ${old_value == has_value[belongs_to].id ? 'selected' : ''}>${has_value[belongs_to][coloum]}</option>`;
+                                    } else {
+                                        option += `<option value="${has_value.id}" ${old_value == has_value.id ? 'selected' : ''}>${has_value[coloum]}</option>`;
+                                    }
+                                });
+                            }
+                            else if(value[belongs_to]){
+                                if(value[belongs_to][has_many]){
+                                    console.log()
+                                    $.each(value[belongs_to][has_many], function(belongs_index,belongs_value) {
+                                        option += `<option value="${belongs_value.id}" ${old_value == belongs_value.id ? 'selected' : ''}>${belongs_value[coloum]}</option>`;
+                                    });
+                                } else {
+                                        option += `<option value="${value[belongs_to].id}" ${old_value == value[belongs_to].id ? 'selected' : ''}>${value[belongs_to][coloum]}</option>`;
+                                    }
+                            }
+                            else {
+                                option += `<option value="${value.id}" ${old_value == value.id ? 'selected' : ''}>${value[coloum]}</option>`;
+                            }
+                        });
+                        $('#' + append_element).html(option);
+                    }
                 }
             });
         }

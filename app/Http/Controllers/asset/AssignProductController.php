@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\asset;
 
 use App\Http\Controllers\Controller;
+use App\Models\AssetCategory;
 use App\Models\AssignProduct;
 use App\Models\Department;
 use App\Models\MoreProduct;
 use App\Models\Product;
 use App\Models\Section;
+use App\Models\Subcategory;
 use App\Models\Subsection;
 use Illuminate\Http\Request;
 
@@ -32,8 +34,8 @@ class AssignProductController extends Controller
         $n['departments'] = Department::where('deleted_at', null)->latest()->get();
         $n['sections'] = Section::where('deleted_at', null)->latest()->get();
         $n['subsections'] = Subsection::where('deleted_at', null)->latest()->get();
-        $n['categories'] = Subsection::where('deleted_at', null)->latest()->get();
-        $n['subcategories'] = Subsection::where('deleted_at', null)->latest()->get();
+        $n['categories'] = AssetCategory::where('deleted_at', null)->latest()->get();
+        $n['subcategories'] = Subcategory::where('deleted_at', null)->latest()->get();
         return view('pages.asset.assign-product.index', $n);
     }
 
