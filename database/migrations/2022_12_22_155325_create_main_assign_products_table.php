@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('assign_products', function (Blueprint $table) {
+        Schema::create('main_assign_products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('department_id');
-            $table->unsignedBigInteger('section_id');
-            $table->unsignedBigInteger('subsection_id');
+            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('cat_id');
+            $table->unsignedBigInteger('subcat_id');
+            $table->unsignedBigInteger('supplier_id');
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
@@ -25,9 +26,11 @@ return new class extends Migration
             $table->unsignedBigInteger('deleted_by')->nullable();
         });
         Schema::table('assign_products', function (Blueprint $table) {
-            $table->foreign('department_id', 'assign_products_department_id')->references('id')->on('departments')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('section_id', 'assign_products_section_id')->references('id')->on('sections')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('subsection_id', 'assign_products_subsection_id')->references('id')->on('subsections')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('product_id', 'assign_products_product_id')->references('id')->on('products')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('cat_id', 'assign_products_cat_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('subcat_id', 'assign_products_subcat_id')->references('id')->on('subcategories')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('subcat_id', 'assign_products_subcat_id')->references('id')->on('subsections')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('supplier_id', 'assign_products_supplier_id')->references('id')->on('subsections')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('created_by', 'assign_products_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('deleted_by', 'assign_products_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('updated_by', 'assign_products_updated')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
@@ -41,6 +44,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('assign_products');
+        Schema::dropIfExists('main_assign_products');
     }
 };

@@ -59,7 +59,7 @@
     @endif
 
      //Ajax Data fetch according to  department
-     function ajaxDataFetch(collect_data_arr, model, append_element, with_arr,returnFunc=null, stop, old_value = null, belongs_to, has_many = null, coloum='name') {
+     function ajaxDataFetch(collect_data_arr, model, with_arr,returnFunc=null, append_element=null, old_value = null, belongs_to, has_many = null, coloum='name') {
             let data_arr = {};
             for (let selector in collect_data_arr) {
                 let value_fatch = collect_data_arr[selector].split('-');
@@ -76,42 +76,45 @@
                     'with_arr': with_arr,
                 },
                 success: function(response) {
+                    if(returnFunc){
+                        returnFunc(response)
+                    }
 
-                   if(response)
-                   {
-
-                        if(returnFunc){
-                            returnFunc(response)
-                        }
-                        if(stop != 'stop'){
-                            let option = "<option value='' hidden>Select...</option>";
-                            $.each(response, function(index, value) {
-                                if (value[has_many]) {
-                                    $.each(value[has_many], function(has_index, has_value) {
-                                        if (has_value[belongs_to]) {
-                                            option += `<option value="${has_value[belongs_to].id}" ${old_value == has_value[belongs_to].id ? 'selected' : ''}>${has_value[belongs_to][coloum]}</option>`;
-                                        } else {
-                                            option += `<option value="${has_value.id}" ${old_value == has_value.id ? 'selected' : ''}>${has_value[coloum]}</option>`;
-                                        }
-                                    });
-                                }
-                                else if(value[belongs_to]){
-                                    if(value[belongs_to][has_many]){
-                                        $.each(value[belongs_to][has_many], function(belongs_index,belongs_value) {
-                                            option += `<option value="${belongs_value.id}" ${old_value == belongs_value.id ? 'selected' : ''}>${belongs_value[coloum]}</option>`;
+                    if(response)
+                    {
+                        if(response.length>0){
+                            if(append_element){
+                                let option = "<option value='' hidden>Select...</option>";
+                                $.each(response, function(index, value) {
+                                    if (value[has_many]) {
+                                        $.each(value[has_many], function(has_index, has_value) {
+                                            if (has_value[belongs_to]) {
+                                                option += `<option value="${has_value[belongs_to].id}" ${old_value == has_value[belongs_to].id ? 'selected' : ''}>${has_value[belongs_to][coloum]}</option>`;
+                                            } else {
+                                                option += `<option value="${has_value.id}" ${old_value == has_value.id ? 'selected' : ''}>${has_value[coloum]}</option>`;
+                                            }
                                         });
-                                    } else {
-                                            option += `<option value="${value[belongs_to].id}" ${old_value == value[belongs_to].id ? 'selected' : ''}>${value[belongs_to][coloum]}</option>`;
-                                        }
-                                }
-                                else {
-                                    option += `<option value="${value.id}" ${old_value == value.id ? 'selected' : ''}>${value[coloum]}</option>`;
-                                }
-                            });
-                            $('#' + append_element).html(option);
+                                    }
+                                    else if(value[belongs_to]){
+                                        if(value[belongs_to][has_many]){
+                                            $.each(value[belongs_to][has_many], function(belongs_index,belongs_value) {
+                                                option += `<option value="${belongs_value.id}" ${old_value == belongs_value.id ? 'selected' : ''}>${belongs_value[coloum]}</option>`;
+                                            });
+                                        } else {
+                                                option += `<option value="${value[belongs_to].id}" ${old_value == value[belongs_to].id ? 'selected' : ''}>${value[belongs_to][coloum]}</option>`;
+                                            }
+                                    }
+                                    else {
+                                        option += `<option value="${value.id}" ${old_value == value.id ? 'selected' : ''}>${value[coloum]}</option>`;
+                                    }
+                                });
+                                $('#' + append_element).html(option);
+                            }
+                        }else{
+                            console.error(`There are no data in your database where model(${model})`);
                         }
                     }else{
-                        console.log('found nothing')
+                        console.error('Please fill up all argument carefully');
                     }
                 }
             });
