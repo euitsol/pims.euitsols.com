@@ -17,7 +17,7 @@
                         </span>
                     </div>
                     <div class="card-body">
-                        <form action="">
+                        <form action="{{route('asset.assign.product.store')}}" method="POST">
                             @csrf
                             <input type="hidden" name="semester_id" value="">
                             <div class="row">
@@ -73,17 +73,6 @@
                                     </div>
                                 </div>
 
-                                {{-- <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="product_id">Product</label>
-                                        <select name="product_id" class="form-control select" id="product_id" required>
-                                            <option value="" hidden>Select Product</option>
-                                        </select>
-                                        @if ($errors->has('product_id'))
-                                            <span class="text-danger">{{ $errors->first('product_id') }}</span>
-                                        @endif
-                                    </div>
-                                </div> --}}
                             </div>
                             <div class="row">
                                 <div class="col-md-12 text-center mt-3">
@@ -93,85 +82,87 @@
                         </form>
                     </div>
 
-                    {{-- //assign product search --}}
-                    <div class="card book-select-card">
-                        <div class="card-header">
-                            <span class="float-left">
-                                <h4>Assign Book</h4>
-                            </span>
-                        </div>
-                        <div class="card-body position-relative">
-                            <div class="table-responsive">
-                                <table class="table text-center">
-                                    <thead>
-                                        <tr>
-                                            <th>Category</th>
-                                            <th>Sub-category</th>
-                                            <th>Product</th>
-                                            <th>Supplier</th>
-                                            <th>Available Product</th>
-                                            <th>Quantity</th>
-                                            <th class="text-left">
-                                                <span class="btn btn-info plus-btn" id="0">
-                                                    <i class="fas fa-plus"></i>
-                                                </span>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tbody">
-                                        <tr>
-                                            <td>
-                                                <select class="form-control cat-id0" required tabindex="-1" id="cat_id">
-                                                    <option value="" hidden>Select category</option>
-                                                    @foreach ($categories as $category)
-                                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
-
-                                            <td>
-                                                <select class="form-control department_id0 select" tabindex="-1"
-                                                    id="subcat_id">
-                                                    <option value="">Select SubCategory</option>
-                                                </select>
-                                            </td>
-
-                                            <td>
-                                                <select name="book[0][book_id]"class="form-control book-id book-id0"
-                                                    required tabindex="-1" id="product_id">
-                                                    <option value="" hidden>Select Product</option>
-                                                </select>
-                                            </td>
-
-                                            <td>
-                                                <select name="book[0][book_id]" class="form-control book-id book-id0"
-                                                    required tabindex="-1" id="supplier_id">
-                                                    <option value="" hidden>Select Suppelier</option>
-                                                </select>
-                                            </td>
-                                            <td class="available-qty">
-                                                <input type="number" class="form-control text-center" id="available_qty" readonly>
-                                            </td>
-                                            <td>
-                                                <input type="number" name="book[0][qty]"
-                                                    class="form-control qty0 text-center" min="1" max=""
-                                                    value="1" placeholder="Enter quantity" id="qty">
-                                                <span></span>
-                                            </td>
-                                            <td class="text-left" id="plus_minus_btn">
-                                                <span class="btn btn-sm btn-danger minus-btn0">
-                                                    <i class="fas fa-minus"></i>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-
-                                </table>
+                    {{-- assign product search --}}
+                    <form action="{{route('asset.assign.product.assign_more')}}" method="POST">
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="float-left">
+                                    <h4>Product Selection</h4>
+                                </span>
                             </div>
+                            <div class="card-body position-relative">
+                                <div class="table-responsive">
+                                    <table class="table text-center">
+                                        <thead>
+                                            <tr>
+                                                <th>Category</th>
+                                                <th>Sub-category</th>
+                                                <th>Product</th>
+                                                <th>Supplier</th>
+                                                <th>Available Product</th>
+                                                <th>Quantity</th>
+                                                <th class="text-left">
+                                                    <span class="btn btn-info plus-btn" id="0">
+                                                        <i class="fas fa-plus"></i>
+                                                    </span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody">
+                                            <tr>
+                                                <td>
+                                                    <select name="product[0][cat_id]" class="form-control" required tabindex="-1" id="cat_id">
+                                                        <option value="" hidden>Select category</option>
+                                                        @foreach ($categories as $category)
+                                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
 
-                            <button type="button" class="btn btn-info w-100 mt-4" id="assign_btn">Assign</button>
+                                                <td>
+                                                    <select name="product[0][subcat_id]" class="form-control" tabindex="-1"
+                                                        id="subcat_id">
+                                                        <option value="">Select SubCategory</option>
+                                                    </select>
+                                                </td>
+
+                                                <td>
+                                                    <select name="product[0][product_id]" class="form-control"
+                                                        required tabindex="-1" id="product_id">
+                                                        <option value="" hidden>Select Product</option>
+                                                    </select>
+                                                </td>
+
+                                                <td>
+                                                    <select name="product[0][supplier_id]" class="form-control"
+                                                        required tabindex="-1" id="supplier_id">
+                                                        <option value="" hidden>Select Suppelier</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control text-center available-qty" id="available_qty" readonly>
+                                                </td>
+                                                <td>
+                                                    <input type="number" name="product[0][qty]"
+                                                        class="form-control qty text-center" min="1" max=""
+                                                        value="1" placeholder="Enter quantity" id="qty">
+                                                    <span></span>
+                                                </td>
+                                                <td class="text-left minus-btn" id="minus_btn">
+                                                    <span class="btn btn-sm btn-danger minus-btn0">
+                                                        <i class="fas fa-minus"></i>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                </div>
+
+                                <button type="button" class="btn btn-info w-100 mt-4" id="assign_btn">Assign</button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -185,7 +176,9 @@
 
 @push('page_scripts')
     <script>
+
         $(document).ready(function() {
+
             $('select').select2();
 
             //Section fetch according to Department
@@ -214,84 +207,138 @@
 
 
             //Sub-category fetch according to Category
-            $("#cat_id").change(function() {
-                ajaxDataFetch(['cat_id'], 'Subcategory', "subcat_id", ['created_user', 'updated_user',
-                    'deleted_user', 'category'
-                ]);
-            });
-
-
+            catFetch("cat_id","subcat_id");
+            function catFetch(selector,appender){
+                $('#'+selector).change(function() {
+                    ajaxDataFetch([selector], 'Subcategory', appender, ['created_user', 'updated_user',
+                        'deleted_user', 'category'
+                    ]);
+                });
+            }
 
             //product fetch according to sub-category
-            $("#subcat_id").change(function() {
-                ajaxDataFetch(['subcat_id'], 'Product', "product_id", ['created_user', 'updated_user','deleted_user', 'subcategory']);
-            });
+            subcatFetch("subcat_id","product_id");
+            function subcatFetch(selector,appender){
+                $('#'+selector).change(function() {
+                    ajaxDataFetch([selector], 'Product', appender, ['created_user', 'updated_user', 'deleted_user', 'subcategory']);
+                });
+            }
+
 
             //Supplier fetch according to Product
-            $("#product_id").change(function(element) {
-                console.log($(this));
-                ajaxDataFetch(['product_id'],'MoreProduct', "supplier_id", ['created_user', 'updated_user',
-                    'deleted_user', 'supplier'
-                ],function(response){
-                    let count = 0;
-                    $.each(response,function(key,item){
-                        count += Number(item.quantity);
-                    })
-                    $('#available_qty').val(count)
-                },null,null,'supplier',null,'shop_name');
-            });
+           productFetch("product_id","supplier_id",'available_qty');
+           function productFetch(selector,appender,qty)
+           {
+                $('#'+selector).change(function(element) {
+                    ajaxDataFetch([selector],'MoreProduct', appender, ['created_user', 'updated_user',
+                        'deleted_user', 'supplier'
+                    ],function(response){
+                        let count = 0;
+                        $.each(response,function(key,item){
+                            count += Number(item.quantity);
+                        })
+                        $('#'+qty).val(count);
+                        $('#'+qty).attr('data-id',count);
+                    },null,null,'supplier',null,'shop_name');
+                });
+           }
+        $('.plus-btn').on('click',function(){
+            appendElement(this)
         });
+        //remove button
+        remove('.minus-btn');
+        function appendElement(click_element,target_elemnent)
+        {
+            let tr_count = $('#tbody').find('tr').length;
+               if(tr_count > 4){
+                toastr.error("You can't add more then five");
+               }else{
 
 
-        //Ajax Data fetch according to  department
-        function ajaxDataFetch(collect_data_arr, model, append_element, with_arr,returnFunc=null, stop, old_value = null, belongs_to, has_many = null, coloum='name') {
-            let data_arr = {};
-            for (selector in collect_data_arr) {
-                data_arr[collect_data_arr[selector]] = $('#' + collect_data_arr[selector]).val();
+                let count = $(click_element).prop('id');
+                let append_element = `
+                                    <tr>
+                                        <td>
+                                            <select name="product[${count}][cat_id]" class="form-control " required tabindex="-1" id="cat_id-${count}">
+                                                <option value="" hidden>Select category</option>
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+
+                                        <td>
+                                            <select  name="product[${count}][subcat_id]" class="form-control" tabindex="-1"
+                                                id="subcat_id-${count}">
+                                                <option value="">Select SubCategory</option>
+                                            </select>
+                                        </td>
+
+                                        <td>
+                                            <select  name="product[${count}][product_id]" class="form-control"
+                                                required tabindex="-1" id="product_id-${count}">
+                                                <option value="" hidden>Select Product</option>
+                                            </select>
+                                        </td>
+
+                                        <td>
+                                            <select  name="product[${count}][supplier_id]" class="form-control"
+                                                required tabindex="-1" id="supplier_id-${count}">
+                                                <option value="" hidden>Select Suppelier</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center available-qty" id="available_qty-${count}" readonly>
+                                        </td>
+                                        <td>
+                                            <input type="number" name="product[${count}][qty]"
+                                                class="form-control qty text-center" min="1" max=""
+                                                value="1" placeholder="Enter quantity" id="qty-${count}">
+                                            <span></span>
+                                        </td>
+                                        <td class="text-left minus-btn" id="minus_btn-${count}">
+                                            <span class="btn btn-sm btn-danger">
+                                                <i class="fas fa-minus"></i>
+                                            </span>
+                                        </td>
+                                    </tr>`;
+
+                $('#tbody').append(append_element);
+                $(click_element).attr('id',Number(count)+1);
+                $('select').select2();
+                catFetch('cat_id-'+count,'subcat_id-'+count);
+                subcatFetch("subcat_id-"+count,"product_id-"+count);
+                productFetch("product_id-"+count,"supplier_id-"+count,'available_qty-'+count);
             }
-            $.ajax({
-                url: "{{ route('asset.product_fetch.ajax') }}",
-                method: 'GET',
-                async: false,
-                data: {
-                    'arr': data_arr,
-                    'model': model,
-                    'with_arr': with_arr,
-                },
-                success: function(response) {
-                    var option = "<option value='' hidden>Select...</option>";
-                   if(returnFunc){
-                    returnFunc(response)
-                   }
-                   if(stop != 'stop'){
-                        $.each(response, function(index, value) {
-                            if (value[has_many]) {
-                                $.each(value[has_many], function(has_index, has_value) {
-                                    if (has_value[belongs_to]) {
-                                        option += `<option value="${has_value[belongs_to].id}" ${old_value == has_value[belongs_to].id ? 'selected' : ''}>${has_value[belongs_to][coloum]}</option>`;
-                                    } else {
-                                        option += `<option value="${has_value.id}" ${old_value == has_value.id ? 'selected' : ''}>${has_value[coloum]}</option>`;
-                                    }
-                                });
-                            }
-                            else if(value[belongs_to]){
-                                if(value[belongs_to][has_many]){
-                                    console.log()
-                                    $.each(value[belongs_to][has_many], function(belongs_index,belongs_value) {
-                                        option += `<option value="${belongs_value.id}" ${old_value == belongs_value.id ? 'selected' : ''}>${belongs_value[coloum]}</option>`;
-                                    });
-                                } else {
-                                        option += `<option value="${value[belongs_to].id}" ${old_value == value[belongs_to].id ? 'selected' : ''}>${value[belongs_to][coloum]}</option>`;
-                                    }
-                            }
-                            else {
-                                option += `<option value="${value.id}" ${old_value == value.id ? 'selected' : ''}>${value[coloum]}</option>`;
-                            }
-                        });
-                        $('#' + append_element).html(option);
-                    }
-                }
+        }
+
+        function remove(click_element){
+            $(document).on('click',click_element,function(){
+                let tr_count = $('#tbody').find('tr').length;
+               if(tr_count < 2){
+                toastr.error('Please, keep one');
+               }else{
+                   $(this).parent().remove();
+               }
             });
         }
+        //available product count
+        $(document).on('keyup change','.qty',function(){
+            let index = $(this).index('.qty');
+            let qty = Number($(this).val());
+            let available_qty_element  = $(`.available-qty:eq(${index})`);
+            let available_qty = Number(available_qty_element.data('id'));
+            $(this).attr('max',available_qty);
+            available_qty = available_qty-qty;
+            $(this).next('span').remove();
+            if(available_qty<0){
+                $(this).after("<span class='text-danger'>You can't add more than available quantity</span>");
+            }
+
+             $(`.available-qty:eq(${index})`).val(available_qty)
+
+        });
+    });
+
     </script>
 @endpush

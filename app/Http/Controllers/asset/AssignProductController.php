@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\Section;
 use App\Models\Subcategory;
 use App\Models\Subsection;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class AssignProductController extends Controller

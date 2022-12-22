@@ -460,7 +460,8 @@ caption {
             });
         });
 
-        function add(This){
+        function add(This)
+        {
             let click_num = Number($(This).attr('id'))+1;
             $(This).attr('id',click_num);
 
