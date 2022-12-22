@@ -218,6 +218,13 @@
             @endif
 
                 <li class="nav-item">
+                    <a href="{{ route('examshifts.index') }}"
+                        class="nav-link {{ Request::is('setup/exam-shift/*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-minus"></i>
+                        <p>Exam Shift</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('examtypes.index') }}"
                         class="nav-link {{ Request::is('setup/exam-type/*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-minus"></i>

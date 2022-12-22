@@ -21,40 +21,28 @@
                         <div class="col-md-8">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Search filter</h3>
+                                    <h3 class="card-title">Mark Distribution</h3>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="shift_id">Shift</label>
-                                                <select name="shift_id" class="form-control select" id="shift_id" required>
-                                                    <option value="" hidden>Select Shift</option>
-                                                    @foreach ($shifts as $shift)
-                                                    <option value="{{ $shift->id }}" @if (old('shift_id')==$shift->id) selected @endif> {{ $shift->name}}</option>
+                                        <table class="table table-striped">
+                                            <tr>
+                                                <th>Subject</th>
+                                                <th>Total Mark</th>
+                                                @foreach ($exam_creates as $exams)
+                                                    <th>{{ $exams->type->name }}</th>
+                                                @endforeach
+                                            </tr>
+                                            @foreach ($subjects as $subject)
+                                                <tr>
+                                                    <td>{{ $subject->subject->name }}</td>
+                                                    <td>{{ $subject->subject->credit->marks }}</td>
+                                                    @foreach ($exam_creates as $exams)
+                                                        <td>{{ calculate_sub_total_mark( $subject->subject->id, $exams->id ) }}</td>
                                                     @endforeach
-                                                </select>
-                                                @if ($errors->has('shift_id'))
-                                                <span class="text-danger">{{ $errors->first('shift_id') }}</span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="group_id">Group</label>
-                                                <select name="group_id" class="form-control select" id="group_id" required>
-                                                    <option value="" hidden>Select Group</option>
-                                                    @foreach ($groups as $group)
-                                                    <option value="{{ $group->id }}" @if (old('group_id')==$group->id) selected @endif>
-                                                        {{ $group->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @if ($errors->has('group_id'))
-                                                <span class="text-danger">{{ $errors->first('group_id') }}</span>
-                                                @endif
-                                            </div>
-                                        </div>
+                                                </tr>
+                                            @endforeach
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -94,7 +82,52 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    The body of the card
+                                    <div class="table table-responsive">
+                                        <table id="table" class="">
+                                            <thead>
+                                                <tr>
+                                                    <th>SL</th>
+                                                    <th>Exam Type</th>
+                                                    <th>Total Mark</th>
+                                                    <th>Duration</th>
+                                                    <th>Fee</th>
+                                                    <th>Created At</th>
+                                                    <th>Created By</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse($exam_creates as $key => $ec)
+
+                                                    <tr>
+                                                        <td>{{ $key + 1 }}</td>
+                                                        <td>{{ $ec->type->name }}</td>
+                                                        <td>{{ $ec->total_mark }}</td>
+                                                        <td>
+                                                            {{ $ec->duration }} {{ $ec->hour_minute_type() }}
+                                                        </td>
+                                                        <td>{{ $ec->total_fee }}</td>
+                                                        <td>{{ date('d-m-Y', strtotime($ec->created_at)) }}</td>
+                                                        <td>{{ $ec->created_user->name ?? 'system' }}</td>
+                                                        <td class="text-middle py-0 align-middle">
+                                                            <div class="btn-group">
+                                                                <a href="{{ route('em.create.view', $ec->id) }}" class="btn btn-info btnView"
+                                                                    data-id="{{ $ec->id }}"><i class="fas fa-eye"></i></a>
+
+                                                                <a href="{{ route('em.create.update', $ec->id) }}"
+                                                                    class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+
+
+                                                                <a href="{{ route('em.create.delete', $ec->id) }}" class="btn btn-danger btnDelete" onclick="alert('Are you sure about this action?')"><i class="fas fa-trash"></i></a>
+
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
