@@ -15,26 +15,30 @@ return new class extends Migration
     {
         Schema::create('main_assign_products', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('assign_product_id');
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('cat_id');
             $table->unsignedBigInteger('subcat_id');
             $table->unsignedBigInteger('supplier_id');
+            $table->integer('qty');
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();
+
+            $table->foreign('assign_product_id', 'main_assign_products_assign_product_id')->references('id')->on('assign_products')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('product_id', 'main_assign_products_product_id')->references('id')->on('products')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('cat_id', 'main_assign_products_cat_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('subcat_id', 'main_assign_products_subcat_id')->references('id')->on('subcategories')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('supplier_id', 'main_assign_products_supplier_id')->references('id')->on('subsections')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('created_by', 'main_assign_products_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('deleted_by', 'main_assign_products_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('updated_by', 'main_assign_products_updated')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
-        Schema::table('assign_products', function (Blueprint $table) {
-            $table->foreign('product_id', 'assign_products_product_id')->references('id')->on('products')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('cat_id', 'assign_products_cat_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('subcat_id', 'assign_products_subcat_id')->references('id')->on('subcategories')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('subcat_id', 'assign_products_subcat_id')->references('id')->on('subsections')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('supplier_id', 'assign_products_supplier_id')->references('id')->on('subsections')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('created_by', 'assign_products_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('deleted_by', 'assign_products_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('updated_by', 'assign_products_updated')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-        });
+        // Schema::table('main_assign_products', function (Blueprint $table) {
+
+        // });
     }
 
     /**

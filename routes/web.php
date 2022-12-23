@@ -611,12 +611,13 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::get('/add/more/{id}','moreProduct')->name('add.more');
             Route::post('/add/more-store','moreProductStore')->name('add.more.store');
         });
+
         //Assign Product
         Route::controller(AssignProductController::class)->prefix('assign-product')->name('assign.product.')->group(function(){
             Route::get('/index','index')->name('index'); //asset.assign.product.index
             // Route::post('/create','create')->name('create');
-            Route::post('/store','store')->name('store');
-            Route::post('/more/store','assignMore')->name('assign_more');
+            Route::get('/store','store')->name('store');
+            Route::post('/main/store','mainStore')->name('main_assign');
             Route::get('/edit/{id}','edit')->name('edit');
             Route::post('/update','update')->name('update');
             Route::get('/show/{id}','show')->name('show');

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AssetCategory;
 use App\Models\AssignProduct;
 use App\Models\Department;
+use App\Models\MainAssignProduct;
 use App\Models\MoreProduct;
 use App\Models\Product;
 use App\Models\Section;
@@ -13,6 +14,7 @@ use App\Models\Subcategory;
 use App\Models\Subsection;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AssignProductController extends Controller
 {
@@ -23,15 +25,6 @@ class AssignProductController extends Controller
 
     public function index()
     {
-        // $model = "Section";
-        // $product = call_user_func(array('\\App\\Models\\'.$model,  "with"),['created_user']);
-        // $product = $product->get();
-        // $arr = ['department_id' => 1];
-        // foreach($arr as $key => $val){
-        //     $product = $product->where($key,$val);
-        // }
-        // $product = $product->where('deleted_by',null);
-        // dd($product);
         $n['departments'] = Department::where('deleted_at', null)->latest()->get();
         $n['sections'] = Section::where('deleted_at', null)->latest()->get();
         $n['subsections'] = Subsection::where('deleted_at', null)->latest()->get();
@@ -52,52 +45,39 @@ class AssignProductController extends Controller
 
     public function store(Request $req)
     {
-        $this->validate($req, [
-            'cat_id' => 'required|exists:asset_categories,id',
-            'subcat_id' => 'required|exists:subcategories,id',
-            'brand_id' => 'required|exists:asset_brands,id',
-            'department_id' => 'nullable|exists:departments,id',
-            'warranty' => 'nullable',
-            'unit_id' => 'required|exists:asset_units,id',
-            'name' => 'required|string',
-            'qty' => 'required|integer',
-            'total_price' => 'integer',
-        ], [], [
-            'cat_id' => 'Category Name',
-            'subcat_id' => 'Subcategory Name',
-            'brand_id' => 'Brand Name',
-            'department_id' => 'Department Name',
-            'unit_id' => 'Unit Name',
-            'name' => 'Product Name',
-            'qty' => 'Quantity',
-        ]);
-        //Store data in products table
-        $insert = new Product();
-        $insert->cat_id = $req->cat_id;
-        $insert->subcat_id = $req->subcat_id;
-        $insert->brand_id = $req->brand_id;
+
+        $insert = new AssignProduct();
         $insert->department_id = $req->department_id;
-        $insert->unit_id = $req->unit_id;
-        $insert->name = $req->name;
-        $insert->qty = $req->qty;
-        $insert->description = $req->description;
-        $insert->warranty = $req->warranty;
-        $insert->total_price = $req->total_price;
+        $insert->section_id = $req->section_id;
+        $insert->subsection_id = $req->subsection_id;
         $insert->created_by = Auth::user()->id;
         $insert->save();
-
-        //Store data in more_products table
-        $insert_more = new MoreProduct();
-        $insert_more->product_id = $insert->id;
-        $insert_more->supplier_id = $req->supplier_id;
-        $insert_more->quantity = $req->qty;
-        $insert_more->warranty = $req->warranty;
-        $insert_more->total_price = $req->total_price;
-        $insert_more->created_by = Auth::user()->id;
-        $insert_more->save();
-        $this->message('success', 'Product added successfully');
-        return redirect()->route('asset.product.index');
+        return response($insert->id);
     }
+
+    public function mainStore(Request $req)
+    {
+        foreach($req->product as $key =>$val){
+           
+            $insert = new MainAssignProduct();
+            $insert->assign_product_id  = $req->assign_product_id ;
+            $insert->product_id = $val['product_id'];
+            $insert->cat_id  = $val['cat_id'] ;
+            $insert->subcat_id   = $val['subcat_id']  ;
+            $insert->supplier_id   = $val['supplier_id']  ;
+            $insert->qty   = $val['qty'] ;
+            //update product quantity
+            $update = Product::find($val['product_id']);
+            $update->qty =  $update->qty - $val['qty'];
+            $update->save();
+
+            $insert->created_by = Auth::user()->id;
+            $insert->save();
+        }
+
+        return redirect()->route('asset.assign.product.index')->with('success','Product successfully assigned');
+    }
+
 
     public function edit($id)
     {

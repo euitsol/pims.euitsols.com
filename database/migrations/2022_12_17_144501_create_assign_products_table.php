@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('assign_products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('department_id');
-            $table->unsignedBigInteger('section_id');
-            $table->unsignedBigInteger('subsection_id');
+            $table->unsignedBigInteger('department_id')->nullable();
+            $table->unsignedBigInteger('section_id')->nullable();
+            $table->unsignedBigInteger('subsection_id')->nullable();
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
