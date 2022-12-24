@@ -9,6 +9,7 @@ use App\Http\Controllers\asset\SectionController;
 use App\Http\Controllers\asset\SubcategoryController;
 use App\Http\Controllers\asset\SubsectionController;
 use App\Http\Controllers\asset\SupplierController;
+use App\Http\Controllers\assetReportController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
@@ -626,11 +627,11 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::get('/add/more/{id}','moreProduct')->name('add.more');
             Route::post('/add/more-store','moreProductStore')->name('add.more.store');
         });
+        
          //Report
-         Route::controller(LibraryReportController::class)->prefix('report')->name('report.')->group(function(){
-            Route::get('/daily/{date}','dailyReport')->name('daily');
-            Route::get('/all','allReport')->name('all');
-            Route::post('/all','allReport')->name('all');
+         Route::controller(assetReportController::class)->prefix('report')->name('report.')->group(function(){
+            Route::get('/main-storage/index','mainStorage')->name('main_storage');
+            Route::post('/main-storage/filter','mainStorageFilter')->name('main_storage.filter');
         });
     });
 

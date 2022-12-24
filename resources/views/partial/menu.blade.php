@@ -555,24 +555,25 @@
                 <li class="nav-item {{Request::is('asset/report/*') ? 'menu-open' : ''}}">
                     <a href="#"
                         class="nav-link">
-                       <i class="nav-icon far fa-circle second-nav-text"></i>
+                       <i class="nav-icon far fa-circle"></i>
                         <p>Report <i class="fas fa-angle-left right"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
                         @if (Auth::user()->can('view daily') || Auth::user()->role->id == 1)
                             <li class="nav-item ">
-                                <a href="{{route('asset.report.daily',[date('Y-m-d')])}}" class="nav-link {{Request::is('asset/report/daily/*') ? 'active' : ''}}">
-                                <i class="nav-icon fas fa-minus third-nav-text"></i>
-                                <p>Daily report</p></a>
+                                <a href="{{route('asset.report.main_storage')}}" class="nav-link {{Request::is('asset/report/main-storage/*') ? 'active' : ''}}">
+                                    <i class="nav-icon fas fa-minus second-nav-text"></i>
+                                    <p>Main Storage</p>
+                                </a>
                             </li>
                         @endif
-                        @if (Auth::user()->can('view daily') || Auth::user()->role->id == 1)
+                        {{-- @if (Auth::user()->can('view daily') || Auth::user()->role->id == 1)
                             <li class="nav-item ">
                                 <a href="{{route('asset.report.all')}}" class="nav-link {{Request::is('asset/report/all/*') ? 'active' : ''}}">
                                 <i class="nav-icon fas fa-minus third-nav-text"></i>
                                 <p>All report</p></a>
                             </li>
-                        @endif
+                        @endif --}}
                     </ul>
                 </li>
             @endif
