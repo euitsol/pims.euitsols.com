@@ -62,7 +62,7 @@ class AssignProductController extends Controller
             'product.*.cat_id' => "required|exists:categories,id",
             'product.*.subcat_id' => "required|exists:subcategories,id",
             'product.*.supplier_id' => "required|exists:suppliers,id",
-            'qty' => "required|string",
+            'product.*.qty' => "required|string",
         ]);
         foreach($req->product as $key =>$val){
 
@@ -73,7 +73,8 @@ class AssignProductController extends Controller
             $insert->subcat_id   = $val['subcat_id']  ;
             $insert->supplier_id   = $val['supplier_id']  ;
             $insert->qty   = $val['qty'] ;
-            //update product quantity
+            
+            //quantity update in products table
             $update = Product::find($val['product_id']);
             $update->qty =  $update->qty - $val['qty'];
             $update->save();

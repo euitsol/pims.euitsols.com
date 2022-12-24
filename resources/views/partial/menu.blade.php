@@ -482,7 +482,7 @@
     <li class="nav-item {{Request::is('asset/*') ? 'menu-open' : ''}}">
         <a href="" class="nav-link">
             <i class="nav-icon fas fa-database"></i>
-            <p>Asset <i class="fas fa-angle-left right"></i></p>
+            <p>Asset Managment<i class="fas fa-angle-left right"></i></p>
         </a>
         <ul class="nav nav-treeview">
             <li class="nav-item {{Request::is('asset/*') ? 'menu-open' : ''}}">

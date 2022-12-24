@@ -4,6 +4,7 @@
 
 @push('third_party_stylesheets')
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/js/DataTable/datatables.min.css') }}">
 @endpush
 
 @section('content')
@@ -17,6 +18,18 @@
                         </span>
                     </div>
                     <div class="card-body">
+
+                        @if($errors)
+                        {{-- @dd($errors) --}}
+                            <ul>
+                                @foreach($errors as $error)
+                                    <li>
+                                        @dd($error)
+                                        {{$error}}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -81,7 +94,7 @@
                 {{-- Previous info  --}}
                 <div class="card" id="info_card">
                     <div class="card-header">
-                        <h3 class="text-header">Previous assigned info</h3>
+                        <h3 class="text-header">Previous assigned Products</h3>
                     </div>
                     <div class="body">
                         <div class="table-response px-4">
@@ -154,6 +167,7 @@
 
 @push('third_party_scripts')
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+    <script src="{{asset('assets/js/DataTable/datatables.min.js')}}"></script>
 @endpush
 
 @push('page_scripts')
@@ -165,7 +179,28 @@
 
         $(document).ready(function() {
             $('select').select2();
-
+           function dataTabl(){
+            $('#info_card table').DataTable({
+            dom: 'Bfrtip'
+            , buttons: [{
+                        extend: 'pdfHtml5'
+                        , title: 'Previous Assigned Product'
+                        , download: 'open'
+                        , orientation: 'potrait'
+                        , pagesize: 'LETTER'
+                        , exportOptions: {
+                            columns: [0, 1, 2, 3, 4]
+                        }
+                    }
+                    , {
+                        extend: 'print'
+                        , exportOptions: {
+                            columns: [0, 1, 2, 3, 4]
+                        }
+                    }, 'pageLength'
+                ]
+            });
+           }
             //Section fetch according to Department
             $("#department_id").change(function() {
                 $('#subsection_id').html("<option value='' selected> Select... </option>");
@@ -206,7 +241,6 @@
                 setTimeout(() => {
 
                     if(response && JSON.stringify(response).length>2){
-                            let element_count = 0;
                             $.each(response,function(index,item){
                                  let append =`
                                         <input type='hidden' name='assign_product_id' value='${item.id}'>
@@ -216,9 +250,7 @@
                                         `;
                                 if(item.main_product.length != 0){
                                     let info_body = ``;
-                                    let appended_count = 0;
                                     $.each(item.main_product,function (index,item) {
-                                        appended_count  = index;
                                         info_body +=`
                                                 <tr>
                                                     <td>${item.category.name}</td>
@@ -231,8 +263,6 @@
                                      });
                                     $('#info_body').html(info_body);
                                     $('#info_card').show(200);
-                                    $('.plus-btn').prop('id',element_count);
-
                                 }
                                     append +=`
                                         <tr>
@@ -285,6 +315,7 @@
                                 $('#loading_card').hide(200);
                                 $('#assign_btn').show(200);
                                 $('.plus-btn').show(200);
+                                $('select').select2();
                             });
 
 
@@ -318,14 +349,14 @@
                                             </td>
 
                                             <td>
-                                                <select name="product[0][product_id]" class="form-control"
+                                                <select name="product[0][product_id]" class="form-control product-id"
                                                     required tabindex="-1">
                                                     <option value="" hidden>Select Product</option>
                                                 </select>
                                             </td>
 
                                             <td>
-                                                <select name="product[0][supplier_id]" class="form-control"
+                                                <select name="product[0][supplier_id]" class="form-control supplier-id"
                                                     required tabindex="-1" id="supplier_id">
                                                     <option value="" hidden>Select Suppelier</option>
                                                 </select>
@@ -351,6 +382,7 @@
                                 $('#loading_card').hide();
                                 $('#assign_btn').show();
                                 $('.plus-btn').show();
+                                $('select').select2();
                             }
                         });
                     }
@@ -404,13 +436,13 @@
                     let append_selector = $(appender).eq(index);
                     let available_qty = $(qty).eq(index);
 
-                    ajaxDataFetch('MoreProduct',{'product_id':product_id}, ['created_user', 'updated_user','deleted_user', 'supplier'],
+                    ajaxDataFetch('MoreProduct',{'product_id':product_id}, ['created_user', 'updated_user','deleted_user', 'supplier','product'],
                     function(response){
                         let count = 0;
                         $.each(response,function(key,item){
-                            count = Number(item.quantity);
+                            count = Number(item.product.qty);
                         })
-                        $(available_qty).val(count);
+                        $(available_qty).val(count-1);
                         $(available_qty).attr('data-id',count);
                     },append_selector,null,'supplier',null,'shop_name');
                 });
@@ -420,13 +452,14 @@
         $('.plus-btn').on('click',function(){
             appendElement(this)
         });
-
         //remove button
         remove('.minus-btn');
+
+
         function appendElement(click_element,target_elemnent)
         {
             let tr_count = $('#tbody').find('tr').length;
-               if(tr_count > 4){
+               if(tr_count > 9){
                 toastr.error("You can't add more then five");
                }else{
                 let count = $(click_element).prop('id');

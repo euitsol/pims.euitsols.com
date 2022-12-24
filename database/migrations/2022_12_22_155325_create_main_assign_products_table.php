@@ -31,7 +31,7 @@ return new class extends Migration
             $table->foreign('product_id', 'main_assign_products_product_id')->references('id')->on('products')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('cat_id', 'main_assign_products_cat_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('subcat_id', 'main_assign_products_subcat_id')->references('id')->on('subcategories')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('supplier_id', 'main_assign_products_supplier_id')->references('id')->on('subsections')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('supplier_id', 'main_assign_products_supplier_id')->references('id')->on('suppliers')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('created_by', 'main_assign_products_created')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('deleted_by', 'main_assign_products_deleted')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('updated_by', 'main_assign_products_updated')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
