@@ -626,6 +626,12 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::get('/add/more/{id}','moreProduct')->name('add.more');
             Route::post('/add/more-store','moreProductStore')->name('add.more.store');
         });
+         //Report
+         Route::controller(LibraryReportController::class)->prefix('report')->name('report.')->group(function(){
+            Route::get('/daily/{date}','dailyReport')->name('daily');
+            Route::get('/all','allReport')->name('all');
+            Route::post('/all','allReport')->name('all');
+        });
     });
 
 });
