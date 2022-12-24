@@ -84,7 +84,7 @@
                         <h3 class="text-header">Previous assigned info</h3>
                     </div>
                     <div class="body">
-                        <div class="table-response">
+                        <div class="table-response px-4">
                             <table class="table table-sm table-striped">
                                 <thead>
                                     <tr>
@@ -168,12 +168,11 @@
 
             //Section fetch according to Department
             $("#department_id").change(function() {
+                $('#subsection_id').html("<option value='' selected> Select... </option>");
                 let department_id = $(this).val();
                 ajaxDataFetch({'department_id':department_id},'Section', ['created_user', 'updated_user',
                     'deleted_user', 'department'
-                ],function(response){
-                    console.dir(response.typeOf);
-                },$('#section_id'));
+                ],null,$('#section_id'));
             });
 
             //Sub-section fetch according to Section
@@ -391,9 +390,20 @@
            {
             $(document).on('change',selector,function(){
                     let product_id  = $(this).val();
+                    let existing_check = 0;
+                    $('.product-id').each(function(){
+                        if($(this).val() == product_id){
+                            existing_check++;
+                        }
+                    });
+                    if(existing_check>1){
+                        toastr.error('You have already selected this product');
+                        return false
+                    }
                     let index = $(this).index(selector);
                     let append_selector = $(appender).eq(index);
                     let available_qty = $(qty).eq(index);
+                    
                     ajaxDataFetch({'product_id':product_id},'MoreProduct', ['created_user', 'updated_user','deleted_user', 'supplier'],
                     function(response){
                         let count = 0;

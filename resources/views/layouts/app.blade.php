@@ -62,61 +62,7 @@
         @endif
 
         //Ajax Data fetch according to  department
-        function ajaxDataFetch(data_obj, model, with_arr, returnFunc = null, append_selector = null, old_value =
-            null, belongs_to, has_many = null, coloum = 'name') {
-
-            $.ajax({
-                url: "{{ route('asset.product_fetch.ajax') }}",
-                method: 'GET',
-                async: false,
-                data: {
-                    'arr': data_obj,
-                    'model': model,
-                    'with_arr': with_arr,
-                },
-                success: function(response) {
-                    if (returnFunc) {
-                        returnFunc(response)
-                    }
-                    let option = "<option value='' hidden>Select...</option>";
-                    if (response) {
-                        if (append_selector) {
-                            $.each(response, function(index, value) {
-                                if (value[has_many]) {
-                                    $.each(value[has_many], function(has_index, has_value) {
-                                        if (has_value[belongs_to]) {
-                                            option +=
-                                                `<option value="${has_value[belongs_to].id}" ${old_value == has_value[belongs_to].id ? 'selected' : ''}>${has_value[belongs_to][coloum]}</option>`;
-                                        } else {
-                                            option +=
-                                                `<option value="${has_value.id}" ${old_value == has_value.id ? 'selected' : ''}>${has_value[coloum]}</option>`;
-                                        }
-                                    });
-                                } else if (value[belongs_to]) {
-                                    if (value[belongs_to][has_many]) {
-                                        $.each(value[belongs_to][has_many], function(belongs_index,
-                                            belongs_value) {
-                                            option +=
-                                                `<option value="${belongs_value.id}" ${old_value == belongs_value.id ? 'selected' : ''}>${belongs_value[coloum]}</option>`;
-                                        });
-                                    } else {
-                                        option +=
-                                            `<option value="${value[belongs_to].id}" ${old_value == value[belongs_to].id ? 'selected' : ''}>${value[belongs_to][coloum]}</option>`;
-                                    }
-                                } else {
-                                    option +=
-                                        `<option value="${value.id}" ${old_value == value.id ? 'selected' : ''}>${value[coloum]}</option>`;
-                                }
-                            });
-                            append_selector.html(option);
-                        }
-
-                    } else {
-                        console.error('Please fill up all argument carefully');
-                    }
-                }
-            });
-        }
+        
     </script>
     @stack('page_scripts')
 </body>

@@ -57,8 +57,15 @@ class AssignProductController extends Controller
 
     public function mainStore(Request $req)
     {
+        $this->validate($req,[
+            'product.*.product_id' => "required|exists:products,id",
+            'product.*.cat_id' => "required|exists:categories,id",
+            'product.*.subcat_id' => "required|exists:subcategories,id",
+            'product.*.supplier_id' => "required|exists:suppliers,id",
+            'qty' => "required|string",
+        ]);
         foreach($req->product as $key =>$val){
-           
+
             $insert = new MainAssignProduct();
             $insert->assign_product_id  = $req->assign_product_id ;
             $insert->product_id = $val['product_id'];
