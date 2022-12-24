@@ -170,7 +170,7 @@
             $("#department_id").change(function() {
                 $('#subsection_id').html("<option value='' selected> Select... </option>");
                 let department_id = $(this).val();
-                ajaxDataFetch({'department_id':department_id},'Section', ['created_user', 'updated_user',
+                ajaxDataFetch('Section',{'department_id':department_id}, ['created_user', 'updated_user',
                     'deleted_user', 'department'
                 ],null,$('#section_id'));
             });
@@ -178,7 +178,7 @@
             //Sub-section fetch according to Section
             $("#section_id").change(function() {
                 let section_id = $(this).val();
-                ajaxDataFetch({'section_id':section_id}, 'Subsection', ['created_user', 'updated_user',
+                ajaxDataFetch('Subsection',{'section_id':section_id}, ['created_user', 'updated_user',
                     'deleted_user', 'section'
                 ],null, $("#subsection_id"));
             });
@@ -202,7 +202,7 @@
                 $('#show_card').hide(200);
                 $('#loading_card').show(200);
 
-                ajaxDataFetch({'department_id':department_id,'section_id':section_id,'subsection_id':subsection_id},'AssignProduct',['mainProduct','mainProduct.product','mainProduct.category','mainProduct.subcategory','mainProduct.supplier'],function(response){
+                ajaxDataFetch('AssignProduct',{'department_id':department_id,'section_id':section_id,'subsection_id':subsection_id},['mainProduct','mainProduct.product','mainProduct.category','mainProduct.subcategory','mainProduct.supplier'],function(response){
                 setTimeout(() => {
 
                     if(response && JSON.stringify(response).length>2){
@@ -366,7 +366,7 @@
                         let index = $(this).index(selector);
                         let append_selector = $(appender).eq(index);
                         let cat_id = $(this).val();
-                    ajaxDataFetch({selector}, 'Subcategory', ['created_user', 'updated_user',
+                    ajaxDataFetch('Subcategory',{selector},  ['created_user', 'updated_user',
                         'deleted_user', 'category'
                     ],null,append_selector);
                 });
@@ -379,7 +379,7 @@
                     let subcat_id  = $(this).val();
                     let index = $(this).index(selector);
                     let append_selector = $(appender).eq(index);
-                    ajaxDataFetch({'subcat_id':subcat_id}, 'Product', ['created_user', 'updated_user', 'deleted_user', 'subcategory'],null,append_selector);
+                    ajaxDataFetch('Product',{'subcat_id':subcat_id},  ['created_user', 'updated_user', 'deleted_user', 'subcategory'],null,append_selector);
                 });
             }
 
@@ -403,8 +403,8 @@
                     let index = $(this).index(selector);
                     let append_selector = $(appender).eq(index);
                     let available_qty = $(qty).eq(index);
-                    
-                    ajaxDataFetch({'product_id':product_id},'MoreProduct', ['created_user', 'updated_user','deleted_user', 'supplier'],
+
+                    ajaxDataFetch('MoreProduct',{'product_id':product_id}, ['created_user', 'updated_user','deleted_user', 'supplier'],
                     function(response){
                         let count = 0;
                         $.each(response,function(key,item){
