@@ -112,7 +112,7 @@
                                             <td>{{ $product->qty }}</td>
                                             <td>{{ $product->total_price }}</td>
                                             <td>{{$product->created_user->name}}</td>
-                                            <td>{{date('d-m-Y',strtotime($product->created_user->created_at))}}</td>
+                                            <td>{{date('d-m-Y',strtotime($product->created_at))}}</td>
                                             <td>
                                                 <div class="btn-group">
                                                     <a href="javascript:void(0)" class="btn btn-info btnView"

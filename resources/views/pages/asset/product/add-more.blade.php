@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Asset Management - Add Product')
+@section('title', 'Asset Management - Add Asset')
 
 @push('third_party_stylesheets')
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
@@ -10,7 +10,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-10 col-lg-12">
-                {{-- Product details  --}}
+                {{-- Asset details  --}}
                 @if ($errors)
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -60,8 +60,8 @@
                                                 <td>{{number_format($product->total_price, 2)}} tk</td>
                                             </tr>
                                             {{-- <tr>
-                                                <th>Product Name</th>
-                                                <td>{{ $product->name }}</td>
+                                                <th>asset Name</th>
+                                                <td>{{ $asset->name }}</td>
                                             </tr> --}}
                                         </tbody>
                                     </table>
@@ -78,7 +78,7 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>Product Name</th>
+                                                <th>Asset Name</th>
                                                 <th>Quantity</th>
                                                 <th>Warranty</th>
                                                 <th>Total Price</th>
@@ -115,11 +115,11 @@
                         <div class="card-header">
                             <div class="col-md-12">
                                 <span class="float-left ml-2">
-                                    <h4>Add more product</h4>
+                                    <h4>Add more asset</h4>
                                 </span>
 
                                 <span class="float-right">
-                                    @if (Auth::user()->can('product view') || Auth::user()->role->id == 1)
+                                    @if (Auth::user()->can('asset view') || Auth::user()->role->id == 1)
                                         <a href="{{ route('asset.product.index') }}" class="btn btn-info">Back</a>
                                     @endif
                                 </span>
@@ -136,7 +136,7 @@
                                                 <label for="qty">Quantity<span class="text-danger">*</span></label>
                                                 <input class="form-control qty" type="number" name="qty" id="qty"
                                                     min="0" value="{{ old('qty') }}"
-                                                    placeholder="Enter product's quantity" required>
+                                                    placeholder="Enter asset's quantity" required>
                                                 @if ($errors->has('qty'))
                                                     <span class="text-danger">{{ $errors->first('qty') }}</span>
                                                 @endif
@@ -166,7 +166,7 @@
                                                         class="text-danger">*</span></label>
                                                 <input class="form-control total-price" type="number" min="0"
                                                     name="total_price" id="total_price" value="{{ old('total_price') }}"
-                                                    placeholder="Enter product's total price" required>
+                                                    placeholder="Enter asset's total price" required>
                                                 @if ($errors->has('total_price'))
                                                     <span class="text-danger">{{ $errors->first('total_price') }}</span>
                                                 @endif

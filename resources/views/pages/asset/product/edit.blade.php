@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Asset Management - Edit Product')
+@section('title', 'Asset Management - Edit Asset')
 
 @push('third_party_stylesheets')
     <link rel="stylesheet" href="{{asset('assets/css/select2/select2.min.css')}}">
@@ -14,11 +14,11 @@
             <div class="row w-100 mb-2">
                 <div class="col-md-12">
                     <span class="float-left ml-2">
-                        <h4>Edit product</h4>
+                        <h4>Edit asset</h4>
                     </span>
 
                     <span class="float-right">
-                        @if (Auth::user()->can('product view') || Auth::user()->role->id == 1)
+                        @if (Auth::user()->can('asset view') || Auth::user()->role->id == 1)
                             <a href="{{ route('asset.product.index') }}" class="btn btn-info">Back</a>
                         @endif
                     </span>
@@ -36,7 +36,7 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="name">Product Name<span class="text-danger">*</span></label>
+                                            <label for="name">Asset Name<span class="text-danger">*</span></label>
                                             <input class="form-control" type="text" name="name" id="name"
                                                 value="{{$product->name }}" placeholder="Enter product name" required>
                                             @if ($errors->has('name'))
@@ -96,7 +96,7 @@
                                             <label for="qty">Quantity<span class="text-danger">*</span></label>
 
                                             <input class="form-control qty" type="number" name="qty" id="qty" min="0"
-                                                value="{{ $product->qty }}" placeholder="Enter product's quantity"
+                                                value="{{ $product->qty }}" placeholder="Enter asset's quantity"
                                                 required>
                                             @if ($errors->has('qty'))
                                                 <span class="text-danger">{{ $errors->first('qty') }}</span>
@@ -184,7 +184,7 @@
                                                     class="text-danger">*</span></label>
                                             <input class="form-control" type="number" min="0" name="total_price"
                                                 id="total_price" value="{{ $product->total_price }}"
-                                                placeholder="Enter product's total price" required>
+                                                placeholder="Enter asset's total price" required>
                                             @if ($errors->has('total_price'))
                                                 <span class="text-danger">{{ $errors->first('total_price') }}</span>
                                             @endif

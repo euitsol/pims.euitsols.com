@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Asset Management - Product')
+@section('title', 'Asset Management - Asset')
 @push('third_party_stylesheets')
     <link href="{{ asset('assets/js/DataTable/datatables.min.css') }}" rel="stylesheet">
 @endpush
@@ -11,7 +11,7 @@
             <div class="card">
                 <div class="card-header">
                     <span class="float-left">
-                        <h4>Product</h4>
+                        <h4>Asset</h4>
                     </span>
                     <span class="float-right">
                         @if(Auth::user()->can('add asset-category') || Auth::user()->role->id == 1)<a href="{{ route('asset.product.create') }}" class="btn btn-info">Add new product</a>@endif
@@ -22,7 +22,7 @@
                         <thead>
                             <tr>
                                 <th>SL.</th>
-                                <th>Product Name</th>
+                                <th>Asset Name</th>
                                 <th>Quantity</th>
                                 <th>Unit </th>
                                 <th>Total Price </th>
@@ -93,7 +93,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Product Name</td>
+                                    <td>Asset Name</td>
                                     <td>
                                         <span id="view-product-name"></span>
                                     </td>
@@ -117,7 +117,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Product Description</td>
+                                    <td>Asset Description</td>
                                     <td>
                                         <span id="view-product-des"></span>
                                     </td>
@@ -200,7 +200,7 @@
             dom: 'Bfrtip'
             , buttons: [{
                     extend: 'pdfHtml5'
-                    , title: 'Products'
+                    , title: 'Assets'
                     , download: 'open'
                     , orientation: 'potrait'
                     , pagesize: 'LETTER'

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Assign Product Management')
+@section('title', 'Assign Asset Management')
 
 @push('third_party_stylesheets')
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
@@ -14,7 +14,7 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="float-left">
-                            <h4>Assign Product</h4>
+                            <h4>Assign Asset</h4>
                         </span>
                     </div>
                     <div class="card-body">
@@ -35,7 +35,7 @@
                                     <div class="form-group">
                                         <label for="department_id">Department</label>
                                         <select name="department_id" class="form-control" id="department_id">
-                                            <option value="">All Department</option>
+                                            <option value="">Common asset</option>
                                             @foreach ($departments as $n)
                                                 <option value="{{ $n->id }}"
                                                     @if (old('department_id') == $n->id) selected @endif>
@@ -94,7 +94,7 @@
                 {{-- Previous info  --}}
                 <div class="card" id="info_card">
                     <div class="card-header">
-                        <h3 class="text-header">Previous assigned Products</h3>
+                        <h3 class="text-header">Previous Assigned Assets</h3>
                     </div>
                     <div class="body">
                         <div class="table-response px-4">
@@ -103,7 +103,7 @@
                                     <tr>
                                         <th>Category</th>
                                         <th>Sub-category</th>
-                                        <th>Product</th>
+                                        <th>Asset</th>
                                         <th>Supplier</th>
                                         <th>Quantity</th>
                                     </tr>
@@ -116,13 +116,13 @@
                     </div>
                 </div>
 
-                 {{-- assign product search --}}
+                 {{-- assign Asset search --}}
                  <form action="{{route('asset.assign.product.main_assign')}}" method="POST">
                     @csrf
                     <div class="card" id="show_card">
                         <div class="card-header">
                             <span class="float-left">
-                                <h4>Product Selection</h4>
+                                <h4>Asset Selection</h4>
                             </span>
                         </div>
                         <div class="card-body position-relative">
@@ -132,9 +132,9 @@
                                         <tr>
                                             <th>Category</th>
                                             <th>Sub-category</th>
-                                            <th>Product</th>
+                                            <th>Asset</th>
                                             <th>Supplier</th>
-                                            <th>Available Product</th>
+                                            <th>Available Asset</th>
                                             <th>Quantity</th>
                                             <th class="text-left">
                                                 <span class="btn btn-info plus-btn" id="1">
@@ -184,7 +184,7 @@
             dom: 'Bfrtip'
             , buttons: [{
                         extend: 'pdfHtml5'
-                        , title: 'Previous Assigned Product'
+                        , title: 'Previous Assigned Asset'
                         , download: 'open'
                         , orientation: 'potrait'
                         , pagesize: 'LETTER'
@@ -284,7 +284,7 @@
                                             <td>
                                                 <select name="product[${index}][product_id]" class="form-control product-id"
                                                     required tabindex="-1">
-                                                    <option value="" hidden>Select Product</option>
+                                                    <option value="" hidden>Select Asset</option>
                                                 </select>
                                             </td>
 
@@ -351,7 +351,7 @@
                                             <td>
                                                 <select name="product[0][product_id]" class="form-control product-id"
                                                     required tabindex="-1">
-                                                    <option value="" hidden>Select Product</option>
+                                                    <option value="" hidden>Select Asset</option>
                                                 </select>
                                             </td>
 
@@ -404,7 +404,7 @@
                 });
             }
 
-            //product fetch according to sub-category
+            //Asset fetch according to sub-category
             subcatFetch(".subcat-id",".product-id");
             function subcatFetch(selector,appender){
                 $(document).on('change',selector,function(){
@@ -416,7 +416,7 @@
             }
 
 
-        //Supplier fetch according to Product
+        //Supplier fetch according to Asset
            productFetch(".product-id",".supplier-id",'.available-qty');
            function productFetch(selector,appender,qty)
            {
@@ -429,7 +429,7 @@
                         }
                     });
                     if(existing_check>1){
-                        toastr.error('You have already selected this product');
+                        toastr.error('You have already selected this asset');
                         return false
                     }
                     let index = $(this).index(selector);
@@ -484,7 +484,7 @@
                                         <td>
                                             <select  name="product[${count}][product_id]" class="form-control product-id"
                                                 required tabindex="-1" id="product_id-${count}">
-                                                <option value="" hidden>Select Product</option>
+                                                <option value="" hidden>Select Asset</option>
                                             </select>
                                         </td>
 
@@ -531,7 +531,7 @@
             });
         }
 
-        //available product count
+        //available asset count
         $(document).on('keyup change','.qty',function(){
             let index = $(this).index('.qty');
             let qty = Number($(this).val());

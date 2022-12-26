@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Asset Management - Add Product')
+@section('title', 'Asset Management - Add Asset')
 
 @push('third_party_stylesheets')
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
@@ -20,11 +20,11 @@
             <div class="row w-100 mb-2">
                 <div class="col-md-12">
                     <span class="float-left ml-2">
-                        <h4>Add new product</h4>
+                        <h4>Add new asset</h4>
                     </span>
 
                     <span class="float-right">
-                        @if (Auth::user()->can('product view') || Auth::user()->role->id == 1)
+                        @if (Auth::user()->can('asset view') || Auth::user()->role->id == 1)
                             <a href="{{ route('asset.product.index') }}" class="btn btn-info">Back</a>
                         @endif
                     </span>
@@ -34,7 +34,7 @@
             <div class="col-md-10 col-lg-12">
                 <form action="{{ route('asset.product.store') }}" method="POST" class="form-horizontal">
                     @csrf
-                    {{--All product details Product details  --}}
+                    {{--All Asset details Asset details  --}}
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
@@ -42,9 +42,9 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="name">Product Name<span class="text-danger">*</span></label>
+                                                <label for="name">Asset Name<span class="text-danger">*</span></label>
                                                 <input class="form-control" type="text" name="name" id="name"
-                                                    value="{{ old('name') }}" placeholder="Enter product name" required>
+                                                    value="{{ old('name') }}" placeholder="Enter asset name" required>
                                                 @if ($errors->has('name'))
                                                     <span class="text-danger">{{ $errors->first('name') }}</span>
                                                 @endif
@@ -58,7 +58,7 @@
                                                 <label for="qty">Quantity<span class="text-danger">*</span></label>
 
                                                 <input class="form-control qty" type="number" name="qty" id="qty" min="0"
-                                                    value="{{ old('qty') }}" placeholder="Enter product's quantity"
+                                                    value="{{ old('qty') }}" placeholder="Enter asset's quantity"
                                                     required>
                                                 @if ($errors->has('qty'))
                                                     <span class="text-danger">{{ $errors->first('qty') }}</span>
@@ -195,7 +195,7 @@
                         </div>
                     </div>
 
-                    {{-- Product price details  --}}
+                    {{-- Asset price details  --}}
                     <div class="card">
                         @csrf
                         <div class="card-body">
@@ -208,7 +208,7 @@
                                                         class="text-danger">*</span></label>
                                                 <input class="form-control total-price" type="number" min="0" name="total_price"
                                                     id="total_price" value="{{ old('total_price') }}"
-                                                    placeholder="Enter product's total price" required>
+                                                    placeholder="Enter asset's total price" required>
                                                 @if ($errors->has('total_price'))
                                                     <span class="text-danger">{{ $errors->first('total_price') }}</span>
                                                 @endif
