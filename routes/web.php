@@ -627,11 +627,18 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::get('/add/more/{id}','moreProduct')->name('add.more');
             Route::post('/add/more-store','moreProductStore')->name('add.more.store');
         });
-        
+
          //Report
          Route::controller(assetReportController::class)->prefix('report')->name('report.')->group(function(){
             Route::get('/main-storage/index','mainStorage')->name('main_storage');
             Route::post('/main-storage/filter','mainStorageFilter')->name('main_storage.filter');
+            Route::get('/department-wise-product/view/{department}','DepartmentWiseView')->name('department_product.view');
+            Route::get('/single-product/view/{id}','singleProductView')->name('single_product.view');
+
+            //Distribution report
+            Route::controller(AssetReportController::class)->prefix('distribution')->name('distribution.')->group(function(){
+                Route::get('/index','distribution')->name('index');
+            });
         });
     });
 

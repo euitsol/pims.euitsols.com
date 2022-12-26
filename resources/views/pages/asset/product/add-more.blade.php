@@ -26,7 +26,7 @@
                                         <tbody>
                                             <tr>
                                                 <th>Department</th>
-                                                <td>{{ $product->department->department_name ?? 'All Department' }}
+                                                <td>{{ $product->department->department_name ?? 'Common Asset' }}
                                                 </td>
                                             </tr>
 

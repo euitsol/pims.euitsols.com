@@ -180,7 +180,7 @@
                                         <label for="department_id">Department<span class="text-danger">*</span></label>
                                         <select name="department_id" id="department_id" class="form-control">
                                             <option value=''>Select Department</option>
-                                            <option value="">All Department</option>
+                                            <option value="">Common Asset</option>
                                             @foreach ($departments as $department)
                                                 <option value="{{ $department->id }}" @if($department->id == old('department_id')) selected @endif>{{ $department->department_name }}
                                                 </option>

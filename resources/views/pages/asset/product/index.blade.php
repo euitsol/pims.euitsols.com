@@ -44,7 +44,7 @@
                                     <td>{{ number_format($product->total_price,2) }} tk</td>
                                     <td>{{$product->brand->name}}</td>
                                     <td>{{$product->category->name}}</td>
-                                    <td>{{$product->department->department_name ?? 'All Department'}}</td>
+                                    <td>{{$product->department->department_name ?? 'Common Asset'}}</td>
                                     <td>{{$product->created_user->name}}</td>
                                     <td>{{date('d-m-Y',strtotime($product->created_user->created_at))}}</td>
                                     <td>
@@ -236,7 +236,7 @@
                             $('#view-brand').html(response.brand.name);
                             $('#view-cat-name').html(response.category.name);
                             $('#view-subcat-name').html(response.subcategory.name);
-                            $('#view-department-name').html(response.department ? response.department.department_name : 'All Department');
+                            $('#view-department-name').html(response.department ? response.department.department_name : 'Common Asset');
                             $('#view-status').html(response.status);
                             $('#view-createdAt').html(response.created_at ? new Date(response.created_at) : '');
                             $('#view-createdBy').html(response.created_user ? response.created_user.name : 'system');

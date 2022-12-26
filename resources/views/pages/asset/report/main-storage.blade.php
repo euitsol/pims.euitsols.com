@@ -64,12 +64,14 @@
                                     <label for="user">Department</label>
                                 </div>
                                 <div class="col-md-6 text-left mt-2">
+
                                     <select name="department_id" id="department_id" class="form-control">
                                         <option value="">All</option>
+                                        <option value="common_asset"  @if (isset($department_id)) @if ($department_id == 'common_asset') selected @endif @endif >Common Asset</option>
                                         @foreach ($departments as $department)
-                                            <option value="{{ $department->id }}"
-                                                @if ($department_id ?? '' == $department->id) selected @endif>
+                                            <option value="{{ $department->id }}" @if (isset($department_id)) @if ($department_id == $department->id) selected @endif @endif >
                                                 {{ $department->department_name }}</option>
+
                                         @endforeach
                                     </select>
                                 </div>
@@ -94,9 +96,9 @@
                             <table class="table table-striped text-center">
                                 <thead>
                                     <tr>
-                                        <th>Department Name</th>
+                                        <th>Department</th>
                                         <th>Product Name</th>
-                                        <th>Quantity</th>
+                                        <th>Total Quantity</th>
                                         <th>Total Price</th>
                                         <th>Created By</th>
                                         <th>Created At</th>
@@ -104,32 +106,62 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($all_products as $product)
-                                        <tr>
-                                            <td>{{ $product->department ? $product->department->department_name : 'All Department' }}
-                                            </td>
-                                            <td>{{ $product->name }}</td>
-                                            <td>{{ $product->qty }}</td>
-                                            <td>{{ $product->total_price }}</td>
-                                            <td>{{$product->created_user->name}}</td>
-                                            <td>{{date('d-m-Y',strtotime($product->created_at))}}</td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <a href="javascript:void(0)" class="btn btn-info btnView"
-                                                        data-id="{{ $product->id }}"><i class="fas fa-eye"></i></a>
-                                                    @if (Auth::user()->can('edit brand') || Auth::user()->role->id == 1)
-                                                        <a href="{{ route('asset.setup.brand.edit', $product->id) }}"
-                                                            class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
-                                                    @endif
-                                                    @if (Auth::user()->can('delete brand') || Auth::user()->role->id == 1)
-                                                        <a href="{{ route('asset.setup.brand.destroy', $product->id) }}"
-                                                            class="btn btn-danger btnDelete"><i
-                                                                class="fas fa-trash"></i></a>
-                                                    @endif
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                    @isset($all_products)
+                                        @foreach ($all_products as $products)
+                                            @php
+                                               $product = $products->first();
+                                               $total_qty = 0;
+                                               $total_p = 0;
+                                            @endphp
+                                            <tr>
+                                                <td>
+                                                    {{ $product->department ? $product->department->department_name : 'Common Asset' }}
+                                                </td>
+                                                <td>
+                                                    @foreach ($products as $key => $p)
+                                                        {{$key==0 ? '' : '|'}} {{$p->name}}
+                                                        @php
+                                                            $total_qty += $p->qty;
+                                                            $total_p += $p->total_price;
+                                                        @endphp
+                                                    @endforeach
+                                                </td>
+                                                <td>{{ $total_p }}</td>
+                                                <td>{{$total_p }}</td>
+                                                <td>{{$product->created_user->name}}</td>
+                                                <td>{{date('d-m-Y',strtotime($product->created_at))}}</td>
+
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <a href="{{route('asset.report.department_product.view',[$product->department_id ?? 'common_asset'])}}" class="btn btn-info" data-id="{{ $product->department_id }}">
+                                                            <i class="fas fa-eye"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+
+                                        @endforeach
+                                    @endisset
+                                    @isset($department_wise)
+                                    @foreach ($department_wise as $product)
+                                    <tr>
+                                        <td>{{ $product->department ? $product->department->department_name : 'Common Asset' }}
+                                        </td>
+                                        <td>{{ $product->name }}</td>
+                                        <td>{{ $product->qty }}</td>
+                                        <td>{{ $product->total_price }}</td>
+                                        <td>{{$product->created_user->name}}</td>
+                                        <td>{{date('d-m-Y',strtotime($product->created_at))}}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="{{route('asset.report.single_product.view',[$product->id])}}" class="btn btn-info"
+                                                    data-id="{{ $product->id }}"><i class="fas fa-eye"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                    @endisset
                                 </tbody>
                             </table>
                         </div>

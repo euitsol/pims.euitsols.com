@@ -541,13 +541,13 @@
 
             <li class="nav-item">
                 <a href="{{route('asset.product.index')}}" class="nav-link {{Request::is('asset/product/*') ? 'active' : ''}}">
-                    <i class="nav-icon fas fa-cart-plus"></i>
+                    <i class="nav-icon far fa-circle second-nav-text"> </i>
                      Add Product
                     </a>
             </li>
             <li class="nav-item">
                 <a href="{{route('asset.assign.product.index')}}" class="nav-link {{Request::is('asset/assign-product/*') ? 'active' : ''}}">
-                    <i class="fas fa-people-arrows px-1"></i>
+                    <i class="nav-icon far fa-circle second-nav-text"> </i>
                         Assign Product
                     </a>
             </li>
@@ -555,25 +555,26 @@
                 <li class="nav-item {{Request::is('asset/report/*') ? 'menu-open' : ''}}">
                     <a href="#"
                         class="nav-link">
-                       <i class="nav-icon far fa-circle"></i>
+                        <i class="nav-icon far fa-circle second-nav-text"> </i>
                         <p>Report <i class="fas fa-angle-left right"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
-                        @if (Auth::user()->can('view daily') || Auth::user()->role->id == 1)
+                        @if (Auth::user()->can('view report') || Auth::user()->role->id == 1)
                             <li class="nav-item ">
                                 <a href="{{route('asset.report.main_storage')}}" class="nav-link {{Request::is('asset/report/main-storage/*') ? 'active' : ''}}">
-                                    <i class="nav-icon fas fa-minus second-nav-text"></i>
+                                    <i class="nav-icon fas fa-minus third-nav-text"> </i>
                                     <p>Main Storage</p>
                                 </a>
                             </li>
                         @endif
-                        {{-- @if (Auth::user()->can('view daily') || Auth::user()->role->id == 1)
+                        @if (Auth::user()->can('view report') || Auth::user()->role->id == 1)
                             <li class="nav-item ">
-                                <a href="{{route('asset.report.all')}}" class="nav-link {{Request::is('asset/report/all/*') ? 'active' : ''}}">
-                                <i class="nav-icon fas fa-minus third-nav-text"></i>
-                                <p>All report</p></a>
+                                <a href="{{route('asset.report.distribution.index')}}" class="nav-link {{Request::is('asset/report/distribution/*') ? 'active' : ''}}">
+                                    <i class="nav-icon fas fa-minus third-nav-text"> </i>
+                                    <p>Distribute Product</p>
+                                </a>
                             </li>
-                        @endif --}}
+                        @endif
                     </ul>
                 </li>
             @endif
