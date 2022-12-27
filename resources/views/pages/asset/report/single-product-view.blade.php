@@ -77,7 +77,6 @@
                                             <td></td>
                                             <td></td>
                                         @endif
-
                                         {{-- <td class="text-middle py-0 align-middle">
                                             <div class="btn-group">
                                                 <a href="javascript:void(0)" class="btn btn-info btnView"
@@ -91,7 +90,6 @@
                                                 @endif
                                             </div>
                                         </td> --}}
-
                                     </tr>
                                 @endforeach
                                 </tbody>

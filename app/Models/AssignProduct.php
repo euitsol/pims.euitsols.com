@@ -30,4 +30,20 @@ class AssignProduct extends Model
     public function mainProduct(){
         return $this->hasMany(MainAssignProduct::class,'assign_product_id');
     }
+    public function totalAssignedProduct(){
+        $total_product = MainAssignProduct::where('deleted_by',null)->get();
+        $total_qty =  0;
+        foreach($total_product as $product){
+            $total_qty += $product->qty;
+        }
+        return $total_qty;
+    }
+    public function departAssignedProduct(){
+        $total_product = MainAssignProduct::where('assign_product_id',$this->id)->get();
+        $total_qty =  0;
+        foreach($total_product as $product){
+            $total_qty += $product->qty;
+        }
+        return $total_qty;
+    }
 }

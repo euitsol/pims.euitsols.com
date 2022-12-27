@@ -100,6 +100,7 @@
                                         <th>Product Name</th>
                                         <th>Total Quantity</th>
                                         <th>Total Price</th>
+                                        <th>Available Quantity</th>
                                         <th>Created By</th>
                                         <th>Created At</th>
                                         <th>Action</th>
@@ -126,8 +127,9 @@
                                                         @endphp
                                                     @endforeach
                                                 </td>
-                                                <td>{{ $total_p }}</td>
-                                                <td>{{$total_p }}</td>
+                                                <td>{{ $product->departTotalProduct() }}</td>
+                                                <td>{{$product->totalPrice() }}</td>
+                                                <td>{{$product->departAvailableProduct() }}</td>
                                                 <td>{{$product->created_user->name}}</td>
                                                 <td>{{date('d-m-Y',strtotime($product->created_at))}}</td>
 
@@ -139,8 +141,6 @@
                                                     </div>
                                                 </td>
                                             </tr>
-
-
                                         @endforeach
                                     @endisset
                                     @isset($department_wise)
