@@ -76,7 +76,6 @@ class AssignProductController extends Controller
         return redirect()->route('asset.assign.product.index')->with('success','Product successfully assigned');
     }
 
-
     public function productFetch(Request $req){
         $product = call_user_func(array('\\App\\Models\\'.$req->model,  "with"),$req->with_arr);
         $product = $product->get();
@@ -86,5 +85,10 @@ class AssignProductController extends Controller
             $product = $product->where($key,$val);
         }
         return response()->json($product);
+    }
+
+    public function edit($id){
+        $n['main_assign_product'] = MainAssignProduct::with(['assignProduct','assignProduct.department','product'])->find($id);
+        return view('pages.asset.assign-product.edit',$n);
     }
 }

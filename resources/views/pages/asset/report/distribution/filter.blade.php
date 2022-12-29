@@ -11,80 +11,109 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-12">
-                <h4 class="text-center mb-4">Distribution Report</h4>
+                <form action="{{route('asset.report.distribution.fetch')}}" method="POST">
+                    @csrf
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="float-left">
+                                <h4>Assign Asset</h4>
+                            </span>
+                        </div>
+                        <div class="card-body">
 
-                @forelse($assign_products as $key => $assign_product)
+                            @if ($errors)
 
-                @if ($assign_product->mainProduct)
-                <div class="card">
-                    <div class="card-header">
-                        <h4>
-                            {{$assign_product->department ? "Department of ".$assign_product->department->department_name : 'Common Asset'}}
-                           {{$assign_product->section ? ", Section: ".$assign_product->section->name : ''}}
-                           {{$assign_product->subsection ? ", Subsection: ".$assign_product->subsection->name : ''}}
-                        </h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped text-center">
-                                <thead>
-                                    <tr>
-                                        <th>Product Name</th>
-                                        <th>Quantity</th>
-                                        <th>Category</th>
-                                        <th>Sub-category</th>
-                                        <th>Created At</th>
-                                        <th>Updated At</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($assign_product->mainProduct as $p)
-
-                                        <tr>
-                                            <td>{{$p->product->name}}</td>
-                                            <td>{{$p->qty}}</td>
-                                            <td>{{$p->category->name}}</td>
-                                            <td>{{$p->subcategory->name}}</td>
-                                            <td>{{date('d-m-Y',strtotime($p->created_at))}}</td>
-                                            <td>{{$p->created_by}}</td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <a href="{{ route('asset.report.single_product.view', [$p->product->id]) }}"
-                                                        class="btn btn-info"><i
-                                                            class="fas fa-eye"></i></a>
-                                                    @if(Auth::user()->can('edit brand') || Auth::user()->role->id == 1)
-                                                        <a href="{{ route('asset.assign.product.edit', $p->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
-                                                    @endif
-                                                    @if(Auth::user()->can('delete brand') || Auth::user()->role->id == 1)
-                                                        <a href="{{ route('asset.setup.brand.destroy', $p->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
-                                                    @endif
-                                                </div>
-                                            </td>
-                                        </tr>
+                                <ul>
+                                    @foreach ($errors as $error)
+                                        <li>
+                                            @dd($error)
+                                            {{ $error }}
+                                        </li>
                                     @endforeach
-                                </tbody>
-                            </table>
+                                </ul>
+                            @endif
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="department_id">Department</label>
+                                        <select name="department_id" class="form-control" id="department_id">
+                                            <option value="all">All</option>
+                                            <option value=""
+                                                @if (isset($department_id)) @if ($department_id == 'common_asset') selected @endif
+                                                @endif >Common Asset</option>
+                                            @foreach ($departments as $department)
+                                                <option value="{{ $department->id }}"
+                                                    @if (isset($department_id)) @if ($department_id == $department->id) selected @endif
+                                                    @endif >
+                                                    {{ $department->department_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('department_id'))
+                                            <span class="text-danger">{{ $errors->first('department_id') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="section_id">Section</label>
+                                        <select name="section_id" class="form-control" id="section_id">
+                                            <option value="" hidden>Select Section</option>
+                                        </select>
+                                        @if ($errors->has('section_id'))
+                                            <span class="text-danger">{{ $errors->first('section_id') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="subsection_id">Sub-section</label>
+                                        <select name="subsection_id" class="form-control" id="subsection_id">
+                                            <option value="" hidden>Select Sub-section</option>
+                                        </select>
+                                        @if ($errors->has('subsection_id'))
+                                            <span class="text-danger">{{ $errors->first('subsection_id') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-1 offset-md-2">
+                                    <label for="date">Date range<span class="text-danger">*</span></label>
+                                </div>
+                                <div class="col-md-6 text-left ">
+                                    <div class="input-group">
+                                        <input name="str_date" type="date" id="str_date" class="form-control date"
+                                            value="">
+                                        <span class="input-group-text">to</span>
+                                        <input name="end_date" type="date" id="end_date" class="form-control date"
+                                            value="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12 text-center mt-3">
+                                    <button class="btn btn-success col-md-4 search">Search</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                @endif
-                @empty
-                <div class="card">
-                    <div class="card-header">
-                        <span class="float-left">
-                            <h4>Distributio Report</h4>
-                        </span>
-                        <span class="float-right">
-                            <a href="{{ route('asset.report.distribution.index') }}" class="btn btn-info">Back</a>
-                        </span>
+                </form>
 
-                    </div>
-                    <div class="card-body p-5 text-center">
-                        <h4>There are no assets</h4>
-                    </div>
+
+                {{-- Report show --}}
+                <div id="report_show">
+
                 </div>
-                @endforelse
+                <div class="card p-5" id="loading_card" style="display: none">
+                    <div class="spinner-border text-primary m-auto" style="width: 3rem; height: 3rem;" role="status"></div>
+                </div>
+
+
+
             </div>
         </div>
     </div>

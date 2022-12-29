@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AssetCategory;
+use App\Models\AssignProduct;
 use App\Models\Department;
 use App\Models\Product;
 use App\Models\Section;
@@ -46,12 +47,38 @@ class assetReportController extends Controller
         $n['single_product'] = Product::find($id);
         return view('pages.asset.report.single-product-view',$n);
     }
+
     public function distribution(){
         $n['departments'] = Department::where('deleted_at', null)->latest()->get();
         $n['sections'] = Section::where('deleted_at', null)->latest()->get();
         $n['subsections'] = Subsection::where('deleted_at', null)->latest()->get();
-        // $n['categories'] = AssetCategory::where('deleted_at', null)->latest()->get();
-        // $n['subcategories'] = Subcategory::where('deleted_at', null)->latest()->get();
+        return view('pages.asset.report.distribution.filter',$n);
+    }
+
+    public function fetch(Request $req){
+
+        $assign_products = AssignProduct::with(['mainProduct', 'mainProduct.product','mainProduct.created_user','mainProduct.product.department', 'mainProduct.category',
+                                                'mainProduct.subcategory', 'mainProduct.supplier', 'department'])->where('deleted_by',null);
+
+       if($req->department_id != 'all'){
+            $assign_products->where('department_id','=',$req->department_id);
+
+            if(isset($req->section_id)){
+                $assign_products->where('section_id','=',$req->section_id);
+            }
+            if(isset($req->subsection_id)){
+                $assign_products->where('subsection_id','=',$req->subsection_id);
+            }
+       }
+
+        if($req->str_date){
+            $assign_products->where('created_at','>',$req->str_date);
+        }
+        if($req->end_date){
+            $assign_products->where('created_at','<',$req->end_date);
+        }
+        $n['assign_products'] = $assign_products->get();
+
         return view('pages.asset.report.distribution.index',$n);
     }
 }

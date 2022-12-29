@@ -28,7 +28,6 @@
             padding-top: 0rem !important;
             caption-side: top !important;
         }
-
     </style>
 @endpush
 @php
@@ -43,7 +42,8 @@
 
                 <div class="card">
                     <div class="card-header text-center">
-                        <h4>{{$first_product->department_id ? $first_product->department->department_name : 'Common Assets'}}</h4>
+                        <h4>{{ $first_product->department_id ? $first_product->department->department_name : 'Common Assets' }}
+                        </h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -53,36 +53,42 @@
                                         <th>SL.</th>
                                         <th>Product Name</th>
                                         <th>Total Quantity</th>
+                                        <th>Available Quantity</th>
                                         <th>Total Price</th>
                                         <th>Created By</th>
                                         <th>Created At</th>
                                         <th>Updated By</th>
                                         <th>Updated At</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($department_products as $key => $product )
-                                    <tr>
-                                        <td>{{$key +1}}</td>
-                                        <td>{{$product->name}}</td>
-                                        <td>{{$product->qty}}</td>
-                                        @php
-                                            $total_p += $product->total_price;
-                                            $qty += $product->qty;
-                                        @endphp
-                                        <td>{{Number_format($product->total_price)}} tk</td>
-                                        <td>{{$product->created_user->name}}</td>
-                                        <td>{{date('d-m-Y',strtotime($product->updated_at))}}</td>
-                                        @if($product->updated_user)
-                                            <td>{{ $product->updated_user->name }}</td>
-                                            <td>{{date('d-m-Y',strtotime($product->updated_at))}}</td>
-                                        @else
-                                            <td></td>
-                                            <td></td>
-                                        @endif
+                                    @foreach ($department_products as $key => $product)
+                                        <tr>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $product->name }}</td>
+                                            <td>{{ $product->totalProduct() }}</td>
+                                            <td>{{ $product->qty }}</td>
+                                            <td>{{ Number_format($product->totalPrice()) }} tk</td>
+                                            <td>{{ $product->created_user->name }}</td>
+                                            <td>{{ date('d-m-Y', strtotime($product->updated_at)) }}</td>
+                                            @if ($product->updated_user)
+                                                <td>{{ $product->updated_user->name }}</td>
+                                                <td>{{ date('d-m-Y', strtotime($product->updated_at)) }}</td>
+                                            @else
+                                                <td></td>
+                                                <td></td>
+                                            @endif
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a href="{{ route('asset.report.single_product.view', [$product->id]) }}"
+                                                        class="btn btn-info" data-id="{{ $product->id }}"><i
+                                                            class="fas fa-eye"></i></a>
+                                                </div>
+                                            </td>
 
-                                    </tr>
-                                @endforeach
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                                 {{-- <tfoot>
                                     <tr>

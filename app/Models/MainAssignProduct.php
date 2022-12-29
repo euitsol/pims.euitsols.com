@@ -30,4 +30,7 @@ class MainAssignProduct extends Model
     public function supplier(){
         return $this->belongsTo(Supplier::class,'supplier_id');
     }
+    public function assignProduct(){
+        return $this->belongsTo(AssignProduct::class,'assign_product_id');
+    }
 }

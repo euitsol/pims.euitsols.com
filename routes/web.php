@@ -638,6 +638,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             //Distribution report
             Route::controller(AssetReportController::class)->prefix('distribution')->name('distribution.')->group(function(){
                 Route::get('/index','distribution')->name('index');
+                Route::post('/fetch','fetch')->name('fetch');
             });
         });
     });
