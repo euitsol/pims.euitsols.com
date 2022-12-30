@@ -136,21 +136,23 @@
                                     @foreach ($assigned_products as $key => $assigned_product )
                                     <tr>
                                         <td>{{$key +1}}</td>
-                                        <td>{{$assigned_product->quantity}}</td>
-                                        @php
+                                        <td>{{$assigned_product->department->department_name}}</td>
+                                        <td>{{$assigned_product->section->name}}</td>
+                                        <td>{{$assigned_product->subsection->name}}</td>
+                                        <td>{{$assigned_product->qty}}</td>
+                                        {{-- @php
                                             $total_p += $assigned_product->total_price;
                                             $qty += $assigned_product->quantity;
-                                        @endphp
-                                        <td>{{Number_format($assigned_product->total_price)}} tk</td>
+                                        @endphp --}}
                                         <td>{{$assigned_product->created_user->name}}</td>
                                         <td>{{date('d-m-Y',strtotime($assigned_product->created_at))}}</td>
-                                        @if($assigned_product->updated_user)
+                                        {{-- @if($assigned_product->updated_user)
                                             <td>{{ $assigned_product->updated_user->name }}</td>
                                             <td>{{date('d-m-Y',strtotime($assigned_product->updated_at))}}</td>
                                         @else
                                             <td></td>
                                             <td></td>
-                                        @endif
+                                        @endif --}}
                                         {{-- <td class="text-middle py-0 align-middle">
                                             <div class="btn-group">
                                                 <a href="javascript:void(0)" class="btn btn-info btnView"
