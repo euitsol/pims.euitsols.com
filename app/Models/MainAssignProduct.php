@@ -33,4 +33,5 @@ class MainAssignProduct extends Model
     public function assignProduct(){
         return $this->belongsTo(AssignProduct::class,'assign_product_id');
     }
+    
 }

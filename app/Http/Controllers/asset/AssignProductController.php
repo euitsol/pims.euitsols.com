@@ -49,8 +49,6 @@ class AssignProductController extends Controller
     {
         $this->validate($req,[
             'product.*.product_id' => "required|exists:products,id",
-            'product.*.cat_id' => "required|exists:categories,id",
-            'product.*.subcat_id' => "required|exists:subcategories,id",
             'product.*.supplier_id' => "required|exists:suppliers,id",
             'product.*.qty' => "required|string",
         ]);
@@ -59,8 +57,6 @@ class AssignProductController extends Controller
             $insert = new MainAssignProduct();
             $insert->assign_product_id  = $req->assign_product_id ;
             $insert->product_id = $val['product_id'];
-            $insert->cat_id  = $val['cat_id'] ;
-            $insert->subcat_id   = $val['subcat_id']  ;
             $insert->supplier_id   = $val['supplier_id']  ;
             $insert->qty   = $val['qty'] ;
 
@@ -86,6 +82,11 @@ class AssignProductController extends Controller
                 $product = $product->where($key,$val);
             }
         }
+        // if(isset($req->condition['orWhere'])){
+        //     foreach($req->condition['orWhere'] as $key => $val){
+        //         $product = $product->orWhere($key,$val);
+        //     }
+        // }
         return response()->json($product);
     }
 

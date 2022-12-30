@@ -67,8 +67,7 @@
 //4. calback function.you get one parameter which is ajax response 5.a element(select element) where you want to append ajax response,6.old value,if you want to keep data selected when validation error back, 7.belongsTo function name, 8.hasMany function name,
 // 9.colum name which you wanto show in append selector
 function ajaxDataFetch(model, data_obj, with_arr, returnFunc = null, append_selector = null, old_value =
-    null, belongs_to, has_many = null, coloum = 'name') {
-
+    null, belongs_to, has_many = null, coloum = 'name',condition=null) {
     $.ajax({
         url: "{{ route('asset.product_fetch.ajax') }}",
         method: 'GET',
@@ -77,8 +76,10 @@ function ajaxDataFetch(model, data_obj, with_arr, returnFunc = null, append_sele
             'arr': data_obj,
             'model': model,
             'with_arr': with_arr,
+            'condition':condition,
         },
         success: function(response) {
+            console.log(response)
             if (returnFunc) {
                 returnFunc(response)
             }
@@ -112,7 +113,6 @@ function ajaxDataFetch(model, data_obj, with_arr, returnFunc = null, append_sele
                                 `<option value="${value.id}" ${old_value == value.id ? 'selected' : ''}>${value[coloum]}</option>`;
                         }
                     });
-                    console.log('selector is '+append_selector);
                     append_selector.html(option);
                 }
 

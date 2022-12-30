@@ -28,7 +28,9 @@
             padding-top: 0rem !important;
             caption-side: top !important;
         }
-
+        .bg-warning{
+            background-color: #f1f1f1 !important;
+        }
     </style>
 @endpush
 @php
@@ -46,73 +48,83 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-sm table-bordered table-info m-auto">
-                                        <tbody>
-                                            <tr>
-                                                <th>Department Name</th>
-                                                <td>{{$single_product->departmentName()}}</td>
-                                                <th>Sub-category Name</th>
-                                                <td>{{$single_product->subcategory->name}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Product Name</th>
-                                                <td>{{$single_product->name}}</td>
-                                                <th>Quantity</th>
-                                                <td>{{$single_product->totalProduct()}}</td>
-                                            </tr>
-                                            <tr>
-
-                                                <th>Total Price</th>
-                                                <td>{{Number_format($single_product->totalPrice())}}৳</td>
-                                                <th>Available Quantity</th>
-                                                <td>{{$single_product->qty}}</td>
-
-                                                {{-- <th>Supplier </th>
-                                                <td>
-                                                    @foreach ($single_product->supplier as $supplier)
-                                                        {{$supplier->id!=0 ? ' | ' : ''.$supplier->name}}
-                                                    @endforeach
-                                                </td> --}}
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-bordered">
-                                        <caption>Assigned Times</caption>
-                                        <thead>
-                                            <tr>
-                                                <th>Quantity</th>
-                                                <th>Warranty</th>
-                                                <th>total Price</th>
-                                                <th>Supplier </th>
-                                                <th>Created At </th>
-                                                <th>Created By </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($single_product->moreProduct as $product )
+                            <div class="col-md-4">
+                               <div class="card bg-warning">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered table-sm table-info m-auto">
+                                            <tbody>
                                                 <tr>
-                                                    <td>{{$product->quantity}}</td>
-                                                    <td>{{$product->warranty}}</td>
-                                                    <td>{{Number_format($product->total_price)}} <span class="taka">৳</h4></td>
-                                                    <td>{{$product->supplier->shop_name}}</td>
-                                                    <td>{{date('d-m-Y',strtotime($product->created_at))}}</td>
-                                                    <td>{{$product->created_user->name}}</td>
+                                                    <th>Department Name</th>
+                                                    <td>{{$single_product->departmentName()}}</td>
+                                                    <th>Sub-category Name</th>
+                                                    <td>{{$single_product->subcategory->name}}</td>
                                                 </tr>
-                                            @endforeach
+                                                <tr>
+                                                    <th>Product Name</th>
+                                                    <td>{{$single_product->name}}</td>
+                                                    <th>Quantity</th>
+                                                    <td>{{$single_product->totalProduct()}}</td>
+                                                </tr>
+                                                <tr>
 
-                                        </tbody>
-                                    </table>
+                                                    <th>Total Price</th>
+                                                    <td>{{Number_format($single_product->totalPrice())}}৳</td>
+                                                    <th>Available Quantity</th>
+                                                    <td>{{$single_product->qty}}</td>
+
+                                                    {{-- <th>Supplier </th>
+                                                    <td>
+                                                        @foreach ($single_product->supplier as $supplier)
+                                                            {{$supplier->id!=0 ? ' | ' : ''.$supplier->name}}
+                                                        @endforeach
+                                                    </td> --}}
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                               </div>
+                            </div>
+
+                            <div class="col-md-7 m-auto ">
+                                <div class="card bg-warning" >
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-info">
+                                                <h5>Multipule Time Assigned</h5>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Quantity</th>
+                                                        <th>Warranty</th>
+                                                        <th>total Price</th>
+                                                        <th>Supplier </th>
+                                                        <th>Created At </th>
+                                                        <th>Created By </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($single_product->moreProduct as $product )
+                                                        <tr>
+                                                            <td>{{$product->quantity}}</td>
+                                                            <td>{{$product->warranty}}</td>
+                                                            <td>{{Number_format($product->total_price)}} <span class="taka">৳</h4></td>
+                                                            <td>{{$product->supplier->shop_name}}</td>
+                                                            <td>{{date('d-m-Y',strtotime($product->created_at))}}</td>
+                                                            <td>{{$product->created_user->name}}</td>
+                                                        </tr>
+                                                    @endforeach
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                @if(count($assigned_products))
                 <div class="card">
                     <div class="card-header text-center">
                         <h4>Assigned Info</h4>
@@ -136,9 +148,9 @@
                                     @foreach ($assigned_products as $key => $assigned_product )
                                     <tr>
                                         <td>{{$key +1}}</td>
-                                        <td>{{$assigned_product->department->department_name}}</td>
-                                        <td>{{$assigned_product->section->name}}</td>
-                                        <td>{{$assigned_product->subsection->name}}</td>
+                                        <td>{{$assigned_product->assignProduct->departmentName()}}</td>
+                                        <td>{{$assigned_product->assignProduct->section->name}}</td>
+                                        <td>{{$assigned_product->assignProduct->subsection->name}}</td>
                                         <td>{{$assigned_product->qty}}</td>
                                         {{-- @php
                                             $total_p += $assigned_product->total_price;
@@ -181,6 +193,8 @@
                         </div>
                     </div>
                 </div>
+                @endif
+
             </div>
         </div>
     </div>

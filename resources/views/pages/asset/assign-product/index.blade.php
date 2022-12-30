@@ -18,24 +18,12 @@
                         </span>
                     </div>
                     <div class="card-body">
-
-                        @if($errors)
-                        {{-- @dd($errors) --}}
-                            <ul>
-                                @foreach($errors as $error)
-                                    <li>
-                                        @dd($error)
-                                        {{$error}}
-                                    </li>
-                                @endforeach
-                            </ul>
-                        @endif
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="department_id">Department</label>
                                         <select name="department_id" class="form-control" id="department_id">
-                                            <option value="">Common asset</option>
+                                            <option value="">Select Department</option>
                                             @foreach ($departments as $n)
                                                 <option value="{{ $n->id }}"
                                                     @if (old('department_id') == $n->id) selected @endif>
@@ -53,11 +41,6 @@
                                         <label for="section_id">Section</label>
                                         <select name="section_id" class="form-control" id="section_id">
                                             <option value="" hidden>Select Section</option>
-                                            @foreach ($sections as $section)
-                                                <option value="{{ $section->id }}"
-                                                    @if (old('section_id') == $section->id) selected @endif>
-                                                    {{ $section->name }}</option>
-                                            @endforeach
                                         </select>
                                         @if ($errors->has('section_id'))
                                             <span class="text-danger">{{ $errors->first('section_id') }}</span>
@@ -70,11 +53,6 @@
                                         <label for="subsection_id">Sub-section</label>
                                         <select name="subsection_id" class="form-control" id="subsection_id">
                                             <option value="" hidden>Select Sub-section</option>
-                                            @foreach ($sections as $section)
-                                                <option value="{{ $section->id }}"
-                                                    @if (old('subsection_id') == $section->id) selected @endif>
-                                                    {{ $section->name }}</option>
-                                            @endforeach
                                         </select>
                                         @if ($errors->has('subsection_id'))
                                             <span class="text-danger">{{ $errors->first('subsection_id') }}</span>
@@ -237,7 +215,7 @@
                 $('#show_card').hide(200);
                 $('#loading_card').show(200);
 
-                ajaxDataFetch('AssignProduct',{'department_id':department_id,'section_id':section_id,'subsection_id':subsection_id},['mainProduct','mainProduct.product','mainProduct.category','mainProduct.subcategory','mainProduct.supplier'],function(response){
+                ajaxDataFetch('AssignProduct',{'department_id':department_id,'section_id':section_id,'subsection_id':subsection_id},['mainProduct','mainProduct.product','mainProduct.product.category','mainProduct.product.subcategory','mainProduct.supplier'],function(response){
                 setTimeout(() => {
 
                     if(response && JSON.stringify(response).length>2){
@@ -251,10 +229,11 @@
                                 if(item.main_product.length != 0){
                                     let info_body = ``;
                                     $.each(item.main_product,function (index,item) {
+                                        console.log(item)
                                         info_body +=`
                                                 <tr>
-                                                    <td>${item.category.name}</td>
-                                                    <td>${item.subcategory.name}</td>
+                                                    <td>${item.product.category.name}</td>
+                                                    <td>${item.product.subcategory.name}</td>
                                                     <td>${item.product.name}</td>
                                                     <td>${item.supplier.shop_name}</td>
                                                     <td>${item.qty}</td>
@@ -411,7 +390,8 @@
                     let subcat_id  = $(this).val();
                     let index = $(this).index(selector);
                     let append_selector = $(appender).eq(index);
-                    ajaxDataFetch('Product',{'subcat_id':subcat_id},  ['created_user', 'updated_user', 'deleted_user', 'subcategory'],null,append_selector);
+                    // ,'department_id':$('#department_id').val()
+                    ajaxDataFetch('Product',{'subcat_id':subcat_id},  ['created_user', 'updated_user', 'deleted_user', 'subcategory'],null,append_selector,null,null,null,'name',{orWhere:{department_id:null}});
                 });
             }
 

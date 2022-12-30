@@ -15,7 +15,7 @@
 
                 @forelse($assign_products as $key => $assign_product)
 
-                @if ($assign_product->mainProduct)
+                @if (count($assign_product->mainProduct))
                 <div class="card">
                     <div class="card-header">
                         <h4>
@@ -34,7 +34,7 @@
                                         <th>Category</th>
                                         <th>Sub-category</th>
                                         <th>Created At</th>
-                                        <th>Updated At</th>
+                                        <th>created By</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -44,10 +44,10 @@
                                         <tr>
                                             <td>{{$p->product->name}}</td>
                                             <td>{{$p->qty}}</td>
-                                            <td>{{$p->category->name}}</td>
-                                            <td>{{$p->subcategory->name}}</td>
+                                            <td>{{$p->product->category->name}}</td>
+                                            <td>{{$p->product->subcategory->name}}</td>
                                             <td>{{date('d-m-Y',strtotime($p->created_at))}}</td>
-                                            <td>{{$p->created_by}}</td>
+                                            <td>{{$p->created_user->name}}</td>
                                             <td>
                                                 <div class="btn-group">
                                                     <a href="{{ route('asset.report.single_product.view', [$p->product->id]) }}"

@@ -21,27 +21,12 @@
                         </div>
                         <div class="card-body">
 
-                            @if ($errors)
-
-                                <ul>
-                                    @foreach ($errors as $error)
-                                        <li>
-                                            @dd($error)
-                                            {{ $error }}
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @endif
-
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="department_id">Department</label>
                                         <select name="department_id" class="form-control" id="department_id">
                                             <option value="all">All</option>
-                                            <option value=""
-                                                @if (isset($department_id)) @if ($department_id == 'common_asset') selected @endif
-                                                @endif >Common Asset</option>
                                             @foreach ($departments as $department)
                                                 <option value="{{ $department->id }}"
                                                     @if (isset($department_id)) @if ($department_id == $department->id) selected @endif

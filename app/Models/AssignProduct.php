@@ -46,4 +46,13 @@ class AssignProduct extends Model
         }
         return $total_qty;
     }
+
+    public function departmentName(){
+
+        if($this->department_id){
+            return  $this->department->department_name;
+          }else{
+              return "Common Asset";
+          }
+    }
 }

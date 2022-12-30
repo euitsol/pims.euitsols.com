@@ -68,8 +68,7 @@
                                 <div class="col-md-6 text-left mt-2">
 
                                     <select name="product_id" id="product_id" class="form-control">
-                                        <option value="">All</option>
-                                        <option @if (old('product_id') == null) selected @endif >Common Asset</option>
+                                        <option value="">Select Product</option>
                                     </select>
                                 </div>
                             </div>
@@ -94,10 +93,14 @@
     <script>
         $(document).ready(function() {
             $('select').select2();
-
+            product_fetch($('#department_id'));
             $('#department_id').on('change',function(){
-               let department_id = $('#department_id').val();
+              product_fetch(this);
+            });
 
+
+            function product_fetch(This){
+                let department_id = $(This).val();
                 let data_obj = {};
 
                if(!department_id){
@@ -109,8 +112,7 @@
                 data_obj.department_id = department_id;
                }
                ajaxDataFetch('Product',data_obj,['moreProduct'],null,$('#product_id'));
-            });
-
+            }
         });
     </script>
 @endpush
