@@ -69,7 +69,7 @@
                                             <td>{{ $product->name }}</td>
                                             <td>{{ $product->totalProduct() }}</td>
                                             <td>{{ $product->qty }}</td>
-                                            <td>{{ Number_format($product->totalPrice()) }} tk</td>
+                                            <td>{{ Number_format($product->totalPrice()) }}৳</td>
                                             <td>{{ $product->created_user->name }}</td>
                                             <td>{{ date('d-m-Y', strtotime($product->updated_at)) }}</td>
                                             @if ($product->updated_user)

@@ -640,6 +640,11 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
                 Route::get('/index','distribution')->name('index');
                 Route::post('/fetch','fetch')->name('fetch');
             });
+            //Product report
+            Route::controller(AssetReportController::class)->prefix('product')->name('product.')->group(function(){
+                Route::get('/index','product')->name('index');
+                Route::post('/productFetch','productFetch')->name('fetch');
+            });
         });
     });
 

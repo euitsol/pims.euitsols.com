@@ -96,4 +96,11 @@ class Product extends Model
         }
         return $available_product;
     }
+    public function departmentName(){
+        if($this->department_id){
+          return  $this->department()->departmentName;
+        }else{
+            return "Common Asset";
+        }
+    }
 }

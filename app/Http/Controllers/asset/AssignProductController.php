@@ -80,9 +80,11 @@ class AssignProductController extends Controller
         $product = call_user_func(array('\\App\\Models\\'.$req->model,  "with"),$req->with_arr);
         $product = $product->get();
         $product = $product->where('deleted_by',null);
-        foreach($req->arr as $key => $val){
-            $val = (int)$val;
-            $product = $product->where($key,$val);
+        if(isset($req->arr)){
+            foreach($req->arr as $key => $val){
+                $val = (int)$val;
+                $product = $product->where($key,$val);
+            }
         }
         return response()->json($product);
     }

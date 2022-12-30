@@ -112,6 +112,7 @@ function ajaxDataFetch(model, data_obj, with_arr, returnFunc = null, append_sele
                                 `<option value="${value.id}" ${old_value == value.id ? 'selected' : ''}>${value[coloum]}</option>`;
                         }
                     });
+                    console.log('selector is '+append_selector);
                     append_selector.html(option);
                 }
 

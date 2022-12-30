@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AssetCategory;
 use App\Models\AssignProduct;
 use App\Models\Department;
+use App\Models\MainAssignProduct;
 use App\Models\Product;
 use App\Models\Section;
 use App\Models\Subcategory;
@@ -45,6 +46,7 @@ class assetReportController extends Controller
     }
     public function singleProductView($id){
         $n['single_product'] = Product::find($id);
+        $n['assigned_products'] = MainAssignProduct::where('product_id',$id)->get();
         return view('pages.asset.report.single-product-view',$n);
     }
 
@@ -80,5 +82,13 @@ class assetReportController extends Controller
         $n['assign_products'] = $assign_products->get();
 
         return view('pages.asset.report.distribution.index',$n);
+    }
+
+    public function product(){
+        $n['departments'] = Department::where('deleted_by',null)->get();
+        return view('pages.asset.report.product',$n);
+    }
+    public function productFetch(Request $req){
+        return redirect()->route('asset.report.single_product.view',[$req->product_id]);
     }
 }

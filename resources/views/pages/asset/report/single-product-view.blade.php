@@ -39,9 +39,83 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-12">
+                <h1 class="text-center">{{$single_product->name}}</h1>
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Stored Info</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-sm table-bordered table-info m-auto">
+                                        <tbody>
+                                            <tr>
+                                                <th>Department Name</th>
+                                                <td>{{$single_product->departmentName()}}</td>
+                                                <th>Sub-category Name</th>
+                                                <td>{{$single_product->subcategory->name}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Product Name</th>
+                                                <td>{{$single_product->name}}</td>
+                                                <th>Quantity</th>
+                                                <td>{{$single_product->totalProduct()}}</td>
+                                            </tr>
+                                            <tr>
+
+                                                <th>Total Price</th>
+                                                <td>{{Number_format($single_product->totalPrice())}}৳</td>
+                                                <th>Available Quantity</th>
+                                                <td>{{$single_product->qty}}</td>
+
+                                                {{-- <th>Supplier </th>
+                                                <td>
+                                                    @foreach ($single_product->supplier as $supplier)
+                                                        {{$supplier->id!=0 ? ' | ' : ''.$supplier->name}}
+                                                    @endforeach
+                                                </td> --}}
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered">
+                                        <caption>Assigned Times</caption>
+                                        <thead>
+                                            <tr>
+                                                <th>Quantity</th>
+                                                <th>Warranty</th>
+                                                <th>total Price</th>
+                                                <th>Supplier </th>
+                                                <th>Created At </th>
+                                                <th>Created By </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($single_product->moreProduct as $product )
+                                                <tr>
+                                                    <td>{{$product->quantity}}</td>
+                                                    <td>{{$product->warranty}}</td>
+                                                    <td>{{Number_format($product->total_price)}} <span class="taka">৳</h4></td>
+                                                    <td>{{$product->supplier->shop_name}}</td>
+                                                    <td>{{date('d-m-Y',strtotime($product->created_at))}}</td>
+                                                    <td>{{$product->created_user->name}}</td>
+                                                </tr>
+                                            @endforeach
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-header text-center">
-                        <h4>{{$single_product->name}}</h4>
+                        <h4>Assigned Info</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -49,30 +123,30 @@
                                 <thead>
                                     <tr>
                                         <th>SL.</th>
-                                        <th>Total Quantity</th>
-                                        <th>Total Price</th>
+                                        <th>Department Name</th>
+                                        <th>Section Name</th>
+                                        <th>Sub-section Name</th>
+                                        <th>Quantity</th>
                                         <th>Created By</th>
                                         <th>Created At</th>
-                                        <th>Updated By</th>
-                                        <th>Updated At</th>
                                         {{-- <th>Action</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($single_product->moreProduct as $key => $product )
+                                    @foreach ($assigned_products as $key => $assigned_product )
                                     <tr>
                                         <td>{{$key +1}}</td>
-                                        <td>{{$product->quantity}}</td>
+                                        <td>{{$assigned_product->quantity}}</td>
                                         @php
-                                            $total_p += $product->total_price;
-                                            $qty += $product->quantity;
+                                            $total_p += $assigned_product->total_price;
+                                            $qty += $assigned_product->quantity;
                                         @endphp
-                                        <td>{{Number_format($product->total_price)}} tk</td>
-                                        <td>{{$product->created_user->name}}</td>
-                                        <td>{{date('d-m-Y',strtotime($product->created_at))}}</td>
-                                        @if($product->updated_user)
-                                            <td>{{ $product->updated_user->name }}</td>
-                                            <td>{{date('d-m-Y',strtotime($product->updated_at))}}</td>
+                                        <td>{{Number_format($assigned_product->total_price)}} tk</td>
+                                        <td>{{$assigned_product->created_user->name}}</td>
+                                        <td>{{date('d-m-Y',strtotime($assigned_product->created_at))}}</td>
+                                        @if($assigned_product->updated_user)
+                                            <td>{{ $assigned_product->updated_user->name }}</td>
+                                            <td>{{date('d-m-Y',strtotime($assigned_product->updated_at))}}</td>
                                         @else
                                             <td></td>
                                             <td></td>
@@ -80,13 +154,13 @@
                                         {{-- <td class="text-middle py-0 align-middle">
                                             <div class="btn-group">
                                                 <a href="javascript:void(0)" class="btn btn-info btnView"
-                                                    data-id="{{ $product->id }}"><i class="fas fa-eye"></i></a>
+                                                    data-id="{{ $assigned_product->id }}"><i class="fas fa-eye"></i></a>
                                                 @if (Auth::user()->can('edit blood-group') || Auth::user()->role->id == 1)
-                                                <a href="{{ route('bloodgroup.edit', $product->id) }}"
+                                                <a href="{{ route('bloodgroup.edit', $assigned_product->id) }}"
                                                     class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                                 @endif
                                                 @if (Auth::user()->can('delete blood-group') || Auth::user()->role->id == 1)
-                                                <a href="{{ route('bloodgroup.destroy', $product->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
+                                                <a href="{{ route('bloodgroup.destroy', $assigned_product->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
                                                 @endif
                                             </div>
                                         </td> --}}
