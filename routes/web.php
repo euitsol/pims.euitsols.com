@@ -3,6 +3,13 @@
 use App\Http\Controllers\asset\AssetBrandController;
 use App\Http\Controllers\asset\AssetCategoryController;
 use App\Http\Controllers\asset\AssetUnitController;
+use App\Http\Controllers\asset\AssignProductController;
+use App\Http\Controllers\asset\ProductController;
+use App\Http\Controllers\asset\SectionController;
+use App\Http\Controllers\asset\SubcategoryController;
+use App\Http\Controllers\asset\SubsectionController;
+use App\Http\Controllers\asset\SupplierController;
+use App\Http\Controllers\assetReportController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
@@ -130,6 +137,9 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
 
     // Category fetch according to department in library
     Route::get('library/category-fetch/{id}',[AssignBookController::class,'categoryFetch'])->name('library.category_fetch');
+
+    // Product fetch according to department in Assign Product
+    Route::get('asset/product-fetch',[AssignProductController::class,'productFetch'])->name('asset.product_fetch.ajax');
 
     //End All Common Ajax here
 
@@ -549,6 +559,47 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
                 Route::get('/show/{id}','show')->name('show');
                 Route::get('/destroy/{id}','destroy')->name('destroy');
             });
+            //Subcategory
+            Route::controller(SubcategoryController::class)->prefix('subcategory')->name('subcategory.')->group(function(){
+                Route::get('/index','index')->name('index'); //asset.setup.subcategory.index
+                Route::get('/create','create')->name('create');
+                Route::post('/store','store')->name('store');
+                Route::get('/edit/{id}','edit')->name('edit');
+                Route::post('/update','update')->name('update');
+                Route::get('/show/{id}','show')->name('show');
+                Route::get('/destroy/{id}','destroy')->name('destroy');
+            });
+            //Section
+            Route::controller(SectionController::class)->prefix('section')->name('section.')->group(function(){
+                Route::get('/index','index')->name('index'); //asset.setup.section.index
+                Route::get('/create','create')->name('create');
+                Route::post('/store','store')->name('store');
+                Route::get('/edit/{id}','edit')->name('edit');
+                Route::post('/update','update')->name('update');
+                Route::get('/show/{id}','show')->name('show');
+                Route::get('/destroy/{id}','destroy')->name('destroy');
+            });
+            //Sub-section
+            Route::controller(SubsectionController::class)->prefix('sub-section')->name('subsection.')->group(function(){
+                Route::get('/index','index')->name('index'); //asset.setup.subsection.index
+                Route::get('/create','create')->name('create');
+                Route::post('/store','store')->name('store');
+                Route::get('/edit/{id}','edit')->name('edit');
+                Route::post('/update','update')->name('update');
+                Route::get('/show/{id}','show')->name('show');
+                Route::get('/destroy/{id}','destroy')->name('destroy');
+            });
+
+            //Supplier
+            Route::controller(SupplierController::class)->prefix('supplier')->name('supplier.')->group(function(){
+                Route::get('/index','index')->name('index'); //asset.setup.supplier.index
+                Route::get('/create','create')->name('create');
+                Route::post('/store','store')->name('store');
+                Route::get('/edit/{id}','edit')->name('edit');
+                Route::post('/update','update')->name('update');
+                Route::get('/show/{id}','show')->name('show');
+                Route::get('/destroy/{id}','destroy')->name('destroy');
+            });
 
             //Brand
             Route::controller(AssetBrandController::class)->prefix('brand')->name('brand.')->group(function(){
@@ -572,6 +623,50 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
                 Route::get('/destroy/{id}','destroy')->name('destroy');
             });
 
+        });
+
+        //Product
+        Route::controller(ProductController::class)->prefix('product')->name('product.')->group(function(){
+            Route::get('/index','index')->name('index'); //asset.product.index
+            Route::get('/create','create')->name('create');
+            Route::post('/store','store')->name('store');
+            Route::get('/edit/{id}','edit')->name('edit');
+            Route::post('/update','update')->name('update');
+            Route::get('/show/{id}','show')->name('show');
+            Route::get('/destroy/{id}','destroy')->name('destroy');
+            Route::get('/subcategory/fetch','subcatFetch')->name('subcat.fetch');
+            Route::get('/add/more/{id}','moreProduct')->name('add.more');
+            Route::post('/add/more-store','moreProductStore')->name('add.more.store');
+        });
+
+        //Assign Product
+        Route::controller(AssignProductController::class)->prefix('assign-product')->name('assign.product.')->group(function(){
+            Route::get('/index','index')->name('index'); //asset.assign.product.index
+            // Route::post('/create','create')->name('create');
+            Route::get('/store','store')->name('store');
+            Route::post('/main/store','mainStore')->name('main_assign');
+            Route::get('/edit/{id}','edit')->name('edit');
+            Route::post('/update','update')->name('update');
+            Route::get('/destroy/{id}','destroy')->name('destroy');
+        });
+
+         //Report
+         Route::controller(assetReportController::class)->prefix('report')->name('report.')->group(function(){
+            Route::get('/main-storage/index','mainStorage')->name('main_storage');
+            Route::post('/main-storage/filter','mainStorageFilter')->name('main_storage.filter');
+            Route::get('/department-wise-product/view/{department}','DepartmentWiseView')->name('department_product.view');
+            Route::get('/single-product/view/{id}','singleProductView')->name('single_product.view');
+
+            //Distribution report
+            Route::controller(AssetReportController::class)->prefix('distribution')->name('distribution.')->group(function(){
+                Route::get('/index','distribution')->name('index');
+                Route::post('/fetch','fetch')->name('fetch');
+            });
+            //Product report
+            Route::controller(AssetReportController::class)->prefix('product')->name('product.')->group(function(){
+                Route::get('/index','product')->name('index');
+                Route::post('/productFetch','productFetch')->name('fetch');
+            });
         });
     });
 

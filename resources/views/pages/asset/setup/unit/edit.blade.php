@@ -45,7 +45,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="base_unit_id">Base unit<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
-            
+
                                         <select name="base_unit_id" id="base_unit_id" class="form-control">
                                             <option value="hidden">Select base unit</option>
                                             @foreach ($base_units as $base_unit)

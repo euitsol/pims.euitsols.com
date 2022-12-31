@@ -2,7 +2,6 @@ function get_month_name(monthNumber) {
     var months = ['January', 'February', 'March', 'April', 'May', 'June', 'Jully', 'August', 'September', 'October', 'November', 'December'];
     return months[monthNumber - 1];
 }
-
 function time_24_to_12(time){
     // Check correct time format and split into components
     time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];

@@ -498,7 +498,7 @@
     <li class="nav-item {{Request::is('asset/*') ? 'menu-open' : ''}}">
         <a href="" class="nav-link">
             <i class="nav-icon fas fa-database"></i>
-            <p>Asset <i class="fas fa-angle-left right"></i></p>
+            <p>Asset Managment<i class="fas fa-angle-left right"></i></p>
         </a>
         <ul class="nav nav-treeview">
             <li class="nav-item {{Request::is('asset/*') ? 'menu-open' : ''}}">
@@ -508,29 +508,101 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="{{route('asset.setup.category.index')}}" class="nav-link {{Request::is('asset/setup/category/*') ? 'active' : ''}}">
-                            <i class="fas fa-minus third-nav-text"></i>
-                            <p>Category</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a href="{{route('asset.setup.brand.index')}}" class="nav-link {{Request::is('asset/setup/brand/*') ? 'active' : ''}}">
                             <i class="fas fa-minus third-nav-text"></i>
                             <p>Brand</p>
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{route('asset.setup.category.index')}}" class="nav-link {{Request::is('asset/setup/category/*') ? 'active' : ''}}">
+                            <i class="fas fa-minus third-nav-text"></i>
+                            <p>Category</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('asset.setup.section.index')}}" class="nav-link {{Request::is('asset/setup/section/*') ? 'active' : ''}}">
+                            <i class="fas fa-minus third-nav-text"></i>
+                            <p>Section</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('asset.setup.subcategory.index')}}" class="nav-link {{Request::is('asset/setup/subcategory/*') ? 'active' : ''}}">
+                            <i class="fas fa-minus third-nav-text"></i>
+                            <p>Subcategory</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{route('asset.setup.subsection.index')}}" class="nav-link {{Request::is('asset/setup/sub-section/*') ? 'active' : ''}}">
+                            <i class="fas fa-minus third-nav-text"></i>
+                            <p>Sub-section</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('asset.setup.supplier.index')}}" class="nav-link {{Request::is('asset/setup/supplier/*') ? 'active' : ''}}">
+                            <i class="fas fa-minus third-nav-text"></i>
+                            <p>Supplier</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
                         <a href="{{route('asset.setup.unit.index')}}" class="nav-link {{Request::is('asset/setup/unit/*') ? 'active' : ''}}">
                             <i class="fas fa-minus third-nav-text"></i>
                             <p>Unit</p>
                         </a>
                     </li>
+
                 </ul>
             </li>
+            <li class="nav-item">
+                <a href="{{route('asset.product.index')}}" class="nav-link {{Request::is('asset/product/*') ? 'active' : ''}}">
+                    <i class="nav-icon far fa-circle second-nav-text"> </i>
+                     Add Product
+                    </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{route('asset.assign.product.index')}}" class="nav-link {{Request::is('asset/assign-product/*') ? 'active' : ''}}">
+                    <i class="nav-icon far fa-circle second-nav-text"> </i>
+                        Assign Product
+                    </a>
+            </li>
+            @if (Auth::user()->can('view asset-report') || Auth::user()->role->id == 1)
+                <li class="nav-item {{Request::is('asset/report/*') ? 'menu-open' : ''}}">
+                    <a href="#"
+                        class="nav-link">
+                        <i class="nav-icon far fa-circle second-nav-text"> </i>
+                        <p>Report <i class="fas fa-angle-left right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @if (Auth::user()->can('view report') || Auth::user()->role->id == 1)
+                        <li class="nav-item ">
+                            <a href="{{route('asset.report.distribution.index')}}" class="nav-link {{Request::is('asset/report/distribution/*') ? 'active' : ''}}">
+                                <i class="nav-icon fas fa-minus third-nav-text"> </i>
+                                <p>Distribution report </p>
+                            </a>
+                        </li>
+                        @endif
 
-            {{-- <li class="nav-item {{Request::is('asset/store-product/*') ? 'menu-open' : ''}}">
-                <a href="{{route('')}}" class="nav-link"></a>
-            </li> --}}
+                        @if (Auth::user()->can('view report') || Auth::user()->role->id == 1)
+                            <li class="nav-item ">
+                                <a href="{{route('asset.report.main_storage')}}" class="nav-link {{Request::is('asset/report/main-storage/*') ? 'active' : ''}}">
+                                    <i class="nav-icon fas fa-minus third-nav-text"> </i>
+                                    <p>Main Storage report</p>
+                                </a>
+                            </li>
+                        @endif
+
+                        @if (Auth::user()->can('view report') || Auth::user()->role->id == 1)
+                            <li class="nav-item ">
+                                <a href="{{route('asset.report.product.index')}}" class="nav-link {{Request::is('asset/report/product/*') ? 'active' : ''}}">
+                                    <i class="nav-icon fas fa-minus third-nav-text"> </i>
+                                    <p>Product Report</p>
+                                </a>
+                            </li>
+                        @endif
+                    </ul>
+                </li>
+            @endif
         </ul>
     </li>
 

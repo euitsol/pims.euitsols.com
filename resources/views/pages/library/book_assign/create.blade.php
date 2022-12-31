@@ -460,7 +460,8 @@ caption {
             });
         });
 
-        function add(This){
+        function add(This)
+        {
             let click_num = Number($(This).attr('id'))+1;
             $(This).attr('id',click_num);
 
@@ -593,7 +594,7 @@ caption {
                         $(This).parent().next('td.author-name').children('span').html(author_name);
                         $(This).parent().nextAll('td.bookshelf').children('span').html(bookshelf);
                         $('.qty'+click_num).attr('max',response.qty);
-                        $('.qty'+click_num).next('span').html('<span class="text-info">Remaingin books: </span><span id="text-qty">'+(response.qty-1)+'</span>');
+                        $('.qty'+click_num).next('span').html('<span class="text-info">Remaining books: </span><span id="text-qty">'+(response.qty-1)+'</span>');
                     }
                 })
             }
@@ -607,7 +608,7 @@ caption {
 
             let final_book = remaining_book-qty;
             if(final_book >0){
-                $(This).next('span').html('<span class="text-info">Remaingin books: </span><span id="text-qty">'+final_book+'</span>');
+                $(This).next('span').html('<span class="text-info">Remaining books: </span><span id="text-qty">'+final_book+'</span>');
             }
             else if(final_book == 0){
                 $(This).next('span').html(`<span class='text-info'>There are no books</span>`);
