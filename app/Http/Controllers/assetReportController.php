@@ -30,9 +30,16 @@ class assetReportController extends Controller
                                     ->whereBetween('created_at',[$req->str_date,$req->end_date])
                                     ->get();
         }else{
-            $n['all_products'] = Product::where('deleted_by',null)
-                                ->whereBetween('created_at',[$req->str_date,$req->end_date])
-                                ->get()->groupBy('department_id');
+            $n['all_products'] = Product::where('deleted_by',null);
+
+            if($req->str_date){
+                $n['all_products'] =   $n['all_products']->where('created_at','>',$req->str_date);
+            }
+            if($req->end_date){
+                $n['all_products'] =$n['all_products']->where('created_at','<',$req->str_date);
+            }
+
+            $n['all_products'] =$n['all_products']->get()->groupBy('department_id');
         }
         $n['departments'] = Department::where('deleted_by',null)->get();
         return view('pages.asset.report.main-storage',$n);
