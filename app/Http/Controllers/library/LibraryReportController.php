@@ -29,7 +29,6 @@ class LibraryReportController extends Controller
                                         ->where('return_date',$date)
                                         ->get();
         $n['date'] = $date;
-        // dd($n['delay']);
       return view('pages.library.report.daily',$n);
     }
 

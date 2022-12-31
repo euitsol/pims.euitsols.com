@@ -61,7 +61,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="create"></label>
                                     <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-primary w-100">Create</button>
+                                        <button type="submit" class="btn btn-primary w-100">Add</button>
                                     </div>
                                 </div>
 

@@ -50,7 +50,7 @@ class AssetBrandController extends Controller
     public function update(Request $req){
 
         $this->validate($req,[
-            'name' => "required|string|unique:brands,name,$req->id,id",
+            'name' => "required|string|unique:asset_brands,name,$req->id,id",
         ],[],['name' => 'Brand Name',]);
 
         $update = AssetBrand::findOrFail($req->id);
