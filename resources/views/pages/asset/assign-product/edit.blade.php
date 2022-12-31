@@ -27,7 +27,7 @@
                                 </tr>
                                 <tr>
                                     <th>Section:</th>
-                                    <td >{{$main_assign_product->assignProduct->section?? 'All'}}</td>
+                                    <td >{{$main_assign_product->assignProduct->section->name ?? 'All'}}</td>
                                 </tr>
 
                                 <tr>
@@ -37,14 +37,17 @@
                             </tbody>
                         </table>
 
-                           <form action="" class="form mt-4">
+                           <form action="{{route('asset.assign.product.update')}}" method="POST" class="form mt-4">
+                                @csrf
+                                <input type="hidden" name="id" value="{{$main_assign_product->id}}">
+                                <input type="hidden" name="product_id" value="{{$main_assign_product->product_id}}">
                             <div class="row">
                                 <div class="col-md-6 m-auto">
                                     <div class="form-group">
-                                        <label for="section_id">Quantity</label>
-                                       <input type="number" class="form-control" value="{{$main_assign_product->qty}}">
-                                        @if ($errors->has('section_id'))
-                                            <span class="text-danger">{{ $errors->first('section_id') }}</span>
+                                        <label for="qty">Quantity</label>
+                                       <input type="number" name="qty" class="form-control" value="{{$main_assign_product->qty}}">
+                                        @if ($errors->has('qty'))
+                                            <span class="text-danger">{{ $errors->first('qty') }}</span>
                                         @endif
                                     </div>
                                 </div>
@@ -87,4 +90,4 @@
 <script>
     $('select').select2();
 </script>
-@endphp
+@endpush

@@ -13,6 +13,7 @@ use App\Models\Section;
 use App\Models\Subcategory;
 use App\Models\Subsection;
 use App\Models\Supplier;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,7 +36,6 @@ class AssignProductController extends Controller
 
     public function store(Request $req)
     {
-
         $insert = new AssignProduct();
         $insert->department_id = $req->department_id;
         $insert->section_id = $req->section_id;
@@ -94,4 +94,37 @@ class AssignProductController extends Controller
         $n['main_assign_product'] = MainAssignProduct::with(['assignProduct','assignProduct.department','product'])->find($id);
         return view('pages.asset.assign-product.edit',$n);
     }
+
+    public function update(Request $req){
+        $this->validate($req,[
+            'qty' => 'required|integer',
+            'supplier_id' => 'required|exists:suppliers,id',
+        ],[],[
+            'qty' => 'Quantity',
+        ]);
+
+        $update = MainAssignProduct::find($req->id);
+
+         //update product qty
+         $product = Product::find($req->product_id);
+         $product->qty = $product->qty + $update->qty - $req->qty;
+         $product->save();
+
+        $update->qty = $req->qty;
+        $update->supplier_id = $req->supplier_id;
+        $update->updated_by = Auth::user()->id;
+        $update->save();
+        return redirect()->route('asset.report.single_product.view',[$req->product_id])->with('success','Assigned product updated successfully');
+    }
+
+    public function destroy($id = null){
+        if($id){
+            $delete = MainAssignProduct::find($id);
+            $delete->deleted_at= Carbon::now()->toDateTimeString();
+            $delete->deleted_by= Auth::user()->id;
+            $delete->save();
+            return redirect()->back()->with('success','Assigned product deleted successfully');
+        }
+    }
+
 }

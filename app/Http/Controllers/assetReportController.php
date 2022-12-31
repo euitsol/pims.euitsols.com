@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AssetCategory;
 use App\Models\AssignProduct;
 use App\Models\Department;
 use App\Models\MainAssignProduct;
 use App\Models\Product;
 use App\Models\Section;
-use App\Models\Subcategory;
 use App\Models\Subsection;
 use Illuminate\Http\Request;
 
 class assetReportController extends Controller
 {
+
     public function mainStorage(){
 
         $n['all_products'] = Product::where('deleted_by',null)->get()->groupBy('department_id');
         $n['departments'] = Department::where('deleted_by',null)->get();
         return view('pages.asset.report.main-storage',$n);
     }
+
     public function mainStorageFilter(Request $req){
         $n['str_date'] = $req->str_date;
         $n['end_date'] = $req->end_date;
@@ -38,15 +38,17 @@ class assetReportController extends Controller
         return view('pages.asset.report.main-storage',$n);
     }
 
-    public function DepartmentWiseView($id){
 
+    public function DepartmentWiseView($id){
         $department_id = $id == 'common_asset' ? null : $id;
         $n['department_products'] = Product::where('deleted_by',null)->where('department_id',$department_id)->get();
         return view('pages.asset.report.department-product-view',$n);
     }
+
+
     public function singleProductView($id){
         $n['single_product'] = Product::find($id);
-        $n['assigned_products'] = MainAssignProduct::where('product_id',$id)->get();
+        $n['assigned_products'] = MainAssignProduct::where('deleted_by',null)->where('product_id',$id)->get();
         return view('pages.asset.report.single-product-view',$n);
     }
 
@@ -58,13 +60,10 @@ class assetReportController extends Controller
     }
 
     public function fetch(Request $req){
-
         $assign_products = AssignProduct::with(['mainProduct', 'mainProduct.product','mainProduct.created_user','mainProduct.product.department', 'mainProduct.category',
                                                 'mainProduct.subcategory', 'mainProduct.supplier', 'department'])->where('deleted_by',null);
-
        if($req->department_id != 'all'){
             $assign_products->where('department_id','=',$req->department_id);
-
             if(isset($req->section_id)){
                 $assign_products->where('section_id','=',$req->section_id);
             }
@@ -79,16 +78,25 @@ class assetReportController extends Controller
         if($req->end_date){
             $assign_products->where('created_at','<',$req->end_date);
         }
-        $n['assign_products'] = $assign_products->get();
+        $n['assign_products'] = $assign_products->get()->groupBy('department_id');
 
         return view('pages.asset.report.distribution.index',$n);
     }
+
 
     public function product(){
         $n['departments'] = Department::where('deleted_by',null)->get();
         return view('pages.asset.report.product',$n);
     }
+
     public function productFetch(Request $req){
+        $this->validate($req,[
+            'department_id' => 'nullable|exists:departments,id',
+            'product_id' => 'required|exists:products,id',
+        ],[],[
+            'department_id' =>'Department Name',
+            'product_id' =>'Product Name',
+        ]);
         return redirect()->route('asset.report.single_product.view',[$req->product_id]);
     }
 }

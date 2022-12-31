@@ -57,12 +57,12 @@
                                                 <tr>
                                                     <th>Department Name</th>
                                                     <td>{{$single_product->departmentName()}}</td>
-                                                    <th>Sub-category Name</th>
-                                                    <td>{{$single_product->subcategory->name}}</td>
+                                                    <th>Category Name</th>
+                                                    <td>{{$single_product->category->name}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <th>Product Name</th>
-                                                    <td>{{$single_product->name}}</td>
+                                                    <th>Sub-category Name</th>
+                                                    <td>{{$single_product->subcategory->name}}</td>
                                                     <th>Quantity</th>
                                                     <td>{{$single_product->totalProduct()}}</td>
                                                 </tr>
@@ -73,12 +73,7 @@
                                                     <th>Available Quantity</th>
                                                     <td>{{$single_product->qty}}</td>
 
-                                                    {{-- <th>Supplier </th>
-                                                    <td>
-                                                        @foreach ($single_product->supplier as $supplier)
-                                                            {{$supplier->id!=0 ? ' | ' : ''.$supplier->name}}
-                                                        @endforeach
-                                                    </td> --}}
+
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -101,6 +96,7 @@
                                                         <th>Supplier </th>
                                                         <th>Created At </th>
                                                         <th>Created By </th>
+                                                        <th>Action </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -112,6 +108,7 @@
                                                             <td>{{$product->supplier->shop_name}}</td>
                                                             <td>{{date('d-m-Y',strtotime($product->created_at))}}</td>
                                                             <td>{{$product->created_user->name}}</td>
+
                                                         </tr>
                                                     @endforeach
 
@@ -141,7 +138,7 @@
                                         <th>Quantity</th>
                                         <th>Created By</th>
                                         <th>Created At</th>
-                                        {{-- <th>Action</th> --}}
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -152,43 +149,21 @@
                                         <td>{{$assigned_product->assignProduct->section->name}}</td>
                                         <td>{{$assigned_product->assignProduct->subsection->name}}</td>
                                         <td>{{$assigned_product->qty}}</td>
-                                        {{-- @php
-                                            $total_p += $assigned_product->total_price;
-                                            $qty += $assigned_product->quantity;
-                                        @endphp --}}
                                         <td>{{$assigned_product->created_user->name}}</td>
                                         <td>{{date('d-m-Y',strtotime($assigned_product->created_at))}}</td>
-                                        {{-- @if($assigned_product->updated_user)
-                                            <td>{{ $assigned_product->updated_user->name }}</td>
-                                            <td>{{date('d-m-Y',strtotime($assigned_product->updated_at))}}</td>
-                                        @else
-                                            <td></td>
-                                            <td></td>
-                                        @endif --}}
-                                        {{-- <td class="text-middle py-0 align-middle">
+                                        <td>
                                             <div class="btn-group">
-                                                <a href="javascript:void(0)" class="btn btn-info btnView"
-                                                    data-id="{{ $assigned_product->id }}"><i class="fas fa-eye"></i></a>
-                                                @if (Auth::user()->can('edit blood-group') || Auth::user()->role->id == 1)
-                                                <a href="{{ route('bloodgroup.edit', $assigned_product->id) }}"
-                                                    class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
+                                                @if(Auth::user()->can('edit report') || Auth::user()->role->id == 1)
+                                                    <a href="{{ route('asset.assign.product.edit', $assigned_product->id) }}" class="btn btn-dark btnEdit"><i class="fas fa-edit"></i></a>
                                                 @endif
-                                                @if (Auth::user()->can('delete blood-group') || Auth::user()->role->id == 1)
-                                                <a href="{{ route('bloodgroup.destroy', $assigned_product->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
+                                                @if(Auth::user()->can('delete report') || Auth::user()->role->id == 1)
+                                                    <a href="{{ route('asset.assign.product.destroy', $assigned_product->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
                                                 @endif
                                             </div>
-                                        </td> --}}
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
-                                {{-- <tfoot>
-                                    <tr>
-                                        <th></th>
-                                        <th class="border-top-2">Total</th>
-                                        <th class="border-top-2"> = {{$qty}}</th>
-                                        <th class="border-top-2">  = {{Number_format($total_p)}} tk</th>
-                                    </tr>
-                                </tfoot> --}}
                             </table>
                         </div>
                     </div>

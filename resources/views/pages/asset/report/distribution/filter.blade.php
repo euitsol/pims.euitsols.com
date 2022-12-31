@@ -44,7 +44,7 @@
                                     <div class="form-group">
                                         <label for="section_id">Section</label>
                                         <select name="section_id" class="form-control" id="section_id">
-                                            <option value="" hidden>Select Section</option>
+                                            <option value="" hidden>All</option>
                                         </select>
                                         @if ($errors->has('section_id'))
                                             <span class="text-danger">{{ $errors->first('section_id') }}</span>
@@ -56,7 +56,7 @@
                                     <div class="form-group">
                                         <label for="subsection_id">Sub-section</label>
                                         <select name="subsection_id" class="form-control" id="subsection_id">
-                                            <option value="" hidden>Select Sub-section</option>
+                                            <option value="" hidden>All</option>
                                         </select>
                                         @if ($errors->has('subsection_id'))
                                             <span class="text-danger">{{ $errors->first('subsection_id') }}</span>
@@ -87,18 +87,6 @@
                         </div>
                     </div>
                 </form>
-
-
-                {{-- Report show --}}
-                <div id="report_show">
-
-                </div>
-                <div class="card p-5" id="loading_card" style="display: none">
-                    <div class="spinner-border text-primary m-auto" style="width: 3rem; height: 3rem;" role="status"></div>
-                </div>
-
-
-
             </div>
         </div>
     </div>
@@ -107,182 +95,6 @@
 
 @push('third_party_scripts')
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
-    <script src="{{ asset('assets/js/DataTable/datatables.min.js') }}"></script>
 @endpush
 
-@push('page_scripts')
-    <script>
-        //hide
-        $('#report_show').hide();
-        $(document).ready(function() {
-            $('select').select2();
 
-            function dataTabl() {
-                $('#info_card table').DataTable({
-                    dom: 'Bfrtip',
-                    buttons: [{
-                        extend: 'pdfHtml5',
-                        title: 'Distribution report',
-                        download: 'open',
-                        orientation: 'potrait',
-                        pagesize: 'LETTER',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4]
-                        }
-                    }, {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4]
-                        }
-                    }, 'pageLength']
-                });
-            }
-            //Section fetch according to Department
-            $("#department_id").change(function() {
-                $('#subsection_id').html("<option value='' selected> Select... </option>");
-                let department_id = $(this).val();
-                ajaxDataFetch('Section', {
-                    'department_id': department_id
-                }, ['created_user', 'updated_user',
-                    'deleted_user', 'department'
-                ], null, $('#section_id'));
-            });
-
-            //Sub-section fetch according to Section
-            $("#section_id").change(function() {
-                let section_id = $(this).val();
-                ajaxDataFetch('Subsection', {
-                    'section_id': section_id
-                }, ['created_user', 'updated_user',
-                    'deleted_user', 'section'
-                ], null, $("#subsection_id"));
-            });
-
-            //search button click
-            $('.search').on('click', function() {
-                let department_id = $('#department_id').val();
-                let section_id = $('#section_id').val();
-                let subsection_id = $('#subsection_id').val();
-                let date1 = $('#str_date').val();
-                let date2 = $('#end_date').val();
-                var data_boj = {
-                    'department_id': department_id,
-                };
-
-               if(section_id){
-                data_boj.section_id =section_id;
-               }
-
-               if(subsection_id){
-                data_boj.subsection_id =subsection_id;
-               }
-
-               if(date1){
-                data_boj.date1 =date1
-               }
-
-               if(date2){
-                data_boj.date2 =date2
-               }
-            //    console.log(data_boj);
-
-                $('#info_card').hide('slow');
-                $('#show_card').hide(200);
-                $('#loading_card').show(200);
-                $.ajax({
-                    method: 'get',
-                    url: '{{ route('asset.report.distribution.fetch') }}',
-                    data: data_boj,
-                    success: function(response) {
-
-                        let append
-
-                        $.each(response, function(index,item) {
-                             append += `<div class='card'>
-                                        <div class='card-header'>
-                                            <h4></h4>
-                                        </div>
-                                    `;
-                                    append += ` <div class='card-body'>
-                                            <table class='table table-striped'>
-                                                <thead>
-                                                    <tr>
-                                                        <th>Department Name</th>
-                                                        <th>Product Name</th>
-                                                        <th>Quantity</th>
-                                                        <th>Created By</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>`;
-                            $.each(item.main_product, function(index,main_assing) {
-                                append += `<tr>
-                                                <td>${main_assing.product.department ? main_assing.product.department.department_name : 'Common Asset'}</td>
-                                                <td>${main_assing.product.name}</td>
-                                                <td>${main_assing.product.qty}</td>
-                                                <td>${main_assing.created_user.name}</td>
-                                            </tr>`;
-                            })
-                            append += `</tbody>
-                                            </table>
-                                        </div>
-                                    </div>`;
-                        });
-
-                        $('#report_show').html(append);
-                        $('#loading_card').fadeOut(300, function() {
-                            $('#report_show').fadeIn(300);
-                        });
-                    }
-                })
-                // ajaxDataFetch('AssignProduct', {
-                //     'department_id': department_id,
-                //     'section_id': section_id,
-                //     'subsection_id': subsection_id
-                //     }, ['mainProduct', 'mainProduct.product','mainProduct.product.department', 'mainProduct.category',
-                //         'mainProduct.subcategory', 'mainProduct.supplier', 'department'
-                //     ], function(response) {
-
-                //         let append = '';
-                //         $.each(response, function(index, item) {
-                //             append += `<div class='card'>
-            //                         <div class='card-header'>
-            //                             <h4>${item.department.department_name}</h4>
-            //                         </div>
-            //                     `;
-                //             append += ` <div class='card-body'>
-            //                             <table class='table table-striped'>
-            //                                 <thead>
-            //                                     <tr>
-            //                                         <th>Department Name</th>
-            //                                         <th>Product Name</th>
-            //                                         <th>Quantity</th>
-            //                                         <th>Created By</th>
-            //                                     </tr>
-            //                                 </thead>
-            //                                 <tbody>`;
-
-                //             $.each(item.main_product, function(index2, main_assign_product) {
-                //                 console.log(main_assign_product)
-                //                 append += `<tr>
-            //                                             <td>${main_assign_product.product.department.department_name}</td>
-            //                                             <td>${main_assign_product.category.name}</td>
-            //                                             <td>${main_assign_product.product.name}</td>
-            //                                             <td>${main_assign_product.product.qty}</td>
-            //                                             <td>${main_assign_product.created_by.name}</td>
-            //                                         </tr>`;
-                //             });
-                //             append += `</tbody>
-            //                             </table>
-            //                         </div>
-            //                     </div>`;
-                //         });
-                //         $('#report_show').html(append);
-                //         $('#loading_card').fadeOut(300, function() {
-                //             $('#report_show').fadeIn(300);
-                //         });
-
-                // });
-            });
-        });
-    </script>
-@endpush

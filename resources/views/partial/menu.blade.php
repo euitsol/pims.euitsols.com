@@ -560,21 +560,23 @@
                     </a>
                     <ul class="nav nav-treeview">
                         @if (Auth::user()->can('view report') || Auth::user()->role->id == 1)
+                        <li class="nav-item ">
+                            <a href="{{route('asset.report.distribution.index')}}" class="nav-link {{Request::is('asset/report/distribution/*') ? 'active' : ''}}">
+                                <i class="nav-icon fas fa-minus third-nav-text"> </i>
+                                <p>Distribution report </p>
+                            </a>
+                        </li>
+                        @endif
+
+                        @if (Auth::user()->can('view report') || Auth::user()->role->id == 1)
                             <li class="nav-item ">
                                 <a href="{{route('asset.report.main_storage')}}" class="nav-link {{Request::is('asset/report/main-storage/*') ? 'active' : ''}}">
                                     <i class="nav-icon fas fa-minus third-nav-text"> </i>
-                                    <p>Main Storage</p>
+                                    <p>Main Storage report</p>
                                 </a>
                             </li>
                         @endif
-                        @if (Auth::user()->can('view report') || Auth::user()->role->id == 1)
-                            <li class="nav-item ">
-                                <a href="{{route('asset.report.distribution.index')}}" class="nav-link {{Request::is('asset/report/distribution/*') ? 'active' : ''}}">
-                                    <i class="nav-icon fas fa-minus third-nav-text"> </i>
-                                    <p>Distribute Product</p>
-                                </a>
-                            </li>
-                        @endif
+
                         @if (Auth::user()->can('view report') || Auth::user()->role->id == 1)
                             <li class="nav-item ">
                                 <a href="{{route('asset.report.product.index')}}" class="nav-link {{Request::is('asset/report/product/*') ? 'active' : ''}}">

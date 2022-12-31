@@ -621,11 +621,7 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::post('/main/store','mainStore')->name('main_assign');
             Route::get('/edit/{id}','edit')->name('edit');
             Route::post('/update','update')->name('update');
-            Route::get('/show/{id}','show')->name('show');
             Route::get('/destroy/{id}','destroy')->name('destroy');
-            Route::get('/subcategory/fetch','subcatFetch')->name('subcat.fetch');
-            Route::get('/add/more/{id}','moreProduct')->name('add.more');
-            Route::post('/add/more-store','moreProductStore')->name('add.more.store');
         });
 
          //Report

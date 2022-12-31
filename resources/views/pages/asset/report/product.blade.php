@@ -58,6 +58,9 @@
                                                 {{ $department->department_name }}</option>
                                         @endforeach
                                     </select>
+                                    @if ($errors->has('department_id'))
+                                        <span class="text-danger">{{ $errors->first('department_id') }}</span>
+                                    @endif
                                 </div>
                             </div>
 
@@ -66,10 +69,12 @@
                                     <label for="user">Product</label>
                                 </div>
                                 <div class="col-md-6 text-left mt-2">
-
                                     <select name="product_id" id="product_id" class="form-control">
                                         <option value="">Select Product</option>
                                     </select>
+                                    @if ($errors->has('product_id'))
+                                        <span class="text-danger">{{ $errors->first('product_id') }}</span>
+                                    @endif
                                 </div>
                             </div>
                             <div class="row  mt-2">
