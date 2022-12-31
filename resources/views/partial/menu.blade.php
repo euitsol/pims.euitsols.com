@@ -216,6 +216,22 @@
                     </a>
                 </li>
             @endif
+
+                <li class="nav-item">
+                    <a href="{{ route('examshifts.index') }}"
+                        class="nav-link {{ Request::is('setup/exam-shift/*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-minus"></i>
+                        <p>Exam Shift</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('examtypes.index') }}"
+                        class="nav-link {{ Request::is('setup/exam-type/*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-minus"></i>
+                        <p>Exam Type</p>
+                    </a>
+                </li>
+
             @if (Auth::user()->can('view group') || Auth::user()->role->id == 1)
                 <li class="nav-item">
                     <a href="{{ route('group.index') }}"
@@ -592,4 +608,26 @@
 
 
 @endif
+
+    <li class="nav-item {{Request::is('exam-management/*') ? 'menu-open' : ''}}">
+        <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-users"></i>
+            <p>
+                Exam Management
+                <i class="fas fa-angle-left right"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+
+                <li class="nav-item">
+                    <a href="{{ route('em.create.index') }}" class="nav-link {{ Request::is('exam-management/create-exam/*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-minus"></i>
+                        <p>Create Exam</p>
+                    </a>
+                </li>
+
+        </ul>
+    </li>
+
+
 

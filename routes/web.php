@@ -49,6 +49,9 @@ use App\Http\Controllers\library\CategoryController;
 use App\Http\Controllers\library\LibraryReportController;
 use App\Http\Controllers\library\LibraryMemberController;
 use App\Http\Controllers\setup\RoutineController;
+use App\Http\Controllers\setup\ExamTypeController;
+use App\Http\Controllers\ExamManagementController;
+use App\Http\Controllers\setup\ExamShiftController;
 
 /*
 |--------------------------------------------------------------------------
@@ -397,6 +400,29 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::get('/show/{id}', 'show')->name('show');
             Route::get('/name-check', 'nameCheck')->name('name_check');
         });
+
+        //Exam Types
+        Route::controller(ExamTypeController::class)->prefix('exam-type')->name('examtypes.')->group( function () {
+            Route::get('/view', 'index')->name('index');
+            Route::get('/add', 'create')->name('create');
+            Route::post('/add-store', 'store')->name('store');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::post('/edit-store', 'update')->name('update');
+            Route::get('/delete/{id}', 'destroy')->name('destroy');
+            Route::get('/show/{id}', 'show')->name('show');
+        });
+
+        //Exam Shifts
+        Route::controller(ExamShiftController::class)->prefix('exam-shift')->name('examshifts.')->group( function () {
+            Route::get('/view', 'index')->name('index');
+            Route::get('/add', 'create')->name('create');
+            Route::post('/add-store', 'store')->name('store');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::post('/edit-store', 'update')->name('update');
+            Route::get('/delete/{id}', 'destroy')->name('destroy');
+            Route::get('/show/{id}', 'show')->name('show');
+        });
+
     });
 
     // Teacher Module
@@ -642,6 +668,26 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
                 Route::post('/productFetch','productFetch')->name('fetch');
             });
         });
+    });
+
+
+    //Exam Management
+    Route::prefix('exam-management')->name('em.')->group(function(){
+
+        //Create Exam
+        Route::controller(ExamManagementController::class)->prefix('create-exam')->name('create.')->group(function(){
+            Route::get('/index','index')->name('index');
+            Route::post('/search','search')->name('search');
+            Route::get('/show/{id}','show')->name('show');
+            Route::get('/add/{id}','add')->name('add');
+            Route::get('/update/{id}','update')->name('update');
+            Route::post('/update-store','update_store')->name('update.store');
+            Route::post('/store','store')->name('store');
+            Route::get('/view/{id}','view')->name('view');
+            Route::post('/get-routine','get_routine')->name('get_routine');
+            Route::get('/delete/{id}','delete')->name('delete');
+        });
+
     });
 
 });
