@@ -29,4 +29,11 @@ class Teacher extends Model
     public function bloodgroup(){
         return $this->belongsTo(Bloodgroup::class, 'bloodgroups_id', 'id');
     }
+    public function teacherCheck(){
+        if(LibraryMember::where('teacher_id',$this->id)->first()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

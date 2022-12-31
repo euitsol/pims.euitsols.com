@@ -22,7 +22,6 @@ jobs:
         node-version: 16
     - run: chmod -R a+x node_modules
     - run: npm install
-    - run: npm run production
     - run: composer update --no-scripts
 
     - name: executing remote ssh commands using password

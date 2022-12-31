@@ -102,16 +102,14 @@
                     @php
                         $semester = App\Models\Semester::where('deleted_at',null)->get();
                     @endphp
-                        @forelse ($semester as $key => $value)
+                        @foreach ($semester as $key => $value)
                         <li class="nav-item">
                             <a href="{{ route('student.index',$value->id) }}" class="nav-link {{Request::is('student/information/index/'.$value->id) ? 'active' : ''}}">
                                 <i class="nav-icon fas fa-minus"></i>
                                 <p>{{$value->name}}</p>
                             </a>
                         </li>
-                        @empty
-                            <li>There is no semester</li>
-                        @endforelse
+                        @endforeach
                 </ul>
             </li>
         @endif
@@ -164,6 +162,15 @@
                     </a>
                 </li>
             @endif
+            @if (Auth::user()->can('view building') || Auth::user()->role->id == 1)
+            <li class="nav-item">
+                <a href="{{ route('building.index') }}"
+                    class="nav-link {{ Request::is('setup/building/*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-minus"></i>
+                    <p>Buildings</p>
+                </a>
+            </li>
+        @endif
             @if (Auth::user()->can('view credit') || Auth::user()->role->id == 1)
                 <li class="nav-item">
                     <a href="{{ route('credit.index') }}"
@@ -209,6 +216,22 @@
                     </a>
                 </li>
             @endif
+
+                <li class="nav-item">
+                    <a href="{{ route('examshifts.index') }}"
+                        class="nav-link {{ Request::is('setup/exam-shift/*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-minus"></i>
+                        <p>Exam Shift</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('examtypes.index') }}"
+                        class="nav-link {{ Request::is('setup/exam-type/*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-minus"></i>
+                        <p>Exam Type</p>
+                    </a>
+                </li>
+
             @if (Auth::user()->can('view group') || Auth::user()->role->id == 1)
                 <li class="nav-item">
                     <a href="{{ route('group.index') }}"
@@ -244,7 +267,7 @@
                         <p>Nationality</p>
                     </a>
                 </li>
-            @endif        
+            @endif
             @if (Auth::user()->can('view routine') || Auth::user()->role->id == 1)
               <li class="nav-item">
                   <a href="{{ route('routine.index') }}"
@@ -350,9 +373,261 @@
     <li class="nav-item ">
         <a href="{{route('attendance.filter')}}" class="nav-link {{ Request::is('attendance/*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-chalkboard-teacher"></i>
-            <p>
-                Attendance
-            </p>
+            <p>Attendance </p>
         </a>
     </li>
 @endif
+
+<style>
+   .nav .nav-item a .second-nav-text{
+        margin-left: 15px;
+
+    }
+   .nav .nav-item a .third-nav-text{
+        margin-left: 30px;
+
+    }
+</style>
+{{-- LIbrary Mangement --}}
+@if (Auth::user()->hasAnyPermission(['view library']) || Auth::user()->role->id == 1)
+    <li class="nav-item {{ Request::is('library/*') ? 'menu-open' : '' }}">
+        <a href="#" class="nav-link ">
+            <i class="nav-icon fas fa-book"></i>
+            <p>
+                Library
+                <i class="fas fa-angle-left right"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            @if (Auth::user()->can('view library-setup') || Auth::user()->role->id == 1)
+                <li class="nav-item {{ Request::is('library/setup/*') ? 'menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link">
+                        <i class="nav-icon far fa-circle second-nav-text"></i>
+                        <p>Setup <i class="fas fa-angle-left right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @if (Auth::user()->can('view category') || Auth::user()->role->id == 1)
+                            <li class="nav-item">
+                                <a href="{{route('library.setup.category.index')}}"
+                                    class="nav-link {{ Request::is('library/setup/category/*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-minus third-nav-text"></i>
+                                    <p>Category</p>
+                                </a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->can('view bookshelf') || Auth::user()->role->id == 1)
+                            <li class="nav-item">
+                                <a href="{{route('library.setup.bookshelf.index')}}"
+                                    class="nav-link {{ Request::is('library/setup/bookshelf/*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-minus third-nav-text"></i>
+                                    <p>Bookshelf</p>
+                                </a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->can('view add-book') || Auth::user()->role->id == 1)
+                            <li class="nav-item">
+                                <a href="{{route('library.setup.book.index')}}"
+                                    class="nav-link {{ Request::is('library/setup/books/*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-minus third-nav-text"></i>
+                                    <p>Books</p>
+                                </a>
+
+                            </li>
+                        @endif
+                    </ul>
+                </li>
+            @endif
+            @if (Auth::user()->can('view library-member') || Auth::user()->role->id == 1)
+                <li class="nav-item ">
+                    <a href="{{route('library.member.index')}}"
+                        class="nav-link {{ Request::is('library/member/*') ? 'active' : '' }}">
+                       <i class="nav-icon far fa-circle second-nav-text"></i>
+                        <p>Register Member</p>
+                    </a>
+                </li>
+            @endif
+            @if (Auth::user()->can('view assign-books') || Auth::user()->role->id == 1)
+                <li class="nav-item ">
+                    <a href="{{route('library.book_assign.create')}}"
+                        class="nav-link {{ Request::is('library/assign-books/*') ? 'active' : '' }}">
+                       <i class="nav-icon far fa-circle second-nav-text"></i>
+                        <p>Assign Books</p>
+                    </a>
+                </li>
+            @endif
+            @if (Auth::user()->can('view return-book') || Auth::user()->role->id == 1)
+                <li class="nav-item ">
+                    <a href="{{route('library.return_book.create')}}"
+                        class="nav-link {{ Request::is('library/return-books/*') ? 'active' : '' }}">
+                       <i class="nav-icon far fa-circle second-nav-text"></i>
+                        <p>Return books</p>
+                    </a>
+                </li>
+            @endif
+            @if (Auth::user()->can('view library-report') || Auth::user()->role->id == 1)
+                <li class="nav-item {{Request::is('library/report/*') ? 'menu-open' : ''}}">
+                    <a href="#"
+                        class="nav-link">
+                       <i class="nav-icon far fa-circle second-nav-text"></i>
+                        <p>Report <i class="fas fa-angle-left right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @if (Auth::user()->can('view daily') || Auth::user()->role->id == 1)
+                            <li class="nav-item ">
+                                <a href="{{route('library.report.daily',[date('Y-m-d')])}}" class="nav-link {{Request::is('library/report/daily/*') ? 'active' : ''}}">
+                                <i class="nav-icon fas fa-minus third-nav-text"></i>
+                                <p>Daily report</p></a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->can('view daily') || Auth::user()->role->id == 1)
+                            <li class="nav-item ">
+                                <a href="{{route('library.report.all')}}" class="nav-link {{Request::is('library/report/all/*') ? 'active' : ''}}">
+                                <i class="nav-icon fas fa-minus third-nav-text"></i>
+                                <p>All report</p></a>
+                            </li>
+                        @endif
+                    </ul>
+                </li>
+            @endif
+        </ul>
+    </li>
+@endif
+
+@if (Auth::user()->hasAnyPermission(['view asset']) || Auth::user()->role->id == 1)
+    <li class="nav-item {{Request::is('asset/*') ? 'menu-open' : ''}}">
+        <a href="" class="nav-link">
+            <i class="nav-icon fas fa-database"></i>
+            <p>Asset Managment<i class="fas fa-angle-left right"></i></p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item {{Request::is('asset/*') ? 'menu-open' : ''}}">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon far fa-circle second-nav-text"> </i>
+                    <p>Setup <i class="fas fa-angle-left right"></i></p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{route('asset.setup.brand.index')}}" class="nav-link {{Request::is('asset/setup/brand/*') ? 'active' : ''}}">
+                            <i class="fas fa-minus third-nav-text"></i>
+                            <p>Brand</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('asset.setup.category.index')}}" class="nav-link {{Request::is('asset/setup/category/*') ? 'active' : ''}}">
+                            <i class="fas fa-minus third-nav-text"></i>
+                            <p>Category</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('asset.setup.section.index')}}" class="nav-link {{Request::is('asset/setup/section/*') ? 'active' : ''}}">
+                            <i class="fas fa-minus third-nav-text"></i>
+                            <p>Section</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('asset.setup.subcategory.index')}}" class="nav-link {{Request::is('asset/setup/subcategory/*') ? 'active' : ''}}">
+                            <i class="fas fa-minus third-nav-text"></i>
+                            <p>Subcategory</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{route('asset.setup.subsection.index')}}" class="nav-link {{Request::is('asset/setup/sub-section/*') ? 'active' : ''}}">
+                            <i class="fas fa-minus third-nav-text"></i>
+                            <p>Sub-section</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('asset.setup.supplier.index')}}" class="nav-link {{Request::is('asset/setup/supplier/*') ? 'active' : ''}}">
+                            <i class="fas fa-minus third-nav-text"></i>
+                            <p>Supplier</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{route('asset.setup.unit.index')}}" class="nav-link {{Request::is('asset/setup/unit/*') ? 'active' : ''}}">
+                            <i class="fas fa-minus third-nav-text"></i>
+                            <p>Unit</p>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="{{route('asset.product.index')}}" class="nav-link {{Request::is('asset/product/*') ? 'active' : ''}}">
+                    <i class="nav-icon far fa-circle second-nav-text"> </i>
+                     Add Product
+                    </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{route('asset.assign.product.index')}}" class="nav-link {{Request::is('asset/assign-product/*') ? 'active' : ''}}">
+                    <i class="nav-icon far fa-circle second-nav-text"> </i>
+                        Assign Product
+                    </a>
+            </li>
+            @if (Auth::user()->can('view asset-report') || Auth::user()->role->id == 1)
+                <li class="nav-item {{Request::is('asset/report/*') ? 'menu-open' : ''}}">
+                    <a href="#"
+                        class="nav-link">
+                        <i class="nav-icon far fa-circle second-nav-text"> </i>
+                        <p>Report <i class="fas fa-angle-left right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @if (Auth::user()->can('view report') || Auth::user()->role->id == 1)
+                        <li class="nav-item ">
+                            <a href="{{route('asset.report.distribution.index')}}" class="nav-link {{Request::is('asset/report/distribution/*') ? 'active' : ''}}">
+                                <i class="nav-icon fas fa-minus third-nav-text"> </i>
+                                <p>Distribution report </p>
+                            </a>
+                        </li>
+                        @endif
+
+                        @if (Auth::user()->can('view report') || Auth::user()->role->id == 1)
+                            <li class="nav-item ">
+                                <a href="{{route('asset.report.main_storage')}}" class="nav-link {{Request::is('asset/report/main-storage/*') ? 'active' : ''}}">
+                                    <i class="nav-icon fas fa-minus third-nav-text"> </i>
+                                    <p>Main Storage report</p>
+                                </a>
+                            </li>
+                        @endif
+
+                        @if (Auth::user()->can('view report') || Auth::user()->role->id == 1)
+                            <li class="nav-item ">
+                                <a href="{{route('asset.report.product.index')}}" class="nav-link {{Request::is('asset/report/product/*') ? 'active' : ''}}">
+                                    <i class="nav-icon fas fa-minus third-nav-text"> </i>
+                                    <p>Product Report</p>
+                                </a>
+                            </li>
+                        @endif
+                    </ul>
+                </li>
+            @endif
+        </ul>
+    </li>
+
+
+@endif
+
+    <li class="nav-item {{Request::is('exam-management/*') ? 'menu-open' : ''}}">
+        <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-users"></i>
+            <p>
+                Exam Management
+                <i class="fas fa-angle-left right"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+
+                <li class="nav-item">
+                    <a href="{{ route('em.create.index') }}" class="nav-link {{ Request::is('exam-management/create-exam/*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-minus"></i>
+                        <p>Create Exam</p>
+                    </a>
+                </li>
+
+        </ul>
+    </li>
+
+
+

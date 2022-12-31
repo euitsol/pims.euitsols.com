@@ -35,5 +35,14 @@ class studentInfo extends Model
         return $this->hasMany(AcademicInfo::class, 'student_infos_id');
     }
 
+    public function stdCheck(){
+
+        if(LibraryMember::where('std_id',$this->id)->where("deleted_at",null)->first() == null){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
 
 }

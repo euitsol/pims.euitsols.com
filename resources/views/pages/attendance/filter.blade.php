@@ -6,9 +6,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 @endpush
 
-@push('page_css')
-@endpush
-
 @section('content')
     <div class="container-fluid">
         <div class="row justify-content-center">
@@ -20,7 +17,7 @@
                         </span>
                     </div>
                     <div class="card-body">
-                        <form action="{{route('attendance.class')}}" method="POST">
+                        <form action="{{ route('attendance.filter.store') }}" method="POST">
                             @csrf
                             <input type="hidden" name="semester_id" value="">
                             <div class="row">
@@ -77,25 +74,8 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="shift_id">Shift</label>
-                                        <select name="shift_id" id="shift_id" class="form-control select" >
-                                            <option value="" hidden>Select Shift</option>
-                                            @foreach ($shift as $n)
-                                                <option value="{{ $n->id }}"
-                                                    @if (old('shift_id') == $n->id) selected @endif>{{ $n->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('shift_id'))
-                                            <span class="text-danger">{{ $errors->first('shift_id') }}</span>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="form-group">
                                         <label for="group_id">Group</label>
-                                        <select name="group_id" id="group_id" class="form-control select" >
+                                        <select name="group_id" id="group_id" class="form-control select">
                                             <option value="" hidden>Select Group</option>
                                             @foreach ($group as $n)
                                                 <option value="{{ $n->id }}"
@@ -110,9 +90,38 @@
                                 </div>
 
                                 <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="shift_id">Shift</label>
+                                        <select name="shift_id" id="shift_id" class="form-control select">
+                                            <option value="" hidden>Select Shift</option>
+                                            @foreach ($shift as $n)
+                                                <option value="{{ $n->id }}"
+                                                    @if (old('shift_id') == $n->id) selected @endif>{{ $n->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('shift_id'))
+                                            <span class="text-danger">{{ $errors->first('shift_id') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group" id="subject_div">
+                                        <label for="subject_id">Subject</label>
+                                        <select name="subject_id" id="subject_id" class="form-control select">
+                                            <option value="" hidden>Select Subject</option>
+                                        </select>
+                                        @if ($errors->has('subject_id'))
+                                            <span class="text-danger">{{ $errors->first('subject_id') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
                                     <div class="form-group" id="teacher_div">
                                         <label for="teacher_id">Teacher</label>
-                                        <select name="teacher_id" id="teacher_id" class="form-control select" >
+                                        <select name="teacher_id" id="teacher_id" class="form-control select">
                                             <option value="" hidden>Select Teacher</option>
                                         </select>
                                         @if ($errors->has('teacher_id'))
@@ -121,17 +130,6 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <div class="form-group" id="subject_div">
-                                        <label for="subject_id">Subject</label>
-                                        <select name="subject_id" id="subject_id" class="form-control select" >
-                                            <option value="" hidden>Select Subject</option>
-                                        </select>
-                                        @if ($errors->has('subject_id'))
-                                        <span class="text-danger">{{ $errors->first('subject_id') }}</span>
-                                    @endif
-                                    </div>
-                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 text-center mt-3">
@@ -148,107 +146,120 @@
 @endsection
 
 @push('third_party_scripts')
-    {{-- Select2 --}}
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 @endpush
 
 @push('page_scripts')
     <script>
         $(document).ready(function() {
-
             $('.select').select2();
+
             // teacher validation
-            $('#teacher_div').click(function(){
-                if($('#department_id').val()==''){
-                    alert('Select Department');
+            $('#teacher_div').click(function() {
+
+                if ($('#group_id').val() == '') {
+                    alert('Please, select Group');
                     return;
                 }
+
+                if ($('#shift_id').val() == '') {
+                    alert('Please, select Shift');
+                    return;
+                }
+
+                if ($('#subject_id').val() == '') {
+                    alert('Please,select Subject');
+                    return;
+                }
+
             });
 
             // Subject Validation
-             $('#subject_div').click(function(){
-                if($('#session_id').val()==''){
-                    alert('Select Session');
+            $('#subject_div').click(function() {
+                if ($('#session_id').val() == '') {
+                    alert('Please, select Session');
                     return;
                 }
-                if($('#department_id').val()==''){
-                    alert('Select Department');
+                if ($('#department_id').val() == '') {
+                    alert('Please, select Department');
                     return;
                 }
-                if($('#semester_id').val()==''){
-                    alert('Select Semester');
+                if ($('#semester_id').val() == '') {
+                    alert('Please, select Semester');
                     return;
                 }
+
             });
 
-            //Teacher fetch according to Department
-            $("#department_id").change(function() {
-                var department_id = $(this).val();
-                teacherFetch(department_id);
-            });
-            var old_teacher_id = '{{old('teacher_id') ?? ''}}';
-
-            if(old_teacher_id != ''){
-                console.log('old_teacher_id')
-                teacherFetch(old_teacher_id);
-                $('#teacher_id').val({{old('teacher_id')}}).trigger('change.select2');
-            }
-
+            //Subject fetch according to Session, Department, Semester
             $("#session_id, #department_id, #semester_id").change(function() {
 
                 var session_id = $('#session_id').val();
                 var department_id = $('#department_id').val();
                 var semester_id = $('#semester_id').val();
-                subjectFetch(session_id,department_id,semester_id);
+                subjectFetch(session_id, department_id, semester_id);
             });
 
-            var old_subject_id = '{{old('subject_id') ?? ''}}';
-            if(old_subject_id != ''){
+            //Subject value keep exist during return back
+            let old_session_id = '{{old('session_id') ?? ''}}';
+            let old_department_id = '{{old('department_id') ?? ''}}';
+            let old_semester_id = '{{old('semester_id') ?? ''}}';
+            if( old_session_id != '' && old_department_id != '' && old_semester_id != '' ){
+                subjectFetch(old_session_id,old_department_id,old_semester_id);
+            }
+
+
+            //Old subject fetch
+            var old_subject_id = '{{ old('subject_id') ?? '' }}';
+            if (old_subject_id != '') {
                 var session_id = $('#session_id').val();
                 var department_id = $('#department_id').val();
                 var semester_id = $('#semester_id').val();
-                subjectFetch(session_id,department_id,semester_id);
-                $('#subject_id').val({{old('subject_id')}}).trigger('change.select2');
+                subjectFetch(session_id, department_id, semester_id);
+                $('#subject_id').val({{ old('subject_id') }}).trigger('change.select2');
             }
+
+
+            //Teacher fetch according to Subject, Group, Shift
+            $("#subject_id, #group_id, #shift_id").change(function() {
+                var subject_id = $('#subject_id').val();
+                var group_id = $('#group_id').val();
+                var shift_id = $('#shift_id').val();
+                teacherFetch(subject_id, group_id, shift_id);
+            });
+
+            //Teacher value keep exist during return back
+            let old_group_id = '{{old('group_id') ?? ''}}';
+            let old_shift_id = '{{old('shift_id') ?? ''}}';
+            if( old_subject_id != '' && old_group_id != '' && old_shift_id != '' ){
+                teacherFetch(old_subject_id,old_group_id,old_shift_id);
+            }
+
+            //Old teacher check
+            var old_teacher_id = '{{ old('teacher_id') ?? '' }}';
+            if (old_teacher_id != '') {
+                teacherFetch(old_teacher_id);
+                $('#teacher_id').val({{ old('teacher_id') }}).trigger('change.select2');
+            }
+
         });
 
-        function teacherFetch(department_id){
-            $.ajax({
-                url: "{{ route('teacher_fetch.ajax') }}",
-                method: 'GET',
-                async:false,
-                data: {
-                    department_id: department_id,
-                },
-                success: function(response) {
-                    var option = "<option value='' hidden>Select Teacher</option>";
-                    $.each(response, function(index, value) {
-                        option += `
-                        <option value="${value.id}">${value.name}</option>
-                        `;
-                    });
-                    $('#teacher_id').html(option);
-                }
-            });
-        }
-
-
         //Subject fetch according to session, department, semester
-        // $("#session_id, #department_id, #semester_id").change(function() {
-            function subjectFetch(session_id,department_id,semester_id){
+        function subjectFetch(session_id, department_id, semester_id) {
             var session_id = session_id;
             var department_id = department_id;
             var semester_id = semester_id;
             $.ajax({
-                url: "{{ route('subject_assign_fetch.ajax') }}",
+                url: "{{ route('subject_fetch.ajax') }}",
                 method: 'GET',
-                async:false,
+                async: false,
                 data: {
                     session_id: session_id,
                     department_id: department_id,
                     semester_id: semester_id,
                 },
                 success: function(response) {
+
                     var option = "<option value='' hidden>Select Subject</option>";
                     $.each(response, function(index, value) {
                         option += `
@@ -258,8 +269,30 @@
                     $('#subject_id').html(option);
                 }
             });
-            }
-        // });
+        }
 
+        //Teacher fetch according to subject
+        function teacherFetch(subject_id, group_id, shift_id) {
+            $.ajax({
+                url: "{{ route('teacher_fetch.ajax') }}",
+                method: 'GET',
+                async: false,
+                data: {
+                    subject_id: subject_id,
+                    group_id: group_id,
+                    shift_id: shift_id,
+                },
+                success: function(response) {
+                    var option = "<option value='' hidden>Select Teacher</option>";
+                        $.each(response, function(index, value) {
+                            option += `
+                        <option value="${value.teacher.id}">${value.teacher.name}</option>
+                        `;
+                        });
+
+                    $('#teacher_id').html(option);
+                }
+            });
+        }
     </script>
 @endpush
