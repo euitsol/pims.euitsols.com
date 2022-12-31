@@ -20,7 +20,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-10 m-auto">
-                            <form action="{{ route('asset.setup.category.store') }}" method="POST" class="form-horizontal">
+                            <form action="{{ route('asset.setup.category.store') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
                             @csrf
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="name">Category Name<span class="text-danger">*</span></label>
@@ -34,7 +34,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3" for="img">Image<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
-                                        <input class="form-control" type="file" name="img" id="img" value="{{ old('img') }}" required>
+                                        <input class="form-control" type="file" name="img" id="img" required>
                                         @if ($errors->has('img'))
                                             <span class="text-danger">{{ $errors->first('img') }}</span>
                                         @endif

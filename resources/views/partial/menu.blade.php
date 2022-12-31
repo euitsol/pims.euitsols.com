@@ -538,7 +538,6 @@
 
                 </ul>
             </li>
-
             <li class="nav-item">
                 <a href="{{route('asset.product.index')}}" class="nav-link {{Request::is('asset/product/*') ? 'active' : ''}}">
                     <i class="nav-icon far fa-circle second-nav-text"> </i>

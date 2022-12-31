@@ -30,10 +30,14 @@ class AssetBrandController extends Controller
         ],[],['name' => 'Brand Name']);
         $insert = new AssetBrand();
         $insert->name = $req->name;
-        $insert->img = 'img';
         $insert->status = 1;
         $insert->created_by = Auth::user()->id;
         $insert->save();
+
+        if($req->hasFile('img') && $req->file('img')->isValid()){
+            $insert->addMediaFromRequest('img')->toMediaCollection('asset-brand-img');
+        }
+
         $this->message('success','Brand added successfully');
         return redirect()->route('asset.setup.brand.index');
     }
