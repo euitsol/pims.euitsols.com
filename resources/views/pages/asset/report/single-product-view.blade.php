@@ -159,6 +159,9 @@
                                                 @if(Auth::user()->can('delete report') || Auth::user()->role->id == 1)
                                                     <a href="{{ route('asset.assign.product.destroy', $assigned_product->id) }}" class="btn btn-danger btnDelete"><i class="fas fa-trash"></i></a>
                                                 @endif
+                                                @if(Auth::user()->can('damage report') || Auth::user()->role->id == 1)
+                                                    <a href="{{ route('asset.assign.product.destroy', $assigned_product->id) }}" class="btn btn-warning btn-damage" title="Assign as damage product"><i class="fas fa-calendar-times"></i></a>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
