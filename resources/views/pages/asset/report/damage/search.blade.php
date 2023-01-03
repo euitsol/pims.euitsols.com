@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Distribution Products Report')
+@section('title', 'Damage Report')
 
 @push('third_party_stylesheets')
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
@@ -10,12 +10,12 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-12">
-                <form action="{{route('asset.report.distribution.fetch')}}" method="POST">
+                <form action="{{route('asset.report.damage.fetch')}}" method="GET">
                     @csrf
                     <div class="card">
                         <div class="card-header">
                             <span class="float-left">
-                                <h4>Selection</h4>
+                                <h4>Search</h4>
                             </span>
                         </div>
                         <div class="card-body">
@@ -25,7 +25,7 @@
                                     <div class="form-group">
                                         <label for="department_id">Department</label>
                                         <select name="department_id" class="form-control" id="department_id">
-                                            <option value="all">All</option>
+                                            <option value="">All</option>
                                             @foreach ($departments as $department)
                                                 <option value="{{ $department->id }}"
                                                     @if (isset($department_id)) @if ($department_id == $department->id) selected @endif
@@ -66,7 +66,7 @@
                             </div>
                             <div class="row mt-3">
                                 <div class="col-md-1 offset-md-2">
-                                    <label for="date">Date range<span class="text-danger">*</span></label>
+                                    <label for="date">Date range</label>
                                 </div>
                                 <div class="col-md-6 text-left ">
                                     <div class="input-group">

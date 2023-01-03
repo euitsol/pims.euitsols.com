@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AssetDamage;
 use App\Models\AssignProduct;
 use App\Models\Department;
 use App\Models\MainAssignProduct;
@@ -107,7 +108,48 @@ class assetReportController extends Controller
         return redirect()->route('asset.report.single_product.view',[$req->product_id]);
     }
 
-    // public  function damagesearch(){
+    public  function damagesearch(){
+        $n['departments'] = Department::where('deleted_at', null)->latest()->get();
+        $n['sections'] = Section::where('deleted_at', null)->latest()->get();
+        $n['subsections'] = Subsection::where('deleted_at', null)->latest()->get();
+        return view('pages.asset.report.damage.search',$n);
+    }
 
-    // }
+    public function damageFetch(Request $req){
+        $damage_products = AssetDamage::where('deleted_by',null);
+
+        if(isset($req->str_date)){
+            $n['str_date'] =$req->str_date;
+            $damage_products = $damage_products->where('created_at','>',$req->str_date);
+        }
+
+        if(isset($req->end_date)){
+            $n['end_date'] =$req->end_date;
+            $damage_products = $damage_products->where('created_at','<',$req->end_date);
+        }
+
+        $assign_products = AssignProduct::where('deleted_by',null);
+        if(isset($req->department_id)){
+            $n['department'] = AssignProduct::where('department_id',$req->department_id)->first()->department->department_name;
+            $assign_products = $assign_products->where('department_id',$req->department_id);
+        }
+
+        if(isset($req->section_id)){
+            $n['section'] = AssignProduct::where('section_id',$req->section_id)->first()->section->name;
+            $assign_products = $assign_products->where('section_id',$req->section_id);
+        }
+
+        if(isset($req->subsection_id)){
+            $n['subsection'] = AssignProduct::where('subsection_id',$req->subsection_id)->first()->subsection->name;
+            $assign_products = $assign_products->where('subsection_id',$req->subsection_id);
+        }
+        $assign_products = $assign_products->get();
+        foreach($assign_products as $products){
+           foreach($products->mainProduct as $main_assign){
+            $damage_products =  $damage_products->orWhere('main_assign_id',$main_assign->id);
+           }
+        }
+          $n['damage_products'] = $damage_products->get();
+       return view('pages.asset.report.damage.index',$n);
+    }
 }

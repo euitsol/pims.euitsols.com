@@ -113,7 +113,8 @@
                                                             <td>{{ Number_format($product->total_price) }} <span
                                                                     class="taka">৳</h4>
                                                             </td>
-                                                            <td class="supplier-id" id="{{ $product->supplier->id }}">{{ $product->supplier->shop_name }}</td>
+                                                            <td class="supplier-id" id="{{ $product->supplier->id }}">
+                                                                {{ $product->supplier->shop_name }}</td>
                                                             <td>{{ date('d-m-Y', strtotime($product->created_at)) }}</td>
                                                             <td>{{ $product->created_user->name }}</td>
 
@@ -158,10 +159,11 @@
                                                 <td>{{ $assigned_product->assignProduct->departmentName() }}</td>
                                                 <td>{{ $assigned_product->assignProduct->section->name }}</td>
                                                 <td>{{ $assigned_product->assignProduct->subsection->name }}</td>
-                                                <td class="qty">{{ $assigned_product->qty }}</td>
+                                                <td class="assigned-qty">{{ $assigned_product->qty }}</td>
 
-                                                <td class="qty">{{ $assigned_product->qty - $assigned_product->damageQty() }}</td>
-                                                <td class="qty">{{ $assigned_product->damageQty() }}</td>
+                                                <td class="qty">
+                                                    {{ $assigned_product->qty - $assigned_product->damageQty() }}</td>
+                                                <td class="damage-qty">{{ $assigned_product->damageQty() }}</td>
                                                 <td>{{ $assigned_product->created_user->name }}</td>
                                                 <td>{{ date('d-m-Y', strtotime($assigned_product->created_at)) }}</td>
                                                 <td>
@@ -182,9 +184,8 @@
                                                                 data-product="{{ $assigned_product->product_id }}"
                                                                 data-id="{{ $assigned_product->id }}"
                                                                 class="btn btn-warning btn-damage" data-toggle="modal"
-                                                                data-target="#ModalCenter"
-                                                                title="Assign as damage product" id=""><i
-                                                                    class="fas fa-calendar-times"></i></a>
+                                                                data-target="#ModalCenter" title="Assign as damage product"
+                                                                id=""><i class="fas fa-calendar-times"></i></a>
                                                         @endif
                                                     </div>
                                                 </td>
@@ -214,18 +215,22 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{route('asset.damage.store')}}" method="POST">
+                <form action="{{ route('asset.damage.store') }}" method="POST">
                     @csrf
                     <input type="hidden" id="product_id" name="product_id" value="">
                     <input type="hidden" id="main_assign_id" name="main_assign_id" value="">
                     <input type="hidden" id="supplier_id" name="supplier_id" value="">
 
                     <div class="modal-body">
-                        <label for="qty">Damage quantity<span class="text-danger">*</span></label>
-                        <input type="number" id="qty" class="form-control" name="qty" value="1"
-                            step="1" min="0"><span class="text-danger"></span>
-                        <label for="des">Description</label>
-                        <textarea name="des" class="form-control" id="des" cols="30" rows="4"></textarea>
+                        <div>
+                            <label for="qty">Damage quantity<span class="text-danger">*</span></label>
+                            <input type="number" id="qty" class="form-control" name="qty" value="1"
+                                step="1" min="0"><span class="text-danger"></span>
+                        </div>
+                        <div>
+                            <label for="des">Description</label>
+                            <textarea name="des" class="form-control" id="des" cols="30" rows="4"></textarea>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -249,23 +254,25 @@
     <script>
         $(document).ready(function() {
             let assigned_qty = 0;
-            $('.btn-damage').on('click',function(){
+            $('.btn-damage').on('click', function() {
                 let product_id = $(this).data('product');
                 let main_assign_id = $(this).data('id');
                 let product_title = $('#product_title').text();
                 let supplier_id = $('.supplier-id').attr('id');
-                assigned_qty = Number($(this).parent().parent().parent().find('.qty').text());
+                let damage_qty = Number($(this).parent().parent().parent().find('.damage-qty').text());
+                assigned_qty = Number($(this).parent().parent().parent().find('.assigned-qty').text());
                 $('#product_id').val(product_id);
                 $('#main_assign_id').val(main_assign_id);
                 $('#supplier_id').val(supplier_id);
                 $('#ModalLongTitle').text(product_title);
+                $('#qty').val(damage_qty);
             });
 
-            $('#qty').on('change click keyup',function(){
+            $('#qty').on('change click keyup', function() {
                 let damage_qty = Number($(this).val());
-                if(damage_qty > assigned_qty){
+                if (damage_qty > assigned_qty) {
                     $(this).next('span').text("Damage quantity can't be more than assigned quantity")
-                }else{
+                } else {
                     $(this).next('span').text(' ');
                 }
             })

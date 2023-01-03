@@ -648,11 +648,12 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
                 Route::post('/productFetch','productFetch')->name('fetch');
             });
 
-        //     //Damage report
-        //     Route::controller(AssetReportController::class)->prefix('damage')->name('damage.')->group(function(){
-        //         Route::get('/search','damagesearch')->name('search');
-        //     });
-        // });
+            //Damage report
+            Route::controller(AssetReportController::class)->prefix('damage')->name('damage.')->group(function(){
+                Route::get('/search','damagesearch')->name('search');
+                Route::get('/fetch','damageFetch')->name('fetch');
+            });
+        });
     });
 
 });

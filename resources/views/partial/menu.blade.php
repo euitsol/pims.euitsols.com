@@ -584,14 +584,14 @@
                                 </a>
                             </li>
                         @endif
-                        {{-- @if (Auth::user()->can('view report') || Auth::user()->role->id == 1)
+                        @if (Auth::user()->can('view report') || Auth::user()->role->id == 1)
                             <li class="nav-item ">
-                                <a href="{{route('asset.report.product.index')}}" class="nav-link {{Request::is('asset/report/product/*') ? 'active' : ''}}">
+                                <a href="{{route('asset.report.damage.search')}}" class="nav-link {{Request::is('asset/report/damage/*') ? 'active' : ''}}">
                                     <i class="nav-icon fas fa-minus third-nav-text"> </i>
                                     <p>Damage Report</p>
                                 </a>
                             </li>
-                        @endif --}}
+                        @endif
                     </ul>
                 </li>
             @endif
