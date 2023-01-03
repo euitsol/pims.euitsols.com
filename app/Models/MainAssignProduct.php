@@ -33,5 +33,22 @@ class MainAssignProduct extends Model
     public function assignProduct(){
         return $this->belongsTo(AssignProduct::class,'assign_product_id');
     }
-    
+    public function damage(){
+        return $this->hasMany(AssetDamage::class,'main_assign_id');
+    }
+    public function damageQty(){
+        $qty = 0;
+        foreach($this->damage as $damage){
+            $qty += $damage->qty;
+        }
+        return $qty;
+    }
+    public function totalDamage(){
+        $qty = 0;
+        foreach($this->damage as $damage){
+            $qty += $damage->qty;
+        }
+        return $qty;
+    }
+
 }

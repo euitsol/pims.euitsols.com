@@ -103,4 +103,15 @@ class Product extends Model
             return "Common Asset";
         }
     }
+
+    public function totalDamage(){
+        $damages = AssetDamage::where('deleted_by')->where('product_id',$this->id)->get();
+        $total_damage =  0;
+        if (count($damages)>0) {
+            foreach ($damages as $damage) {
+                $total_damage += $damage->qty;
+            }
+        }
+        return $total_damage;
+    }
 }

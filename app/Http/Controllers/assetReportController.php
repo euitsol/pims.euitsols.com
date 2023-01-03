@@ -106,4 +106,8 @@ class assetReportController extends Controller
         ]);
         return redirect()->route('asset.report.single_product.view',[$req->product_id]);
     }
+
+    // public  function damagesearch(){
+
+    // }
 }

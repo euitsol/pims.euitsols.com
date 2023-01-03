@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\asset\AssetBrandController;
 use App\Http\Controllers\asset\AssetCategoryController;
+use App\Http\Controllers\asset\AssetDamageController;
 use App\Http\Controllers\asset\AssetUnitController;
 use App\Http\Controllers\asset\AssignProductController;
 use App\Http\Controllers\asset\ProductController;
@@ -624,6 +625,11 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
             Route::get('/destroy/{id}','destroy')->name('destroy');
         });
 
+         //Damage Product
+         Route::controller(AssetDamageController::class)->prefix('damage')->name('damage.')->group(function(){
+            Route::post('/store','store')->name('store');//asset.damage.store
+        });
+
          //Report
          Route::controller(assetReportController::class)->prefix('report')->name('report.')->group(function(){
             Route::get('/main-storage/index','mainStorage')->name('main_storage');
@@ -641,7 +647,12 @@ Route::group(['middleware' => ['auth', 'checkstatus']], function () {
                 Route::get('/index','product')->name('index');
                 Route::post('/productFetch','productFetch')->name('fetch');
             });
-        });
+
+        //     //Damage report
+        //     Route::controller(AssetReportController::class)->prefix('damage')->name('damage.')->group(function(){
+        //         Route::get('/search','damagesearch')->name('search');
+        //     });
+        // });
     });
 
 });
