@@ -98,13 +98,21 @@ class assetReportController extends Controller
     }
 
     public function productFetch(Request $req){
+        if($req->department_id != 'common_asset'){
+            $this->validate($req,[
+                'department_id' => 'nullable|exists:departments,id',
+                'product_id' => 'required|exists:products,id',
+            ],[],[
+                'department_id' =>'Department Name',
+                'product_id' =>'Product Name',
+            ]);
+        }
         $this->validate($req,[
-            'department_id' => 'nullable|exists:departments,id',
             'product_id' => 'required|exists:products,id',
         ],[],[
-            'department_id' =>'Department Name',
             'product_id' =>'Product Name',
         ]);
+
         return redirect()->route('asset.report.single_product.view',[$req->product_id]);
     }
 

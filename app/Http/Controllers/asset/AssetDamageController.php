@@ -5,6 +5,7 @@ namespace App\Http\Controllers\asset;
 use App\Http\Controllers\Controller;
 use App\Models\AssetDamage;
 use Carbon\Carbon;
+use Faker\Core\Number;
 use Illuminate\Http\Request;
 
 class AssetDamageController extends Controller
@@ -17,6 +18,8 @@ class AssetDamageController extends Controller
         $check = AssetDamage::where('product_id',$req->product_id)
                                 ->where('main_assign_id',$req->main_assign_id)
                                 ->first();
+                            //   $damage_sum = Math($req->qty);
+                              dd($req->qty);
         if($check){
             $check->product_id = $req->product_id;
             $check->main_assign_id = $req->main_assign_id;

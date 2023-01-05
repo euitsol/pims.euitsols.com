@@ -120,6 +120,10 @@ class AssignProductController extends Controller
     public function destroy($id = null){
         if($id){
             $delete = MainAssignProduct::find($id);
+            $product_id =  $delete->product_id;
+            $update_qty = Product::find($product_id);
+            $update_qty->qty = $update_qty->qty + $delete->qty;
+            $update_qty->save();
             $delete->deleted_at= Carbon::now()->toDateTimeString();
             $delete->deleted_by= Auth::user()->id;
             $delete->save();
