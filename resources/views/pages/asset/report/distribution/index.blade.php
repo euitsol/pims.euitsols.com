@@ -11,7 +11,6 @@
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-12">
                 <h4 class="text-center mb-4">Distribution Report</h4>
-
                 @forelse($assign_products as $key => $departments)
                 <div class="card">
                     <div class="card-header">
@@ -90,7 +89,7 @@
 
                     </div>
                     <div class="card-body p-5 text-center">
-                        <h4>There are no assets</h4>
+                        <h4>There are no distributed assets</h4>
                     </div>
                 </div>
                 @endforelse

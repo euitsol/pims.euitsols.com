@@ -162,6 +162,15 @@
                     </a>
                 </li>
             @endif
+            @if (Auth::user()->can('view exam-name') || Auth::user()->role->id == 1)
+            <li class="nav-item">
+                <a href="{{ route('exam-name-admission.index') }}"
+                    class="nav-link {{ Request::is('setup/exam-name-admission/*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-minus"></i>
+                    <p>Board Exam Name</p>
+                </a>
+            </li>
+        @endif
             @if (Auth::user()->can('view building') || Auth::user()->role->id == 1)
             <li class="nav-item">
                 <a href="{{ route('building.index') }}"
@@ -207,15 +216,7 @@
                     </a>
                 </li>
             @endif
-            @if (Auth::user()->can('view exam-name') || Auth::user()->role->id == 1)
-                <li class="nav-item">
-                    <a href="{{ route('exam-name-admission.index') }}"
-                        class="nav-link {{ Request::is('setup/exam-name-admission/*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-minus"></i>
-                        <p>Exam Name</p>
-                    </a>
-                </li>
-            @endif
+
             @if (Auth::user()->can('view group') || Auth::user()->role->id == 1)
                 <li class="nav-item">
                     <a href="{{ route('group.index') }}"
