@@ -7,29 +7,31 @@
 @endpush
 @push('page_css')
     <style>
-        .info-div{
+        .info-div {
             background-color: #faceb2;
             padding: 15px;
         }
-        .custom-div{
+
+        .custom-div {
             display: flex;
             justify-content: center;
 
         }
 
-        table tr th, table tr td {
+        table tr th,
+        table tr td {
             vertical-align: middle !important;
         }
 
-        @media screen and (max-width: 768px){
-            .custom-div{
+        @media screen and (max-width: 768px) {
+            .custom-div {
                 display: block;
             }
-            .custom-div div{
+
+            .custom-div div {
                 margin: 0px !important;
             }
         }
-
     </style>
 @endpush
 @section('content')
@@ -46,46 +48,60 @@
                     <div class="card-body">
                         <div class="col-md-8 info-div rounded m-auto">
                             <div class="custom-div m-auto">
-                                @isset($department)
-                                    <div>
-                                        <span class="text-bold">Department :</span>
+                                {{-- @isset($department) --}}
+                                <div>
+                                    <span class="text-bold">Department :</span>
+                                    @if (isset($department))
                                         <span>{{ $department }}</span>
-                                    </div>
-                                @endisset
-                                @isset($section)
-                                    <div class="ml-4">
-                                        <span class="text-bold">section :</span>
+                                    @else
+                                        <span>All</span>
+                                    @endif
+                                </div>
+                                {{-- @endisset --}}
+                                {{-- @isset($section) --}}
+                                <div class="ml-4">
+                                    <span class="text-bold">section :</span>
+                                    @if (isset($section))
                                         <span>{{ $section }}</span>
-                                    </div>
-                                @endisset
-                                @isset($subsection)
-                                    <div class="ml-4">
-                                        <span class="text-bold">Subsection :</span>
-                                        <span>{{ $subsection }}</span>
-                                    </div>
-                                @endisset
+                                    @else
+                                        <span>All</span>
+                                    @endif
+                                </div>
+                                {{-- @endisset --}}
+                                {{-- @isset($subsection) --}}
+                                <div class="ml-4">
+                                    <span class="text-bold">Subsection :</span>
+                                    <span>
+                                        @if (isset($subsection))
+                                            {{ $subsection }}
+                                        @endif
+                                        All
+                                    </span>
+                                </div>
+                                {{-- @endisset --}}
                             </div>
 
-                            @if(isset($str_date) || isset($end_date))
                             <div class="row text-center">
                                 <div class="col-md-12 mt-3">
                                     <span class="text-bold">Date Range:</span>
-                                    @isset($str_date)
-                                    {{-- <div class="col-md-3"> --}}
-                                        <span>From :</span>
-                                        <span>{{ $str_date }}</span>
-                                    {{-- </div> --}}
-                                @endisset
-                                @isset($end_date)
-                                    {{-- <div class="col-md-3"> --}}
-                                        <span> To :</span>
-                                        <span>{{ $end_date }}</span>
-                                    {{-- </div> --}}
-                                @endisset
+                                    @if (isset($str_date) || isset($end_date))
+                                        @isset($str_date)
+                                            {{-- <div class="col-md-3"> --}}
+                                            <span>From :</span>
+                                            <span>{{ $str_date }}</span>
+                                            {{-- </div> --}}
+                                        @endisset
+                                        @isset($end_date)
+                                            {{-- <div class="col-md-3"> --}}
+                                            <span> To :</span>
+                                            <span>{{ $end_date }}</span>
+                                            {{-- </div> --}}
+                                        @endisset
+                                    @else
+                                        <span> No date range</span>
+                                    @endif
                                 </div>
-
                             </div>
-                            @endif
 
                             {{-- <table class="table table-sm border border-1 table-striped table-info p-2 p-md-3">
                                 <tbody>
@@ -105,7 +121,7 @@
                                     </tr>
 
                                     <tr>
-                                        @if(isset($str_date) || isset($end_date))
+                                        @if (isset($str_date) || isset($end_date))
 
                                             <th>Date Range</th>
                                         @endif
@@ -126,38 +142,38 @@
                         </div>
                     </div>
                 </div>
-               <div class="card">
-                <div class="card-header">
-                    <span class="float-left">
-                        <h4>Total Info</h4>
-                    </span>
-                </div>
-                <div class="card-body">
-                   <div class="table-responsive rounded p-3 table-info w-75 m-auto">
-                    <table class="table table-bordered w-75 m-auto table-sm">
-                        <tbody>
-                            {{-- <tr>
+                <div class="card">
+                    <div class="card-header">
+                        <span class="float-left">
+                            <h4>Total Info</h4>
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive rounded p-3 table-info w-75 m-auto">
+                            <table class="table table-bordered w-75 m-auto table-sm">
+                                <tbody>
+                                    {{-- <tr>
                                 <td >Storage</td>
                                 <td>:</td>
                                 <td class="assign-qty"></td>
                             </tr> --}}
-                            <tr>
-                                <td>Assigned Quantity</td>
-                                <td>:</td>
-                                <td class="qty"></td>
-                            </tr>
-                            <tr>
-                                <td>Damage Quantity</td>
-                                <td>:</td>
-                                <td class="damage-qty"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                   </div>
+                                    <tr>
+                                        <td>Assigned Quantity</td>
+                                        <td>:</td>
+                                        <td class="qty"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Damage Quantity</td>
+                                        <td>:</td>
+                                        <td class="damage-qty"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-               </div>
-                    <div class="card">
-                        {{-- <div class="card-header">
+                <div class="card">
+                    {{-- <div class="card-header">
                         <span class="float-left">
                             <h4>{{$product->first()->department->department_name}}</h4>
                         </span>
@@ -168,28 +184,28 @@
                             </span>
                         @endif
                     </div> --}}
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table data-table table-striped text-center ">
-                                    <thead>
-                                        <tr>
-                                            <th>Product Name</th>
-                                            <th>Storage</th>
-                                            <th>Assigned Quantity</th>
-                                            <th>Damage Quantity</th>
-                                            <th>Description</th>
-                                            <th>Created At</th>
-                                            <th>created By</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @php
-                                            $total_damage_qty = 0;
-                                            $qty = 0;
-                                            $assigned_qty = 0;
-                                        @endphp
-                                        @forelse($damage_products as $key => $product)
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table data-table table-striped text-center ">
+                                <thead>
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <th>Storage</th>
+                                        <th>Assigned Quantity</th>
+                                        <th>Damage Quantity</th>
+                                        <th>Description</th>
+                                        <th>Created At</th>
+                                        <th>created By</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $total_damage_qty = 0;
+                                        $qty = 0;
+                                        $assigned_qty = 0;
+                                    @endphp
+                                    @forelse($damage_products as $key => $product)
                                         @php
                                             $total_damage_qty += $product->qty;
                                             $assigned_qty += $product->product->totalProduct();
@@ -212,13 +228,13 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        @empty
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
+                                    @empty
+                                    @endforelse
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+                </div>
 
             </div>
         </div>
@@ -234,9 +250,9 @@
     <script>
         $(document).ready(function() {
 
-            $('.assign-qty').text("{{Number_format($assigned_qty)}}");
-            $('.qty').text("{{Number_format($qty)}}");
-            $('.damage-qty').text("{{Number_format($total_damage_qty)}}");
+            $('.assign-qty').text("{{ Number_format($assigned_qty) }}");
+            $('.qty').text("{{ Number_format($qty) }}");
+            $('.damage-qty').text("{{ Number_format($total_damage_qty) }}");
 
             $('.data-table').DataTable({
                 dom: 'Bfrtip',

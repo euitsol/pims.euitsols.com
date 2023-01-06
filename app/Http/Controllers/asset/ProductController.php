@@ -153,6 +153,7 @@ class ProductController extends Controller
             return response()->json($product);
         }
     }
+
     public function subcatFetch(Request $req)
     {
         if ($req->id) {
@@ -193,7 +194,7 @@ class ProductController extends Controller
         $insert->total_price = $req->total_price;
         $insert->created_by = Auth::user()->id;
         $insert->save();
-        
+
         //update products table
         $update = Product::find($req->product_id);
         $update->qty =  $update->qty + $req->qty;

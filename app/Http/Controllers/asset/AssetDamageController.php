@@ -18,8 +18,6 @@ class AssetDamageController extends Controller
         $check = AssetDamage::where('product_id',$req->product_id)
                                 ->where('main_assign_id',$req->main_assign_id)
                                 ->first();
-                            //   $damage_sum = Math($req->qty);
-                              dd($req->qty);
         if($check){
             $check->product_id = $req->product_id;
             $check->main_assign_id = $req->main_assign_id;

@@ -64,7 +64,7 @@
                                                     <tr>
                                                         <th>Sub-category Name</th>
                                                         <td>{{ $single_product->subcategory->name }}</td>
-                                                        <th>Assigned Quantity</th>
+                                                        <th>In Storage (qty)</th>
                                                         <td>{{ $single_product->totalProduct() }}</td>
                                                     </tr>
                                                     <tr>
@@ -146,6 +146,7 @@
                                             <th>Sub-section Name</th>
                                             <th>Assigned Quantity</th>
                                             <th>Damaged Quantity</th>
+                                            <th>Damaged Description</th>
                                             <th>Created By</th>
                                             <th>Created At</th>
                                             <th>Action</th>
@@ -159,7 +160,9 @@
                                                 <td>{{ $assigned_product->assignProduct->section->name }}</td>
                                                 <td>{{ $assigned_product->assignProduct->subsection->name }}</td>
                                                 <td class="assigned-qty">{{ $assigned_product->qty }}</td>
-                                                <td class="damage-qty">{{ $assigned_product->damageQty() }}</td>
+                                                <td class="damage-qty">{{ $assigned_product->damage()->qty }}</td>
+                                                <td class="damage-des">{{ $assigned_product->damage()->des }}</td>
+                                                {{-- <td class="damage-qty">{{ $assigned_product-> () }}</td> --}}
                                                 <td>{{ $assigned_product->created_user->name }}</td>
                                                 <td>{{ date('d-m-Y', strtotime($assigned_product->created_at)) }}</td>
                                                 <td>
@@ -267,6 +270,7 @@
                 $('#supplier_id').val(supplier_id);
                 $('#ModalLongTitle').text(product_title);
                 $('#qty').val(damage_qty);
+                $('#des').val($('.damage-des').text());
             });
 
             $('#qty').on('change keyup', function() {
@@ -318,7 +322,6 @@
                     }
                 }, 'pageLength']
             });
-
         });
     </script>
 @endpush

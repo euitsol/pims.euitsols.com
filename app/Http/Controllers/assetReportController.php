@@ -26,22 +26,32 @@ class assetReportController extends Controller
         $n['end_date'] = $req->end_date;
         $n['department_id'] = $req->department_id;
         if($req->department_id){
+            //department wise product show
             $n['department_wise'] = Product::where('deleted_by',null)
-                                    ->where('department_id',$req->department_id == 'common_asset' ? null : $req->department_id)
-                                    ->whereBetween('created_at',[$req->str_date,$req->end_date])
-                                    ->get();
+                                    ->where('department_id',$req->department_id == 'common_asset' ? null : $req->department_id);
+                                    // ->whereBetween('created_at',[$req->str_date,$req->end_date])
+                                    // ->get();
+            if($req->str_date){
+                $n['department_wise'] =   $n['department_wise']->where('created_at','>',$req->str_date);
+            }
+            if($req->end_date){
+                $n['department_wise'] =$n['department_wise']->where('created_at','<',$req->end_date);
+            }
+            $n['department_wise'] =$n['department_wise']->get();
         }else{
+            //all product show
             $n['all_products'] = Product::where('deleted_by',null);
 
             if($req->str_date){
                 $n['all_products'] =   $n['all_products']->where('created_at','>',$req->str_date);
             }
             if($req->end_date){
-                $n['all_products'] =$n['all_products']->where('created_at','<',$req->str_date);
+                $n['all_products'] =$n['all_products']->where('created_at','<',$req->end_date);
             }
 
             $n['all_products'] =$n['all_products']->get()->groupBy('department_id');
         }
+
         $n['departments'] = Department::where('deleted_by',null)->get();
         return view('pages.asset.report.main-storage',$n);
     }
@@ -138,17 +148,17 @@ class assetReportController extends Controller
 
         $assign_products = AssignProduct::where('deleted_by',null);
         if(isset($req->department_id)){
-            $n['department'] = AssignProduct::where('department_id',$req->department_id)->first()->department->department_name;
+            $n['department'] = Department::find($req->department_id)->department_name;
             $assign_products = $assign_products->where('department_id',$req->department_id);
         }
 
         if(isset($req->section_id)){
-            $n['section'] = AssignProduct::where('section_id',$req->section_id)->first()->section->name;
+            $n['section'] = Section::find($req->section_id)->name;
             $assign_products = $assign_products->where('section_id',$req->section_id);
         }
 
         if(isset($req->subsection_id)){
-            $n['subsection'] = AssignProduct::where('subsection_id',$req->subsection_id)->first()->subsection->name;
+            $n['subsection'] = AssignProduct::find($req->subsection_id)->name;
             $assign_products = $assign_products->where('subsection_id',$req->subsection_id);
         }
         $assign_products = $assign_products->get();

@@ -201,16 +201,20 @@
                 let department_id = $('#department_id').val();
                 let section_id = $('#section_id').val();
                 let subsection_id = $('#subsection_id').val();
-                if(department_id){
-                    if(!section_id){
-                    toastr.error('Please, select section');
+                if(!department_id){
+                    toastr.error('Please, Select Department');
                     return false;
-                    }
-                    if(!subsection_id){
-                        toastr.error('Please, select subsection');
-                        return false;
-                    }
                 }
+                if(!section_id){
+                toastr.error('Please, Select Section');
+                return false;
+                }
+
+                if(!subsection_id){
+                    toastr.error('Please, Select Subsection');
+                    return false;
+                }
+
                 $('#info_card').hide('slow');
                 $('#show_card').hide(200);
                 $('#loading_card').show(200);

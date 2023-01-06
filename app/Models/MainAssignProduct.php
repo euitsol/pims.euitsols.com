@@ -34,7 +34,7 @@ class MainAssignProduct extends Model
         return $this->belongsTo(AssignProduct::class,'assign_product_id');
     }
     public function damage(){
-        return $this->hasMany(AssetDamage::class,'main_assign_id');
+        return $this->hasMany(AssetDamage::class,'main_assign_id')->where('deleted_by',null)->first();
     }
     public function damageQty(){
         $qty = 0;

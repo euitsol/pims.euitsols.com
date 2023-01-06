@@ -28,7 +28,7 @@ class AssignProduct extends Model
         return $this->belongsTo(Subsection::class,'subsection_id');
     }
     public function mainProduct(){
-        return $this->hasMany(MainAssignProduct::class,'assign_product_id');
+        return $this->hasMany(MainAssignProduct::class,'assign_product_id')->where('deleted_by',null);
     }
     public function totalAssignedProduct(){
         $total_product = MainAssignProduct::where('deleted_by',null)->get();

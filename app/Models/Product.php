@@ -43,7 +43,7 @@ class Product extends Model
     }
     public function moreProduct()
     {
-        return $this->hasMany(MoreProduct::class, 'product_id');
+        return $this->hasMany(MoreProduct::class, 'product_id')->where('deleted_by',null);
     }
 
     public function departTotalProduct()

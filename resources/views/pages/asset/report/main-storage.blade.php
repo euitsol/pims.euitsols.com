@@ -39,7 +39,7 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="float-left">
-                            <h4>Selection</h4>
+                            <h4>Search</h4>
                         </span>
                     </div>
                     <div class="card-body">
@@ -88,7 +88,7 @@
                 <div class="card" id="book_info">
                     <div class="card-header">
                         <span class="float-left">
-                            <h4>All Assets</h4>
+                            <h4>Main Sotrage Report</h4>
                         </span>
                     </div>
                     <div class="card-body">
