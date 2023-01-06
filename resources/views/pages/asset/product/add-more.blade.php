@@ -47,7 +47,7 @@
 
                                             <tr>
                                                 <th>Total Quantity</th>
-                                                <td>{{ $product->qty }}</td>
+                                                <td>{{ Number_format($product->qty) }}</td>
                                             </tr>
 
                                             <tr>
@@ -57,7 +57,7 @@
 
                                             <tr>
                                                 <th>Total Price</th>
-                                                <td>{{number_format($product->total_price, 2)}} tk</td>
+                                                <td>BDT {{number_format($product->total_price, 2)}} </td>
                                             </tr>
                                             {{-- <tr>
                                                 <th>asset Name</th>
@@ -91,9 +91,9 @@
                                             @foreach ($more_products as $more_product)
                                                 <tr>
                                                     <td>{{ $more_product->product->name }}</td>
-                                                    <td>{{ $more_product->quantity }}</td>
+                                                    <td>{{ Number_format($more_product->quantity) }}</td>
                                                     <td>{{ $more_product->warranty }}</td>
-                                                    <td>{{ number_format($more_product->total_price, 2) }} tk</td>
+                                                    <td>BDT {{ number_format($more_product->total_price, 2) }} </td>
                                                     <td>{{ $more_product->supplier->shop_name }}</td>
                                                     <td>{{ date('d-m-Y', strtotime($more_product->created_at)) }}</td>
                                                     <td>{{ $more_product->created_user->name }}</td>
@@ -162,7 +162,7 @@
 
                                         <div class="col-md-10">
                                             <div class="form-group">
-                                                <label for="total_price">Total Price (tk)<span
+                                                <label for="total_price">Total Price (BDT)<span
                                                         class="text-danger">*</span></label>
                                                 <input class="form-control total-price" type="number" min="0"
                                                     name="total_price" id="total_price" value="{{ old('total_price') }}"
@@ -175,7 +175,7 @@
 
                                         <div class="col-md-10">
                                             <div class="form-group">
-                                                <label for="per_unit_price">Price(per unit)<span
+                                                <label for="per_unit_price">Price(per unit)(BDT)<span
                                                         class="text-danger">*</span></label>
                                                 <input class="form-control" type="text" name="per_unit_price"
                                                     id="per_unit_price" value="{{ old('per_unit_price') }}"

@@ -40,10 +40,10 @@
                                    <tr>
                                     <td>{{$key+1}}</td>
                                     <td>{{$product->name}}</td>
-                                    <td>{{$product->totalProduct()}}</td>
-                                    <td>{{$product->qty}}</td>
+                                    <td>{{Number_format($product->totalProduct())}}</td>
+                                    <td>{{Number_format($product->qty)}}</td>
                                     <td>{{$product->unit->name}}</td>
-                                    <td>{{ number_format($product->total_price,2) }} tk</td>
+                                    <td>BDT {{ number_format($product->total_price,2) }} </td>
                                     <td>{{$product->brand->name}}</td>
                                     <td>{{$product->category->name}}</td>
                                     <td>{{$product->department->department_name ?? 'Common Asset'}}</td>

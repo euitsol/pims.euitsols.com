@@ -204,7 +204,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="total_price">Total Price (tk)<span
+                                                <label for="total_price">Total Price (BDT)<span
                                                         class="text-danger">*</span></label>
                                                 <input class="form-control total-price" type="number" min="0" name="total_price"
                                                     id="total_price" value="{{ old('total_price') }}"
@@ -217,7 +217,7 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="per_unit_price">Price(per unit)<span
+                                                <label for="per_unit_price">Price(per unit)(BDT)<span
                                                         class="text-danger">*</span></label>
                                                 <input class="form-control" type="text" name="per_unit_price"
                                                     id="per_unit_price" value="{{ old('per_unit_price') }}"

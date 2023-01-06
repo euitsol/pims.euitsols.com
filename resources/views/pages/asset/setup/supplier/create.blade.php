@@ -51,6 +51,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
+                                    <label class="col-sm-3" for="email">E-mail<span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" type="tel" name="email" id="email" value="{{ old('email') }}" placeholder="Enter supplier E-mail" required>
+                                        @if ($errors->has('email'))
+                                            <span class="text-danger">{{ $errors->first('email') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="form-group row">
                                     <label class="col-sm-3" for="address">Address<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
                                         <textarea name="address" class="form-control" id="address" cols="30" rows="5" placeholder="Enter supplier address" required>{{ old('address') }}</textarea>

@@ -240,7 +240,7 @@
                                                     <td>${item.product.subcategory.name}</td>
                                                     <td>${item.product.name}</td>
                                                     <td>${item.supplier.shop_name}</td>
-                                                    <td>${item.qty}</td>
+                                                    <td>${ Number((item.qty).toFixed(1)).toLocaleString(1)}</td>
                                                 </tr>
                                                 `;
                                      });

@@ -67,9 +67,9 @@
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $product->name }}</td>
-                                            <td>{{ $product->totalProduct() }}</td>
-                                            <td>{{ $product->qty }}</td>
-                                            <td>{{ Number_format($product->totalPrice()) }}৳</td>
+                                            <td>{{ Number_format($product->totalProduct()) }}</td>
+                                            <td>{{ Number_format($product->qty) }}</td>
+                                            <td>BDT {{ Number_format($product->totalPrice()) }}</td>
                                             <td>{{ $product->created_user->name }}</td>
                                             <td>{{ date('d-m-Y', strtotime($product->updated_at)) }}</td>
                                             @if ($product->updated_user)
@@ -95,7 +95,7 @@
                                         <th></th>
                                         <th class="border-top-2">Total</th>
                                         <th class="border-top-2"> = {{$qty}}</th>
-                                        <th class="border-top-2">  = {{Number_format($total_p)}} tk</th>
+                                        <th class="border-top-2">  =BDT {{Number_format($total_p)}} </th>
                                     </tr>
                                 </tfoot> --}}
                             </table>
@@ -122,7 +122,7 @@
                 dom: 'Bfrtip',
                 buttons: [{
                     extend: 'pdfHtml5',
-                    title: 'All Products',
+                    title: 'Department Wise Products',
                     download: 'open',
                     orientation: 'potrait',
                     pagesize: 'LETTER',

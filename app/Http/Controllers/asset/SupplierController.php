@@ -31,12 +31,14 @@ class SupplierController extends Controller
             'address' => "required|string",
             'phone' => "required|string",
             'details' => "required|string",
+            'email' => "required|string",
         ]);
         $insert = new Supplier();
         $insert->shop_name = $req->shop_name;
         $insert->owner_name = $req->owner_name;
         $insert->address = $req->address;
         $insert->phone = $req->phone;
+        $insert->email = $req->email;
         $insert->details = $req->details;
         $insert->created_by = Auth::user()->id;
         $insert->save();
@@ -52,11 +54,12 @@ class SupplierController extends Controller
     public function update(Request $req){
         // dd($req->id);
         $this->validate($req,[
-            'shop_name' => "required|string|unique:suppliers,shop_name,$req->id,id",    
+            'shop_name' => "required|string|unique:suppliers,shop_name,$req->id,id",
             'owner_name' => 'required|string',
             'address' => "required|string",
             'phone' => "required|string",
             'details' => "required|string",
+            'email' => "required|string",
         ]);
 
         $update = Supplier::findOrFail($req->id);
@@ -64,6 +67,7 @@ class SupplierController extends Controller
         $update->owner_name = $req->owner_name;
         $update->address = $req->address;
         $update->phone = $req->phone;
+        $update->email = $req->email;
         $update->details = $req->details;
         $update->updated_by = Auth::user()->id;
         $update->save();

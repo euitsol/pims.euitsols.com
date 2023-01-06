@@ -180,7 +180,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="total_price">Total Price    (tk)<span
+                                            <label for="total_price">Total Price (BDT)<span
                                                     class="text-danger">*</span></label>
                                             <input class="form-control" type="number" min="0" name="total_price"
                                                 id="total_price" value="{{ $product->total_price }}"
@@ -193,7 +193,7 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="per_unit_price">Price(per unit)</label>
+                                            <label for="per_unit_price">Price(per unit)(BDT)</label>
                                             <input class="form-control" type="text" name="per_unit_price"
                                                 id="per_unit_price" value="{{ $product->total_price/$product->qty }}"
                                                 placeholder="Per unit price" readonly>

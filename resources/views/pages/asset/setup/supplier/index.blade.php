@@ -25,6 +25,7 @@
                                 <th>Shop Name</th>
                                 <th>Owner Name</th>
                                 <th>Phone</th>
+                                <th>E-mail</th>
                                 <th>Adress</th>
                                 <th>Details</th>
                                 <th>Created By</th>
@@ -39,6 +40,7 @@
                                     <td>{{$supplier->shop_name}}</td>
                                     <td>{{$supplier->owner_name}}</td>
                                     <td>{{$supplier->phone}}</td>
+                                    <td>{{$supplier->email}}</td>
                                     <td>{!! $supplier->address !!}</td>
                                     <td>{!! $supplier->details ?? '' !!}</td>
                                     <td>{{$supplier->created_user->name}}</td>

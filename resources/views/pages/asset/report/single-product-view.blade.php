@@ -65,14 +65,14 @@
                                                         <th>Sub-category Name</th>
                                                         <td>{{ $single_product->subcategory->name }}</td>
                                                         <th>In Storage (qty)</th>
-                                                        <td>{{ $single_product->totalProduct() }}</td>
+                                                        <td>{{Number_format( $single_product->totalProduct()) }}</td>
                                                     </tr>
                                                     <tr>
 
                                                         <th>Total Price</th>
-                                                        <td>{{ Number_format($single_product->totalPrice()) }}৳</td>
+                                                        <td>BDT {{ Number_format($single_product->totalPrice()) }}</td>
                                                         <th>Available Quantity</th>
-                                                        <td>{{ $single_product->qty }}</td>
+                                                        <td>{{ Number_format($single_product->qty) }}</td>
                                                     </tr>
                                                     <tr>
 
@@ -94,7 +94,7 @@
                                     <div class="card-body">
                                         <div class="table-responsive">
                                             <table class="table table-striped table-bordered table-info ">
-                                                <h5>Multipule Time Assigned</h5>
+                                                <h5>Adding Information</h5>
                                                 <thead>
                                                     <tr>
                                                         <th>Quantity</th>
@@ -108,10 +108,10 @@
                                                 <tbody>
                                                     @foreach ($single_product->moreProduct as $product)
                                                         <tr>
-                                                            <td>{{ $product->quantity }}</td>
+                                                            <td>{{ Number_format($product->quantity) }}</td>
                                                             <td>{{ $product->warranty }}</td>
-                                                            <td>{{ Number_format($product->total_price) }} <span
-                                                                    class="taka">৳</h4>
+                                                            <td>BDT {{ Number_format($product->total_price) }} <span
+                                                                    class="taka"></h4>
                                                             </td>
                                                             <td class="supplier-id" id="{{ $product->supplier->id }}">
                                                                 {{ $product->supplier->shop_name }}</td>
@@ -159,8 +159,8 @@
                                                 <td>{{ $assigned_product->assignProduct->departmentName() }}</td>
                                                 <td>{{ $assigned_product->assignProduct->section->name }}</td>
                                                 <td>{{ $assigned_product->assignProduct->subsection->name }}</td>
-                                                <td class="assigned-qty">{{ $assigned_product->qty }}</td>
-                                                <td class="damage-qty">{{ $assigned_product->damage()->qty }}</td>
+                                                <td class="assigned-qty">{{ Number_format($assigned_product->qty) }}</td>
+                                                <td class="damage-qty">{{ Number_format($assigned_product->damage()->qty) }}</td>
                                                 <td class="damage-des">{{ $assigned_product->damage()->des }}</td>
                                                 {{-- <td class="damage-qty">{{ $assigned_product-> () }}</td> --}}
                                                 <td>{{ $assigned_product->created_user->name }}</td>
@@ -308,7 +308,7 @@
                 dom: 'Bfrtip',
                 buttons: [{
                     extend: 'pdfHtml5',
-                    title: 'Damage  Report',
+                    title: 'Product Report',
                     download: 'open',
                     orientation: 'potrait',
                     pagesize: 'LETTER',

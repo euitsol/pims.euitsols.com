@@ -5,11 +5,96 @@
 @push('third_party_stylesheets')
     <link rel="stylesheet" href="{{ asset('assets/js/DataTable/datatables.min.css') }}">
 @endpush
+@push('page_css')
+    <style>
+        .info-div {
+            background-color: #faceb2;
+            padding: 15px;
+        }
 
+        .custom-div {
+            display: flex;
+            justify-content: center;
+
+        }
+
+        table tr th,
+        table tr td {
+            vertical-align: middle !important;
+        }
+
+        @media screen and (max-width: 768px) {
+            .custom-div {
+                display: block;
+            }
+
+            .custom-div div {
+                margin: 0px !important;
+            }
+        }
+    </style>
+@endpush
 @section('content')
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="float-left">
+                            <h4>Searched Info</h4>
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-8 info-div rounded m-auto">
+                            <div class="custom-div m-auto">
+                                <div>
+                                    <span class="text-bold">Department :</span>
+                                    @if (isset($department))
+                                        <span>{{ $department }}</span>
+                                    @else
+                                        <span>All</span>
+                                    @endif
+                                </div>
+                                <div class="ml-4">
+                                    <span class="text-bold">section :</span>
+                                    @if (isset($section))
+                                        <span>{{ $section }}</span>
+                                    @else
+                                        <span>All</span>
+                                    @endif
+                                </div>
+                                <div class="ml-4">
+                                    <span class="text-bold">Subsection :</span>
+                                    <span>
+                                        @if (isset($subsection))
+                                            {{ $subsection }}
+                                        @endif
+                                        All
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row text-center">
+                                <div class="col-md-12 mt-3">
+                                    <span class="text-bold">Date Range:</span>
+                                    @if (isset($str_date) || isset($end_date))
+                                        @isset($str_date)
+                                            <span>From :</span>
+                                            <span>{{ $str_date }}</span>
+                                        @endisset
+                                        @isset($end_date)
+                                            <span> To :</span>
+                                            <span>{{ $end_date }}</span>
+                                        @endisset
+                                    @else
+                                        <span> No date range</span>
+                                    @endif
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
                 <h4 class="text-center mb-4">Distribution Report</h4>
                 @forelse($assign_products as $key => $departments)
                 <div class="card">
@@ -49,7 +134,7 @@
                                                         <td>{{$p->product->name}}</td>
                                                         <td>{{$p->assignProduct->section->name}}</td>
                                                         <td>{{$p->assignProduct->subsection->name}}</td>
-                                                        <td>{{$p->qty}}</td>
+                                                        <td>{{Number_format($p->qty)}}</td>
                                                         <td>{{$p->product->category->name}}</td>
                                                         <td>{{$p->product->subcategory->name}}</td>
                                                         <td>{{date('d-m-Y',strtotime($p->created_at))}}</td>

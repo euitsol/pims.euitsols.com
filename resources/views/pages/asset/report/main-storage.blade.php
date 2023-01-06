@@ -127,9 +127,9 @@
                                                         @endphp
                                                     @endforeach
                                                 </td>
-                                                <td>{{ $product->departTotalProduct() }}</td>
-                                                <td>{{$product->totalPrice() }}</td>
-                                                <td>{{$product->departAvailableProduct() }}</td>
+                                                <td>{{ Number_format($product->departTotalProduct()) }}</td>
+                                                <td>BDT {{ Number_format($product->totalPrice() )}}</td>
+                                                <td>{{ Number_format($product->departAvailableProduct()) }}</td>
                                                 <td>{{$product->created_user->name}}</td>
                                                 <td>{{date('d-m-Y',strtotime($product->created_at))}}</td>
 
@@ -149,8 +149,8 @@
                                         <td>{{ $product->department ? $product->department->department_name : 'Common Asset' }}
                                         </td>
                                         <td>{{ $product->name }}</td>
-                                        <td>{{ $product->qty }}</td>
-                                        <td>{{ $product->total_price }}</td>
+                                        <td>{{ Number_format($product->qty) }}</td>
+                                        <td>BDT {{ Number_format($product->total_price) }}</td>
                                         <td>{{$product->created_user->name}}</td>
                                         <td>{{date('d-m-Y',strtotime($product->created_at))}}</td>
                                         <td>
@@ -311,7 +311,7 @@
                 dom: 'Bfrtip',
                 buttons: [{
                     extend: 'pdfHtml5',
-                    title: 'All Products',
+                    title: 'Main Storage',
                     download: 'open',
                     orientation: 'potrait',
                     pagesize: 'LETTER',
@@ -343,7 +343,7 @@
                             $('#view-department').html(response.book.category.department
                                 .department_name);
                             $('#view-bookshelf').html(response.book.bookshelf.name);
-                            $('#view-qty').html(response.qty);
+                            $('#view-qty').html( Number((response.qty).toFixed(1)).toLocaleString());
                             $('#view-assign-date').html(response.assign_date);
                             $('#view-return-date').html(response.return_date);
                             $('#view-returned-date').html(response.returned_date ?? '');

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('supplier_id');
             $table->string('quantity');
-            $table->string('warranty');
+            $table->string('warranty')->nullable();
             $table->string('total_price');
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
