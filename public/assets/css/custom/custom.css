@@ -1,0 +1,65 @@
+.select2-container--default
+    .select2-selection--single
+    .select2-selection__arrow {
+    height: 26px;
+    position: absolute;
+    top: 7px;
+    right: 1px;
+    /* width: 100% !important; */
+}
+
+.select2 {
+    width: 100% !important;
+    display: block;
+    /* height: 38px !important; */
+}
+
+.select2-selection--single {
+    height: 38px !important;
+}
+
+.select2-container--default .select2-search--inline .select2-search__field {
+    border: none !important;
+}
+.taka {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* =============  modify css ============== */
+.select2-container {
+    max-width: 571px !important;
+    /* max-width: 80% !important; */
+    width: 100% !important;
+}
+.brand-text {
+    display: none;
+}
+.brand-text img {
+    width: 100%;
+}
+.form-horizontal > .row {
+    margin-top: 40px;
+}
+
+.Personal-data {
+    margin-top: 30px;
+}
+.table.dataTable thead > tr > th.sorting::before,
+table.dataTable thead > tr > th.sorting::before,
+table.dataTable thead > tr > th.sorting_asc::before {
+    opacity: 0 !important;
+}
+.table.dataTable thead > tr > th.sorting::after,
+table.dataTable thead > tr > th.sorting::after,
+table.dataTable thead > tr > th.sorting_asc::after {
+    opacity: 0 !important;
+}
+/* .filter-attendance form .row .form-group {
+    max-width: 436px !important;
+} */
+.filter-attendance form .row .form-group {
+    max-width: 100% !important;
+}
+.filter-attendance form .row .form-group .select2-container {
+}
